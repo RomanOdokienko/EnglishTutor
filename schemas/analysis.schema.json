@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Session Analysis",
+  "type": "object",
+  "required": ["date", "session", "participants"],
+  "properties": {
+    "date": {
+      "type": "string",
+      "description": "Session date in YYYY-MM-DD format",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "session": {
+      "type": "object",
+      "required": ["topic", "duration_minutes"],
+      "properties": {
+        "topic": { "type": "string" },
+        "duration_minutes": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "role", "metrics", "fluency", "grammar"],
+        "properties": {
+          "name": { "type": "string" },
+          "role": { "type": "string" },
+          "metrics": {
+            "type": "object",
+            "required": ["word_count", "turn_count", "avg_words_per_turn"],
+            "properties": {
+              "word_count": { "type": "integer", "minimum": 0 },
+              "turn_count": { "type": "integer", "minimum": 0 },
+              "avg_words_per_turn": { "type": "number", "minimum": 0 }
+            },
+            "additionalProperties": false
+          },
+          "fluency": {
+            "type": "object",
+            "required": ["score", "level"],
+            "properties": {
+              "score": { "type": "number", "minimum": 0, "maximum": 10 },
+              "level": { "type": "string" }
+            },
+            "additionalProperties": false
+          },
+          "grammar": {
+            "type": "object",
+            "required": ["errors", "top_recommendations"],
+            "properties": {
+              "errors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["text", "correction"],
+                  "properties": {
+                    "text": { "type": "string" },
+                    "correction": { "type": "string" },
+                    "explanation": { "type": "string" }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "top_recommendations": {
+                "type": "array",
+                "minItems": 0,
+                "maxItems": 3,
+                "items": { "type": "string" }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
