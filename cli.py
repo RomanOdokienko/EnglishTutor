@@ -208,6 +208,7 @@ def write_web_assets(out_dir: Path) -> None:
     web_dir = out_dir / "web"
     web_dir.mkdir(parents=True, exist_ok=True)
     (web_dir / "index.html").write_text(INDEX_HTML, encoding="utf-8")
+    (web_dir / "upload.html").write_text(UPLOAD_HTML, encoding="utf-8")
     (web_dir / "app.js").write_text(APP_JS, encoding="utf-8")
     (web_dir / "styles.css").write_text(STYLES_CSS, encoding="utf-8")
 
@@ -266,6 +267,7 @@ INDEX_HTML = """<!doctype html>
       <header>
         <h1>English Session Evaluator</h1>
         <p class=\"subtitle\">Review fluency progress and session details.</p>
+        <a class=\"inline-link\" href=\"upload.html\">Upload a transcript</a>
       </header>
       <section class=\"controls\">
         <label for=\"session-select\">Session date</label>
@@ -285,6 +287,38 @@ INDEX_HTML = """<!doctype html>
       </section>
     </main>
     <script src=\"app.js\"></script>
+  </body>
+</html>
+"""
+
+UPLOAD_HTML = """<!doctype html>
+<html lang=\"en\">
+  <head>
+    <meta charset=\"utf-8\" />
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />
+    <title>Upload Transcript</title>
+    <link rel=\"stylesheet\" href=\"styles.css\" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Upload a transcript</h1>
+        <p class=\"subtitle\">
+          Select a .txt transcript file to analyze locally.
+        </p>
+        <a class=\"inline-link\" href=\"index.html\">Back to dashboard</a>
+      </header>
+      <section class=\"card upload-card\">
+        <label class=\"file-label\" for=\"transcript-file\">
+          Transcript file (.txt)
+        </label>
+        <input id=\"transcript-file\" type=\"file\" accept=\".txt\" />
+        <p class=\"helper\">
+          The upload flow will parse the file and trigger analysis in a later
+          step.
+        </p>
+      </section>
+    </main>
   </body>
 </html>
 """
@@ -471,6 +505,18 @@ h1 {
   color: #475569;
 }
 
+.inline-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: #0ea5e9;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.inline-link:hover {
+  text-decoration: underline;
+}
+
 .controls {
   margin-bottom: 24px;
   display: flex;
@@ -508,6 +554,21 @@ select {
   font-size: 12px;
   color: #64748b;
   text-transform: uppercase;
+}
+
+.upload-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.file-label {
+  font-weight: 600;
+}
+
+.helper {
+  margin: 0;
+  color: #475569;
 }
 
 .progress {
