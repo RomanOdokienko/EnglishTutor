@@ -1,0 +1,276 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  margin: 0;
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+}
+
+header {
+  margin-bottom: 24px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+}
+
+.subtitle {
+  margin: 0;
+  color: #475569;
+}
+
+.inline-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: #0ea5e9;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.inline-link:hover {
+  text-decoration: underline;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.ghost {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid #cbd5f5;
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ghost:hover {
+  background: #f8fafc;
+}
+
+.ghost.danger {
+  border-color: #fca5a5;
+  color: #b91c1c;
+}
+
+.ghost.danger:hover {
+  background: #fee2e2;
+}
+
+.ghost:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.controls {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+select {
+  max-width: 320px;
+  padding: 8px 12px;
+  font-size: 15px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.card h3 span {
+  font-size: 12px;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.metric {
+  margin: 8px 0 0;
+}
+
+.metric-note {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.upload-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.upload-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mapping {
+  padding-top: 8px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.section-title {
+  margin: 0 0 6px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+input[type='text'],
+input[type='date'],
+input[type='number'] {
+  padding: 8px 12px;
+  font-size: 15px;
+  border: 1px solid #cbd5f5;
+  border-radius: 8px;
+}
+
+.file-label {
+  font-weight: 600;
+}
+
+.primary {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 999px;
+  background: #0f172a;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primary:hover {
+  background: #1e293b;
+}
+
+.helper {
+  margin: 0;
+  color: #475569;
+}
+
+.progress {
+  margin-top: 24px;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.chart-card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+}
+
+.chart-card h3 {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+canvas {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 12px;
+}
+
+.transcript {
+  margin-top: 24px;
+}
+
+.transcript-box {
+  margin: 0;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.subheading {
+  margin: 12px 0 8px;
+  font-size: 12px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.errors {
+  margin: 0 0 12px;
+  padding-left: 20px;
+}
+
+.example {
+  margin: 4px 0 0 12px;
+  padding: 6px 8px;
+  background: #f8fafc;
+  border-radius: 8px;
+  color: #475569;
+  font-size: 12px;
+}
+
+.correction {
+  margin-top: 4px;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.correction.missing {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.recommendations {
+  margin-top: 24px;
+}
+
+.recommendations ul {
+  padding-left: 20px;
+  margin: 0;
+}

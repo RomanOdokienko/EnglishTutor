@@ -1,0 +1,70 @@
+{
+  "sessions": [
+    {
+      "date": "2026-01-19",
+      "topic": "19.01",
+      "participants": [
+        {
+          "name": "Andrey",
+          "role": "student",
+          "fluency_score": 10.0,
+          "llm_fluency_score": 6,
+          "grammar_error_count": 0,
+          "llm_error_rate": 1.15
+        },
+        {
+          "name": "Roman",
+          "role": "partner",
+          "fluency_score": 10.0,
+          "llm_fluency_score": 7,
+          "grammar_error_count": 0,
+          "llm_error_rate": 0.67
+        }
+      ]
+    },
+    {
+      "date": "2026-01-26",
+      "topic": "26.01",
+      "participants": [
+        {
+          "name": "Roman",
+          "role": "student",
+          "fluency_score": 10.0,
+          "llm_fluency_score": 6,
+          "grammar_error_count": 0,
+          "llm_error_rate": 1.07
+        },
+        {
+          "name": "Andrey",
+          "role": "partner",
+          "fluency_score": 10.0,
+          "llm_fluency_score": 7,
+          "grammar_error_count": 0,
+          "llm_error_rate": 0.81
+        }
+      ]
+    },
+    {
+      "date": "2026-02-02",
+      "topic": "02 feb",
+      "participants": [
+        {
+          "name": "Roman",
+          "role": "student",
+          "fluency_score": 10.0,
+          "llm_fluency_score": 6.5,
+          "grammar_error_count": 0,
+          "llm_error_rate": 0.59
+        },
+        {
+          "name": "Andrey",
+          "role": "partner",
+          "fluency_score": 10.0,
+          "llm_fluency_score": 7.0,
+          "grammar_error_count": 0,
+          "llm_error_rate": 0.59
+        }
+      ]
+    }
+  ]
+}

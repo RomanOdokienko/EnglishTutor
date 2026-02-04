@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Upload Transcript</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Upload a transcript</h1>
+        <p class="subtitle">
+          Select a .txt transcript file to analyze locally.
+        </p>
+        <a class="inline-link" href="index.html">Back to dashboard</a>
+      </header>
+      <section class="card upload-card">
+        <form id="upload-form">
+          <label class="file-label" for="transcript-file">
+            Transcript file (.txt)
+          </label>
+          <input id="transcript-file" name="transcript" type="file" accept=".txt" />
+          <label class="file-label" for="topic">Topic</label>
+          <input id="topic" name="topic" type="text" placeholder="Travel stories" />
+          <div class="row">
+            <div>
+              <label class="file-label" for="date">Date</label>
+              <input id="date" name="date" type="date" />
+            </div>
+            <div>
+              <label class="file-label" for="duration">Duration (minutes)</label>
+              <input id="duration" name="duration" type="number" min="1" max="240" value="30" />
+            </div>
+          </div>
+          <div class="mapping">
+            <h2 class="section-title">Speaker mapping</h2>
+            <p class="helper">Assign people to detected speakers.</p>
+            <p class="helper" id="detected-speakers"></p>
+            <div class="row">
+              <div>
+                <label class="file-label" for="speaker-a-person">Speaker A</label>
+                <select id="speaker-a-person">
+                  <option value="Roman">Roman</option>
+                  <option value="Andrey">Andrey</option>
+                </select>
+              </div>
+              <div>
+                <label class="file-label" for="speaker-b-person">Speaker B</label>
+                <select id="speaker-b-person">
+                  <option value="Andrey">Andrey</option>
+                  <option value="Roman">Roman</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button class="primary" type="submit">Upload + Analyze</button>
+          <p class="helper" id="upload-status">
+            This runs a local upload to the analysis server.
+          </p>
+        </form>
+      </section>
+    </main>
+    <script>
+      const form = document.getElementById('upload-form');
+      const statusEl = document.getElementById('upload-status');
+      const detectedEl = document.getElementById('detected-speakers');
+      const speakerAPerson = document.getElementById('speaker-a-person');
+      const speakerBPerson = document.getElementById('speaker-b-person');
+      let detectedLabels = [];
+
+      async function readFileAsText(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(reader.error);
+          reader.readAsText(file);
+        });
+      }
+
+      function isValidTranscript(text) {
+        const linePattern = /^\s*[^:]+:\s*.+/m;
+        return linePattern.test(text);
+      }
+
+      function detectSpeakers(text) {
+        const speakers = [];
+        text.split(/\r?\n/).forEach((line) => {
+          const match = line.match(/^\s*([^:]+):\s*.+/);
+          if (match) {
+            const name = match[1].trim();
+            if (name && !speakers.includes(name)) {
+              speakers.push(name);
+            }
+          }
+        });
+        return speakers;
+      }
+
+      async function handleFileChange(file) {
+        if (!file) {
+          return;
+        }
+        const text = await readFileAsText(file);
+        const speakers = detectSpeakers(text);
+        detectedLabels = speakers;
+        if (speakers.length === 2) {
+          detectedEl.textContent = `Detected speakers: ${speakers.join(', ')}. Speaker A = ${speakers[0]}, Speaker B = ${speakers[1]}.`;
+        } else if (speakers.length === 0) {
+          detectedEl.textContent = 'No speakers detected. Use format: Name: text';
+        } else {
+          detectedEl.textContent = `Detected ${speakers.length} speakers. Expected exactly 2.`;
+        }
+      }
+
+      const fileInput = document.getElementById('transcript-file');
+      fileInput.addEventListener('change', () => {
+        handleFileChange(fileInput.files[0]);
+      });
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!fileInput.files.length) {
+          statusEl.textContent = 'Please pick a transcript file.';
+          return;
+        }
+        statusEl.textContent = 'Uploading...';
+        try {
+          const transcript = await readFileAsText(fileInput.files[0]);
+          if (!isValidTranscript(transcript)) {
+            statusEl.textContent = 'Invalid format. Use "Name: text" per line.';
+            return;
+          }
+
+          if (!detectedLabels.length) {
+            detectedLabels = detectSpeakers(transcript);
+          }
+          if (detectedLabels.length !== 2) {
+            statusEl.textContent = 'Expected exactly 2 speakers in the transcript.';
+            return;
+          }
+
+          const speakerAPersonValue = speakerAPerson.value;
+          const speakerBPersonValue = speakerBPerson.value;
+          if (speakerAPersonValue === speakerBPersonValue) {
+            statusEl.textContent = 'Speaker A and B persons must be different.';
+            return;
+          }
+          const payload = {
+            transcript,
+            topic: document.getElementById('topic').value,
+            date: document.getElementById('date').value,
+            duration: document.getElementById('duration').value,
+            speaker_a_label: detectedLabels[0],
+            speaker_b_label: detectedLabels[1],
+            speaker_a_person: speakerAPersonValue,
+            speaker_b_person: speakerBPersonValue,
+          };
+          const response = await fetch('/api/upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || 'Upload failed.');
+          }
+          const result = await response.json();
+          statusEl.textContent = `Uploaded session ${result.date}. Open the dashboard to review.`;
+        } catch (error) {
+          statusEl.textContent = error.message || 'Upload failed.';
+        }
+      });
+    </script>
+  </body>
+</html>

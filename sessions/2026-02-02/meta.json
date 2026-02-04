@@ -1,0 +1,23 @@
+{
+  "date": "2026-02-02",
+  "topic": "02 feb",
+  "participants": [
+    {
+      "name": "Roman",
+      "role": "student"
+    },
+    {
+      "name": "Andrey",
+      "role": "partner"
+    }
+  ],
+  "duration_minutes": 35,
+  "speaker_map": {
+    "Speaker A": "Roman",
+    "Speaker B": "Andrey"
+  },
+  "speaker_labels": [
+    "Speaker A",
+    "Speaker B"
+  ]
+}

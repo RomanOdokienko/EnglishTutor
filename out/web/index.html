@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>English Session Evaluator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>English Session Evaluator</h1>
+        <p class="subtitle">Review fluency progress and session details.</p>
+        <div class="header-actions">
+          <a class="inline-link" href="upload.html">Upload a transcript</a>
+          <button class="ghost" id="rebuild-button">Re-run analysis</button>
+          <button class="ghost danger" id="delete-button">Delete session</button>
+        </div>
+        <p class="helper" id="rebuild-status"></p>
+        <p class="helper" id="llm-status"></p>
+      </header>
+      <section class="controls">
+        <label for="session-select">Session date</label>
+        <select id="session-select"></select>
+      </section>
+      <section class="summary">
+        <h2 id="session-title">Session</h2>
+        <div id="session-details" class="cards"></div>
+      </section>
+      <section class="progress">
+        <h2>Progress</h2>
+        <div class="chart-grid">
+          <div class="chart-card">
+            <h3>LLM Proficiency</h3>
+            <canvas id="progress-proficiency" width="640" height="220"></canvas>
+          </div>
+          <div class="chart-card">
+            <h3>Grammar errors / 100 words</h3>
+            <canvas id="progress-errors" width="640" height="220"></canvas>
+          </div>
+        </div>
+      </section>
+      <section class="recommendations">
+        <h2>Recommendations</h2>
+        <div id="recommendations"></div>
+      </section>
+      <section class="transcript">
+        <h2>Transcript</h2>
+        <pre id="transcript-text" class="transcript-box"></pre>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

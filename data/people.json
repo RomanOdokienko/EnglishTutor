@@ -1,0 +1,16 @@
+{
+  "people": {
+    "Roman": {
+      "aliases": [
+        "Speaker A",
+        "Speaker B"
+      ]
+    },
+    "Andrey": {
+      "aliases": [
+        "Speaker B",
+        "Speaker A"
+      ]
+    }
+  }
+}

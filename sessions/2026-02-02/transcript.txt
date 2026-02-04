@@ -1,0 +1,91 @@
+Speaker A: Okay, I started our voice recording. I'm Roman and justify yourself, please.
+Speaker B: Come on. I have been justified. We watched the film with Kate so it finished five minutes later before our meeting started. So I'm late.
+Speaker A: Okay, why you and Kate decided to watch film in some unusual timing?
+Speaker B: Because Kate doesn't work now and she have. She has a time all the fields. I think maybe one or two weeks just for. Just to take care for herself after the work. Small gap like vacation.
+Speaker A: Okay, can you please speak straightforward to your microphone?
+Speaker B: Yeah, yeah, yeah. I will put it yeah in front of my mouth.
+Speaker A: So would you like to see my summarization of project for keep our records and evaluate our progress?
+Speaker B: Am I right that you want to show the. The. Not the construction maybe just project how it works?
+Speaker A: Yes, I would like to show you the current stage of project and would like to take feedback from you on the logic of some blocks.
+Speaker B: Okay, you can share but ask me. You can ask questions while you are talking because could be like a dialogue, not a monologue. I'll suggest part and ask me if it's okay or not.
+Speaker A: As I suggest, please don't interrupt me when I started to speak and you trying to interrupt me by allowing your voice and the problem is derisation model can be frustrated in this moment and take your part of phrase to me and. And vice versa but overall I'm glad to see that this freediarization model works good enough. I don't see a lot of mistakes regarding to. Regarding to speaker. I mean in 95% model describe not describe how I would say. How would say the word to the.
+Speaker B: To the allies.
+Speaker A: To pick the right person.
+Speaker B: To pick the right person choose select.
+Speaker A: Maybe maybe I'm not can't remember this word so. Okay, let's start I will demonstrate my screen.
+Speaker B: I catched the grammar mistake you told I demonstrate the my screen.
+Speaker A: Yes. So can you see it?
+Speaker B: Yes. Is it browser or desktop application?
+Speaker A: Currently it's a project on my hard disk. How I say local web server, local storage. Yes so what we have here simple functionality.
+Speaker B: I.
+Speaker A: Currently I see the process like manual downloading of transcribation of our conversation. Upload a transcript after when you uploading a transcript you see this screen step. So name, date and speaker mapping. For instance, sometimes for our first conversation speaker A was me and the second conversation speaker A was you. So I put it manually here and after that upload plus analyze analyzing is currently doing by API of OpenAI.
+Speaker B: So yeah what do you use? Which model do you use for the transcript?
+Speaker A: Transcript Currently it's DPT because it's too cheap and currently I'm in testing.
+Speaker B: No, I asked you what do you use for the transcription process? Which model do you use for it? Not for analysis. Analysis.
+Speaker A: Okay, understand for transcription, the same as discussed, Assembly. So it's different desktop application which I done before. So currently it's another step. For instance, currently I'm recording our voice on iPhone. After that I use assembly to transcribation to transcribe and this step.
+Speaker B: Work from.
+Speaker A: Transcurbation which is done. I'm not sure that it's correct construction.
+Speaker B: Okay, I can suggest you some improvements or some comments and you can. You can write. You can fix it for you. You can write it with a pen. First of all, one more question. Do you use assemblies model using API or not?
+Speaker A: Yes.
+Speaker B: And am I right that you use free credits earned after the registration? Registration.
+Speaker A: I think yes, but as I remember there is free premium model. So you have. Okay, you have 6,000 tokens or something like that every month and it's enough for our purposes still.
+Speaker B: Okay. By the way. Yeah, the first comment is about model. You can use the open source model. What's what What? Used by OpenAI. I can't recall the name of this model. That's Whisper. I suppose Whisper is a free model for the transcription. You can use it instead of assembly. But I'm not sure about the quality of super Whisper and using the Whisper you can deploy or you can start this model right on your computer. So it's not necessary to set up the. It's not necessary to be connect to be connected to the WI Fi or any. Any network. So you can use it local. Local. Yep.
+Speaker A: So okay. Understand I think it's currently not. Not high priority because this step is currently working in good enough manner. And the second problem that during my research of free transcription model I realized and I found that only a small amount of such models have derisation model. Usually derisation is paid option. So we can try Whisper but due to our conversation is not the strict or confident speech I think currently it's not the first priority. But overall.
+Speaker B: Okay, I understand what's the what the main what. What's the sense of fields.
+Speaker A: For the.
+Speaker B: Role topics on your screen? So to illustrate why you use topic field duration field is it important topic.
+Speaker A: Is just name of current session I put here just date like this it's not necessary but currently it's like this duration. Currently it's the main idea of duration was to evaluate fluency level. How much word can you speak during the time Limit or something like that, but currently put by myself, so it's manual. And the second problem that I can't evaluate this fluency in this way because model on ChatGPT doesn't know how long you pronounce the phrases and how much time you spent on it. So currently it's. It's not used in metrics.
+Speaker B: Okay, go on.
+Speaker A: Okay, let's go back after we download presents here. So currently I downloaded two session, as you see 19th of January and 26th. So here you can see cards of us as speakers. The main metrics that I implemented here. So total amount of words, turns means.
+Speaker B: Paragraphs.
+Speaker A: Average words per turn. So let me show firstly and after that you can ask me questions.
+Speaker B: Okay, no, it's not about the question. I just want to highlight that it's not necessary for you to explain every parameter in this dashboard because I see the description under the turns, I see how it works. So yeah, I already saw this dashboard. You sent it to me one or two hours ago.
+Speaker A: Yes, but as you remember, the main purpose, it's not to explain you something, but also train our grammar. And in this explanation it should be quite easy, but not so easy. But you can track your pronunciation, your grammar, construction, so on. But if you're so smart. Okay, let's go further.
+Speaker B: We can talk more about the architecture of project and not only try to not only read the words from the dashboard. Yeah, I see how it works. I think it's just for me it's enough to see how it works. I see the progress, but I think it needs more data to show some graphs, I suppose. Yeah, sure. And then you will show me recommendations block. But I think it's more interesting to brainstorm how to rebuild the architecture and make it more easy to work with. Because now the interface and the.
+Speaker A: Whole.
+Speaker B: Setup seems too complicated.
+Speaker A: Okay, too complicated. You mean too much metrics or what?
+Speaker B: I think the way you use not this way. I try to say it again. The user flow now seems complicated. I got that. That's MVP version. But for me it looks hard to illustrate. We both read the book Atomic Habits and you know, the easy way is a good way to use something. So I think now user flow a bit complicated to work with it week to week.
+Speaker A: Yes, I agree, but it's much more than zero that I had a couple of days ago and it's this. This user flow is simpler than before when I need to put script in ChatGPT for instance, and after that take some info from them and I should keep somewhere. And currently I Resolve the main pain which is lack of database of our sessions. Currently we have such a database. Currently we will evaluate all of our session in in the same way. You can see the progress and you can understand what kind of metrics exist. For instance, for me it was interesting to know that we can track lexical diversity. It's easy and interesting metric grammar error rate. It's understandable and very useful metric as well. And maybe it's the two metric that would be would be enough. And the third not metric but approach Maybe top three or top five recommendation based on your session. Based on your most usual for you or for me mistakes. So below I tried to make to realize that. But currently I'm not sure it works correct. So I need to understand. I would like to. Present here step by step analyze of every line of our conversation by ChatGPT. So to trace the logic step by step. I agree that we can smooth this workflow, but it would be iteration by iteration. Currently I decrease some pain and I agree that some pain is still here.
+Speaker B: Okay, for me actually the grammar error rate metric is a bit strange because you know a lot of example. You know, you know a lot of examples. When native speakers make same mistakes, they don't use articles. It's often mistake they use. They don't use simple verbs like are when they ask questions. For example, instead of are you hungry? They will ask you hungry. So I think that's sometimes that's not objective metric.
+Speaker A: Yeah, I understand. I currently excluded such cases from. From grammar evaluation. So ChatGPT can't understand the type of our conversation. It's some mistakes like maybe some. Usual or common constructions. As you said excluded as well. So there is an idea to evaluate overall grammar rate here. It's too low. It can be so low for us and it should be maybe 15 or something like that. Errors per 100 words, maybe a little bit slower. But if you have one error for 100 words, it means that due to our conversation you have only 15 mistakes. I suppose it's too low measure. And we will see here only strong grammar mistakes. And most important for me we will see the top three mistakes which which rest any time. Understand?
+Speaker B: Yeah, yeah, I got it.
+Speaker A: Yeah. So my idea currently for this metric is something like that.
+Speaker B: Okay, Am I right that for each session there is a there is a dashboard for each session? Different sessions, different dashboards, not cumulative.
+Speaker A: Yeah, you are right. So as I show here, different session, different metrics. So it's the same metrics but different measures or different figures. And cumulative would be Presented in progress bar. Currently it's broken. I'm not sure why because I sent today and it was working as you remember. But accumulative. Not accumulative but just progress bar will be presented here. Like line.
+Speaker B: Okay.
+Speaker A: So and I hope the recommendations block will be helpful for us when. When it will give us most common mistakes from us. It's evident that missing articles is very common for both of us. Incorrect verb tense. Okay. What else? Sometimes unclear structure. I'm not sure that it's correct. For instance, I agree with the first example but I'm not agree with second one. I don't know what I support that. I think it's. It's not a rude mistake. It's evident so I need to work with this logic.
+Speaker B: I think unclear structure also depends by the context because the transcript is. I think you just can try.
+Speaker A: Could.
+Speaker B: Sounds like the whole message you want to say. For example, I think you just can try. Or it could be like two different parts of one sentence to illustrate it could sound like. I think you just can try just to highlight the word try. I think it sounds correct.
+Speaker A: Yeah, I totally agree that it's not rude mistakes if any. So I would like to check the logic of GPT line by line to to ensure that API can see whole amount of text and that it doesn't take summary doesn't do summary and try to find some errors. So we. We need to evaluate line by line and we need to understand whole amount of errors mistakes. Yes. And after that you only after that we can stipulate the some patterns.
+Speaker B: Do you see the second example of block unclear structure? I don't know but I suppose that correct. I don't know.
+Speaker A: I suppose that yeah. As I said I'm evident that it's not a problem at all. It's not a mistake because it's transcribation and seem like and sometimes understand where is the point? Where is the dot? Where is the empathy or how it would say this one. So it's not a problem. It shouldn't be here. So in this block should be only rude mistakes and root mistakes and recurrence mistakes.
+Speaker B: Irrepeatable.
+Speaker A: Yes. So. So. And here is the transcript in in an ideal picture I would like to see here is a transcript and here is a mistakes and how it should be in correct way. Something like that.
+Speaker B: Do you want to make it like a floating blocks or just highlights in the text?
+Speaker A: Maybe highlights. I thought about highlights but I wouldn't like to keep this structure too.
+Speaker B: Hard.
+Speaker A: How would say too Complex. And maybe here would be another button when you will take JSON from API with this highlighted errors. So. But in another procedure I will check because I'm not sure that it's very easy to highlight here some mistakes or old mistakes.
+Speaker B: So I think the best way is to highlight the mistakes exactly in text. And using hover you can show the tooltip with description of mistake and improvement.
+Speaker A: Yeah, I agree regarding user flow. I'm just confusing that it will be easy to. To develop because I'm not sure how API works with big amount of text. So can API process it line by line without any summaries and so on?
+Speaker B: I think you have to try.
+Speaker A: Yes. So I just would like to try. Don't have an opportunity to make it still. So by the way, 31 minutes left and we can stop and process our.
+Speaker B: Speech or.
+Speaker A: You can. You can tell me something because I suppose this time I spoke a little bit more than you. So let's. Let's tell me something. You can tell me about Kate, because I'm not sure that I understand. Is he. Is she leave her work or not? You said about vocation.
+Speaker B: She left at all because. Yes, because there is no salary in last month and also the company didn't pay for the part of salary for the December and. Yeah, and she left and she wants to take a small gap like two weeks and do nothing just to reload herself and start work with me.
+Speaker A: Okay. Understand. And are there any other employees who left as well? Like she.
+Speaker B: I don't remember how many peoples. I suppose four or five people left. And also today I wrote the message just small talk to Misha, that's. CFO of get me git. And I wrote the message. He told me he will come back with the news soon. About my.
+Speaker A: Can you repeat the last word? Soon.
+Speaker B: Soon.
+Speaker A: What is it?
+Speaker B: Soon.
+Speaker A: Okay, As we listen. Okay.
+Speaker B: Understand.
+Speaker A: As we agreed, we can't just translate English words in Russian because it's not about.
+Speaker B: Yeah, we finished.
+Speaker A: We.
+Speaker B: We just. We finished the conversation for the transcription. So I just wanted to use to explain the word faster.
+Speaker A: Okay, but I need to know that we finished. So let me close.
+Speaker B: You told me we have 31 minute already.
+Speaker A: 31 minutes. And I suggest you to. To speak a little bit more because you. Well, you were speaking less than me, so. Okay, stop.
