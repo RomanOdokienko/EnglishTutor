@@ -9,6 +9,7 @@ const rebuildButton = document.getElementById('rebuild-button');
 const deleteButton = document.getElementById('delete-button');
 const rebuildStatus = document.getElementById('rebuild-status');
 const llmStatus = document.getElementById('llm-status');
+const analysisMarker = document.getElementById('analysis-marker');
 
 const state = {
   history: null,
@@ -23,15 +24,17 @@ async function loadHistory() {
   return response.json();
 }
 
-async function loadAnalysis(date) {
-  if (state.analysisCache.has(date)) {
+async function loadAnalysis(date, forceRefresh = false) {
+  if (!forceRefresh && state.analysisCache.has(date)) {
     return state.analysisCache.get(date);
   }
-  const response = await fetch(`../sessions/${date}/analysis.json`);
+  const stamp = forceRefresh ? `?refresh=${Date.now()}` : '';
+  const response = await fetch(`../sessions/${date}/analysis.json${stamp}`, { cache: 'no-store' });
   if (!response.ok) {
     throw new Error(`Unable to load analysis for ${date}`);
   }
   const data = await response.json();
+  data._lastModified = response.headers.get('Last-Modified');
   state.analysisCache.set(date, data);
   return data;
 }
@@ -70,33 +73,47 @@ function renderRecommendations(analysis) {
   analysis.participants.forEach((participant) => {
     const wrapper = document.createElement('div');
     wrapper.className = 'card';
-    const llmItems = participant.llm?.grammar?.top_recommendations
-      ?.map((item) => `<li>${item}</li>`)
+
+    const topErrors = (participant.llm?.grammar?.top_errors || [])
+      .slice()
+      .sort((a, b) => (b.count || 0) - (a.count || 0))
+      .slice(0, 3);
+
+    const recommendations = topErrors.map((error, index) => {
+      const examples = (error.examples || []).slice(0, 2).map((ex) => {
+        const value = typeof ex === 'string' ? { text: ex, correction: '' } : ex || {};
+        const text = value.text || '';
+        const correction = value.correction || '';
+        const correctionLine = correction
+          ? `<div class="correction">Correct: ${correction}</div>`
+          : `<div class="correction missing">Correct: (not provided)</div>`;
+        return `<div class="example"><div>${text}</div>${correctionLine}</div>`;
+      }).join('');
+
+      return `
+        <li>
+          <strong>${index + 1}. ${error.title}</strong> <span class="metric-note">(${error.count || 0} times)</span>
+          <div class="metric-note">Focus on this in the next lesson.</div>
+          ${examples}
+        </li>
+      `;
+    }).join('');
+
+    const fallbackItems = participant.llm?.grammar?.top_recommendations
+      ?.slice(0, 3)
+      .map((item, index) => `<li><strong>${index + 1}.</strong> ${item}</li>`)
       .join('');
-    const llmErrors = participant.llm?.grammar?.top_errors
-      ?.map((error) => {
-        const examples = (error.examples || []).map((ex) => {
-          const value = typeof ex === 'string'
-            ? { text: ex, correction: '' }
-            : ex || {};
-          const text = value.text || '';
-          const correction = value.correction || '';
-          const correctionLine = correction
-            ? `<div class="correction">Correct: ${correction}</div>`
-            : `<div class="correction missing">Correct: (not provided)</div>`;
-          return `<div class="example"><div>${text}</div>${correctionLine}</div>`;
-        }).join('');
-        return `<li><strong>${error.title}</strong> (${error.count})${examples}</li>`;
-      })
-      .join('');
-    const llmBlock = llmItems || llmErrors
+
+    const source = recommendations ? 'top_errors' : (fallbackItems ? 'top_recommendations (fallback)' : 'none');
+    const llmBlock = recommendations || fallbackItems
       ? `
-        <h4 class="subheading">LLM</h4>
+        <h4 class="subheading">LLM: top-3 focus areas for next lesson</h4>
         ${participant.llm?.grammar?.error_count !== undefined ? `<p class="metric-note">Total grammar errors: ${participant.llm.grammar.error_count}</p>` : ''}
-        ${llmErrors ? `<ul class="errors">${llmErrors}</ul>` : ''}
-        ${llmItems ? `<ul>${llmItems}</ul>` : ''}
+        <p class="metric-note">Data source: ${source}</p>
+        <ul class="errors">${recommendations || fallbackItems}</ul>
       `
-      : '';
+      : '<p class="metric-note">No recommendations yet.</p>';
+
     wrapper.innerHTML = `
       <h3>${participant.name}</h3>
       ${llmBlock}
@@ -123,6 +140,13 @@ function renderLlmStatus(analysis) {
     llmStatus.textContent = `OpenAI: error (${info.model || 'default model'})`;
   } else {
     llmStatus.textContent = 'OpenAI: skipped (no token)';
+  }
+
+  if (analysisMarker) {
+    const updatedAt = analysis._lastModified
+      ? new Date(analysis._lastModified).toLocaleString()
+      : 'unknown time';
+    analysisMarker.textContent = `Analysis marker: updated ${updatedAt}. Use "Re-run analysis (LLM)" to refresh this session.`;
   }
 }
 
@@ -294,9 +318,9 @@ function renderChart() {
 }
 
 
-async function handleSelection() {
+async function handleSelection(forceRefresh = false) {
   const date = sessionSelect.value;
-  const analysis = await loadAnalysis(date);
+  const analysis = await loadAnalysis(date, forceRefresh);
   renderParticipants(analysis);
   renderRecommendations(analysis);
   renderTranscript(analysis);
@@ -329,7 +353,7 @@ function attachRebuild() {
       state.history = await loadHistory();
       renderDropdown();
       renderChart();
-      await handleSelection();
+      await handleSelection(true);
     } catch (error) {
       rebuildStatus.textContent = error.message || 'Rebuild failed.';
     } finally {
@@ -370,7 +394,7 @@ function attachDelete() {
       renderChart();
       if (state.history.sessions.length) {
         sessionSelect.value = state.history.sessions[state.history.sessions.length - 1].date;
-        await handleSelection();
+        await handleSelection(false);
       } else {
         sessionTitle.textContent = 'No sessions.';
         sessionDetails.innerHTML = '';
@@ -392,10 +416,10 @@ async function init() {
     state.history = await loadHistory();
     renderDropdown();
     renderChart();
-    sessionSelect.addEventListener('change', handleSelection);
+    sessionSelect.addEventListener('change', () => handleSelection(false));
     attachRebuild();
     attachDelete();
-    await handleSelection();
+    await handleSelection(false);
   } catch (error) {
     sessionTitle.textContent = 'Failed to load data.';
     sessionDetails.innerHTML = `<p>${error.message}</p>`;
