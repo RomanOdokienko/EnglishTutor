@@ -70,33 +70,45 @@ function renderRecommendations(analysis) {
   analysis.participants.forEach((participant) => {
     const wrapper = document.createElement('div');
     wrapper.className = 'card';
-    const llmItems = participant.llm?.grammar?.top_recommendations
-      ?.map((item) => `<li>${item}</li>`)
+
+    const topErrors = (participant.llm?.grammar?.top_errors || [])
+      .slice()
+      .sort((a, b) => (b.count || 0) - (a.count || 0))
+      .slice(0, 3);
+
+    const recommendations = topErrors.map((error, index) => {
+      const examples = (error.examples || []).slice(0, 2).map((ex) => {
+        const value = typeof ex === 'string' ? { text: ex, correction: '' } : ex || {};
+        const text = value.text || '';
+        const correction = value.correction || '';
+        const correctionLine = correction
+          ? `<div class="correction">Correct: ${correction}</div>`
+          : `<div class="correction missing">Correct: (not provided)</div>`;
+        return `<div class="example"><div>${text}</div>${correctionLine}</div>`;
+      }).join('');
+
+      return `
+        <li>
+          <strong>${index + 1}. ${error.title}</strong> <span class="metric-note">(${error.count || 0} times)</span>
+          <div class="metric-note">Focus on this in the next lesson.</div>
+          ${examples}
+        </li>
+      `;
+    }).join('');
+
+    const fallbackItems = participant.llm?.grammar?.top_recommendations
+      ?.slice(0, 3)
+      .map((item, index) => `<li><strong>${index + 1}.</strong> ${item}</li>`)
       .join('');
-    const llmErrors = participant.llm?.grammar?.top_errors
-      ?.map((error) => {
-        const examples = (error.examples || []).map((ex) => {
-          const value = typeof ex === 'string'
-            ? { text: ex, correction: '' }
-            : ex || {};
-          const text = value.text || '';
-          const correction = value.correction || '';
-          const correctionLine = correction
-            ? `<div class="correction">Correct: ${correction}</div>`
-            : `<div class="correction missing">Correct: (not provided)</div>`;
-          return `<div class="example"><div>${text}</div>${correctionLine}</div>`;
-        }).join('');
-        return `<li><strong>${error.title}</strong> (${error.count})${examples}</li>`;
-      })
-      .join('');
-    const llmBlock = llmItems || llmErrors
+
+    const llmBlock = recommendations || fallbackItems
       ? `
-        <h4 class="subheading">LLM</h4>
+        <h4 class="subheading">LLM: top-3 focus areas for next lesson</h4>
         ${participant.llm?.grammar?.error_count !== undefined ? `<p class="metric-note">Total grammar errors: ${participant.llm.grammar.error_count}</p>` : ''}
-        ${llmErrors ? `<ul class="errors">${llmErrors}</ul>` : ''}
-        ${llmItems ? `<ul>${llmItems}</ul>` : ''}
+        <ul class="errors">${recommendations || fallbackItems}</ul>
       `
-      : '';
+      : '<p class="metric-note">No recommendations yet.</p>';
+
     wrapper.innerHTML = `
       <h3>${participant.name}</h3>
       ${llmBlock}
