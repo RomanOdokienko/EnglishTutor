@@ -104,12 +104,12 @@ function renderRecommendations(analysis) {
       .map((item, index) => `<li><strong>${index + 1}.</strong> ${item}</li>`)
       .join('');
 
-    const source = recommendations ? 'top_errors' : (fallbackItems ? 'top_recommendations (fallback)' : 'none');
+main
     const llmBlock = recommendations || fallbackItems
       ? `
         <h4 class="subheading">LLM: top-3 focus areas for next lesson</h4>
         ${participant.llm?.grammar?.error_count !== undefined ? `<p class="metric-note">Total grammar errors: ${participant.llm.grammar.error_count}</p>` : ''}
-        <p class="metric-note">Data source: ${source}</p>
+main
         <ul class="errors">${recommendations || fallbackItems}</ul>
       `
       : '<p class="metric-note">No recommendations yet.</p>';
