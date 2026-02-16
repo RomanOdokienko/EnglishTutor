@@ -144,6 +144,15 @@ def openai_config() -> tuple[bool, str | None]:
 
 
 class UploadHandler(SimpleHTTPRequestHandler):
+    def do_GET(self) -> None:
+        if self.path in ("/", "/web", "/web/"):
+            location = "/web/highlights.html"
+            self.send_response(302)
+            self.send_header("Location", location)
+            self.end_headers()
+            return
+        super().do_GET()
+
     def do_POST(self) -> None:
         if self.path == "/api/test-gpt5":
             api_key = os.getenv("OPENAI_API_KEY", "")
@@ -367,7 +376,7 @@ def run_server(port: int = 8000) -> None:
     build_all(SESSIONS_DIR, OUT_DIR, use_openai=False, openai_model=None)
     handler = partial(UploadHandler, directory=str(OUT_DIR))
     server = ThreadingHTTPServer(("127.0.0.1", port), handler)
-    print(f"Serving on http://127.0.0.1:{port}/web/index.html")
+    print(f"Serving on http://127.0.0.1:{port}/web/highlights.html")
     server.serve_forever()
 
 
