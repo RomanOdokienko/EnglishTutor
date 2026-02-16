@@ -2,14 +2,17 @@ const sessionSelect = document.getElementById('session-select');
 const sessionTitle = document.getElementById('session-title');
 const sessionDetails = document.getElementById('session-details');
 const recommendationsEl = document.getElementById('recommendations');
-const transcriptEl = document.getElementById('transcript-text');
+const transcriptRowsEl = document.getElementById('transcript-rows');
+const transcriptNoteEl = document.getElementById('transcript-note');
 const proficiencyChart = document.getElementById('progress-proficiency');
 const errorsChart = document.getElementById('progress-errors');
-const rebuildButton = document.getElementById('rebuild-button');
+const rebuildMetricsButton = document.getElementById('rebuild-metrics-button');
+const rebuildAnnotationsButton = document.getElementById('rebuild-annotations-button');
+const testModelButton = document.getElementById('test-model-button');
 const deleteButton = document.getElementById('delete-button');
 const rebuildStatus = document.getElementById('rebuild-status');
+const rebuildMeta = document.getElementById('rebuild-meta');
 const llmStatus = document.getElementById('llm-status');
-const analysisMarker = document.getElementById('analysis-marker');
 
 const state = {
   history: null,
@@ -24,17 +27,15 @@ async function loadHistory() {
   return response.json();
 }
 
-async function loadAnalysis(date, forceRefresh = false) {
-  if (!forceRefresh && state.analysisCache.has(date)) {
+async function loadAnalysis(date) {
+  if (state.analysisCache.has(date)) {
     return state.analysisCache.get(date);
   }
-  const stamp = forceRefresh ? `?refresh=${Date.now()}` : '';
-  const response = await fetch(`../sessions/${date}/analysis.json${stamp}`, { cache: 'no-store' });
+  const response = await fetch(`../sessions/${date}/analysis.json`);
   if (!response.ok) {
     throw new Error(`Unable to load analysis for ${date}`);
   }
   const data = await response.json();
-  data._lastModified = response.headers.get('Last-Modified');
   state.analysisCache.set(date, data);
   return data;
 }
@@ -44,17 +45,18 @@ function renderDropdown() {
   state.history.sessions.forEach((session) => {
     const option = document.createElement('option');
     option.value = session.date;
-    option.textContent = `${session.date} · ${session.topic}`;
+    option.textContent = `${session.date} - ${session.topic}`;
     sessionSelect.appendChild(option);
   });
 }
 
 function renderParticipants(analysis) {
-  sessionTitle.textContent = `${analysis.date} · ${analysis.session.topic}`;
+  sessionTitle.textContent = `${analysis.date} - ${analysis.session.topic}`;
   sessionDetails.innerHTML = '';
-  analysis.participants.forEach((participant) => {
+  sortParticipants(analysis.participants).forEach((participant) => {
     const card = document.createElement('div');
     card.className = 'card';
+    const grammar = participant.llm?.annotation_grammar || participant.llm?.chunked_grammar;
     card.innerHTML = `
       <h3>${participant.name} <span>${participant.role}</span></h3>
       <p class="metric"><strong>Words:</strong> ${participant.metrics.word_count}<span class="metric-note">Count of A-Z words in this speaker's turns.</span></p>
@@ -62,7 +64,8 @@ function renderParticipants(analysis) {
       <p class="metric"><strong>Avg words/turn:</strong> ${participant.metrics.avg_words_per_turn}<span class="metric-note">Words divided by turns.</span></p>
       <p class="metric"><strong>Lexical diversity:</strong> ${participant.metrics.lexical_diversity}<span class="metric-note">Unique words / total words.</span></p>
       ${participant.llm ? `<p class="metric"><strong>LLM Proficiency:</strong> ${participant.llm.fluency.score} (${participant.llm.fluency.level})<span class="metric-note">Model-based assessment.</span></p>` : ''}
-      ${participant.llm?.grammar?.error_rate_per_100_words !== undefined ? `<p class="metric"><strong>Grammar error rate:</strong> ${participant.llm.grammar.error_rate_per_100_words} / 100 words<span class="metric-note">From LLM-detected grammar errors.</span></p>` : ''}
+      ${grammar?.error_rate_per_100_words !== undefined ? `<p class="metric"><strong>Grammar error rate:</strong> ${grammar.error_rate_per_100_words} / 100 words<span class="metric-note">Derived from annotations when available.</span></p>` : ''}
+      ${grammar?.error_types?.length ? `<ul class="errors">${grammar.error_types.map((item) => `<li><strong>${item.title}</strong> (${item.count})</li>`).join('')}</ul>` : ''}
     `;
     sessionDetails.appendChild(card);
   });
@@ -70,63 +73,283 @@ function renderParticipants(analysis) {
 
 function renderRecommendations(analysis) {
   recommendationsEl.innerHTML = '';
-  analysis.participants.forEach((participant) => {
+  const annotationItems = analysis.llm?.annotation_items || [];
+  const annotationByName = buildAnnotationMap(analysis.transcript, annotationItems, analysis.speaker_map || {});
+  sortParticipants(analysis.participants).forEach((participant) => {
     const wrapper = document.createElement('div');
     wrapper.className = 'card';
-
-    const topErrors = (participant.llm?.grammar?.top_errors || [])
-      .slice()
-      .sort((a, b) => (b.count || 0) - (a.count || 0))
-      .slice(0, 3);
-
-    const recommendations = topErrors.map((error, index) => {
-      const examples = (error.examples || []).slice(0, 2).map((ex) => {
-        const value = typeof ex === 'string' ? { text: ex, correction: '' } : ex || {};
-        const text = value.text || '';
-        const correction = value.correction || '';
-        const correctionLine = correction
-          ? `<div class="correction">Correct: ${correction}</div>`
-          : `<div class="correction missing">Correct: (not provided)</div>`;
-        return `<div class="example"><div>${text}</div>${correctionLine}</div>`;
-      }).join('');
-
-      return `
-        <li>
-          <strong>${index + 1}. ${error.title}</strong> <span class="metric-note">(${error.count || 0} times)</span>
-          <div class="metric-note">Focus on this in the next lesson.</div>
-          ${examples}
-        </li>
-      `;
-    }).join('');
-
-    const fallbackItems = participant.llm?.grammar?.top_recommendations
-      ?.slice(0, 3)
-      .map((item, index) => `<li><strong>${index + 1}.</strong> ${item}</li>`)
+    const grammar = participant.llm?.annotation_grammar || participant.llm?.chunked_grammar;
+    const chunkedErrors = grammar?.error_types
+      ?.map((error) => {
+        const categoryCode = getCategoryCode(error);
+        const examples = findAnnotationExamples(annotationByName, participant.name, categoryCode);
+        const exampleItems = examples.length
+          ? examples.map((item) => `<li><strong>${escapeHtml(item.text)}</strong> → ${escapeHtml(item.correction)}</li>`).join('')
+          : '<li class="metric-note">No examples yet.</li>';
+        return `
+          <details class="error-group">
+            <summary>${escapeHtml(error.title)} <span class="count">(${error.count})</span></summary>
+            <ul class="errors compact">${exampleItems}</ul>
+          </details>
+        `;
+      })
       .join('');
-
-main
-    const llmBlock = recommendations || fallbackItems
+    const practicalList = participant.llm?.practical_recommendations || [];
+    const practicalItems = practicalList
+      .map((rec) => {
+        const examples = (rec.examples || [])
+          .map(
+            (example) =>
+              `<li><span class="example-error">${escapeHtml(example.error)}</span><span class="example-arrow">→</span><span class="example-fix">${escapeHtml(example.correction)}</span></li>`
+          )
+          .join('');
+        const guidance = rec.guidance ? `<p class="metric-note">${escapeHtml(rec.guidance)}</p>` : '';
+        const examplesBlock = examples ? `<ul class="errors compact">${examples}</ul>` : '';
+        return `
+          <li class="recommendation-item">
+            <p class="recommendation-title">${escapeHtml(rec.title)}</p>
+            ${guidance}
+            ${examplesBlock}
+          </li>
+        `;
+      })
+      .join('');
+    const chunkedBlock = grammar
       ? `
-        <h4 class="subheading">LLM: top-3 focus areas for next lesson</h4>
-        ${participant.llm?.grammar?.error_count !== undefined ? `<p class="metric-note">Total grammar errors: ${participant.llm.grammar.error_count}</p>` : ''}
-main
-        <ul class="errors">${recommendations || fallbackItems}</ul>
+        <h4 class="subheading">Grammar breakdown</h4>
+        <p class="metric-note">Total grammar errors: ${grammar.total_errors}</p>
+        ${chunkedErrors ? `<div class="error-groups">${chunkedErrors}</div>` : ''}
       `
-      : '<p class="metric-note">No recommendations yet.</p>';
-
+      : '';
+    const summaryText = buildRecommendationSummary(participant, practicalList);
+    const practicalBlock = practicalItems
+      ? `
+        <h4 class="subheading">Practical recommendations</h4>
+        <p class="recommendations-summary">${escapeHtml(summaryText)}</p>
+        <p class="recommendations-note">Top 3 most frequent patterns this session.</p>
+        <ol class="recommendations-list">${practicalItems}</ol>
+      `
+      : '';
     wrapper.innerHTML = `
       <h3>${participant.name}</h3>
-      ${llmBlock}
+      ${practicalBlock}
+      ${chunkedBlock}
     `;
     recommendationsEl.appendChild(wrapper);
   });
+
+  const chunkedContainer = analysis.llm?.chunked_metrics;
+  if (chunkedContainer?.status) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'card';
+    wrapper.innerHTML = `
+      <h3>Chunked grammar (${chunkedContainer.status})</h3>
+      <p class="metric-note">Chunked metrics run per speaker and appear in the speaker cards.</p>
+    `;
+    recommendationsEl.appendChild(wrapper);
+  }
+}
+
+function sortParticipants(participants) {
+  const list = Array.isArray(participants) ? [...participants] : [];
+  return list.sort((a, b) => {
+    const aName = (a?.name || '').toLowerCase();
+    const bName = (b?.name || '').toLowerCase();
+    if (aName === 'roman' && bName !== 'roman') return -1;
+    if (bName === 'roman' && aName !== 'roman') return 1;
+    return aName.localeCompare(bName);
+  });
+}
+
+function escapeHtml(value) {
+  if (!value) {
+    return '';
+  }
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function buildRecommendationSummary(participant, practicalList) {
+  const name = participant?.name || 'This speaker';
+  const totalErrors = participant?.llm?.annotation_grammar?.total_errors ?? participant?.llm?.chunked_grammar?.total_errors;
+  const countText = typeof totalErrors === 'number' ? `${totalErrors} total grammar errors.` : 'Grammar errors detected.';
+  const topTitles = practicalList.slice(0, 3).map((rec) => rec.title).filter(Boolean);
+  if (!topTitles.length) {
+    return `${name}: ${countText} Focus on the examples below to correct recurring patterns.`;
+  }
+  return `${name}: ${countText} The main recurring issues are ${topTitles.join(', ')}.`;
+}
+
+const CATEGORY_LABEL_TO_CODE = {
+  'Verb Tense': 'TENSE',
+  'Verb Form': 'VERB',
+  Articles: 'ARTICLE',
+  Prepositions: 'PREP',
+  'Word Order': 'ORDER',
+  'Wrong Word': 'WORD',
+  Collocation: 'COLLOC',
+};
+
+function getCategoryCode(error) {
+  if (!error) return '';
+  if (error.code) return String(error.code);
+  return CATEGORY_LABEL_TO_CODE[error.title] || '';
+}
+
+function parseTranscriptBlocks(text) {
+  const pattern = /^\s*([^:]+):/gm;
+  const matches = [...text.matchAll(pattern)];
+  if (!matches.length) {
+    return [];
+  }
+  return matches.map((match, index) => {
+    const start = match.index ?? 0;
+    const end = index + 1 < matches.length ? (matches[index + 1].index ?? text.length) : text.length;
+    return { speaker: match[1].trim(), start, end };
+  });
+}
+
+function buildAnnotationMap(transcriptText, items, speakerMap) {
+  if (!items.length) {
+    return {};
+  }
+  const blocks = parseTranscriptBlocks(transcriptText);
+  const sortedItems = [...items].sort((a, b) => (a.start || 0) - (b.start || 0));
+  const byName = {};
+  let blockIndex = 0;
+  sortedItems.forEach((item) => {
+    const start = Number(item.start || 0);
+    while (blockIndex < blocks.length && start >= blocks[blockIndex].end) {
+      blockIndex += 1;
+    }
+    if (blockIndex >= blocks.length) {
+      return;
+    }
+    const block = blocks[blockIndex];
+    if (start < block.start || start >= block.end) {
+      return;
+    }
+    const label = block.speaker || '';
+    const name = speakerMap[label] || label;
+    if (!name) {
+      return;
+    }
+    byName[name] = byName[name] || [];
+    byName[name].push(item);
+  });
+  return byName;
+}
+
+function findAnnotationExamples(annotationByName, name, categoryCode) {
+  const items = annotationByName[name] || [];
+  if (!items.length) {
+    return [];
+  }
+  if (!categoryCode) {
+    return [];
+  }
+  return items.filter((item) => String(item.category || '') === String(categoryCode));
+}
+
+function buildAnnotatedLine(lineText, items, lineStart) {
+  if (!items.length) {
+    return escapeHtml(lineText);
+  }
+  const parts = [];
+  let cursor = 0;
+  const sorted = [...items].sort((a, b) => a.start - b.start);
+  sorted.forEach((item) => {
+    const start = Math.max(item.start - lineStart, 0);
+    const end = Math.min(item.end - lineStart, lineText.length);
+    if (end <= start) {
+      return;
+    }
+    if (start > cursor) {
+      parts.push(escapeHtml(lineText.slice(cursor, start)));
+    }
+    const segment = escapeHtml(lineText.slice(start, end));
+    const correction = item.correction ? `Correct: ${item.correction}` : '';
+    const explanation = item.explanation || '';
+    let title = correction || explanation || 'Grammar issue';
+    if (correction && explanation) {
+      title = `${correction} | ${explanation}`;
+    }
+    parts.push(`<mark class="grammar-error" title="${escapeHtml(title)}">${segment}</mark>`);
+    cursor = end;
+  });
+  if (cursor < lineText.length) {
+    parts.push(escapeHtml(lineText.slice(cursor)));
+  }
+  return parts.join('');
 }
 
 function renderTranscript(analysis) {
-  if (!transcriptEl) {
+  if (!transcriptRowsEl) {
     return;
   }
-  transcriptEl.textContent = analysis.transcript || '';
+  const transcript = analysis.transcript || '';
+  const items = analysis.llm?.annotation_items || analysis.annotation_items || [];
+
+  if (transcriptNoteEl) {
+    const meta = analysis.llm?.annotations_meta;
+    if (meta && meta.total_chunks !== undefined) {
+      transcriptNoteEl.textContent = `Annotated ${meta.chunks_processed}/${meta.total_chunks} chunks (${meta.processed_chars} chars).`;
+    } else {
+      transcriptNoteEl.textContent = items.length
+        ? 'Annotated transcript generated.'
+        : 'Annotations will appear after the chunked LLM analysis is implemented.';
+    }
+  }
+
+  const lines = transcript.split('\n');
+  let offset = 0;
+  transcriptRowsEl.innerHTML = '';
+
+  lines.forEach((line, index) => {
+    const lineStart = offset;
+    const lineEnd = offset + line.length;
+    offset += line.length + 1;
+
+    const lineItems = items.filter((item) => item.start < lineEnd && item.end > lineStart);
+
+    const row = document.createElement('div');
+    row.className = 'transcript-row';
+    if (!lineItems.length) {
+      row.classList.add('row-empty');
+    }
+
+    const originalCell = document.createElement('div');
+    originalCell.className = 'transcript-cell transcript-text';
+    originalCell.innerHTML = line ? escapeHtml(line) : '&nbsp;';
+
+    const annotatedCell = document.createElement('div');
+    annotatedCell.className = 'transcript-cell transcript-text';
+    annotatedCell.innerHTML = line ? buildAnnotatedLine(line, lineItems, lineStart) : '&nbsp;';
+
+    const issuesCell = document.createElement('div');
+    issuesCell.className = 'transcript-cell transcript-issues';
+    if (!lineItems.length) {
+      issuesCell.innerHTML = line ? '&nbsp;' : '&nbsp;';
+    } else {
+      const list = document.createElement('ul');
+      list.className = 'issue-list compact';
+      lineItems.forEach((item) => {
+        const li = document.createElement('li');
+        const explanation = item.explanation ? item.explanation : '—';
+        const correction = item.correction ? ` (${item.correction})` : '';
+        li.innerHTML = `<div class="issue-why">${explanation}${correction}</div>`;
+        list.appendChild(li);
+      });
+      issuesCell.appendChild(list);
+    }
+
+    row.appendChild(originalCell);
+    row.appendChild(annotatedCell);
+    row.appendChild(issuesCell);
+    transcriptRowsEl.appendChild(row);
+  });
 }
 
 function renderLlmStatus(analysis) {
@@ -137,19 +360,49 @@ function renderLlmStatus(analysis) {
   if (info.status === 'ok') {
     llmStatus.textContent = `OpenAI: success (${info.model || 'default model'})`;
   } else if (info.status === 'error') {
-    llmStatus.textContent = `OpenAI: error (${info.model || 'default model'})`;
+    const detail = info.error
+      ? ` - ${String(info.error).slice(0, 140)}`
+      : '';
+    llmStatus.textContent = `OpenAI: error (${info.model || 'default model'})${detail}`;
   } else {
     llmStatus.textContent = 'OpenAI: skipped (no token)';
   }
 
-  if (analysisMarker) {
-    const updatedAt = analysis._lastModified
-      ? new Date(analysis._lastModified).toLocaleString()
-      : 'unknown time';
-    analysisMarker.textContent = `Analysis marker: updated ${updatedAt}. Use "Re-run analysis (LLM)" to refresh this session.`;
+  if (info.annotations_status === 'error') {
+    const detail = info.annotations_error
+      ? ` - ${String(info.annotations_error).slice(0, 140)}`
+      : '';
+    llmStatus.textContent += ` | Annotations: error${detail}`;
+  } else if (info.annotations_status === 'in_progress') {
+    const attempted = info.annotations_attempted_model
+      || info.annotations_model
+      || info.annotations_meta?.attempted_model;
+    const model = attempted ? ` (${attempted})` : '';
+    const meta = info.annotations_meta;
+    const progress = meta && meta.total_chunks
+      ? ` ${meta.chunks_processed}/${meta.total_chunks}`
+      : '';
+    llmStatus.textContent += ` | Annotations: running${model}${progress}`;
+  } else if (info.annotations_status === 'ok') {
+    const attempted = info.annotations_attempted_model
+      || info.annotations_model
+      || info.annotations_meta?.attempted_model;
+    const model = attempted ? ` (${attempted})` : '';
+    const fallback = info.annotations_meta?.fallback_from
+      ? ` via ${info.annotations_meta.fallback_to}`
+      : '';
+    llmStatus.textContent += ` | Annotations: ok${model}${fallback}`;
   }
 }
 
+function renderRebuildMeta(analysis) {
+  if (!rebuildMeta) {
+    return;
+  }
+  const metricsAt = analysis?.llm?.metrics_updated_at || '—';
+  const annotationsAt = analysis?.llm?.annotations_updated_at || '—';
+  rebuildMeta.textContent = `Metrics updated: ${metricsAt} | Annotations updated: ${annotationsAt}`;
+}
 
 function drawLineChart(canvas, series, labels, options) {
   if (!canvas) {
@@ -294,7 +547,7 @@ function renderChart() {
       if (!participant) {
         return null;
       }
-      return participant.llm_error_rate ?? null;
+      return participant.chunked_error_rate ?? participant.llm_error_rate ?? null;
     });
     return {
       label: name,
@@ -317,26 +570,26 @@ function renderChart() {
   });
 }
 
-
-async function handleSelection(forceRefresh = false) {
+async function handleSelection() {
   const date = sessionSelect.value;
-  const analysis = await loadAnalysis(date, forceRefresh);
+  const analysis = await loadAnalysis(date);
   renderParticipants(analysis);
   renderRecommendations(analysis);
   renderTranscript(analysis);
   renderLlmStatus(analysis);
+  renderRebuildMeta(analysis);
 }
 
-function attachRebuild() {
-  if (!rebuildButton) {
+function attachRebuildMetrics() {
+  if (!rebuildMetricsButton) {
     return;
   }
-  rebuildButton.addEventListener('click', async () => {
-    rebuildButton.disabled = true;
-    rebuildStatus.textContent = 'Rebuilding...';
+  rebuildMetricsButton.addEventListener('click', async () => {
+    rebuildMetricsButton.disabled = true;
+    rebuildStatus.textContent = 'Rebuilding metrics...';
     try {
       const date = sessionSelect.value;
-      const response = await fetch('/api/rebuild', {
+      const response = await fetch('/api/rebuild-metrics', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ date }),
@@ -350,14 +603,85 @@ function attachRebuild() {
         ? `Rebuilt ${result.date}.`
         : `Rebuilt ${result.sessions} session(s).`;
       state.analysisCache.delete(date);
+      const activeDate = date;
       state.history = await loadHistory();
       renderDropdown();
+      if (sessionSelect && activeDate) {
+        sessionSelect.value = activeDate;
+      }
       renderChart();
-      await handleSelection(true);
+      await handleSelection();
     } catch (error) {
       rebuildStatus.textContent = error.message || 'Rebuild failed.';
     } finally {
-      rebuildButton.disabled = false;
+      rebuildMetricsButton.disabled = false;
+    }
+  });
+}
+
+function attachRebuildAnnotations() {
+  if (!rebuildAnnotationsButton) {
+    return;
+  }
+  rebuildAnnotationsButton.addEventListener('click', async () => {
+    rebuildAnnotationsButton.disabled = true;
+    rebuildStatus.textContent = 'Rebuilding annotations...';
+    try {
+      const date = sessionSelect.value;
+      const response = await fetch('/api/rebuild-annotations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date }),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || 'Rebuild failed.');
+      }
+      const result = await response.json();
+      rebuildStatus.textContent = result.date
+        ? `Rebuilt ${result.date}.`
+        : `Rebuilt ${result.sessions} session(s).`;
+      state.analysisCache.delete(date);
+      const activeDate = date;
+      state.history = await loadHistory();
+      renderDropdown();
+      if (sessionSelect && activeDate) {
+        sessionSelect.value = activeDate;
+      }
+      renderChart();
+      await handleSelection();
+    } catch (error) {
+      rebuildStatus.textContent = error.message || 'Rebuild failed.';
+    } finally {
+      rebuildAnnotationsButton.disabled = false;
+    }
+  });
+}
+
+function attachTestModel() {
+  if (!testModelButton) {
+    return;
+  }
+  testModelButton.addEventListener('click', async () => {
+    testModelButton.disabled = true;
+    rebuildStatus.textContent = 'Testing gpt-5-mini...';
+    try {
+      const response = await fetch('/api/test-gpt5', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || 'Test failed.');
+      }
+      const result = await response.json();
+      const output = result.output ? `Output: ${result.output}` : 'No output.';
+      rebuildStatus.textContent = `Test ${result.model}: ${output}`;
+    } catch (error) {
+      rebuildStatus.textContent = error.message || 'Test failed.';
+    } finally {
+      testModelButton.disabled = false;
     }
   });
 }
@@ -394,13 +718,13 @@ function attachDelete() {
       renderChart();
       if (state.history.sessions.length) {
         sessionSelect.value = state.history.sessions[state.history.sessions.length - 1].date;
-        await handleSelection(false);
+        await handleSelection();
       } else {
         sessionTitle.textContent = 'No sessions.';
         sessionDetails.innerHTML = '';
         recommendationsEl.innerHTML = '';
-        if (transcriptEl) {
-          transcriptEl.textContent = '';
+        if (transcriptRowsEl) {
+          transcriptRowsEl.innerHTML = '';
         }
       }
     } catch (error) {
@@ -415,11 +739,16 @@ async function init() {
   try {
     state.history = await loadHistory();
     renderDropdown();
+    if (state.history.sessions.length) {
+      sessionSelect.value = state.history.sessions[state.history.sessions.length - 1].date;
+    }
     renderChart();
-    sessionSelect.addEventListener('change', () => handleSelection(false));
-    attachRebuild();
+    sessionSelect.addEventListener('change', handleSelection);
+    attachRebuildMetrics();
+    attachRebuildAnnotations();
+    attachTestModel();
     attachDelete();
-    await handleSelection(false);
+    await handleSelection();
   } catch (error) {
     sessionTitle.textContent = 'Failed to load data.';
     sessionDetails.innerHTML = `<p>${error.message}</p>`;

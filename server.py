@@ -34,7 +34,15 @@ def delete_session(date: str) -> bool:
         history_path.write_text(json.dumps(history, indent=2), encoding="utf-8")
     return removed
 
-from cli import analyze_session, build_all, update_history, write_analysis, write_web_assets
+from cli import (
+    analyze_session,
+    annotate_session,
+    build_all,
+    call_openai_probe,
+    update_history,
+    write_analysis,
+    write_web_assets,
+)
 
 
 ROOT_DIR = Path(__file__).resolve().parent
@@ -137,6 +145,24 @@ def openai_config() -> tuple[bool, str | None]:
 
 class UploadHandler(SimpleHTTPRequestHandler):
     def do_POST(self) -> None:
+        if self.path == "/api/test-gpt5":
+            api_key = os.getenv("OPENAI_API_KEY", "")
+            if not api_key:
+                self.send_error(400, "Missing OPENAI_API_KEY.")
+                return
+            model = os.getenv("OPENAI_TEST_MODEL", "gpt-5-mini")
+            output, error = call_openai_probe(api_key, model)
+            if error:
+                self.send_error(500, f"Test failed: {error}")
+                return
+            payload = json.dumps({"model": model, "output": output}).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(payload)))
+            self.end_headers()
+            self.wfile.write(payload)
+            return
+
         if self.path == "/api/delete":
             content_length = self.headers.get("Content-Length")
             if not content_length:
@@ -167,7 +193,7 @@ class UploadHandler(SimpleHTTPRequestHandler):
             self.wfile.write(payload)
             return
 
-        if self.path == "/api/rebuild":
+        if self.path in ("/api/rebuild", "/api/rebuild-metrics", "/api/rebuild-annotations"):
             use_openai, model = openai_config()
             content_length = self.headers.get("Content-Length")
             date = None
@@ -184,18 +210,68 @@ class UploadHandler(SimpleHTTPRequestHandler):
                 if not session_dir.exists():
                     self.send_error(404, "Session not found")
                     return
-                analysis = analyze_session(
-                    session_dir,
-                    use_openai=use_openai,
-                    openai_model=model,
-                )
-                write_analysis(OUT_DIR, analysis)
-                update_history(OUT_DIR, analysis)
-                write_web_assets(OUT_DIR)
-                payload = json.dumps({"sessions": 1, "date": date}).encode("utf-8")
+                try:
+                    if self.path == "/api/rebuild-annotations":
+                        analysis = annotate_session(session_dir, OUT_DIR, openai_model=model)
+                    else:
+                        analysis = analyze_session(
+                            session_dir,
+                            use_openai=use_openai,
+                            openai_model=model,
+                            run_annotations=self.path != "/api/rebuild-metrics",
+                            out_dir=OUT_DIR,
+                        )
+                    now = datetime.now().strftime("%Y-%m-%d %H:%M")
+                    analysis.setdefault("llm", {})
+                    if self.path == "/api/rebuild-annotations":
+                        analysis["llm"]["annotations_updated_at"] = now
+                    else:
+                        analysis["llm"]["metrics_updated_at"] = now
+                    write_analysis(OUT_DIR, analysis)
+                    update_history(OUT_DIR, analysis)
+                    write_web_assets(OUT_DIR)
+                    payload = json.dumps({"sessions": 1, "date": date}).encode("utf-8")
+                except Exception as error:
+                    self.send_error(500, f"Rebuild failed: {error}")
+                    return
             else:
-                count = build_all(SESSIONS_DIR, OUT_DIR, use_openai=use_openai, openai_model=model)
-                payload = json.dumps({"sessions": count}).encode("utf-8")
+                try:
+                    if self.path == "/api/rebuild-annotations":
+                        count = 0
+                        for session_dir in sorted(SESSIONS_DIR.iterdir()):
+                            if not session_dir.is_dir():
+                                continue
+                            if not (session_dir / "meta.json").exists():
+                                continue
+                            analysis = annotate_session(session_dir, OUT_DIR, openai_model=model)
+                            now = datetime.now().strftime("%Y-%m-%d %H:%M")
+                            analysis.setdefault("llm", {})
+                            analysis["llm"]["annotations_updated_at"] = now
+                            write_analysis(OUT_DIR, analysis)
+                            update_history(OUT_DIR, analysis)
+                            count += 1
+                        write_web_assets(OUT_DIR)
+                    else:
+                        count = build_all(
+                            SESSIONS_DIR,
+                            OUT_DIR,
+                            use_openai=use_openai,
+                            openai_model=model,
+                        )
+                        if self.path == "/api/rebuild-metrics":
+                            now = datetime.now().strftime("%Y-%m-%d %H:%M")
+                            for session_dir in sorted(SESSIONS_DIR.iterdir()):
+                                out_analysis_path = OUT_DIR / "sessions" / session_dir.name / "analysis.json"
+                                if not out_analysis_path.exists():
+                                    continue
+                                analysis = load_json(out_analysis_path, {})
+                                analysis.setdefault("llm", {})
+                                analysis["llm"]["metrics_updated_at"] = now
+                                write_analysis(OUT_DIR, analysis)
+                    payload = json.dumps({"sessions": count}).encode("utf-8")
+                except Exception as error:
+                    self.send_error(500, f"Rebuild failed: {error}")
+                    return
 
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
@@ -271,6 +347,7 @@ class UploadHandler(SimpleHTTPRequestHandler):
             session_dir,
             use_openai=use_openai,
             openai_model=model,
+            out_dir=OUT_DIR,
         )
         write_analysis(OUT_DIR, analysis)
         update_history(OUT_DIR, analysis)

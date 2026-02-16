@@ -1,0 +1,1761 @@
+{
+  "date": "2026-02-09",
+  "session": {
+    "topic": "9.02",
+    "duration_minutes": 30
+  },
+  "participants": [
+    {
+      "name": "Roman",
+      "role": "student",
+      "metrics": {
+        "word_count": 877,
+        "turn_count": 37,
+        "avg_words_per_turn": 23.7,
+        "unique_word_count": 301,
+        "lexical_diversity": 0.34
+      },
+      "fluency": {
+        "score": 10.0,
+        "level": "C1"
+      },
+      "llm": {
+        "fluency": {
+          "score": 7,
+          "level": "intermediate"
+        },
+        "grammar": {
+          "error_count": 5,
+          "top_errors": [
+            {
+              "title": "Subject-verb agreement",
+              "count": 2
+            },
+            {
+              "title": "Incorrect article usage",
+              "count": 2
+            },
+            {
+              "title": "Tense consistency",
+              "count": 1
+            }
+          ],
+          "top_recommendations": [
+            "Practice subject-verb agreement rules.",
+            "Review article usage in English (a, an, the).",
+            "Focus on maintaining consistent verb tenses in sentences."
+          ],
+          "error_rate_per_100_words": 0.57
+        },
+        "chunked_grammar": {
+          "name": "Speaker A",
+          "total_words": 877,
+          "total_errors": 38,
+          "error_rate_per_100_words": 4.33,
+          "error_types": [
+            {
+              "title": "Word Order",
+              "count": 13
+            },
+            {
+              "title": "Wrong Word",
+              "count": 8
+            },
+            {
+              "title": "Verb Form",
+              "count": 8
+            },
+            {
+              "title": "Articles",
+              "count": 6
+            },
+            {
+              "title": "Pronoun Error",
+              "count": 1
+            },
+            {
+              "title": "Prepositions",
+              "count": 1
+            },
+            {
+              "title": "Verb Tense",
+              "count": 1
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Word Order",
+              "count": 13
+            },
+            {
+              "title": "Wrong Word",
+              "count": 8
+            },
+            {
+              "title": "Verb Form",
+              "count": 8
+            },
+            {
+              "title": "Articles",
+              "count": 6
+            },
+            {
+              "title": "Pronoun Error",
+              "count": 1
+            }
+          ]
+        },
+        "annotation_grammar": {
+          "total_errors": 29,
+          "error_rate_per_100_words": 3.31,
+          "error_types": [
+            {
+              "code": "WORD",
+              "title": "Wrong Word",
+              "count": 9
+            },
+            {
+              "code": "VERB",
+              "title": "Verb Form",
+              "count": 6
+            },
+            {
+              "code": "PREP",
+              "title": "Prepositions",
+              "count": 6
+            },
+            {
+              "code": "ARTICLE",
+              "title": "Articles",
+              "count": 4
+            },
+            {
+              "code": "TENSE",
+              "title": "Verb Tense",
+              "count": 2
+            },
+            {
+              "code": "COLLOC",
+              "title": "Collocation",
+              "count": 1
+            },
+            {
+              "code": "ORDER",
+              "title": "Word Order",
+              "count": 1
+            }
+          ]
+        },
+        "practical_recommendations": [
+          {
+            "title": "Wrong Word",
+            "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "examples": [
+              {
+                "error": "I would like to hear your experience with your group of designers who are going to improve their English in your group.",
+                "correction": "I would like to hear about your experience with your group of designers who are going to improve their English."
+              },
+              {
+                "error": "speak straightforward to",
+                "correction": "speak directly into"
+              }
+            ]
+          },
+          {
+            "title": "Verb Form",
+            "guidance": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "examples": [
+              {
+                "error": "I mean I. I didn't Hear any part of your answer for my question.",
+                "correction": "I mean, I didn't hear any part of your answer to my question."
+              },
+              {
+                "error": "Some short maybe",
+                "correction": "Some might be short"
+              }
+            ]
+          },
+          {
+            "title": "Prepositions",
+            "guidance": "Choose the correct preposition for common phrases and verbs.",
+            "examples": [
+              {
+                "error": "do you have any strategy on this project",
+                "correction": "do you have any strategy for this project"
+              },
+              {
+                "error": "join to you because",
+                "correction": "join you because"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Andrey",
+      "role": "partner",
+      "metrics": {
+        "word_count": 1339,
+        "turn_count": 36,
+        "avg_words_per_turn": 37.19,
+        "unique_word_count": 357,
+        "lexical_diversity": 0.27
+      },
+      "fluency": {
+        "score": 10.0,
+        "level": "C1"
+      },
+      "llm": {
+        "fluency": {
+          "score": 6,
+          "level": "intermediate"
+        },
+        "grammar": {
+          "error_count": 8,
+          "top_errors": [
+            {
+              "title": "Incorrect article usage",
+              "count": 3
+            },
+            {
+              "title": "Subject-verb agreement",
+              "count": 2
+            },
+            {
+              "title": "Word order",
+              "count": 2
+            }
+          ],
+          "top_recommendations": [
+            "Work on using articles correctly in sentences.",
+            "Ensure subject and verb agree in number and person.",
+            "Practice proper word order in questions and statements."
+          ],
+          "error_rate_per_100_words": 0.6
+        },
+        "chunked_grammar": {
+          "name": "Speaker B",
+          "total_words": 1339,
+          "total_errors": 43,
+          "error_rate_per_100_words": 3.21,
+          "error_types": [
+            {
+              "title": "Word Order",
+              "count": 17
+            },
+            {
+              "title": "Verb Form",
+              "count": 12
+            },
+            {
+              "title": "Wrong Word",
+              "count": 6
+            },
+            {
+              "title": "Prepositions",
+              "count": 3
+            },
+            {
+              "title": "Articles",
+              "count": 3
+            },
+            {
+              "title": "Verb Tense",
+              "count": 2
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Word Order",
+              "count": 17
+            },
+            {
+              "title": "Verb Form",
+              "count": 12
+            },
+            {
+              "title": "Wrong Word",
+              "count": 6
+            },
+            {
+              "title": "Prepositions",
+              "count": 3
+            },
+            {
+              "title": "Articles",
+              "count": 3
+            }
+          ]
+        },
+        "annotation_grammar": {
+          "total_errors": 31,
+          "error_rate_per_100_words": 2.32,
+          "error_types": [
+            {
+              "code": "WORD",
+              "title": "Wrong Word",
+              "count": 12
+            },
+            {
+              "code": "ARTICLE",
+              "title": "Articles",
+              "count": 6
+            },
+            {
+              "code": "PREP",
+              "title": "Prepositions",
+              "count": 5
+            },
+            {
+              "code": "TENSE",
+              "title": "Verb Tense",
+              "count": 4
+            },
+            {
+              "code": "VERB",
+              "title": "Verb Form",
+              "count": 3
+            },
+            {
+              "code": "ORDER",
+              "title": "Word Order",
+              "count": 1
+            }
+          ]
+        },
+        "practical_recommendations": [
+          {
+            "title": "Wrong Word",
+            "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "examples": [
+              {
+                "error": "seniors to design head.",
+                "correction": "senior to head of design."
+              },
+              {
+                "error": "that's the reason why it was not too fast as I wanted",
+                "correction": "that's the reason why it was not as fast as I wanted"
+              }
+            ]
+          },
+          {
+            "title": "Articles",
+            "guidance": "Use a/an/the (or zero article) correctly before nouns.",
+            "examples": [
+              {
+                "error": "give it the full.",
+                "correction": "give it full context."
+              },
+              {
+                "error": "as individual service for some participants of club",
+                "correction": "as an individual service for some participants of the club"
+              }
+            ]
+          },
+          {
+            "title": "Prepositions",
+            "guidance": "Choose the correct preposition for common phrases and verbs.",
+            "examples": [
+              {
+                "error": "decrease minutes for the meeting",
+                "correction": "decrease the minutes of the meeting"
+              },
+              {
+                "error": "Let me speak",
+                "correction": "Let me speak from"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "transcript": "Speaker A: So I started recording I'm Roman. And I would like to hear your experience with your group of designers who are going to improve their English in your group.\n\nSpeaker B: Okay. I'm Andre. Every time when you say I'm Roman, it's a bit strange. You're not Roman, you're not Romanian, you're Roman. Okay. Yesterday was a pilot meeting of my English speaking clubs. And. It was six people including me and Kate. They were from design industry or almost design industry. So one girl from UX writing and three designers, different levels like seniors to design head. I started meeting at 9pm so they were working the whole day and then we were speaking. And I think that's the reason why it was not too fast as I wanted, but it was good enough for the pilot meeting. We were talking about dark patterns and ethics in design. I sent the topic before the meeting. So I sent it in the morning and they had enough time to prepare for. Was hard a bit to facilitate this meeting because sometimes I. Didn't understand some words or some sense from them. And it was hard to play ping pong with words. Just when I was trying to facilitate this meeting. I wanted to ask questions for their replies. For example, I answered the question, they reply and I answer again to build the dialogue. And it was hard a bit. But the good things I can say that I tried to. To involve people for the conversation to the conversation. I just. Sometimes when I saw someone is silent or too quiet. I tried to answer the questions or just picked someone to answer for my question. And it was a good thing I did. The whole meeting was about one hour, a bit less maybe. Also I get some feedback from people. I asked the. Honest, honest feedback and some participants gave me positive feedback, some negative things.\n\nSpeaker A: And now I don't know.\n\nSpeaker B: I just need to aggregate the whole the feedback from all of participants and analyze it with complexity and give it the full. Give it full context and try to improve something. Maybe I will try to. Acquire some people from my channel for the next meetings. We'll see. So I think it was good enough for the pilot.\n\nSpeaker A: Okay, interesting. And how did you feel? Is it. Good amount of people for one hour? Or it was too much or. Or it's six. Six people.\n\nSpeaker B: I think that's my hypothesis. So I think it will be better to think shorter for minutes and I think for 40 minutes it will be bad.\n\nSpeaker A: Could you please stop? I'm frozen. So yeah.\n\nSpeaker B: Some legs.\n\nSpeaker A: Could you please stop? I'm frozen. I hear nothing from your last paragraph from beginning. I mean I. I didn't Hear any part of your answer for my question. Could you please repeat?\n\nSpeaker B: I will. I will repeat for you.\n\nSpeaker A: And one more interruption please. Could you please speak straightforward to your microphone and please do not take like this one.\n\nSpeaker B: Okay, okay.\n\nSpeaker A: Okay.\n\nSpeaker B: I just try to find some words on my wall.\n\nSpeaker A: Yeah, I understand.\n\nSpeaker B: Yes. So my. I have a hypothesis that it will be better to decrease minutes for the meeting, for example 40 minutes. And I think I have to invite four people for 40 minutes because of me. In this way meeting will be more dynamic. Dynamical, I don't know. So yeah, I will try to. To do this to do it. And also I want to include a presentation for the meeting or Figma board or Miraboard just because it's more interesting to interact during the meeting.\n\nSpeaker A: Okay. And what do you have any strategy on this project or. Or what is the hypothesis for it?\n\nSpeaker B: Overall? I think I have a hypothesis for the whole project that I can acquire 50 people during six months. If I can do this, I can scale up the whole project because if I acquire 50 people, it's enough people. It's enough people on the market for the growing up to grow up. This, this project just. I can use the same way to acquire people as first 50 users. And then I can transform the offer from just speaking clubs to preparing for interviews. Also I can add mock interviews as individual service for some participants of club. And. We can. We can try. Bruce, are you here? Yep.\n\nSpeaker A: I'm freezing. Let me check.\n\nSpeaker B: Let me speak from my heart. What the.\n\nSpeaker A: Okay, I think it's okay. Let's go further.\n\nSpeaker B: Where I stopped.\n\nSpeaker A: That you are going to acquire 15 or 50, I'm not sure.\n\nSpeaker B: 15, 50, 50 users during six months. Then we can include mock interviews from for with the recruiter and with design lead. And then we can scale. We can take another segments for it. For example, we can include or acquire product managers, developers and others potential segments. And the best way is to just sell in the future this for one of English schools maybe.\n\nSpeaker A: Are you here? You said Your goal is 50 people. Does it mean 50 people who are paying your monthly or how it should work?\n\nSpeaker B: Yeah, the model is subscription, the main idea subscription. And I think 50 people with lifetime value more than two months, two, three months.\n\nSpeaker A: So am I right that you are going to have 50,000 rubles per month without your brother?\n\nSpeaker B: Yep.\n\nSpeaker A: So it's. It's a pity that I don't have brother at all.\n\nSpeaker B: Okay.\n\nSpeaker A: So. And do you plan to use some instruments for tracking your progress? For instance, like we have with you or maybe some. Or meetings after Session or something like else. So sorry, is it Kate backward on you or it's ridiculous cat.\n\nSpeaker B: Where is.\n\nSpeaker A: There is no one under of pillow or what? Yes. Idiot. Crazy idiot.\n\nSpeaker B: Idiot. Crazy idiot. I'm not sure about instruments right now because I think I just want to start acquire people and I think it would be better to get some feedback from them. For example, just call after two weeks with users and try to understand why they became why they came to the club and what they did expect. And is it enough now or they need something else? Maybe. I think I will use granola just to summarize the the whole meeting and give some interesting thoughts to participants after it. After the meeting. And I think that's enough for the start.\n\nSpeaker A: I have a hypothesis why people join to you because they would like to option to say find me in the club. So can you share feedback from your students to me? What was a positive moment? Mainly.\n\nSpeaker B: The main positive moment is the ability to speak English because for people it's really interesting to have a live practice and live speaking with other designers. The negative. I think the most negative thing is the hardness level.\n\nSpeaker A: What level?\n\nSpeaker B: Level of hard. Hard of. It was just hard topic for them because sometimes by the way, in Russian. In Russian it's not too easy to discuss on this topic about dark patterns, about empathy in English, it's more harder for them. Also for Dania, It were some negative moments. Additional negative moments. For example, it was meeting without presentation. It was our topic. It was not like ping pong format. And it was maybe late for him, but he compared our meeting with his English lessons. It was not lesson on my meeting, so I think the comparison.\n\nSpeaker A: Is not.\n\nSpeaker B: Relevant. Yeah, and also positive things that I'm a good facilitator. I heard this from Kate and from Max, the other designer and he really likes the format because he already visited some English clubs in last year in Krasnodar and he really likes this format. And also he really likes to speak with other designers.\n\nSpeaker A: Okay, I'm not sure that format is a good word. I'm not sure that it exists in English in this way.\n\nSpeaker B: But maybe I suppose both. Yes, it's okay. Okay.\n\nSpeaker A: And one question regarding AI. What do you think about timing that we need to have AI assistant.\n\nSpeaker B: That.\n\nSpeaker A: Will be fully comparable with us? I mean, currently you even don't see difference between AI photo and usual photo. And sometimes we have AI models and we hear no difference between human voice and model voice. So how you evaluate the timing when such kind of models will be in place so they can join to your meeting and speak with you like a human.\n\nSpeaker B: I think maybe two years or less maybe. But I think this type of meeting more about is more about.\n\nSpeaker A: Experience.\n\nSpeaker B: And about sharing experience between designers. Because if you want to connect AI and AI will discuss it will be to generic. There will be no real experience from AI. It will be generic. Thoughts And I see I. I think that live and community formats will be. Interesting for people in AI era so I bet on community products. Now.\n\nSpeaker A: Your friend jmek disturbed me so I'm not sure that I catch the main thought from your speech.\n\nSpeaker B: So as I understand I think AI can give you a real experience. So the conversation will be a little bit generic. It will sound. It will sound like real conversation but the topic will be generic and there will be no real experience from AI model. You can share. You can. Yeah, that's it.\n\nSpeaker A: Okay. Am I right that you. You mean that AI can't provide you humans experience in specific themes where you are expert? For instance regarding me, if I'm writing with AI for instance any themes regarding health I feel that AI has very deep learning and it would be interesting for me having it in speaking as well. But where I'm an expert in for instance in some details regarding financial models I feel the same as you.\n\nSpeaker B: That's why I focused on designers because that's a bit specific industry with. With different opinions. So there are some UX laws, UX patterns and it's common in the whole industry. But my experience or someone else experience is different and if you're talking with the other designer you can discuss same cases and share your experience with others and AI can do this because there is no way I experience that's not the person.\n\nSpeaker A: So I and Gen GPT wrote your negative feedback about AI so we will. We will provide it to Vasilis kroko and so P9 CBR. Okay, we have six minutes left. Do you have any theme for discussion?\n\nSpeaker B: Short?\n\nSpeaker A: Some short maybe.\n\nSpeaker B: Yeah. You can. You can try to answer the question just because I want to hear. I don't want to only speak. I want to hear too Try to answer the question. Where is the line between good marketing and. Dark pattern? Well.\n\nSpeaker A: For me it depends on feedback from users. If you consolidate it, for instance your pattern may be dark but if your user is happy. So for me it's not a problem. But if you're. What is the metric? Not CC NPS is it. It's a talk in this sphere.\n\nSpeaker B: Net Promoter Score Recommendation index like this. Yeah, it's okay. I think maybe customer satisfaction Index. That's another one.\n\nSpeaker A: Yes, customer satisfaction is okay. So for me is your. For instance, if your decrease in expenditure on marketing, for instance 10% and your decrease in customer loyalty or how to say so only 1%. For me it's okay to use such kind of marketing even if it contains some dark patterns. But if you decrease expenditure marketing and your NPS decrease as well. So it's not a good way for me because your retention will be shorter than it can be. I'm not sure that I have an answer that it's a red line, strict red line. It's always pros and cons of this decision. So. And it's. It's evident for me and for my company and for my budget that runs much better.\n\nSpeaker B: So.\n\nSpeaker A: Maybe I can use some dark patterns or if I correctly understand your question.\n\nSpeaker B: It'S okay. Okay. I think. Do we have time or we have three minutes left. Okay.\n\nSpeaker A: I have a question if you don't mind.\n\nSpeaker B: Okay.\n\nSpeaker A: So I'm going to finalize the recommendation from AI regarding our mistakes and it can be interesting to compare it with with our self check. So what do you think the most common mistakes for you and yeah, it's articles.\n\nSpeaker B: I think articles. Okay.\n\nSpeaker A: What else?\n\nSpeaker B: I think grammar when you use words. For example, he has or he have. I don't know how to say it in English. Okay. And times.\n\nSpeaker A: Okay. So me too. And I would add some wrong constructions in sentences. Also I feel that sometimes my questions are wrong in terms of grammar. And. So I. I hope this is the most common and it would be quite easy to. To trace it and correct. But articles are ridiculous I would say.\n\nSpeaker B: So the mistakes like this annoying, annoying.\n\nSpeaker A: Annoying and complicated thing for me for.\n\nSpeaker B: Instance, maybe same Apple.\n\nSpeaker A: Same. Okay, 30 minutes left. I'm stopping our recording today. I have two one for simplifying our process.",
+  "speaker_map": {
+    "Speaker A": "Roman",
+    "Speaker B": "Andrey"
+  },
+  "chunks": [
+    {
+      "index": 0,
+      "block_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "text": "Speaker A: So I started recording I'm Roman. And I would like to hear your experience with your group of designers who are going to improve their English in your group.\n\nSpeaker B: Okay. I'm Andre. Every time when you say I'm Roman, it's a bit strange. You're not Roman, you're not Romanian, you're Roman. Okay. Yesterday was a pilot meeting of my English speaking clubs. And. It was six people including me and Kate. They were from design industry or almost design industry. So one girl from UX writing and three designers, different levels like seniors to design head. I started meeting at 9pm so they were working the whole day and then we were speaking. And I think that's the reason why it was not too fast as I wanted, but it was good enough for the pilot meeting. We were talking about dark patterns and ethics in design. I sent the topic before the meeting. So I sent it in the morning and they had enough time to prepare for. Was hard a bit to facilitate this meeting because sometimes I. Didn't understand some words or some sense from them. And it was hard to play ping pong with words. Just when I was trying to facilitate this meeting. I wanted to ask questions for their replies. For example, I answered the question, they reply and I answer again to build the dialogue. And it was hard a bit. But the good things I can say that I tried to. To involve people for the conversation to the conversation. I just. Sometimes when I saw someone is silent or too quiet. I tried to answer the questions or just picked someone to answer for my question. And it was a good thing I did. The whole meeting was about one hour, a bit less maybe. Also I get some feedback from people. I asked the. Honest, honest feedback and some participants gave me positive feedback, some negative things.\n\nSpeaker A: And now I don't know.\n\nSpeaker B: I just need to aggregate the whole the feedback from all of participants and analyze it with complexity and give it the full. Give it full context and try to improve something. Maybe I will try to. Acquire some people from my channel for the next meetings. We'll see. So I think it was good enough for the pilot.\n\nSpeaker A: Okay, interesting. And how did you feel? Is it. Good amount of people for one hour? Or it was too much or. Or it's six. Six people.\n\nSpeaker B: I think that's my hypothesis. So I think it will be better to think shorter for minutes and I think for 40 minutes it will be bad.\n",
+      "range": {
+        "start": 0,
+        "end": 2437
+      }
+    },
+    {
+      "index": 1,
+      "block_indices": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "text": "\nSpeaker A: Could you please stop? I'm frozen. So yeah.\n\nSpeaker B: Some legs.\n\nSpeaker A: Could you please stop? I'm frozen. I hear nothing from your last paragraph from beginning. I mean I. I didn't Hear any part of your answer for my question. Could you please repeat?\n\nSpeaker B: I will. I will repeat for you.\n\nSpeaker A: And one more interruption please. Could you please speak straightforward to your microphone and please do not take like this one.\n\nSpeaker B: Okay, okay.\n",
+      "range": {
+        "start": 2437,
+        "end": 2918
+      }
+    },
+    {
+      "index": 2,
+      "block_indices": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "text": "\nSpeaker A: Okay.\n\nSpeaker B: I just try to find some words on my wall.\n\nSpeaker A: Yeah, I understand.\n\nSpeaker B: Yes. So my. I have a hypothesis that it will be better to decrease minutes for the meeting, for example 40 minutes. And I think I have to invite four people for 40 minutes because of me. In this way meeting will be more dynamic. Dynamical, I don't know. So yeah, I will try to. To do this to do it. And also I want to include a presentation for the meeting or Figma board or Miraboard just because it's more interesting to interact during the meeting.\n\nSpeaker A: Okay. And what do you have any strategy on this project or. Or what is the hypothesis for it?\n\nSpeaker B: Overall? I think I have a hypothesis for the whole project that I can acquire 50 people during six months. If I can do this, I can scale up the whole project because if I acquire 50 people, it's enough people. It's enough people on the market for the growing up to grow up. This, this project just. I can use the same way to acquire people as first 50 users. And then I can transform the offer from just speaking clubs to preparing for interviews. Also I can add mock interviews as individual service for some participants of club. And. We can. We can try. Bruce, are you here? Yep.\n",
+      "range": {
+        "start": 2918,
+        "end": 4187
+      }
+    },
+    {
+      "index": 3,
+      "block_indices": [
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "text": "\nSpeaker A: I'm freezing. Let me check.\n\nSpeaker B: Let me speak from my heart. What the.\n\nSpeaker A: Okay, I think it's okay. Let's go further.\n\nSpeaker B: Where I stopped.\n\nSpeaker A: That you are going to acquire 15 or 50, I'm not sure.\n\nSpeaker B: 15, 50, 50 users during six months. Then we can include mock interviews from for with the recruiter and with design lead. And then we can scale. We can take another segments for it. For example, we can include or acquire product managers, developers and others potential segments. And the best way is to just sell in the future this for one of English schools maybe.\n",
+      "range": {
+        "start": 4187,
+        "end": 4806
+      }
+    },
+    {
+      "index": 4,
+      "block_indices": [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "text": "\nSpeaker A: Are you here? You said Your goal is 50 people. Does it mean 50 people who are paying your monthly or how it should work?\n\nSpeaker B: Yeah, the model is subscription, the main idea subscription. And I think 50 people with lifetime value more than two months, two, three months.\n\nSpeaker A: So am I right that you are going to have 50,000 rubles per month without your brother?\n\nSpeaker B: Yep.\n\nSpeaker A: So it's. It's a pity that I don't have brother at all.\n\nSpeaker B: Okay.\n",
+      "range": {
+        "start": 4806,
+        "end": 5296
+      }
+    },
+    {
+      "index": 5,
+      "block_indices": [
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ],
+      "text": "\nSpeaker A: So. And do you plan to use some instruments for tracking your progress? For instance, like we have with you or maybe some. Or meetings after Session or something like else. So sorry, is it Kate backward on you or it's ridiculous cat.\n\nSpeaker B: Where is.\n\nSpeaker A: There is no one under of pillow or what? Yes. Idiot. Crazy idiot.\n\nSpeaker B: Idiot. Crazy idiot. I'm not sure about instruments right now because I think I just want to start acquire people and I think it would be better to get some feedback from them. For example, just call after two weeks with users and try to understand why they became why they came to the club and what they did expect. And is it enough now or they need something else? Maybe. I think I will use granola just to summarize the the whole meeting and give some interesting thoughts to participants after it. After the meeting. And I think that's enough for the start.\n\nSpeaker A: I have a hypothesis why people join to you because they would like to option to say find me in the club. So can you share feedback from your students to me? What was a positive moment? Mainly.\n\nSpeaker B: The main positive moment is the ability to speak English because for people it's really interesting to have a live practice and live speaking with other designers. The negative. I think the most negative thing is the hardness level.\n",
+      "range": {
+        "start": 5296,
+        "end": 6665
+      }
+    },
+    {
+      "index": 6,
+      "block_indices": [
+        36,
+        37,
+        38,
+        39,
+        40,
+        41
+      ],
+      "text": "\nSpeaker A: What level?\n\nSpeaker B: Level of hard. Hard of. It was just hard topic for them because sometimes by the way, in Russian. In Russian it's not too easy to discuss on this topic about dark patterns, about empathy in English, it's more harder for them. Also for Dania, It were some negative moments. Additional negative moments. For example, it was meeting without presentation. It was our topic. It was not like ping pong format. And it was maybe late for him, but he compared our meeting with his English lessons. It was not lesson on my meeting, so I think the comparison.\n\nSpeaker A: Is not.\n\nSpeaker B: Relevant. Yeah, and also positive things that I'm a good facilitator. I heard this from Kate and from Max, the other designer and he really likes the format because he already visited some English clubs in last year in Krasnodar and he really likes this format. And also he really likes to speak with other designers.\n\nSpeaker A: Okay, I'm not sure that format is a good word. I'm not sure that it exists in English in this way.\n\nSpeaker B: But maybe I suppose both. Yes, it's okay. Okay.\n",
+      "range": {
+        "start": 6665,
+        "end": 7771
+      }
+    },
+    {
+      "index": 7,
+      "block_indices": [
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "text": "\nSpeaker A: And one question regarding AI. What do you think about timing that we need to have AI assistant.\n\nSpeaker B: That.\n\nSpeaker A: Will be fully comparable with us? I mean, currently you even don't see difference between AI photo and usual photo. And sometimes we have AI models and we hear no difference between human voice and model voice. So how you evaluate the timing when such kind of models will be in place so they can join to your meeting and speak with you like a human.\n\nSpeaker B: I think maybe two years or less maybe. But I think this type of meeting more about is more about.\n\nSpeaker A: Experience.\n\nSpeaker B: And about sharing experience between designers. Because if you want to connect AI and AI will discuss it will be to generic. There will be no real experience from AI. It will be generic. Thoughts And I see I. I think that live and community formats will be. Interesting for people in AI era so I bet on community products. Now.\n",
+      "range": {
+        "start": 7771,
+        "end": 8734
+      }
+    },
+    {
+      "index": 8,
+      "block_indices": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53
+      ],
+      "text": "\nSpeaker A: Your friend jmek disturbed me so I'm not sure that I catch the main thought from your speech.\n\nSpeaker B: So as I understand I think AI can give you a real experience. So the conversation will be a little bit generic. It will sound. It will sound like real conversation but the topic will be generic and there will be no real experience from AI model. You can share. You can. Yeah, that's it.\n\nSpeaker A: Okay. Am I right that you. You mean that AI can't provide you humans experience in specific themes where you are expert? For instance regarding me, if I'm writing with AI for instance any themes regarding health I feel that AI has very deep learning and it would be interesting for me having it in speaking as well. But where I'm an expert in for instance in some details regarding financial models I feel the same as you.\n\nSpeaker B: That's why I focused on designers because that's a bit specific industry with. With different opinions. So there are some UX laws, UX patterns and it's common in the whole industry. But my experience or someone else experience is different and if you're talking with the other designer you can discuss same cases and share your experience with others and AI can do this because there is no way I experience that's not the person.\n\nSpeaker A: So I and Gen GPT wrote your negative feedback about AI so we will. We will provide it to Vasilis kroko and so P9 CBR. Okay, we have six minutes left. Do you have any theme for discussion?\n\nSpeaker B: Short?\n",
+      "range": {
+        "start": 8734,
+        "end": 10235
+      }
+    },
+    {
+      "index": 9,
+      "block_indices": [
+        54,
+        55,
+        56,
+        57,
+        58,
+        59
+      ],
+      "text": "\nSpeaker A: Some short maybe.\n\nSpeaker B: Yeah. You can. You can try to answer the question just because I want to hear. I don't want to only speak. I want to hear too Try to answer the question. Where is the line between good marketing and. Dark pattern? Well.\n\nSpeaker A: For me it depends on feedback from users. If you consolidate it, for instance your pattern may be dark but if your user is happy. So for me it's not a problem. But if you're. What is the metric? Not CC NPS is it. It's a talk in this sphere.\n\nSpeaker B: Net Promoter Score Recommendation index like this. Yeah, it's okay. I think maybe customer satisfaction Index. That's another one.\n\nSpeaker A: Yes, customer satisfaction is okay. So for me is your. For instance, if your decrease in expenditure on marketing, for instance 10% and your decrease in customer loyalty or how to say so only 1%. For me it's okay to use such kind of marketing even if it contains some dark patterns. But if you decrease expenditure marketing and your NPS decrease as well. So it's not a good way for me because your retention will be shorter than it can be. I'm not sure that I have an answer that it's a red line, strict red line. It's always pros and cons of this decision. So. And it's. It's evident for me and for my company and for my budget that runs much better.\n\nSpeaker B: So.\n",
+      "range": {
+        "start": 10235,
+        "end": 11574
+      }
+    },
+    {
+      "index": 10,
+      "block_indices": [
+        60,
+        61,
+        62,
+        63,
+        64,
+        65
+      ],
+      "text": "\nSpeaker A: Maybe I can use some dark patterns or if I correctly understand your question.\n\nSpeaker B: It'S okay. Okay. I think. Do we have time or we have three minutes left. Okay.\n\nSpeaker A: I have a question if you don't mind.\n\nSpeaker B: Okay.\n\nSpeaker A: So I'm going to finalize the recommendation from AI regarding our mistakes and it can be interesting to compare it with with our self check. So what do you think the most common mistakes for you and yeah, it's articles.\n\nSpeaker B: I think articles. Okay.\n",
+      "range": {
+        "start": 11574,
+        "end": 12091
+      }
+    },
+    {
+      "index": 11,
+      "block_indices": [
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      "text": "\nSpeaker A: What else?\n\nSpeaker B: I think grammar when you use words. For example, he has or he have. I don't know how to say it in English. Okay. And times.\n\nSpeaker A: Okay. So me too. And I would add some wrong constructions in sentences. Also I feel that sometimes my questions are wrong in terms of grammar. And. So I. I hope this is the most common and it would be quite easy to. To trace it and correct. But articles are ridiculous I would say.\n\nSpeaker B: So the mistakes like this annoying, annoying.\n\nSpeaker A: Annoying and complicated thing for me for.\n\nSpeaker B: Instance, maybe same Apple.\n",
+      "range": {
+        "start": 12091,
+        "end": 12697
+      }
+    },
+    {
+      "index": 12,
+      "block_indices": [
+        72
+      ],
+      "text": "\nSpeaker A: Same. Okay, 30 minutes left. I'm stopping our recording today. I have two one for simplifying our process.",
+      "range": {
+        "start": 12697,
+        "end": 12815
+      }
+    }
+  ],
+  "llm": {
+    "status": "ok",
+    "model": "gpt-4o-mini",
+    "chunked_metrics": {
+      "status": "ok",
+      "per_chunk": [
+        {
+          "index": 0,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 61,
+              "error_count": 1,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 383,
+              "error_count": 8,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 4
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 2
+                },
+                {
+                  "title": "Verb Tense",
+                  "count": 1
+                },
+                {
+                  "title": "Prepositions",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 62,
+              "error_count": 4,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 2
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 11,
+              "error_count": 0,
+              "error_types": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 23,
+              "error_count": 0,
+              "error_types": []
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 203,
+              "error_count": 6,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 2
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                },
+                {
+                  "title": "Articles",
+                  "count": 1
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 23,
+              "error_count": 1,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 74,
+              "error_count": 6,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 3
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                },
+                {
+                  "title": "Prepositions",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 51,
+              "error_count": 3,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                },
+                {
+                  "title": "Pronoun Error",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 25,
+              "error_count": 2,
+              "error_types": [
+                {
+                  "title": "Prepositions",
+                  "count": 1
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 94,
+              "error_count": 6,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 4
+                },
+                {
+                  "title": "Articles",
+                  "count": 1
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 145,
+              "error_count": 3,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 2
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 25,
+              "error_count": 0,
+              "error_types": []
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 164,
+              "error_count": 6,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 4
+                },
+                {
+                  "title": "Verb Tense",
+                  "count": 1
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 85,
+              "error_count": 5,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                },
+                {
+                  "title": "Articles",
+                  "count": 1
+                },
+                {
+                  "title": "Prepositions",
+                  "count": 1
+                },
+                {
+                  "title": "Verb Tense",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 82,
+              "error_count": 4,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                },
+                {
+                  "title": "Articles",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 134,
+              "error_count": 5,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 3
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 131,
+              "error_count": 4,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 2
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                },
+                {
+                  "title": "Articles",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 176,
+              "error_count": 4,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 3
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 63,
+              "error_count": 1,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 62,
+              "error_count": 3,
+              "error_types": [
+                {
+                  "title": "Articles",
+                  "count": 2
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 21,
+              "error_count": 1,
+              "error_types": []
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 64,
+              "error_count": 5,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 2
+                },
+                {
+                  "title": "Articles",
+                  "count": 2
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 37,
+              "error_count": 3,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 2
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 17,
+              "error_count": 1,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "per_speaker": [
+        {
+          "name": "Speaker A",
+          "total_words": 877,
+          "total_errors": 38,
+          "error_rate_per_100_words": 4.33,
+          "error_types": [
+            {
+              "title": "Word Order",
+              "count": 13
+            },
+            {
+              "title": "Wrong Word",
+              "count": 8
+            },
+            {
+              "title": "Verb Form",
+              "count": 8
+            },
+            {
+              "title": "Articles",
+              "count": 6
+            },
+            {
+              "title": "Pronoun Error",
+              "count": 1
+            },
+            {
+              "title": "Prepositions",
+              "count": 1
+            },
+            {
+              "title": "Verb Tense",
+              "count": 1
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Word Order",
+              "count": 13
+            },
+            {
+              "title": "Wrong Word",
+              "count": 8
+            },
+            {
+              "title": "Verb Form",
+              "count": 8
+            },
+            {
+              "title": "Articles",
+              "count": 6
+            },
+            {
+              "title": "Pronoun Error",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "name": "Speaker B",
+          "total_words": 1339,
+          "total_errors": 43,
+          "error_rate_per_100_words": 3.21,
+          "error_types": [
+            {
+              "title": "Word Order",
+              "count": 17
+            },
+            {
+              "title": "Verb Form",
+              "count": 12
+            },
+            {
+              "title": "Wrong Word",
+              "count": 6
+            },
+            {
+              "title": "Prepositions",
+              "count": 3
+            },
+            {
+              "title": "Articles",
+              "count": 3
+            },
+            {
+              "title": "Verb Tense",
+              "count": 2
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Word Order",
+              "count": 17
+            },
+            {
+              "title": "Verb Form",
+              "count": 12
+            },
+            {
+              "title": "Wrong Word",
+              "count": 6
+            },
+            {
+              "title": "Prepositions",
+              "count": 3
+            },
+            {
+              "title": "Articles",
+              "count": 3
+            }
+          ]
+        }
+      ],
+      "meta": {
+        "chunks_processed": 13,
+        "total_chunks": 13
+      }
+    },
+    "metrics_updated_at": "2026-02-16 15:05",
+    "annotations_model": "gpt-4o",
+    "annotations_status": "ok",
+    "annotations_attempted_model": "gpt-4o",
+    "annotation_items": [
+      {
+        "start": 49,
+        "end": 168,
+        "text": "I would like to hear your experience with your group of designers who are going to improve their English in your group.",
+        "correction": "I would like to hear about your experience with your group of designers who are going to improve their English.",
+        "explanation": "The phrase 'in your group' is repetitive and should be removed for clarity.",
+        "category": "WORD"
+      },
+      {
+        "start": 328,
+        "end": 371,
+        "text": "pilot meeting of my English speaking clubs.",
+        "correction": "pilot meeting of my English-speaking club.",
+        "explanation": "The singular form 'club' is needed here, and 'English-speaking' should be hyphenated."
+      },
+      {
+        "start": 377,
+        "end": 394,
+        "text": "It was six people",
+        "correction": "There were six people",
+        "explanation": "'There were' is the correct form to indicate the presence of multiple people."
+      },
+      {
+        "start": 547,
+        "end": 570,
+        "text": "seniors to design head.",
+        "correction": "senior to head of design.",
+        "explanation": "The phrase is reordered to reflect the hierarchy properly and 'design head' is corrected to 'head of design'.",
+        "category": "WORD"
+      },
+      {
+        "start": 670,
+        "end": 723,
+        "text": "that's the reason why it was not too fast as I wanted",
+        "correction": "that's the reason why it was not as fast as I wanted",
+        "explanation": "The phrase 'not too fast as I wanted' should be 'not as fast as I wanted' for correct comparison.",
+        "category": "WORD"
+      },
+      {
+        "start": 935,
+        "end": 949,
+        "text": "Was hard a bit",
+        "correction": "It was a bit hard",
+        "explanation": "Correct word order and inclusion of subject needed.",
+        "category": "ORDER"
+      },
+      {
+        "start": 1161,
+        "end": 1193,
+        "text": "ask questions for their replies.",
+        "correction": "ask questions based on their replies.",
+        "explanation": "The phrase 'for their replies' should be 'based on their replies' for clarity.",
+        "category": "WORD"
+      },
+      {
+        "start": 1650,
+        "end": 1669,
+        "text": "I get some feedback",
+        "correction": "I got some feedback",
+        "explanation": "Past tense 'got' is needed for consistency.",
+        "category": "TENSE"
+      },
+      {
+        "start": 1945,
+        "end": 1962,
+        "text": "give it the full.",
+        "correction": "give it full context.",
+        "explanation": "Grammatical error in the use of articles.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 2336,
+        "end": 2393,
+        "text": "So I think it will be better to think shorter for minutes",
+        "correction": "So I think it will be better to aim for a shorter duration like 40 minutes",
+        "explanation": "The phrase lacks clarity and correct structure.",
+        "category": "WORD"
+      },
+      {
+        "start": 2398,
+        "end": 2436,
+        "text": "I think for 40 minutes it will be bad.",
+        "correction": "I think 40 minutes would be better.",
+        "explanation": "The phrase should provide a positive statement and correct structure.",
+        "category": "WORD"
+      },
+      {
+        "start": 2563,
+        "end": 2618,
+        "text": "I hear nothing from your last paragraph from beginning.",
+        "correction": "I heard nothing from the beginning of your last paragraph.",
+        "explanation": "The past tense 'heard' should be used to indicate a completed action in the past.",
+        "category": "TENSE"
+      },
+      {
+        "start": 2619,
+        "end": 2683,
+        "text": "I mean I. I didn't Hear any part of your answer for my question.",
+        "correction": "I mean, I didn't hear any part of your answer to my question.",
+        "explanation": "The verb 'hear' should not be capitalized, and 'to' is the correct preposition for indicating purpose.",
+        "category": "VERB"
+      },
+      {
+        "start": 2815,
+        "end": 2839,
+        "text": "speak straightforward to",
+        "correction": "speak directly into",
+        "explanation": "The correct phrase is 'speak directly into,' which is the appropriate collocation.",
+        "category": "WORD"
+      },
+      {
+        "start": 2867,
+        "end": 2892,
+        "text": "do not take like this one",
+        "correction": "do not angle it like that",
+        "explanation": "The phrase is unclear; 'angle' indicates adjustment of position.",
+        "category": "WORD"
+      },
+      {
+        "start": 2950,
+        "end": 2977,
+        "text": "just try to find some words",
+        "correction": "am just trying to find some words",
+        "explanation": "The present continuous tense should be used for ongoing actions.",
+        "category": "TENSE"
+      },
+      {
+        "start": 3092,
+        "end": 3124,
+        "text": "decrease minutes for the meeting",
+        "correction": "decrease the minutes of the meeting",
+        "explanation": "Usage of 'the' and preposition 'of' is needed for clarity.",
+        "category": "PREP"
+      },
+      {
+        "start": 3169,
+        "end": 3183,
+        "text": "to invite four",
+        "correction": "to do this",
+        "explanation": "Repetition is unnecessary and redundant.",
+        "category": "WORD"
+      },
+      {
+        "start": 3206,
+        "end": 3219,
+        "text": "because of me",
+        "correction": "because of my preference",
+        "explanation": "The phrase 'because of me' is awkward and unclear; needs rephrasing for clarity.",
+        "category": "WORD"
+      },
+      {
+        "start": 3513,
+        "end": 3553,
+        "text": "do you have any strategy on this project",
+        "correction": "do you have any strategy for this project",
+        "explanation": "'For' is the correct preposition for strategy regarding a project.",
+        "category": "PREP"
+      },
+      {
+        "start": 3794,
+        "end": 3877,
+        "text": "it's enough people. It's enough people on the market for the growing up to grow up.",
+        "correction": "it's enough people for growth.",
+        "explanation": "Repetition and incorrect phrase 'growing up to grow up' needs simplification.",
+        "category": "WORD"
+      },
+      {
+        "start": 4083,
+        "end": 4134,
+        "text": "as individual service for some participants of club",
+        "correction": "as an individual service for some participants of the club",
+        "explanation": "Missing article 'an' and 'the' before nouns.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 4239,
+        "end": 4251,
+        "text": "Let me speak",
+        "correction": "Let me speak from",
+        "explanation": "The phrase 'Let me speak from my heart' needs a preposition 'from'.",
+        "category": "PREP"
+      },
+      {
+        "start": 4456,
+        "end": 4466,
+        "text": "during six",
+        "correction": "over six",
+        "explanation": "The preposition 'over' is more appropriate in this context for duration.",
+        "category": "PREP"
+      },
+      {
+        "start": 4511,
+        "end": 4519,
+        "text": "from for",
+        "correction": "for",
+        "explanation": "The preposition 'from' is unnecessary and should be removed.",
+        "category": "PREP"
+      },
+      {
+        "start": 4520,
+        "end": 4528,
+        "text": "with the",
+        "correction": "with a",
+        "explanation": "Change the article 'the' to 'a' for indefinite reference.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 4693,
+        "end": 4709,
+        "text": "others potential",
+        "correction": "other potential",
+        "explanation": "'Other' should be used because 'potential segments' is singular in context."
+      },
+      {
+        "start": 4756,
+        "end": 4775,
+        "text": "the future this for",
+        "correction": "this in the future to",
+        "explanation": "Correct order and prepositions needed for clarity.",
+        "category": "TENSE"
+      },
+      {
+        "start": 4865,
+        "end": 4915,
+        "text": "Does it mean 50 people who are paying your monthly",
+        "correction": "Does it mean 50 people who are paying you monthly",
+        "explanation": "'Your' is a possessive adjective and should be 'you', the object pronoun."
+      },
+      {
+        "start": 4984,
+        "end": 5010,
+        "text": "the main idea subscription",
+        "correction": "the main idea is subscription",
+        "explanation": "Verb 'is' is missing and needed for correct sentence structure.",
+        "category": "VERB"
+      },
+      {
+        "start": 5024,
+        "end": 5063,
+        "text": "50 people with lifetime value more than",
+        "correction": "50 people with a lifetime value of more than",
+        "explanation": "Missing article and correct preposition 'of'.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 5249,
+        "end": 5276,
+        "text": "I don't have brother at all",
+        "correction": "I don't have a brother at all",
+        "explanation": "Missing article 'a' before the singular noun.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 5394,
+        "end": 5415,
+        "text": "like we have with you",
+        "correction": "like the ones we have",
+        "explanation": "This phrase is awkward and does not clearly convey the intended meaning.",
+        "category": "WORD"
+      },
+      {
+        "start": 5460,
+        "end": 5479,
+        "text": "something like else",
+        "correction": "something else",
+        "explanation": "The correct phrase is 'something else.'",
+        "category": "WORD"
+      },
+      {
+        "start": 5497,
+        "end": 5517,
+        "text": "Kate backward on you",
+        "correction": "Kate back there with you",
+        "explanation": "The phrase should be clearer, possibly intending 'Kate is back there with you.'",
+        "category": "WORD"
+      },
+      {
+        "start": 5585,
+        "end": 5607,
+        "text": "no one under of pillow",
+        "correction": "no one under the pillow",
+        "explanation": "The correct phrase is 'under the pillow.'",
+        "category": "WORD"
+      },
+      {
+        "start": 5731,
+        "end": 5759,
+        "text": "I just want to start acquire",
+        "correction": "I just want to start acquiring",
+        "explanation": "'Acquire' should be in the gerund form 'acquiring' after 'start.'"
+      },
+      {
+        "start": 5958,
+        "end": 5986,
+        "text": "did expect. And is it enough",
+        "correction": "expected. And is it enough",
+        "explanation": "The verb 'did' is unnecessary here.",
+        "category": "VERB"
+      },
+      {
+        "start": 6046,
+        "end": 6093,
+        "text": "granola just to summarize the the whole meeting",
+        "correction": "notes just to summarize the whole meeting",
+        "explanation": "'Granola' seems to be a mistake; 'notes' makes more sense in context, and 'the' is repeated."
+      },
+      {
+        "start": 6258,
+        "end": 6277,
+        "text": "join to you because",
+        "correction": "join you because",
+        "explanation": "'Join' does not require the preposition 'to.'",
+        "category": "PREP"
+      },
+      {
+        "start": 6645,
+        "end": 6663,
+        "text": "the hardness level",
+        "correction": "the level of difficulty",
+        "explanation": "'Hardness level' is not a standard English expression."
+      },
+      {
+        "start": 6701,
+        "end": 6715,
+        "text": "Level of hard.",
+        "correction": "Level of difficulty.",
+        "explanation": "The phrase 'level of hard' is incorrect. 'Level of difficulty' is more appropriate.",
+        "category": "WORD"
+      },
+      {
+        "start": 6732,
+        "end": 6747,
+        "text": "just hard topic",
+        "correction": "just a hard topic",
+        "explanation": "A determiner 'a' is needed before 'hard topic.'"
+      },
+      {
+        "start": 6905,
+        "end": 6920,
+        "text": "more harder for",
+        "correction": "harder for",
+        "explanation": "'More harder' is redundant. 'Harder' is sufficient.",
+        "category": "WORD"
+      },
+      {
+        "start": 6943,
+        "end": 6950,
+        "text": "It were",
+        "correction": "There were",
+        "explanation": "'It were' is incorrect. 'There were' is the correct form."
+      },
+      {
+        "start": 7190,
+        "end": 7207,
+        "text": "It was not lesson",
+        "correction": "It was not a lesson",
+        "explanation": "A determiner 'a' is needed before 'lesson.'"
+      },
+      {
+        "start": 7485,
+        "end": 7510,
+        "text": "in last year in Krasnodar",
+        "correction": "last year in Krasnodar",
+        "explanation": "'In last year' should be 'last year.'"
+      },
+      {
+        "start": 7800,
+        "end": 7857,
+        "text": "regarding AI. What do you think about timing that we need",
+        "correction": "What do you think about the timing when",
+        "explanation": "The article 'the' is needed before 'timing,' and 'when' is the correct conjunction for specifying time.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 7951,
+        "end": 7999,
+        "text": "currently you even don't see difference between",
+        "correction": "currently you don't even see a difference",
+        "explanation": "Correct order is 'don't even see' and an article 'a' is needed before 'difference.'",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 8124,
+        "end": 8166,
+        "text": "how you evaluate the timing when such kind",
+        "correction": "how you evaluate the timing of when such kinds",
+        "explanation": "'Kinds' should be plural and 'of' is necessary before 'when.'"
+      },
+      {
+        "start": 8197,
+        "end": 8226,
+        "text": "they can join to your meeting",
+        "correction": "they can join your meeting",
+        "explanation": "'Join' does not require the preposition 'to.'",
+        "category": "PREP"
+      },
+      {
+        "start": 8272,
+        "end": 8310,
+        "text": "I think maybe two years or less maybe.",
+        "correction": "I think maybe two years or less.",
+        "explanation": "Repetition of 'maybe' is unnecessary.",
+        "category": "WORD"
+      },
+      {
+        "start": 8508,
+        "end": 8529,
+        "text": "it will be to generic",
+        "correction": "it will be too generic",
+        "explanation": "'Too' is the correct word instead of 'to' for indicating excess."
+      },
+      {
+        "start": 8776,
+        "end": 8826,
+        "text": "so I'm not sure that I catch the main thought from",
+        "correction": "I'm not sure that I caught the main thought",
+        "explanation": "The past tense 'caught' is needed for consistency with 'I'm not sure.'",
+        "category": "TENSE"
+      },
+      {
+        "start": 8852,
+        "end": 8878,
+        "text": "So as I understand I think",
+        "correction": "So as far as I understand, I think",
+        "explanation": "The phrase 'as far as I understand' is correct usage.",
+        "category": "WORD"
+      },
+      {
+        "start": 9020,
+        "end": 9045,
+        "text": "the topic will be generic",
+        "correction": "the topic will be a generic one",
+        "explanation": "Requires an article and clarification for countable noun 'topic.'",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 9192,
+        "end": 9230,
+        "text": "AI can't provide you humans experience",
+        "correction": "AI can't provide you with human experience",
+        "explanation": "Incorrect use of 'humans' should be 'human,' and 'provide you with' is the correct collocation.",
+        "category": "COLLOC"
+      },
+      {
+        "start": 9467,
+        "end": 9522,
+        "text": "But where I'm an expert in for instance in some details",
+        "correction": "But where I'm an expert, for instance, in some details",
+        "explanation": "Misplaced preposition 'in' results in redundant phrase; needs clarification.",
+        "category": "PREP"
+      },
+      {
+        "start": 9830,
+        "end": 9898,
+        "text": "if you're talking with the other designer you can discuss same cases",
+        "correction": "if you're talking with another designer you can discuss the same cases",
+        "explanation": "Uses 'another' instead of 'the other,' and includes article 'the' before 'same cases.'",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 10247,
+        "end": 10263,
+        "text": "Some short maybe",
+        "correction": "Some might be short",
+        "explanation": "'Some short maybe' is not grammatically correct; 'might be' is needed to convey possibility, correcting the verb issue.",
+        "category": "VERB"
+      },
+      {
+        "start": 10715,
+        "end": 10720,
+        "text": "is it",
+        "correction": "isn't it",
+        "explanation": "The phrase should confirm with a tag question format for agreement.",
+        "category": "VERB"
+      },
+      {
+        "start": 10722,
+        "end": 10733,
+        "text": "It's a talk",
+        "correction": "It's talked",
+        "explanation": "The correct verb form in context is 'talked,' meaning it has been discussed.",
+        "category": "VERB"
+      },
+      {
+        "start": 10974,
+        "end": 11018,
+        "text": "if your decrease in expenditure on marketing",
+        "correction": "if you decrease expenditure on marketing",
+        "explanation": "The phrase requires a subject-verb agreement correction by removing 'your'.",
+        "category": "VERB"
+      },
+      {
+        "start": 11192,
+        "end": 11229,
+        "text": "if you decrease expenditure marketing",
+        "correction": "if you decrease marketing expenditure",
+        "explanation": "The word order needs correction for proper context, 'marketing expenditure' is standard usage.",
+        "category": "ORDER"
+      },
+      {
+        "start": 11304,
+        "end": 11329,
+        "text": "retention will be shorter",
+        "correction": "retention might be shorter",
+        "explanation": "'Might be' conveys possibility, whereas 'will be' is definitive; context suggests the former."
+      },
+      {
+        "start": 11391,
+        "end": 11419,
+        "text": "a red line, strict red line.",
+        "correction": "a strict red line.",
+        "explanation": "Repetition is redundant; should be concise as 'a strict red line.'",
+        "category": "WORD"
+      },
+      {
+        "start": 11432,
+        "end": 11462,
+        "text": "pros and cons of this decision",
+        "correction": "pros and cons to this decision",
+        "explanation": "The phrase 'pros and cons to' is the correct preposition use.",
+        "category": "PREP"
+      },
+      {
+        "start": 11624,
+        "end": 11663,
+        "text": "if I correctly understand your question",
+        "correction": "if I understand your question correctly",
+        "explanation": "Incorrect adverb placement.",
+        "category": "VERB"
+      },
+      {
+        "start": 11939,
+        "end": 11959,
+        "text": "compare it with with",
+        "correction": "compare it with",
+        "explanation": "Repetition of the preposition \"with.\"",
+        "category": "PREP"
+      },
+      {
+        "start": 12126,
+        "end": 12154,
+        "text": "I think grammar when you use",
+        "correction": "I think of grammar when you use",
+        "explanation": "The preposition 'of' is needed to connect 'think' with 'grammar'.",
+        "category": "PREP"
+      },
+      {
+        "start": 12162,
+        "end": 12193,
+        "text": "For example, he has or he have.",
+        "correction": "For example, he has or he had.",
+        "explanation": "'Has' and 'have' are not parallel because they belong to different forms; it should be 'has' and 'had' to show a contrast in different tenses.",
+        "category": "TENSE"
+      },
+      {
+        "start": 12268,
+        "end": 12299,
+        "text": "So me too. And I would add some",
+        "correction": "So do I. And I would add some",
+        "explanation": "'So me too' is incorrect. The correct form is 'So do I'."
+      },
+      {
+        "start": 12323,
+        "end": 12350,
+        "text": "sentences. Also I feel that",
+        "correction": "it and it would be quite easy to.",
+        "explanation": "The subject 'it' is missing before 'would'."
+      },
+      {
+        "start": 12559,
+        "end": 12601,
+        "text": "the mistakes like this annoying, annoying.",
+        "correction": "mistakes like these are annoying.",
+        "explanation": "'Mistakes like this' should be plural 'these', and the phrase should be completed with a verb.",
+        "category": "VERB"
+      },
+      {
+        "start": 12639,
+        "end": 12696,
+        "text": "thing for me for.\n\nSpeaker B: Instance, maybe same Apple.",
+        "correction": "thing for me.\n\nFor instance, maybe the same apple.",
+        "explanation": "'Instance, maybe same Apple' should be 'For instance, maybe the same apple.' for correct usage and article inclusion.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 12772,
+        "end": 12802,
+        "text": "I have two one for simplifying",
+        "correction": "I have one for simplifying",
+        "explanation": "The phrase 'two one' is incorrect when the intended meaning was likely to indicate having one item, task, or subject. 'Two' and 'one' cannot be combined in this way.",
+        "category": "WORD"
+      }
+    ],
+    "annotated_transcript_html": "Speaker A: So I started recording I'm Roman. And <mark class=\"grammar-error\" title=\"Correct: I would like to hear about your experience with your group of designers who are going to improve their English. | The phrase 'in your group' is repetitive and should be removed for clarity.\">I would like to hear your experience with your group of designers who are going to improve their English in your group.</mark>\n\nSpeaker B: Okay. I'm Andre. Every time when you say I'm Roman, it's a bit strange. You're not Roman, you're not Romanian, you're Roman. Okay. Yesterday was a <mark class=\"grammar-error\" title=\"Correct: pilot meeting of my English-speaking club. | The singular form 'club' is needed here, and 'English-speaking' should be hyphenated.\">pilot meeting of my English speaking clubs.</mark> And. <mark class=\"grammar-error\" title=\"Correct: There were six people | 'There were' is the correct form to indicate the presence of multiple people.\">It was six people</mark> including me and Kate. They were from design industry or almost design industry. So one girl from UX writing and three designers, different levels like <mark class=\"grammar-error\" title=\"Correct: senior to head of design. | The phrase is reordered to reflect the hierarchy properly and 'design head' is corrected to 'head of design'.\">seniors to design head.</mark> I started meeting at 9pm so they were working the whole day and then we were speaking. And I think <mark class=\"grammar-error\" title=\"Correct: that's the reason why it was not as fast as I wanted | The phrase 'not too fast as I wanted' should be 'not as fast as I wanted' for correct comparison.\">that's the reason why it was not too fast as I wanted</mark>, but it was good enough for the pilot meeting. We were talking about dark patterns and ethics in design. I sent the topic before the meeting. So I sent it in the morning and they had enough time to prepare for. <mark class=\"grammar-error\" title=\"Correct: It was a bit hard | Correct word order and inclusion of subject needed.\">Was hard a bit</mark> to facilitate this meeting because sometimes I. Didn't understand some words or some sense from them. And it was hard to play ping pong with words. Just when I was trying to facilitate this meeting. I wanted to <mark class=\"grammar-error\" title=\"Correct: ask questions based on their replies. | The phrase 'for their replies' should be 'based on their replies' for clarity.\">ask questions for their replies.</mark> For example, I answered the question, they reply and I answer again to build the dialogue. And it was hard a bit. But the good things I can say that I tried to. To involve people for the conversation to the conversation. I just. Sometimes when I saw someone is silent or too quiet. I tried to answer the questions or just picked someone to answer for my question. And it was a good thing I did. The whole meeting was about one hour, a bit less maybe. Also <mark class=\"grammar-error\" title=\"Correct: I got some feedback | Past tense 'got' is needed for consistency.\">I get some feedback</mark> from people. I asked the. Honest, honest feedback and some participants gave me positive feedback, some negative things.\n\nSpeaker A: And now I don't know.\n\nSpeaker B: I just need to aggregate the whole the feedback from all of participants and analyze it with complexity and <mark class=\"grammar-error\" title=\"Correct: give it full context. | Grammatical error in the use of articles.\">give it the full.</mark> Give it full context and try to improve something. Maybe I will try to. Acquire some people from my channel for the next meetings. We'll see. So I think it was good enough for the pilot.\n\nSpeaker A: Okay, interesting. And how did you feel? Is it. Good amount of people for one hour? Or it was too much or. Or it's six. Six people.\n\nSpeaker B: I think that's my hypothesis. <mark class=\"grammar-error\" title=\"Correct: So I think it will be better to aim for a shorter duration like 40 minutes | The phrase lacks clarity and correct structure.\">So I think it will be better to think shorter for minutes</mark> and <mark class=\"grammar-error\" title=\"Correct: I think 40 minutes would be better. | The phrase should provide a positive statement and correct structure.\">I think for 40 minutes it will be bad.</mark>\n\nSpeaker A: Could you please stop? I'm frozen. So yeah.\n\nSpeaker B: Some legs.\n\nSpeaker A: Could you please stop? I'm frozen. <mark class=\"grammar-error\" title=\"Correct: I heard nothing from the beginning of your last paragraph. | The past tense 'heard' should be used to indicate a completed action in the past.\">I hear nothing from your last paragraph from beginning.</mark> <mark class=\"grammar-error\" title=\"Correct: I mean, I didn't hear any part of your answer to my question. | The verb 'hear' should not be capitalized, and 'to' is the correct preposition for indicating purpose.\">I mean I. I didn't Hear any part of your answer for my question.</mark> Could you please repeat?\n\nSpeaker B: I will. I will repeat for you.\n\nSpeaker A: And one more interruption please. Could you please <mark class=\"grammar-error\" title=\"Correct: speak directly into | The correct phrase is 'speak directly into,' which is the appropriate collocation.\">speak straightforward to</mark> your microphone and please <mark class=\"grammar-error\" title=\"Correct: do not angle it like that | The phrase is unclear; 'angle' indicates adjustment of position.\">do not take like this one</mark>.\n\nSpeaker B: Okay, okay.\n\nSpeaker A: Okay.\n\nSpeaker B: I <mark class=\"grammar-error\" title=\"Correct: am just trying to find some words | The present continuous tense should be used for ongoing actions.\">just try to find some words</mark> on my wall.\n\nSpeaker A: Yeah, I understand.\n\nSpeaker B: Yes. So my. I have a hypothesis that it will be better to <mark class=\"grammar-error\" title=\"Correct: decrease the minutes of the meeting | Usage of 'the' and preposition 'of' is needed for clarity.\">decrease minutes for the meeting</mark>, for example 40 minutes. And I think I have <mark class=\"grammar-error\" title=\"Correct: to do this | Repetition is unnecessary and redundant.\">to invite four</mark> people for 40 minutes <mark class=\"grammar-error\" title=\"Correct: because of my preference | The phrase 'because of me' is awkward and unclear; needs rephrasing for clarity.\">because of me</mark>. In this way meeting will be more dynamic. Dynamical, I don't know. So yeah, I will try to. To do this to do it. And also I want to include a presentation for the meeting or Figma board or Miraboard just because it's more interesting to interact during the meeting.\n\nSpeaker A: Okay. And what <mark class=\"grammar-error\" title=\"Correct: do you have any strategy for this project | 'For' is the correct preposition for strategy regarding a project.\">do you have any strategy on this project</mark> or. Or what is the hypothesis for it?\n\nSpeaker B: Overall? I think I have a hypothesis for the whole project that I can acquire 50 people during six months. If I can do this, I can scale up the whole project because if I acquire 50 people, <mark class=\"grammar-error\" title=\"Correct: it's enough people for growth. | Repetition and incorrect phrase 'growing up to grow up' needs simplification.\">it's enough people. It's enough people on the market for the growing up to grow up.</mark> This, this project just. I can use the same way to acquire people as first 50 users. And then I can transform the offer from just speaking clubs to preparing for interviews. Also I can add mock interviews <mark class=\"grammar-error\" title=\"Correct: as an individual service for some participants of the club | Missing article 'an' and 'the' before nouns.\">as individual service for some participants of club</mark>. And. We can. We can try. Bruce, are you here? Yep.\n\nSpeaker A: I'm freezing. Let me check.\n\nSpeaker B: <mark class=\"grammar-error\" title=\"Correct: Let me speak from | The phrase 'Let me speak from my heart' needs a preposition 'from'.\">Let me speak</mark> from my heart. What the.\n\nSpeaker A: Okay, I think it's okay. Let's go further.\n\nSpeaker B: Where I stopped.\n\nSpeaker A: That you are going to acquire 15 or 50, I'm not sure.\n\nSpeaker B: 15, 50, 50 users <mark class=\"grammar-error\" title=\"Correct: over six | The preposition 'over' is more appropriate in this context for duration.\">during six</mark> months. Then we can include mock interviews <mark class=\"grammar-error\" title=\"Correct: for | The preposition 'from' is unnecessary and should be removed.\">from for</mark> <mark class=\"grammar-error\" title=\"Correct: with a | Change the article 'the' to 'a' for indefinite reference.\">with the</mark> recruiter and with design lead. And then we can scale. We can take another segments for it. For example, we can include or acquire product managers, developers and <mark class=\"grammar-error\" title=\"Correct: other potential | 'Other' should be used because 'potential segments' is singular in context.\">others potential</mark> segments. And the best way is to just sell in <mark class=\"grammar-error\" title=\"Correct: this in the future to | Correct order and prepositions needed for clarity.\">the future this for</mark> one of English schools maybe.\n\nSpeaker A: Are you here? You said Your goal is 50 people. <mark class=\"grammar-error\" title=\"Correct: Does it mean 50 people who are paying you monthly | 'Your' is a possessive adjective and should be 'you', the object pronoun.\">Does it mean 50 people who are paying your monthly</mark> or how it should work?\n\nSpeaker B: Yeah, the model is subscription, <mark class=\"grammar-error\" title=\"Correct: the main idea is subscription | Verb 'is' is missing and needed for correct sentence structure.\">the main idea subscription</mark>. And I think <mark class=\"grammar-error\" title=\"Correct: 50 people with a lifetime value of more than | Missing article and correct preposition 'of'.\">50 people with lifetime value more than</mark> two months, two, three months.\n\nSpeaker A: So am I right that you are going to have 50,000 rubles per month without your brother?\n\nSpeaker B: Yep.\n\nSpeaker A: So it's. It's a pity that <mark class=\"grammar-error\" title=\"Correct: I don't have a brother at all | Missing article 'a' before the singular noun.\">I don't have brother at all</mark>.\n\nSpeaker B: Okay.\n\nSpeaker A: So. And do you plan to use some instruments for tracking your progress? For instance, <mark class=\"grammar-error\" title=\"Correct: like the ones we have | This phrase is awkward and does not clearly convey the intended meaning.\">like we have with you</mark> or maybe some. Or meetings after Session or <mark class=\"grammar-error\" title=\"Correct: something else | The correct phrase is 'something else.'\">something like else</mark>. So sorry, is it <mark class=\"grammar-error\" title=\"Correct: Kate back there with you | The phrase should be clearer, possibly intending 'Kate is back there with you.'\">Kate backward on you</mark> or it's ridiculous cat.\n\nSpeaker B: Where is.\n\nSpeaker A: There is <mark class=\"grammar-error\" title=\"Correct: no one under the pillow | The correct phrase is 'under the pillow.'\">no one under of pillow</mark> or what? Yes. Idiot. Crazy idiot.\n\nSpeaker B: Idiot. Crazy idiot. I'm not sure about instruments right now because I think <mark class=\"grammar-error\" title=\"Correct: I just want to start acquiring | 'Acquire' should be in the gerund form 'acquiring' after 'start.'\">I just want to start acquire</mark> people and I think it would be better to get some feedback from them. For example, just call after two weeks with users and try to understand why they became why they came to the club and what they <mark class=\"grammar-error\" title=\"Correct: expected. And is it enough | The verb 'did' is unnecessary here.\">did expect. And is it enough</mark> now or they need something else? Maybe. I think I will use <mark class=\"grammar-error\" title=\"Correct: notes just to summarize the whole meeting | 'Granola' seems to be a mistake; 'notes' makes more sense in context, and 'the' is repeated.\">granola just to summarize the the whole meeting</mark> and give some interesting thoughts to participants after it. After the meeting. And I think that's enough for the start.\n\nSpeaker A: I have a hypothesis why people <mark class=\"grammar-error\" title=\"Correct: join you because | 'Join' does not require the preposition 'to.'\">join to you because</mark> they would like to option to say find me in the club. So can you share feedback from your students to me? What was a positive moment? Mainly.\n\nSpeaker B: The main positive moment is the ability to speak English because for people it's really interesting to have a live practice and live speaking with other designers. The negative. I think the most negative thing is <mark class=\"grammar-error\" title=\"Correct: the level of difficulty | 'Hardness level' is not a standard English expression.\">the hardness level</mark>.\n\nSpeaker A: What level?\n\nSpeaker B: <mark class=\"grammar-error\" title=\"Correct: Level of difficulty. | The phrase 'level of hard' is incorrect. 'Level of difficulty' is more appropriate.\">Level of hard.</mark> Hard of. It was <mark class=\"grammar-error\" title=\"Correct: just a hard topic | A determiner 'a' is needed before 'hard topic.'\">just hard topic</mark> for them because sometimes by the way, in Russian. In Russian it's not too easy to discuss on this topic about dark patterns, about empathy in English, it's <mark class=\"grammar-error\" title=\"Correct: harder for | 'More harder' is redundant. 'Harder' is sufficient.\">more harder for</mark> them. Also for Dania, <mark class=\"grammar-error\" title=\"Correct: There were | 'It were' is incorrect. 'There were' is the correct form.\">It were</mark> some negative moments. Additional negative moments. For example, it was meeting without presentation. It was our topic. It was not like ping pong format. And it was maybe late for him, but he compared our meeting with his English lessons. <mark class=\"grammar-error\" title=\"Correct: It was not a lesson | A determiner 'a' is needed before 'lesson.'\">It was not lesson</mark> on my meeting, so I think the comparison.\n\nSpeaker A: Is not.\n\nSpeaker B: Relevant. Yeah, and also positive things that I'm a good facilitator. I heard this from Kate and from Max, the other designer and he really likes the format because he already visited some English clubs <mark class=\"grammar-error\" title=\"Correct: last year in Krasnodar | 'In last year' should be 'last year.'\">in last year in Krasnodar</mark> and he really likes this format. And also he really likes to speak with other designers.\n\nSpeaker A: Okay, I'm not sure that format is a good word. I'm not sure that it exists in English in this way.\n\nSpeaker B: But maybe I suppose both. Yes, it's okay. Okay.\n\nSpeaker A: And one question <mark class=\"grammar-error\" title=\"Correct: What do you think about the timing when | The article 'the' is needed before 'timing,' and 'when' is the correct conjunction for specifying time.\">regarding AI. What do you think about timing that we need</mark> to have AI assistant.\n\nSpeaker B: That.\n\nSpeaker A: Will be fully comparable with us? I mean,<mark class=\"grammar-error\" title=\"Correct: currently you don't even see a difference | Correct order is 'don't even see' and an article 'a' is needed before 'difference.'\"> currently you even don't see difference between</mark> AI photo and usual photo. And sometimes we have AI models and we hear no difference between human voice and model voice. So <mark class=\"grammar-error\" title=\"Correct: how you evaluate the timing of when such kinds | 'Kinds' should be plural and 'of' is necessary before 'when.'\">how you evaluate the timing when such kind</mark> of models will be in place so <mark class=\"grammar-error\" title=\"Correct: they can join your meeting | 'Join' does not require the preposition 'to.'\">they can join to your meeting</mark> and speak with you like a human.\n\nSpeaker B: <mark class=\"grammar-error\" title=\"Correct: I think maybe two years or less. | Repetition of 'maybe' is unnecessary.\">I think maybe two years or less maybe.</mark> But I think this type of meeting more about is more about.\n\nSpeaker A: Experience.\n\nSpeaker B: And about sharing experience between designers. Because if you want to connect AI and AI will discuss <mark class=\"grammar-error\" title=\"Correct: it will be too generic | 'Too' is the correct word instead of 'to' for indicating excess.\">it will be to generic</mark>. There will be no real experience from AI. It will be generic. Thoughts And I see I. I think that live and community formats will be. Interesting for people in AI era so I bet on community products. Now.\n\nSpeaker A: Your friend jmek disturbed me <mark class=\"grammar-error\" title=\"Correct: I'm not sure that I caught the main thought | The past tense 'caught' is needed for consistency with 'I'm not sure.'\">so I'm not sure that I catch the main thought from</mark> your speech.\n\nSpeaker B: <mark class=\"grammar-error\" title=\"Correct: So as far as I understand, I think | The phrase 'as far as I understand' is correct usage.\">So as I understand I think</mark> AI can give you a real experience. So the conversation will be a little bit generic. It will sound. It will sound like real conversation but <mark class=\"grammar-error\" title=\"Correct: the topic will be a generic one | Requires an article and clarification for countable noun 'topic.'\">the topic will be generic</mark> and there will be no real experience from AI model. You can share. You can. Yeah, that's it.\n\nSpeaker A: Okay. Am I right that you. You mean that <mark class=\"grammar-error\" title=\"Correct: AI can't provide you with human experience | Incorrect use of 'humans' should be 'human,' and 'provide you with' is the correct collocation.\">AI can't provide you humans experience</mark> in specific themes where you are expert? For instance regarding me, if I'm writing with AI for instance any themes regarding health I feel that AI has very deep learning and it would be interesting for me having it in speaking as well. <mark class=\"grammar-error\" title=\"Correct: But where I'm an expert, for instance, in some details | Misplaced preposition 'in' results in redundant phrase; needs clarification.\">But where I'm an expert in for instance in some details</mark> regarding financial models I feel the same as you.\n\nSpeaker B: That's why I focused on designers because that's a bit specific industry with. With different opinions. So there are some UX laws, UX patterns and it's common in the whole industry. But my experience or someone else experience is different and <mark class=\"grammar-error\" title=\"Correct: if you're talking with another designer you can discuss the same cases | Uses 'another' instead of 'the other,' and includes article 'the' before 'same cases.'\">if you're talking with the other designer you can discuss same cases</mark> and share your experience with others and AI can do this because there is no way I experience that's not the person.\n\nSpeaker A: So I and Gen GPT wrote your negative feedback about AI so we will. We will provide it to Vasilis kroko and so P9 CBR. Okay, we have six minutes left. Do you have any theme for discussion?\n\nSpeaker B: Short?\n\nSpeaker A: <mark class=\"grammar-error\" title=\"Correct: Some might be short | 'Some short maybe' is not grammatically correct; 'might be' is needed to convey possibility, correcting the verb issue.\">Some short maybe</mark>.\n\nSpeaker B: Yeah. You can. You can try to answer the question just because I want to hear. I don't want to only speak. I want to hear too Try to answer the question. Where is the line between good marketing and. Dark pattern? Well.\n\nSpeaker A: For me it depends on feedback from users. If you consolidate it, for instance your pattern may be dark but if your user is happy. So for me it's not a problem. But if you're. What is the metric? Not CC NPS <mark class=\"grammar-error\" title=\"Correct: isn't it | The phrase should confirm with a tag question format for agreement.\">is it</mark>. <mark class=\"grammar-error\" title=\"Correct: It's talked | The correct verb form in context is 'talked,' meaning it has been discussed.\">It's a talk</mark> in this sphere.\n\nSpeaker B: Net Promoter Score Recommendation index like this. Yeah, it's okay. I think maybe customer satisfaction Index. That's another one.\n\nSpeaker A: Yes, customer satisfaction is okay. So for me is your. For instance, <mark class=\"grammar-error\" title=\"Correct: if you decrease expenditure on marketing | The phrase requires a subject-verb agreement correction by removing 'your'.\">if your decrease in expenditure on marketing</mark>, for instance 10% and your decrease in customer loyalty or how to say so only 1%. For me it's okay to use such kind of marketing even if it contains some dark patterns. But <mark class=\"grammar-error\" title=\"Correct: if you decrease marketing expenditure | The word order needs correction for proper context, 'marketing expenditure' is standard usage.\">if you decrease expenditure marketing</mark> and your NPS decrease as well. So it's not a good way for me because your <mark class=\"grammar-error\" title=\"Correct: retention might be shorter | 'Might be' conveys possibility, whereas 'will be' is definitive; context suggests the former.\">retention will be shorter</mark> than it can be. I'm not sure that I have an answer that it's <mark class=\"grammar-error\" title=\"Correct: a strict red line. | Repetition is redundant; should be concise as 'a strict red line.'\">a red line, strict red line.</mark> It's always <mark class=\"grammar-error\" title=\"Correct: pros and cons to this decision | The phrase 'pros and cons to' is the correct preposition use.\">pros and cons of this decision</mark>. So. And it's. It's evident for me and for my company and for my budget that runs much better.\n\nSpeaker B: So.\n\nSpeaker A: Maybe I can use some dark patterns or <mark class=\"grammar-error\" title=\"Correct: if I understand your question correctly | Incorrect adverb placement.\">if I correctly understand your question</mark>.\n\nSpeaker B: It'S okay. Okay. I think. Do we have time or we have three minutes left. Okay.\n\nSpeaker A: I have a question if you don't mind.\n\nSpeaker B: Okay.\n\nSpeaker A: So I'm going to finalize the recommendation from AI regarding our mistakes and it can be interesting to <mark class=\"grammar-error\" title=\"Correct: compare it with | Repetition of the preposition &quot;with.&quot;\">compare it with with</mark> our self check. So what do you think the most common mistakes for you and yeah, it's articles.\n\nSpeaker B: I think articles. Okay.\n\nSpeaker A: What else?\n\nSpeaker B: <mark class=\"grammar-error\" title=\"Correct: I think of grammar when you use | The preposition 'of' is needed to connect 'think' with 'grammar'.\">I think grammar when you use</mark> words. <mark class=\"grammar-error\" title=\"Correct: For example, he has or he had. | 'Has' and 'have' are not parallel because they belong to different forms; it should be 'has' and 'had' to show a contrast in different tenses.\">For example, he has or he have.</mark> I don't know how to say it in English. Okay. And times.\n\nSpeaker A: Okay. <mark class=\"grammar-error\" title=\"Correct: So do I. And I would add some | 'So me too' is incorrect. The correct form is 'So do I'.\">So me too. And I would add some</mark> wrong constructions in <mark class=\"grammar-error\" title=\"Correct: it and it would be quite easy to. | The subject 'it' is missing before 'would'.\">sentences. Also I feel that</mark> sometimes my questions are wrong in terms of grammar. And. So I. I hope this is the most common and it would be quite easy to. To trace it and correct. But articles are ridiculous I would say.\n\nSpeaker B: So <mark class=\"grammar-error\" title=\"Correct: mistakes like these are annoying. | 'Mistakes like this' should be plural 'these', and the phrase should be completed with a verb.\">the mistakes like this annoying, annoying.</mark>\n\nSpeaker A: Annoying and complicated <mark class=\"grammar-error\" title=\"Correct: thing for me.\n\nFor instance, maybe the same apple. | 'Instance, maybe same Apple' should be 'For instance, maybe the same apple.' for correct usage and article inclusion.\">thing for me for.\n\nSpeaker B: Instance, maybe same Apple.</mark>\n\nSpeaker A: Same. Okay, 30 minutes left. I'm stopping our recording today. <mark class=\"grammar-error\" title=\"Correct: I have one for simplifying | The phrase 'two one' is incorrect when the intended meaning was likely to indicate having one item, task, or subject. 'Two' and 'one' cannot be combined in this way.\">I have two one for simplifying</mark> our process.",
+    "annotations_meta": {
+      "chunks_processed": 13,
+      "total_chunks": 13,
+      "processed_chars": 12815,
+      "attempted_model": "gpt-4o"
+    },
+    "annotations_updated_at": "2026-02-16 15:08"
+  }
+}

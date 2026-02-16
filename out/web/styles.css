@@ -10,7 +10,7 @@ body {
 }
 
 main {
-  max-width: 960px;
+  max-width: 1240px;
   margin: 0 auto;
   padding: 32px 20px 48px;
 }
@@ -221,16 +221,69 @@ canvas {
   margin-top: 24px;
 }
 
-.transcript-box {
-  margin: 0;
-  padding: 16px;
+.transcript-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.transcript-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.7fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.transcript-row.row-empty .transcript-cell {
+  background: transparent;
+  border-color: transparent;
+  padding: 0;
+  min-height: 0;
+}
+
+.transcript-header h3 {
+  margin: 0 0 6px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+}
+
+.transcript-cell {
+  padding: 8px 12px;
   background: #ffffff;
-  border-radius: 12px;
+  border-radius: 10px;
   border: 1px solid #e2e8f0;
   font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
   font-size: 13px;
   line-height: 1.5;
   white-space: pre-wrap;
+  min-height: 28px;
+}
+
+.transcript-cell.transcript-issues {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  white-space: normal;
+}
+
+.issue-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.issue-list.compact li {
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 6px;
+}
+
+.issue-why {
+  color: #475569;
 }
 
 .subheading {
@@ -238,39 +291,160 @@ canvas {
   font-size: 12px;
   color: #64748b;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
 }
 
 .errors {
-  margin: 0 0 12px;
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+}
+
+.errors li {
+  margin-bottom: 12px;
+}
+
+.errors.compact li {
+  margin-bottom: 6px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.recommendations-list {
+  margin: 0;
   padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.recommendations-summary {
+  margin: 0 0 6px;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.recommendations-note {
+  margin: 4px 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #0f172a;
+  background: #e2e8f0;
+  border: 1px solid #cbd5f5;
+}
+
+.recommendation-item {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.recommendation-item p {
+  margin: 0 0 6px;
+}
+
+.recommendation-item .metric-note {
+  margin: 0 0 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.recommendation-title {
+  font-weight: 600;
+  margin: 0 0 6px;
+  color: #0f172a;
+}
+
+.error-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.error-group {
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+
+.error-group summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 10px 12px;
+  font-weight: 600;
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.error-group summary::-webkit-details-marker {
+  display: none;
+}
+
+.error-group summary::after {
+  content: '▾';
+  float: right;
+  color: #64748b;
+}
+
+.error-group[open] summary::after {
+  content: '▴';
+}
+
+.error-group .errors {
+  margin: 0;
+  padding: 10px 12px 12px;
+}
+
+.error-group .count {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.example-error {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.example-fix {
+  color: #0f172a;
+}
+
+.example-arrow {
+  margin: 0 6px;
+  color: #94a3b8;
 }
 
 .example {
-  margin: 4px 0 0 12px;
-  padding: 6px 8px;
+  margin: 8px 0 0;
+  padding: 8px 12px;
   background: #f8fafc;
   border-radius: 8px;
-  color: #475569;
-  font-size: 12px;
 }
 
 .correction {
-  margin-top: 4px;
-  color: #0f172a;
+  margin-top: 6px;
   font-weight: 600;
 }
 
 .correction.missing {
-  color: #94a3b8;
-  font-weight: 500;
+  color: #b91c1c;
 }
 
-.recommendations {
-  margin-top: 24px;
-}
-
-.recommendations ul {
-  padding-left: 20px;
-  margin: 0;
+mark.grammar-error {
+  background: #fde68a;
+  padding: 0 2px;
+  border-radius: 3px;
+  cursor: help;
 }
