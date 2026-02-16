@@ -44,8 +44,47 @@ h1 {
 .header-actions {
   display: flex;
   gap: 12px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.header-actions {
+  flex-direction: column;
+}
+
+.header-links,
+.header-buttons {
+  display: flex;
+  gap: 12px;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.header-links {
+  padding-right: 0;
+  border-right: none;
+}
+
+.header-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+.status-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.status-block .ghost {
+  align-self: flex-start;
+}
+
+.header-tools {
+  margin-top: 6px;
 }
 
 .ghost {
@@ -71,9 +110,57 @@ h1 {
   background: #fee2e2;
 }
 
+.header-buttons .ghost {
+  border-color: #e2e8f0;
+  background: #f8fafc;
+  color: #334155;
+}
+
+.header-buttons .ghost:hover {
+  background: #eef2f7;
+}
+
+.header-buttons .ghost.danger {
+  border-color: #fecaca;
+  background: #fff5f5;
+  color: #b91c1c;
+}
+
+.header-buttons .ghost.danger:hover {
+  background: #fee2e2;
+}
+
 .ghost:disabled {
   opacity: 0.6;
   cursor: default;
+}
+
+.header-links .inline-link {
+  margin-top: 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.header-links .inline-link:first-child {
+  background: #0ea5e9;
+  color: #ffffff;
+}
+
+.header-links .inline-link:first-child:hover {
+  background: #0284c7;
+}
+
+.header-links .inline-link:last-child {
+  background: #ecfeff;
+  color: #0f766e;
+  border-color: #a5f3fc;
+}
+
+.header-links .inline-link:last-child:hover {
+  background: #cffafe;
 }
 
 .controls {
@@ -83,10 +170,53 @@ h1 {
   gap: 8px;
 }
 
+.controls-highlights {
+  max-width: 360px;
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+}
+
+.controls-highlights label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #475569;
+}
+
+.session-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.session-row select {
+  flex: 1 1 260px;
+}
+
 select {
   max-width: 320px;
   padding: 8px 12px;
   font-size: 15px;
+}
+
+.controls-highlights select {
+  max-width: none;
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.controls-highlights select:focus {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
 }
 
 .cards {
@@ -100,6 +230,90 @@ select {
   padding: 16px;
   border-radius: 12px;
   box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+}
+
+.highlight-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.highlight-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.highlight-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.highlight-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.highlight-lead {
+  margin: 0 0 12px;
+  color: #334155;
+  font-size: 15px;
+}
+
+.highlight-meta {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.highlight-item {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 12px;
+}
+
+.highlight-item:last-child {
+  margin-bottom: 0;
+}
+
+.highlight-rank {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #0f172a;
+  color: #ffffff;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+}
+
+.highlight-body h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.highlight-why {
+  margin: 0 0 8px;
+  color: #0f172a;
+  background: #ecfeff;
+  border: 1px solid #bae6fd;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+.highlight-focus {
+  margin: 0 0 8px;
+  color: #475569;
 }
 
 .card h3 {
@@ -185,8 +399,22 @@ input[type='number'] {
 }
 
 .helper {
-  margin: 0;
-  color: #475569;
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+#llm-status,
+#rebuild-meta,
+#rebuild-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  margin-right: 8px;
 }
 
 .progress {

@@ -51,6 +51,9 @@ function renderDropdown() {
 }
 
 function renderParticipants(analysis) {
+  if (!sessionTitle || !sessionDetails) {
+    return;
+  }
   sessionTitle.textContent = `${analysis.date} - ${analysis.session.topic}`;
   sessionDetails.innerHTML = '';
   sortParticipants(analysis.participants).forEach((participant) => {
@@ -84,7 +87,7 @@ function renderRecommendations(analysis) {
         const categoryCode = getCategoryCode(error);
         const examples = findAnnotationExamples(annotationByName, participant.name, categoryCode);
         const exampleItems = examples.length
-          ? examples.map((item) => `<li><strong>${escapeHtml(item.text)}</strong> → ${escapeHtml(item.correction)}</li>`).join('')
+          ? examples.map((item) => `<li><strong>${escapeHtml(item.text)}</strong> &rarr; ${escapeHtml(item.correction)}</li>`).join('')
           : '<li class="metric-note">No examples yet.</li>';
         return `
           <details class="error-group">
@@ -100,7 +103,7 @@ function renderRecommendations(analysis) {
         const examples = (rec.examples || [])
           .map(
             (example) =>
-              `<li><span class="example-error">${escapeHtml(example.error)}</span><span class="example-arrow">→</span><span class="example-fix">${escapeHtml(example.correction)}</span></li>`
+              `<li><span class="example-error">${escapeHtml(example.error)}</span><span class="example-arrow">&rarr;</span><span class="example-fix">${escapeHtml(example.correction)}</span></li>`
           )
           .join('');
         const guidance = rec.guidance ? `<p class="metric-note">${escapeHtml(rec.guidance)}</p>` : '';
@@ -357,22 +360,26 @@ function renderLlmStatus(analysis) {
     return;
   }
   const info = analysis.llm || { status: 'skipped' };
+  const metricsAt = info.metrics_updated_at || 'unknown';
+  const annotationsAt = info.annotations_updated_at || 'unknown';
+
+  let metricsStatus = 'skipped';
   if (info.status === 'ok') {
-    llmStatus.textContent = `OpenAI: success (${info.model || 'default model'})`;
+    metricsStatus = `success (${info.model || 'default model'})`;
   } else if (info.status === 'error') {
-    const detail = info.error
-      ? ` - ${String(info.error).slice(0, 140)}`
-      : '';
-    llmStatus.textContent = `OpenAI: error (${info.model || 'default model'})${detail}`;
-  } else {
-    llmStatus.textContent = 'OpenAI: skipped (no token)';
+    metricsStatus = `error (${info.model || 'default model'})`;
   }
 
-  if (info.annotations_status === 'error') {
-    const detail = info.annotations_error
-      ? ` - ${String(info.annotations_error).slice(0, 140)}`
+  let annotationsStatus = 'skipped';
+  if (info.annotations_status === 'ok') {
+    const attempted = info.annotations_attempted_model
+      || info.annotations_model
+      || info.annotations_meta?.attempted_model;
+    const model = attempted ? ` (${attempted})` : '';
+    const fallback = info.annotations_meta?.fallback_from
+      ? ` via ${info.annotations_meta.fallback_to}`
       : '';
-    llmStatus.textContent += ` | Annotations: error${detail}`;
+    annotationsStatus = `ok${model}${fallback}`;
   } else if (info.annotations_status === 'in_progress') {
     const attempted = info.annotations_attempted_model
       || info.annotations_model
@@ -382,16 +389,14 @@ function renderLlmStatus(analysis) {
     const progress = meta && meta.total_chunks
       ? ` ${meta.chunks_processed}/${meta.total_chunks}`
       : '';
-    llmStatus.textContent += ` | Annotations: running${model}${progress}`;
-  } else if (info.annotations_status === 'ok') {
-    const attempted = info.annotations_attempted_model
-      || info.annotations_model
-      || info.annotations_meta?.attempted_model;
-    const model = attempted ? ` (${attempted})` : '';
-    const fallback = info.annotations_meta?.fallback_from
-      ? ` via ${info.annotations_meta.fallback_to}`
-      : '';
-    llmStatus.textContent += ` | Annotations: ok${model}${fallback}`;
+    annotationsStatus = `running${model}${progress}`;
+  } else if (info.annotations_status === 'error') {
+    annotationsStatus = 'error';
+  }
+
+  llmStatus.textContent = `Metrics: ${metricsStatus} • updated ${metricsAt}`;
+  if (rebuildMeta) {
+    rebuildMeta.textContent = `Annotations: ${annotationsStatus} • updated ${annotationsAt}`;
   }
 }
 
@@ -399,9 +404,7 @@ function renderRebuildMeta(analysis) {
   if (!rebuildMeta) {
     return;
   }
-  const metricsAt = analysis?.llm?.metrics_updated_at || '—';
-  const annotationsAt = analysis?.llm?.annotations_updated_at || '—';
-  rebuildMeta.textContent = `Metrics updated: ${metricsAt} | Annotations updated: ${annotationsAt}`;
+  // handled by renderLlmStatus
 }
 
 function drawLineChart(canvas, series, labels, options) {

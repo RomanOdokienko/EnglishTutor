@@ -113,54 +113,57 @@
           {
             "title": "Wrong Word",
             "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "why": "12 cases (25% of all grammar issues). This lowers precision and can sound unnatural.",
             "examples": [
-              {
-                "error": "and justify yourself, please.",
-                "correction": "could you justify yourself, please?"
-              },
               {
                 "error": "Upload a transcript after",
                 "correction": "Upload a transcript after that"
+              },
+              {
+                "error": "I realized and I found that",
+                "correction": "I realized that only"
               }
             ]
           },
           {
             "title": "Verb Form",
             "guidance": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "why": "10 cases (21% of all grammar issues). This makes grammar sound inconsistent and less natural.",
             "examples": [
               {
                 "error": "works good enough",
                 "correction": "works well enough"
               },
               {
-                "error": "How I say local web server",
-                "correction": "How do I say 'local web server'"
+                "error": "what we have here simple functionality",
+                "correction": "what we have here is simple functionality"
               }
             ]
           },
           {
             "title": "Prepositions",
             "guidance": "Choose the correct preposition for common phrases and verbs.",
+            "why": "8 cases (17% of all grammar issues). This changes meaning in key phrases and verb patterns.",
             "examples": [
-              {
-                "error": "in some unusual timing?",
-                "correction": "at such an unusual time?"
-              },
               {
                 "error": "model can be frustrated in this moment",
                 "correction": "model can become frustrated at this moment"
+              },
+              {
+                "error": "I use assembly to transcribation to transcribe",
+                "correction": "I use assembly for transcription to transcribe"
               }
             ]
           }
         ],
         "annotation_grammar": {
-          "total_errors": 52,
-          "error_rate_per_100_words": 3.06,
+          "total_errors": 48,
+          "error_rate_per_100_words": 2.82,
           "error_types": [
             {
               "code": "WORD",
               "title": "Wrong Word",
-              "count": 15
+              "count": 12
             },
             {
               "code": "VERB",
@@ -178,17 +181,70 @@
               "count": 7
             },
             {
-              "code": "ARTICLE",
-              "title": "Articles",
-              "count": 6
-            },
-            {
               "code": "ORDER",
               "title": "Word Order",
               "count": 6
+            },
+            {
+              "code": "ARTICLE",
+              "title": "Articles",
+              "count": 5
             }
           ]
-        }
+        },
+        "top3_insights": [
+          {
+            "code": "WORD",
+            "title": "Wrong Word",
+            "count": 12,
+            "why": "12 cases (25% of all grammar issues). This lowers precision and can sound unnatural.",
+            "focus": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "examples": [
+              {
+                "error": "Upload a transcript after",
+                "correction": "Upload a transcript after that"
+              },
+              {
+                "error": "I realized and I found that",
+                "correction": "I realized that only"
+              }
+            ]
+          },
+          {
+            "code": "VERB",
+            "title": "Verb Form",
+            "count": 10,
+            "why": "10 cases (21% of all grammar issues). This makes grammar sound inconsistent and less natural.",
+            "focus": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "examples": [
+              {
+                "error": "works good enough",
+                "correction": "works well enough"
+              },
+              {
+                "error": "what we have here simple functionality",
+                "correction": "what we have here is simple functionality"
+              }
+            ]
+          },
+          {
+            "code": "PREP",
+            "title": "Prepositions",
+            "count": 8,
+            "why": "8 cases (17% of all grammar issues). This changes meaning in key phrases and verb patterns.",
+            "focus": "Choose the correct preposition for common phrases and verbs.",
+            "examples": [
+              {
+                "error": "model can be frustrated in this moment",
+                "correction": "model can become frustrated at this moment"
+              },
+              {
+                "error": "I use assembly to transcribation to transcribe",
+                "correction": "I use assembly for transcription to transcribe"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -299,49 +355,52 @@
           {
             "title": "Articles",
             "guidance": "Use a/an/the (or zero article) correctly before nouns.",
+            "why": "8 cases (35% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
             "examples": [
               {
                 "error": "the my screen",
                 "correction": "my screen"
               },
               {
-                "error": "the first comment is about model.",
-                "correction": "the first comment is about the model."
+                "error": "architecture of project",
+                "correction": "architecture of the project"
               }
             ]
           },
           {
             "title": "Wrong Word",
             "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "why": "5 cases (22% of all grammar issues). This lowers precision and can sound unnatural.",
             "examples": [
-              {
-                "error": "later before our meeting started.",
-                "correction": "before our meeting started."
-              },
               {
                 "error": "put it yeah in front of my",
                 "correction": "put it in front of my"
+              },
+              {
+                "error": "person choose select",
+                "correction": "person to choose"
               }
             ]
           },
           {
             "title": "Verb Form",
             "guidance": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "why": "4 cases (17% of all grammar issues). This makes grammar sound inconsistent and less natural.",
             "examples": [
               {
                 "error": "because could be like a dialogue",
                 "correction": "because it could be like a dialogue"
               },
               {
-                "error": "So it's not necessary to set up the.",
-                "correction": "So it's not necessary to set it up."
+                "error": "not only try to not only read the words",
+                "correction": "try not only to read the words"
               }
             ]
           }
         ],
         "annotation_grammar": {
-          "total_errors": 26,
-          "error_rate_per_100_words": 2.56,
+          "total_errors": 23,
+          "error_rate_per_100_words": 2.26,
           "error_types": [
             {
               "code": "ARTICLE",
@@ -356,12 +415,12 @@
             {
               "code": "VERB",
               "title": "Verb Form",
-              "count": 5
+              "count": 4
             },
             {
               "code": "ORDER",
               "title": "Word Order",
-              "count": 5
+              "count": 3
             },
             {
               "code": "PREP",
@@ -374,7 +433,60 @@
               "count": 1
             }
           ]
-        }
+        },
+        "top3_insights": [
+          {
+            "code": "ARTICLE",
+            "title": "Articles",
+            "count": 8,
+            "why": "8 cases (35% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
+            "focus": "Use a/an/the (or zero article) correctly before nouns.",
+            "examples": [
+              {
+                "error": "the my screen",
+                "correction": "my screen"
+              },
+              {
+                "error": "architecture of project",
+                "correction": "architecture of the project"
+              }
+            ]
+          },
+          {
+            "code": "WORD",
+            "title": "Wrong Word",
+            "count": 5,
+            "why": "5 cases (22% of all grammar issues). This lowers precision and can sound unnatural.",
+            "focus": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "examples": [
+              {
+                "error": "put it yeah in front of my",
+                "correction": "put it in front of my"
+              },
+              {
+                "error": "person choose select",
+                "correction": "person to choose"
+              }
+            ]
+          },
+          {
+            "code": "VERB",
+            "title": "Verb Form",
+            "count": 4,
+            "why": "4 cases (17% of all grammar issues). This makes grammar sound inconsistent and less natural.",
+            "focus": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "examples": [
+              {
+                "error": "because could be like a dialogue",
+                "correction": "because it could be like a dialogue"
+              },
+              {
+                "error": "not only try to not only read the words",
+                "correction": "try not only to read the words"
+              }
+            ]
+          }
+        ]
       }
     }
   ],

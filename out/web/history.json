@@ -10,7 +10,7 @@
           "fluency_score": 10.0,
           "llm_fluency_score": 6,
           "grammar_error_count": 12,
-          "llm_error_rate": 2.76,
+          "llm_error_rate": 2.61,
           "chunked_error_rate": 4.87
         },
         {
@@ -19,7 +19,7 @@
           "fluency_score": 10.0,
           "llm_fluency_score": 7,
           "grammar_error_count": 8,
-          "llm_error_rate": 2.2,
+          "llm_error_rate": 2.07,
           "chunked_error_rate": 2.77
         }
       ]
@@ -34,7 +34,7 @@
           "fluency_score": 10.0,
           "llm_fluency_score": 6.5,
           "grammar_error_count": 15,
-          "llm_error_rate": 4.66,
+          "llm_error_rate": 4.01,
           "chunked_error_rate": 5.01
         },
         {
@@ -43,7 +43,7 @@
           "fluency_score": 10.0,
           "llm_fluency_score": 7.0,
           "grammar_error_count": 10,
-          "llm_error_rate": 2.22,
+          "llm_error_rate": 1.92,
           "chunked_error_rate": 2.92
         }
       ]
@@ -58,7 +58,7 @@
           "fluency_score": 10.0,
           "llm_fluency_score": 70,
           "grammar_error_count": 12,
-          "llm_error_rate": 3.06,
+          "llm_error_rate": 2.82,
           "chunked_error_rate": 4.17
         },
         {
@@ -67,7 +67,7 @@
           "fluency_score": 10.0,
           "llm_fluency_score": 75,
           "grammar_error_count": 8,
-          "llm_error_rate": 2.56,
+          "llm_error_rate": 2.26,
           "chunked_error_rate": 3.34
         }
       ]
@@ -82,7 +82,7 @@
           "fluency_score": 10.0,
           "llm_fluency_score": 7,
           "grammar_error_count": 5,
-          "llm_error_rate": 3.31,
+          "llm_error_rate": 3.08,
           "chunked_error_rate": 4.33
         },
         {

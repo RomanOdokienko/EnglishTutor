@@ -105,20 +105,22 @@
           {
             "title": "Wrong Word",
             "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "why": "12 cases (35% of all grammar issues). This lowers precision and can sound unnatural.",
             "examples": [
+              {
+                "error": "Before eight years ago,",
+                "correction": "Eight years ago,"
+              },
               {
                 "error": "using the Chrome extension to transcribe his.",
                 "correction": "using the Chrome extension to transcribe his speech."
-              },
-              {
-                "error": "to find some mistakes in. I don't know",
-                "correction": "to find some mistakes. I don't know"
               }
             ]
           },
           {
             "title": "Verb Form",
             "guidance": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "why": "8 cases (24% of all grammar issues). This makes grammar sound inconsistent and less natural.",
             "examples": [
               {
                 "error": "what the difference between these words",
@@ -131,38 +133,34 @@
             ]
           },
           {
-            "title": "Articles",
-            "guidance": "Use a/an/the (or zero article) correctly before nouns.",
+            "title": "Verb Tense",
+            "guidance": "Match verb tense to time markers and keep tense consistent within a sentence.",
+            "why": "5 cases (15% of all grammar issues). This creates timeline confusion in your message.",
             "examples": [
               {
-                "error": "errors in interface mostly so I can't",
-                "correction": "errors in the interface mostly, so I can't"
+                "error": "my English is very nice because I can",
+                "correction": "my English was very nice because I could"
               },
               {
-                "error": "And this is second question.",
-                "correction": "And this is the second question."
+                "error": "I speak more fluently.",
+                "correction": "I spoke more fluently."
               }
             ]
           }
         ],
         "annotation_grammar": {
-          "total_errors": 36,
-          "error_rate_per_100_words": 2.76,
+          "total_errors": 34,
+          "error_rate_per_100_words": 2.61,
           "error_types": [
             {
               "code": "WORD",
               "title": "Wrong Word",
-              "count": 13
+              "count": 12
             },
             {
               "code": "VERB",
               "title": "Verb Form",
               "count": 8
-            },
-            {
-              "code": "ARTICLE",
-              "title": "Articles",
-              "count": 5
             },
             {
               "code": "TENSE",
@@ -175,12 +173,70 @@
               "count": 4
             },
             {
+              "code": "ARTICLE",
+              "title": "Articles",
+              "count": 4
+            },
+            {
               "code": "PREP",
               "title": "Prepositions",
               "count": 1
             }
           ]
-        }
+        },
+        "top3_insights": [
+          {
+            "code": "WORD",
+            "title": "Wrong Word",
+            "count": 12,
+            "why": "12 cases (35% of all grammar issues). This lowers precision and can sound unnatural.",
+            "focus": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "examples": [
+              {
+                "error": "Before eight years ago,",
+                "correction": "Eight years ago,"
+              },
+              {
+                "error": "using the Chrome extension to transcribe his.",
+                "correction": "using the Chrome extension to transcribe his speech."
+              }
+            ]
+          },
+          {
+            "code": "VERB",
+            "title": "Verb Form",
+            "count": 8,
+            "why": "8 cases (24% of all grammar issues). This makes grammar sound inconsistent and less natural.",
+            "focus": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "examples": [
+              {
+                "error": "what the difference between these words",
+                "correction": "what the difference is between these words"
+              },
+              {
+                "error": "mistakes that something",
+                "correction": "mistakes are something"
+              }
+            ]
+          },
+          {
+            "code": "TENSE",
+            "title": "Verb Tense",
+            "count": 5,
+            "why": "5 cases (15% of all grammar issues). This creates timeline confusion in your message.",
+            "focus": "Match verb tense to time markers and keep tense consistent within a sentence.",
+            "examples": [
+              {
+                "error": "my English is very nice because I can",
+                "correction": "my English was very nice because I could"
+              },
+              {
+                "error": "I speak more fluently.",
+                "correction": "I spoke more fluently."
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -279,34 +335,37 @@
           {
             "title": "Wrong Word",
             "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "why": "14 cases (45% of all grammar issues). This lowers precision and can sound unnatural.",
             "examples": [
               {
                 "error": "some efficient instruments should have in place",
                 "correction": "some efficient instruments should be in place"
               },
               {
-                "error": "First one, how we can evaluate the currently our current fluency level",
-                "correction": "First, how we can evaluate our current fluency level"
+                "error": "That exists English vocabulary",
+                "correction": "There exists English vocabulary"
               }
             ]
           },
           {
             "title": "Verb Tense",
             "guidance": "Match verb tense to time markers and keep tense consistent within a sentence.",
+            "why": "6 cases (19% of all grammar issues). This creates timeline confusion in your message.",
             "examples": [
+              {
+                "error": "company guaranteed that it will be",
+                "correction": "company guarantees that it will be"
+              },
               {
                 "error": "I listening",
                 "correction": "I am listening"
-              },
-              {
-                "error": "I speaking.",
-                "correction": "I am speaking."
               }
             ]
           },
           {
             "title": "Verb Form",
             "guidance": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "why": "5 cases (16% of all grammar issues). This makes grammar sound inconsistent and less natural.",
             "examples": [
               {
                 "error": "Mistakes it what you can make and errors",
@@ -320,13 +379,13 @@
           }
         ],
         "annotation_grammar": {
-          "total_errors": 33,
-          "error_rate_per_100_words": 2.2,
+          "total_errors": 31,
+          "error_rate_per_100_words": 2.07,
           "error_types": [
             {
               "code": "WORD",
               "title": "Wrong Word",
-              "count": 15
+              "count": 14
             },
             {
               "code": "TENSE",
@@ -341,7 +400,7 @@
             {
               "code": "ARTICLE",
               "title": "Articles",
-              "count": 5
+              "count": 4
             },
             {
               "code": "ORDER",
@@ -354,7 +413,60 @@
               "count": 1
             }
           ]
-        }
+        },
+        "top3_insights": [
+          {
+            "code": "WORD",
+            "title": "Wrong Word",
+            "count": 14,
+            "why": "14 cases (45% of all grammar issues). This lowers precision and can sound unnatural.",
+            "focus": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "examples": [
+              {
+                "error": "some efficient instruments should have in place",
+                "correction": "some efficient instruments should be in place"
+              },
+              {
+                "error": "That exists English vocabulary",
+                "correction": "There exists English vocabulary"
+              }
+            ]
+          },
+          {
+            "code": "TENSE",
+            "title": "Verb Tense",
+            "count": 6,
+            "why": "6 cases (19% of all grammar issues). This creates timeline confusion in your message.",
+            "focus": "Match verb tense to time markers and keep tense consistent within a sentence.",
+            "examples": [
+              {
+                "error": "company guaranteed that it will be",
+                "correction": "company guarantees that it will be"
+              },
+              {
+                "error": "I listening",
+                "correction": "I am listening"
+              }
+            ]
+          },
+          {
+            "code": "VERB",
+            "title": "Verb Form",
+            "count": 5,
+            "why": "5 cases (16% of all grammar issues). This makes grammar sound inconsistent and less natural.",
+            "focus": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "examples": [
+              {
+                "error": "Mistakes it what you can make and errors",
+                "correction": "Mistakes are what you can make, and errors"
+              },
+              {
+                "error": "I can explain you, but maybe",
+                "correction": "I can explain to you, but maybe"
+              }
+            ]
+          }
+        ]
       }
     }
   ],

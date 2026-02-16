@@ -12,19 +12,32 @@
         <h1>English Session Evaluator</h1>
         <p class="subtitle">Review fluency progress and session details.</p>
         <div class="header-actions">
-          <a class="inline-link" href="upload.html">Upload a transcript</a>
-          <button class="ghost" id="rebuild-metrics-button">Re-run metrics</button>
-          <button class="ghost" id="rebuild-annotations-button">Re-run annotations</button>
-          <button class="ghost" id="test-model-button">Test gpt-5-mini</button>
-          <button class="ghost danger" id="delete-button">Delete session</button>
+          <div class="header-links">
+            <a class="inline-link" href="upload.html">Upload a transcript</a>
+            <a class="inline-link" href="highlights.html">Highlights</a>
+          </div>
+          <div class="header-status-grid">
+            <div class="status-block">
+              <button class="ghost" id="rebuild-metrics-button">Re-run metrics</button>
+              <p class="helper" id="llm-status"></p>
+            </div>
+            <div class="status-block">
+              <button class="ghost" id="rebuild-annotations-button">Re-run annotations</button>
+              <p class="helper" id="rebuild-meta"></p>
+            </div>
+          </div>
+          <div class="header-tools">
+            <button class="ghost" id="test-model-button">Test gpt-5-mini</button>
+          </div>
         </div>
         <p class="helper" id="rebuild-status"></p>
-        <p class="helper" id="llm-status"></p>
-        <p class="helper" id="rebuild-meta"></p>
       </header>
       <section class="controls">
         <label for="session-select">Session date</label>
-        <select id="session-select"></select>
+        <div class="session-row">
+          <select id="session-select"></select>
+          <button class="ghost danger" id="delete-button">Delete session</button>
+        </div>
       </section>
       <section class="summary">
         <h2 id="session-title">Session</h2>

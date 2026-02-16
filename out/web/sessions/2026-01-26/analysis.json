@@ -105,69 +105,72 @@
           {
             "title": "Wrong Word",
             "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "why": "20 cases (36% of all grammar issues). This lowers precision and can sound unnatural.",
             "examples": [
-              {
-                "error": "how is it good",
-                "correction": "how good it is"
-              },
               {
                 "error": "or so or something",
                 "correction": "or something like that"
+              },
+              {
+                "error": "I didn't find splitting our conversation by users",
+                "correction": "I didn't find how to split our conversation by users"
               }
             ]
           },
           {
             "title": "Verb Form",
             "guidance": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "why": "11 cases (20% of all grammar issues). This makes grammar sound inconsistent and less natural.",
             "examples": [
               {
-                "error": "forgot find",
-                "correction": "forgot to find"
+                "error": "I suggest to keep this conversation",
+                "correction": "I suggest keeping this conversation"
               },
               {
-                "error": "suggest to. To not interrupt",
-                "correction": "suggest not interrupting"
+                "error": "for having comparative figures metrics as",
+                "correction": "to have comparative figures metrics as"
               }
             ]
           },
           {
             "title": "Articles",
             "guidance": "Use a/an/the (or zero article) correctly before nouns.",
+            "why": "11 cases (20% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
             "examples": [
               {
-                "error": "anyway we need only raw.",
-                "correction": "anyway, we need only a raw"
+                "error": "we agreed to take car by this company",
+                "correction": "we agreed to take the car with this company"
               },
               {
-                "error": "Txt file so maybe I can record speakers.",
-                "correction": "a .txt file, so maybe I can record the speakers."
+                "error": "depends on amount of work",
+                "correction": "depends on the amount of work"
               }
             ]
           }
         ],
         "annotation_grammar": {
-          "total_errors": 65,
-          "error_rate_per_100_words": 4.66,
+          "total_errors": 56,
+          "error_rate_per_100_words": 4.01,
           "error_types": [
             {
               "code": "WORD",
               "title": "Wrong Word",
-              "count": 22
+              "count": 20
             },
             {
               "code": "VERB",
               "title": "Verb Form",
-              "count": 12
+              "count": 11
             },
             {
               "code": "ARTICLE",
               "title": "Articles",
-              "count": 12
+              "count": 11
             },
             {
               "code": "ORDER",
               "title": "Word Order",
-              "count": 10
+              "count": 6
             },
             {
               "code": "TENSE",
@@ -177,10 +180,63 @@
             {
               "code": "PREP",
               "title": "Prepositions",
-              "count": 4
+              "count": 3
             }
           ]
-        }
+        },
+        "top3_insights": [
+          {
+            "code": "WORD",
+            "title": "Wrong Word",
+            "count": 20,
+            "why": "20 cases (36% of all grammar issues). This lowers precision and can sound unnatural.",
+            "focus": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "examples": [
+              {
+                "error": "or so or something",
+                "correction": "or something like that"
+              },
+              {
+                "error": "I didn't find splitting our conversation by users",
+                "correction": "I didn't find how to split our conversation by users"
+              }
+            ]
+          },
+          {
+            "code": "VERB",
+            "title": "Verb Form",
+            "count": 11,
+            "why": "11 cases (20% of all grammar issues). This makes grammar sound inconsistent and less natural.",
+            "focus": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "examples": [
+              {
+                "error": "I suggest to keep this conversation",
+                "correction": "I suggest keeping this conversation"
+              },
+              {
+                "error": "for having comparative figures metrics as",
+                "correction": "to have comparative figures metrics as"
+              }
+            ]
+          },
+          {
+            "code": "ARTICLE",
+            "title": "Articles",
+            "count": 11,
+            "why": "11 cases (20% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
+            "focus": "Use a/an/the (or zero article) correctly before nouns.",
+            "examples": [
+              {
+                "error": "we agreed to take car by this company",
+                "correction": "we agreed to take the car with this company"
+              },
+              {
+                "error": "depends on amount of work",
+                "correction": "depends on the amount of work"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -283,6 +339,7 @@
           {
             "title": "Articles",
             "guidance": "Use a/an/the (or zero article) correctly before nouns.",
+            "why": "6 cases (32% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
             "examples": [
               {
                 "error": "feels like same",
@@ -297,35 +354,37 @@
           {
             "title": "Verb Form",
             "guidance": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "why": "5 cases (26% of all grammar issues). This makes grammar sound inconsistent and less natural.",
             "examples": [
               {
-                "error": "That's two. No, that's two different devices",
-                "correction": "No, those are two different devices"
+                "error": "ask rewrite the transcription",
+                "correction": "ask to rewrite the transcription"
               },
               {
-                "error": "the one the same cloud account but it is two different devices",
-                "correction": "the same cloud account, but they are two different devices"
+                "error": "just try to use Perplexity for it.",
+                "correction": "try using Perplexity for it."
               }
             ]
           },
           {
             "title": "Wrong Word",
             "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "why": "4 cases (21% of all grammar issues). This lowers precision and can sound unnatural.",
             "examples": [
               {
                 "error": "there is no know",
                 "correction": "there is no"
               },
               {
-                "error": "transcription transcribe transcription",
-                "correction": "transcription"
+                "error": "libraries for some special tasks.",
+                "correction": "libraries for specific tasks."
               }
             ]
           }
         ],
         "annotation_grammar": {
-          "total_errors": 22,
-          "error_rate_per_100_words": 2.22,
+          "total_errors": 19,
+          "error_rate_per_100_words": 1.92,
           "error_types": [
             {
               "code": "ARTICLE",
@@ -335,25 +394,78 @@
             {
               "code": "VERB",
               "title": "Verb Form",
-              "count": 6
+              "count": 5
             },
             {
               "code": "WORD",
               "title": "Wrong Word",
-              "count": 5
-            },
-            {
-              "code": "ORDER",
-              "title": "Word Order",
-              "count": 3
+              "count": 4
             },
             {
               "code": "PREP",
               "title": "Prepositions",
               "count": 2
+            },
+            {
+              "code": "ORDER",
+              "title": "Word Order",
+              "count": 2
             }
           ]
-        }
+        },
+        "top3_insights": [
+          {
+            "code": "ARTICLE",
+            "title": "Articles",
+            "count": 6,
+            "why": "6 cases (32% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
+            "focus": "Use a/an/the (or zero article) correctly before nouns.",
+            "examples": [
+              {
+                "error": "feels like same",
+                "correction": "feels like the same"
+              },
+              {
+                "error": "try to try to use the context, not context window",
+                "correction": "try to use the context, not the context window"
+              }
+            ]
+          },
+          {
+            "code": "VERB",
+            "title": "Verb Form",
+            "count": 5,
+            "why": "5 cases (26% of all grammar issues). This makes grammar sound inconsistent and less natural.",
+            "focus": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "examples": [
+              {
+                "error": "ask rewrite the transcription",
+                "correction": "ask to rewrite the transcription"
+              },
+              {
+                "error": "just try to use Perplexity for it.",
+                "correction": "try using Perplexity for it."
+              }
+            ]
+          },
+          {
+            "code": "WORD",
+            "title": "Wrong Word",
+            "count": 4,
+            "why": "4 cases (21% of all grammar issues). This lowers precision and can sound unnatural.",
+            "focus": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "examples": [
+              {
+                "error": "there is no know",
+                "correction": "there is no"
+              },
+              {
+                "error": "libraries for some special tasks.",
+                "correction": "libraries for specific tasks."
+              }
+            ]
+          }
+        ]
       }
     }
   ],

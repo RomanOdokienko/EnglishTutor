@@ -1,9 +1,11 @@
 ﻿
 #!/usr/bin/env python3
 import argparse
+from collections import Counter
 import json
 import os
 import re
+import shutil
 import time
 import urllib.error
 import urllib.request
@@ -280,6 +282,8 @@ def normalize_annotations(text: str, errors: list[dict]) -> list[dict]:
         # Discard single-word spans to reduce noise.
         if len(snippet.split()) < 2:
             continue
+        if len(snippet.split()) > 24:
+            continue
 
         # Expand to word boundaries to avoid single-character highlights.
         while start > 0 and text[start - 1].isalnum():
@@ -291,6 +295,8 @@ def normalize_annotations(text: str, errors: list[dict]) -> list[dict]:
             continue
         if len(snippet.split()) < 2:
             continue
+        if len(snippet.split()) > 24:
+            continue
         category = (item.get("category") or "").strip().upper()
         if category and category not in valid_categories:
             category = ""
@@ -301,6 +307,8 @@ def normalize_annotations(text: str, errors: list[dict]) -> list[dict]:
         if is_punctuation_only_change(snippet, item.get("correction", "")):
             continue
         if is_filler_text(snippet):
+            continue
+        if has_disfluency_pattern(snippet):
             continue
         if is_non_evaluated_explanation(item.get("explanation", "")):
             continue
@@ -537,6 +545,16 @@ PRACTICAL_GUIDANCE = {
     "COLLOC": "Use natural word combinations instead of literal translations.",
 }
 
+INSIGHT_IMPACT = {
+    "TENSE": "This creates timeline confusion in your message.",
+    "VERB": "This makes grammar sound inconsistent and less natural.",
+    "ARTICLE": "This reduces grammatical accuracy in noun phrases.",
+    "PREP": "This changes meaning in key phrases and verb patterns.",
+    "ORDER": "This makes ideas harder to follow on first read.",
+    "WORD": "This lowers precision and can sound unnatural.",
+    "COLLOC": "This sounds translated and less native-like.",
+}
+
 
 def normalize_error_type(title: str) -> dict:
     normalized = (title or "").strip()
@@ -701,6 +719,95 @@ def infer_category_code(item: dict) -> str:
     return ""
 
 
+def normalize_compare_text(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", (value or "").lower())
+
+
+def has_meaningful_correction(text: str, correction: str) -> bool:
+    if not text or not correction:
+        return False
+    return normalize_compare_text(text) != normalize_compare_text(correction)
+
+
+def build_insight_reason(code: str, count: int, total_errors: int) -> str:
+    if total_errors <= 0:
+        return "This issue appears repeatedly in the session."
+    share = round((count / total_errors) * 100)
+    impact = INSIGHT_IMPACT.get(code, "This pattern reduces clarity and accuracy.")
+    return f"{count} cases ({share}% of all grammar issues). {impact}"
+
+
+def tokenize_words(value: str) -> list[str]:
+    return re.findall(r"[A-Za-z']+", (value or "").lower())
+
+
+def token_diff_size(text: str, correction: str) -> int:
+    src = Counter(tokenize_words(text))
+    dst = Counter(tokenize_words(correction))
+    removed = src - dst
+    added = dst - src
+    return sum(removed.values()) + sum(added.values())
+
+
+def has_disfluency_pattern(text: str) -> bool:
+    lowered = (text or "").lower().strip()
+    if not lowered:
+        return False
+    if lowered.startswith("i mean") or lowered.startswith("you know"):
+        return True
+    # Example: "I. I", "the the", "we, we"
+    if re.search(r"\b([a-z]{1,5})\b[\s,.;:!?-]+\1\b", lowered):
+        return True
+    return False
+
+
+def is_clean_example_pair(text: str, correction: str) -> bool:
+    if not has_meaningful_correction(text, correction):
+        return False
+    if "\n" in text or "\n" in correction:
+        return False
+    words = tokenize_words(text)
+    correction_words = tokenize_words(correction)
+    if len(words) < 2 or len(words) > 18:
+        return False
+    if len(correction_words) < 2 or len(correction_words) > 24:
+        return False
+    if len(re.findall(r"[.!?]", text)) > 1:
+        return False
+    if has_disfluency_pattern(text) or is_filler_text(text):
+        return False
+    diff_size = token_diff_size(text, correction)
+    if diff_size == 0:
+        return False
+    # If the correction rewrites too much, it's usually noisy for examples.
+    if diff_size > max(8, int(len(words) * 0.8)):
+        return False
+    return True
+
+
+def example_quality_score(text: str, correction: str) -> int:
+    words_len = len(tokenize_words(text))
+    diff_size = token_diff_size(text, correction)
+    score = 0
+    if 3 <= words_len <= 10:
+        score += 3
+    elif words_len <= 14:
+        score += 2
+    elif words_len <= 18:
+        score += 1
+    if 1 <= diff_size <= 4:
+        score += 3
+    elif diff_size <= 7:
+        score += 1
+    else:
+        score -= 2
+    if re.search(r"[.!?]", text):
+        score -= 1
+    if has_disfluency_pattern(text):
+        score -= 3
+    return score
+
+
 def build_annotation_metrics(analysis: dict, transcript_text: str) -> None:
     annotation_items = analysis.get("llm", {}).get("annotation_items") or []
     if not annotation_items:
@@ -714,6 +821,17 @@ def build_annotation_metrics(analysis: dict, transcript_text: str) -> None:
         items = by_name.get(name, [])
         counts: dict[str, int] = {}
         for item in items:
+            text = (item.get("text") or "").strip()
+            correction = (item.get("correction") or "").strip()
+            if not text or not correction:
+                continue
+            word_count = len(tokenize_words(text))
+            if word_count < 2 or word_count > 24:
+                continue
+            if has_disfluency_pattern(text) or is_filler_text(text):
+                continue
+            if not has_meaningful_correction(text, correction):
+                continue
             code = (item.get("category") or "").strip().upper()
             if not code:
                 code = infer_category_code(item)
@@ -757,15 +875,19 @@ def build_practical_recommendations(analysis: dict, transcript_text: str) -> Non
             continue
         top_errors = annotation_grammar.get("error_types") or []
         ordered = top_errors[:3]
+        total_errors = int(annotation_grammar.get("total_errors", 0) or 0)
 
         items_for_speaker = by_name.get(name, [])
         used_texts: set[str] = set()
         practical: list[dict] = []
+        insights: list[dict] = []
         for bucket in ordered:
             code = (bucket.get("code") or "").strip().upper()
             label = bucket.get("title") or CATEGORY_LABELS.get(code, code)
             guidance = PRACTICAL_GUIDANCE.get(code, "")
+            count = int(bucket.get("count", 0) or 0)
             examples: list[dict] = []
+            candidates: list[tuple[int, int, str, str]] = []
             for item in items_for_speaker:
                 text = (item.get("text") or "").strip()
                 correction = (item.get("correction") or "").strip()
@@ -774,33 +896,41 @@ def build_practical_recommendations(analysis: dict, transcript_text: str) -> Non
                 if text in used_texts:
                     continue
                 item_code = (item.get("category") or "").strip().upper()
-                if code and item_code == code:
-                    examples.append({"error": text, "correction": correction})
-                    used_texts.add(text)
+                if code and item_code != code:
+                    continue
+                if not is_clean_example_pair(text, correction):
+                    continue
+                quality = example_quality_score(text, correction)
+                start = int(item.get("start", 0) or 0)
+                candidates.append((quality, start, text, correction))
+
+            candidates.sort(key=lambda row: (-row[0], row[1]))
+            for _quality, _start, text, correction in candidates:
+                examples.append({"error": text, "correction": correction})
+                used_texts.add(text)
                 if len(examples) >= 2:
                     break
-            if len(examples) < 2:
-                for item in items_for_speaker:
-                    text = (item.get("text") or "").strip()
-                    correction = (item.get("correction") or "").strip()
-                    if not text or not correction:
-                        continue
-                    if text in used_texts:
-                        continue
-                    examples.append({"error": text, "correction": correction})
-                    used_texts.add(text)
-                    if len(examples) >= 2:
-                        break
+            insight = {
+                "code": code,
+                "title": label,
+                "count": count,
+                "why": build_insight_reason(code, count, total_errors),
+                "focus": guidance,
+                "examples": examples,
+            }
+            insights.append(insight)
             practical.append(
                 {
                     "title": label,
                     "guidance": guidance,
+                    "why": insight["why"],
                     "examples": examples,
                 }
             )
         if practical:
             participant.setdefault("llm", {})
             participant["llm"]["practical_recommendations"] = practical
+            participant["llm"]["top3_insights"] = insights
 
 def call_openai_analysis(
     transcript_text: str,
@@ -951,9 +1081,12 @@ def call_openai_chunk_annotations(
     user_prompt = (
         "Return JSON with a list of grammar errors found in the transcript chunk. "
         "Provide 0-based character indices into the chunk text (start inclusive, end exclusive). "
+        "Spans must be short and local (prefer 2-12 words), never multi-sentence. "
         "Spans must cover the full erroneous phrase (at least 4 characters, include surrounding words if needed). "
         "Include correction, a short explanation, and a category code from this list: "
         "TENSE, VERB, ARTICLE, PREP, ORDER, WORD, COLLOC. "
+        "Exclude transcription artifacts and disfluencies: repeated starts (e.g., 'I. I'), fillers, and discourse markers like 'I mean'/'you know', "
+        "unless there is a clear grammar-rule violation. "
         "Do not limit the number of errors.\n\n"
         f"Chunk text:\n{chunk_text}"
     )
@@ -1631,6 +1764,8 @@ def analyze_session(
         if existing_analysis:
             merge_existing_llm(analysis, existing_analysis)
         analysis.setdefault("llm", {"status": "skipped", "model": openai_model or DEFAULT_OPENAI_MODEL})
+        build_annotation_metrics(analysis, transcript_text)
+        build_practical_recommendations(analysis, transcript_text)
         return analysis
 
     api_key = os.getenv("OPENAI_API_KEY", "")
@@ -1639,6 +1774,8 @@ def analyze_session(
         if existing_analysis:
             merge_existing_llm(analysis, existing_analysis)
         analysis["llm"] = {"status": "skipped", "model": model}
+        build_annotation_metrics(analysis, transcript_text)
+        build_practical_recommendations(analysis, transcript_text)
         return analysis
 
     llm_data, error = call_openai_analysis(transcript_text, participants, api_key, model)
@@ -1889,19 +2026,32 @@ INDEX_HTML = """<!doctype html>
         <h1>English Session Evaluator</h1>
         <p class="subtitle">Review fluency progress and session details.</p>
         <div class="header-actions">
-          <a class="inline-link" href="upload.html">Upload a transcript</a>
-          <button class="ghost" id="rebuild-metrics-button">Re-run metrics</button>
-          <button class="ghost" id="rebuild-annotations-button">Re-run annotations</button>
-          <button class="ghost" id="test-model-button">Test gpt-5-mini</button>
-          <button class="ghost danger" id="delete-button">Delete session</button>
+          <div class="header-links">
+            <a class="inline-link" href="upload.html">Upload a transcript</a>
+            <a class="inline-link" href="highlights.html">Highlights</a>
+          </div>
+          <div class="header-status-grid">
+            <div class="status-block">
+              <button class="ghost" id="rebuild-metrics-button">Re-run metrics</button>
+              <p class="helper" id="llm-status"></p>
+            </div>
+            <div class="status-block">
+              <button class="ghost" id="rebuild-annotations-button">Re-run annotations</button>
+              <p class="helper" id="rebuild-meta"></p>
+            </div>
+          </div>
+          <div class="header-tools">
+            <button class="ghost" id="test-model-button">Test gpt-5-mini</button>
+          </div>
         </div>
         <p class="helper" id="rebuild-status"></p>
-        <p class="helper" id="llm-status"></p>
-        <p class="helper" id="rebuild-meta"></p>
       </header>
       <section class="controls">
         <label for="session-select">Session date</label>
-        <select id="session-select"></select>
+        <div class="session-row">
+          <select id="session-select"></select>
+          <button class="ghost danger" id="delete-button">Delete session</button>
+        </div>
       </section>
       <section class="summary">
         <h2 id="session-title">Session</h2>
@@ -2126,6 +2276,211 @@ UPLOAD_HTML = r"""<!doctype html>
 </html>
 """
 
+HIGHLIGHTS_HTML = r"""<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Session Highlights</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Session Highlights</h1>
+        <p class="subtitle">Three focused, practical takeaways for the next session.</p>
+        <div class="header-actions">
+          <div class="header-links">
+            <a class="inline-link" href="index.html">Detailed statistics</a>
+          </div>
+        </div>
+      </header>
+      <section class="controls controls-highlights">
+        <label for="highlight-session-select">Session date</label>
+        <select id="highlight-session-select"></select>
+      </section>
+      <section id="highlights-root" class="highlight-grid"></section>
+    </main>
+    <script src="highlights.js"></script>
+  </body>
+</html>
+"""
+
+HIGHLIGHTS_JS = r"""const sessionSelect = document.getElementById('highlight-session-select');
+const highlightsRoot = document.getElementById('highlights-root');
+
+const state = {
+  history: null,
+  analysisCache: new Map(),
+};
+
+async function loadHistory() {
+  const response = await fetch('history.json');
+  if (!response.ok) {
+    throw new Error('Unable to load history.json');
+  }
+  return response.json();
+}
+
+async function loadAnalysis(date) {
+  if (state.analysisCache.has(date)) {
+    return state.analysisCache.get(date);
+  }
+  const response = await fetch(`sessions/${date}/analysis.json`);
+  if (!response.ok) {
+    throw new Error(`Unable to load analysis for ${date}`);
+  }
+  const data = await response.json();
+  state.analysisCache.set(date, data);
+  return data;
+}
+
+function formatSessionDate(value) {
+  const raw = String(value || '').trim();
+  if (!raw) {
+    return '';
+  }
+  const parsed = new Date(`${raw}T00:00:00`);
+  if (Number.isNaN(parsed.getTime())) {
+    return raw;
+  }
+  return parsed.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
+}
+
+function renderDropdown() {
+  sessionSelect.innerHTML = '';
+  state.history.sessions.forEach((session) => {
+    const option = document.createElement('option');
+    option.value = session.date;
+    option.textContent = formatSessionDate(session.date);
+    sessionSelect.appendChild(option);
+  });
+}
+
+function sortParticipants(participants) {
+  const list = Array.isArray(participants) ? [...participants] : [];
+  return list.sort((a, b) => {
+    const aName = (a?.name || '').toLowerCase();
+    const bName = (b?.name || '').toLowerCase();
+    if (aName === 'roman' && bName !== 'roman') return -1;
+    if (bName === 'roman' && aName !== 'roman') return 1;
+    return aName.localeCompare(bName);
+  });
+}
+
+function escapeHtml(value) {
+  if (!value) {
+    return '';
+  }
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function getTopInsights(participant) {
+  const insights = participant.llm?.top3_insights || [];
+  if (insights.length) {
+    return insights.slice(0, 3);
+  }
+  const practical = participant.llm?.practical_recommendations || [];
+  return practical.slice(0, 3).map((item) => ({
+    title: item.title,
+    why: item.why || '',
+    focus: item.guidance || '',
+    examples: item.examples || [],
+  }));
+}
+
+function buildLead(participant, top3) {
+  const totalErrors = participant.llm?.annotation_grammar?.total_errors;
+  const labels = top3.map((item) => item.title).filter(Boolean);
+  if (typeof totalErrors === 'number' && labels.length) {
+    return `${participant.name}: ${totalErrors} total grammar issues. Top recurring patterns are ${labels.join(', ')}.`;
+  }
+  if (typeof totalErrors === 'number') {
+    return `${participant.name}: ${totalErrors} total grammar issues in this session.`;
+  }
+  return 'Focused patterns to work on before the next session.';
+}
+
+function renderHighlights(analysis) {
+  highlightsRoot.innerHTML = '';
+  const participants = sortParticipants(analysis.participants || []);
+  participants.forEach((participant) => {
+    const card = document.createElement('div');
+    card.className = 'highlight-card';
+
+    const top3 = getTopInsights(participant);
+    const items = top3.map((rec, index) => {
+      const examples = (rec.examples || [])
+        .map(
+          (example) =>
+            `<li><span class="example-error">${escapeHtml(example.error)}</span><span class="example-arrow">&rarr;</span><span class="example-fix">${escapeHtml(example.correction)}</span></li>`
+        )
+        .join('');
+      const examplesBlock = examples
+        ? `<ul class="errors compact">${examples}</ul>`
+        : '<p class="metric-note">No examples captured yet.</p>';
+      const why = rec.why || 'Recurring pattern in this session.';
+      const focus = rec.focus ? `<p class="highlight-focus">${escapeHtml(rec.focus)}</p>` : '';
+      return `
+        <div class="highlight-item">
+          <div class="highlight-rank">${index + 1}</div>
+          <div class="highlight-body">
+            <h3>${escapeHtml(rec.title)}</h3>
+            <p class="highlight-why">${escapeHtml(why)}</p>
+            ${focus}
+            ${examplesBlock}
+          </div>
+        </div>
+      `;
+    }).join('');
+    const lead = buildLead(participant, top3);
+
+    const summary = participant.llm?.annotation_grammar?.total_errors
+      ? `${participant.llm.annotation_grammar.total_errors} total errors.`
+      : 'Key focuses for next session.';
+
+    card.innerHTML = `
+      <div class="highlight-header">
+        <h2>${escapeHtml(participant.name)}</h2>
+        <span class="highlight-meta">${escapeHtml(summary)}</span>
+      </div>
+      <p class="highlight-lead">${escapeHtml(lead)}</p>
+      ${items || '<p class="metric-note">No highlights yet. Run annotations to generate focus areas.</p>'}
+    `;
+    highlightsRoot.appendChild(card);
+  });
+}
+
+async function handleSelection() {
+  const date = sessionSelect.value;
+  const analysis = await loadAnalysis(date);
+  renderHighlights(analysis);
+}
+
+async function init() {
+  try {
+    state.history = await loadHistory();
+    renderDropdown();
+    if (state.history.sessions.length) {
+      sessionSelect.value = state.history.sessions[state.history.sessions.length - 1].date;
+    }
+    sessionSelect.addEventListener('change', handleSelection);
+    await handleSelection();
+  } catch (error) {
+    highlightsRoot.innerHTML = `<p>${error.message}</p>`;
+  }
+}
+
+init();
+"""
+
 APP_JS = r"""const sessionSelect = document.getElementById('session-select');
 const sessionTitle = document.getElementById('session-title');
 const sessionDetails = document.getElementById('session-details');
@@ -2148,7 +2503,7 @@ const state = {
 };
 
 async function loadHistory() {
-  const response = await fetch('../history.json');
+  const response = await fetch('history.json');
   if (!response.ok) {
     throw new Error('Unable to load history.json');
   }
@@ -2159,7 +2514,7 @@ async function loadAnalysis(date) {
   if (state.analysisCache.has(date)) {
     return state.analysisCache.get(date);
   }
-  const response = await fetch(`../sessions/${date}/analysis.json`);
+  const response = await fetch(`sessions/${date}/analysis.json`);
   if (!response.ok) {
     throw new Error(`Unable to load analysis for ${date}`);
   }
@@ -2179,6 +2534,9 @@ function renderDropdown() {
 }
 
 function renderParticipants(analysis) {
+  if (!sessionTitle || !sessionDetails) {
+    return;
+  }
   sessionTitle.textContent = `${analysis.date} - ${analysis.session.topic}`;
   sessionDetails.innerHTML = '';
   sortParticipants(analysis.participants).forEach((participant) => {
@@ -2212,7 +2570,7 @@ function renderRecommendations(analysis) {
         const categoryCode = getCategoryCode(error);
         const examples = findAnnotationExamples(annotationByName, participant.name, categoryCode);
         const exampleItems = examples.length
-          ? examples.map((item) => `<li><strong>${escapeHtml(item.text)}</strong> → ${escapeHtml(item.correction)}</li>`).join('')
+          ? examples.map((item) => `<li><strong>${escapeHtml(item.text)}</strong> &rarr; ${escapeHtml(item.correction)}</li>`).join('')
           : '<li class="metric-note">No examples yet.</li>';
         return `
           <details class="error-group">
@@ -2228,7 +2586,7 @@ function renderRecommendations(analysis) {
         const examples = (rec.examples || [])
           .map(
             (example) =>
-              `<li><span class="example-error">${escapeHtml(example.error)}</span><span class="example-arrow">→</span><span class="example-fix">${escapeHtml(example.correction)}</span></li>`
+              `<li><span class="example-error">${escapeHtml(example.error)}</span><span class="example-arrow">&rarr;</span><span class="example-fix">${escapeHtml(example.correction)}</span></li>`
           )
           .join('');
         const guidance = rec.guidance ? `<p class="metric-note">${escapeHtml(rec.guidance)}</p>` : '';
@@ -2485,22 +2843,26 @@ function renderLlmStatus(analysis) {
     return;
   }
   const info = analysis.llm || { status: 'skipped' };
+  const metricsAt = info.metrics_updated_at || 'unknown';
+  const annotationsAt = info.annotations_updated_at || 'unknown';
+
+  let metricsStatus = 'skipped';
   if (info.status === 'ok') {
-    llmStatus.textContent = `OpenAI: success (${info.model || 'default model'})`;
+    metricsStatus = `success (${info.model || 'default model'})`;
   } else if (info.status === 'error') {
-    const detail = info.error
-      ? ` - ${String(info.error).slice(0, 140)}`
-      : '';
-    llmStatus.textContent = `OpenAI: error (${info.model || 'default model'})${detail}`;
-  } else {
-    llmStatus.textContent = 'OpenAI: skipped (no token)';
+    metricsStatus = `error (${info.model || 'default model'})`;
   }
 
-  if (info.annotations_status === 'error') {
-    const detail = info.annotations_error
-      ? ` - ${String(info.annotations_error).slice(0, 140)}`
+  let annotationsStatus = 'skipped';
+  if (info.annotations_status === 'ok') {
+    const attempted = info.annotations_attempted_model
+      || info.annotations_model
+      || info.annotations_meta?.attempted_model;
+    const model = attempted ? ` (${attempted})` : '';
+    const fallback = info.annotations_meta?.fallback_from
+      ? ` via ${info.annotations_meta.fallback_to}`
       : '';
-    llmStatus.textContent += ` | Annotations: error${detail}`;
+    annotationsStatus = `ok${model}${fallback}`;
   } else if (info.annotations_status === 'in_progress') {
     const attempted = info.annotations_attempted_model
       || info.annotations_model
@@ -2510,16 +2872,14 @@ function renderLlmStatus(analysis) {
     const progress = meta && meta.total_chunks
       ? ` ${meta.chunks_processed}/${meta.total_chunks}`
       : '';
-    llmStatus.textContent += ` | Annotations: running${model}${progress}`;
-  } else if (info.annotations_status === 'ok') {
-    const attempted = info.annotations_attempted_model
-      || info.annotations_model
-      || info.annotations_meta?.attempted_model;
-    const model = attempted ? ` (${attempted})` : '';
-    const fallback = info.annotations_meta?.fallback_from
-      ? ` via ${info.annotations_meta.fallback_to}`
-      : '';
-    llmStatus.textContent += ` | Annotations: ok${model}${fallback}`;
+    annotationsStatus = `running${model}${progress}`;
+  } else if (info.annotations_status === 'error') {
+    annotationsStatus = 'error';
+  }
+
+  llmStatus.textContent = `Metrics: ${metricsStatus} • updated ${metricsAt}`;
+  if (rebuildMeta) {
+    rebuildMeta.textContent = `Annotations: ${annotationsStatus} • updated ${annotationsAt}`;
   }
 }
 
@@ -2527,9 +2887,7 @@ function renderRebuildMeta(analysis) {
   if (!rebuildMeta) {
     return;
   }
-  const metricsAt = analysis?.llm?.metrics_updated_at || '—';
-  const annotationsAt = analysis?.llm?.annotations_updated_at || '—';
-  rebuildMeta.textContent = `Metrics updated: ${metricsAt} | Annotations updated: ${annotationsAt}`;
+  // handled by renderLlmStatus
 }
 """
 
@@ -2936,8 +3294,47 @@ h1 {
 .header-actions {
   display: flex;
   gap: 12px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.header-actions {
+  flex-direction: column;
+}
+
+.header-links,
+.header-buttons {
+  display: flex;
+  gap: 12px;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.header-links {
+  padding-right: 0;
+  border-right: none;
+}
+
+.header-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+.status-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.status-block .ghost {
+  align-self: flex-start;
+}
+
+.header-tools {
+  margin-top: 6px;
 }
 
 .ghost {
@@ -2963,9 +3360,57 @@ h1 {
   background: #fee2e2;
 }
 
+.header-buttons .ghost {
+  border-color: #e2e8f0;
+  background: #f8fafc;
+  color: #334155;
+}
+
+.header-buttons .ghost:hover {
+  background: #eef2f7;
+}
+
+.header-buttons .ghost.danger {
+  border-color: #fecaca;
+  background: #fff5f5;
+  color: #b91c1c;
+}
+
+.header-buttons .ghost.danger:hover {
+  background: #fee2e2;
+}
+
 .ghost:disabled {
   opacity: 0.6;
   cursor: default;
+}
+
+.header-links .inline-link {
+  margin-top: 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.header-links .inline-link:first-child {
+  background: #0ea5e9;
+  color: #ffffff;
+}
+
+.header-links .inline-link:first-child:hover {
+  background: #0284c7;
+}
+
+.header-links .inline-link:last-child {
+  background: #ecfeff;
+  color: #0f766e;
+  border-color: #a5f3fc;
+}
+
+.header-links .inline-link:last-child:hover {
+  background: #cffafe;
 }
 
 .controls {
@@ -2975,10 +3420,53 @@ h1 {
   gap: 8px;
 }
 
+.controls-highlights {
+  max-width: 360px;
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+}
+
+.controls-highlights label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #475569;
+}
+
+.session-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.session-row select {
+  flex: 1 1 260px;
+}
+
 select {
   max-width: 320px;
   padding: 8px 12px;
   font-size: 15px;
+}
+
+.controls-highlights select {
+  max-width: none;
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.controls-highlights select:focus {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
 }
 
 .cards {
@@ -2992,6 +3480,90 @@ select {
   padding: 16px;
   border-radius: 12px;
   box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+}
+
+.highlight-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.highlight-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.highlight-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.highlight-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.highlight-lead {
+  margin: 0 0 12px;
+  color: #334155;
+  font-size: 15px;
+}
+
+.highlight-meta {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.highlight-item {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 12px;
+}
+
+.highlight-item:last-child {
+  margin-bottom: 0;
+}
+
+.highlight-rank {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #0f172a;
+  color: #ffffff;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+}
+
+.highlight-body h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.highlight-why {
+  margin: 0 0 8px;
+  color: #0f172a;
+  background: #ecfeff;
+  border: 1px solid #bae6fd;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+.highlight-focus {
+  margin: 0 0 8px;
+  color: #475569;
 }
 
 .card h3 {
@@ -3077,8 +3649,22 @@ input[type='number'] {
 }
 
 .helper {
-  margin: 0;
-  color: #475569;
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+#llm-status,
+#rebuild-meta,
+#rebuild-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  margin-right: 8px;
 }
 
 .progress {
@@ -3348,8 +3934,19 @@ def write_web_assets(out_dir: Path) -> None:
     web_dir.mkdir(parents=True, exist_ok=True)
     (web_dir / "index.html").write_text(INDEX_HTML, encoding="utf-8")
     (web_dir / "upload.html").write_text(UPLOAD_HTML, encoding="utf-8")
+    (web_dir / "highlights.html").write_text(HIGHLIGHTS_HTML, encoding="utf-8")
     (web_dir / "app.js").write_text(APP_JS, encoding="utf-8")
+    (web_dir / "highlights.js").write_text(HIGHLIGHTS_JS, encoding="utf-8")
     (web_dir / "styles.css").write_text(STYLES_CSS, encoding="utf-8")
+    history_path = out_dir / "history.json"
+    if history_path.exists():
+        (web_dir / "history.json").write_text(history_path.read_text(encoding="utf-8"), encoding="utf-8")
+    sessions_src = out_dir / "sessions"
+    sessions_dst = web_dir / "sessions"
+    if sessions_src.exists():
+        if sessions_dst.exists():
+            shutil.rmtree(sessions_dst)
+        shutil.copytree(sessions_src, sessions_dst)
 
 
 def parse_args() -> argparse.Namespace:

@@ -106,8 +106,8 @@
           ]
         },
         "annotation_grammar": {
-          "total_errors": 29,
-          "error_rate_per_100_words": 3.31,
+          "total_errors": 27,
+          "error_rate_per_100_words": 3.08,
           "error_types": [
             {
               "code": "WORD",
@@ -115,14 +115,14 @@
               "count": 9
             },
             {
-              "code": "VERB",
-              "title": "Verb Form",
-              "count": 6
-            },
-            {
               "code": "PREP",
               "title": "Prepositions",
-              "count": 6
+              "count": 5
+            },
+            {
+              "code": "VERB",
+              "title": "Verb Form",
+              "count": 5
             },
             {
               "code": "ARTICLE",
@@ -150,34 +150,22 @@
           {
             "title": "Wrong Word",
             "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "why": "9 cases (33% of all grammar issues). This lowers precision and can sound unnatural.",
             "examples": [
-              {
-                "error": "I would like to hear your experience with your group of designers who are going to improve their English in your group.",
-                "correction": "I would like to hear about your experience with your group of designers who are going to improve their English."
-              },
               {
                 "error": "speak straightforward to",
                 "correction": "speak directly into"
-              }
-            ]
-          },
-          {
-            "title": "Verb Form",
-            "guidance": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
-            "examples": [
-              {
-                "error": "I mean I. I didn't Hear any part of your answer for my question.",
-                "correction": "I mean, I didn't hear any part of your answer to my question."
               },
               {
-                "error": "Some short maybe",
-                "correction": "Some might be short"
+                "error": "like we have with you",
+                "correction": "like the ones we have"
               }
             ]
           },
           {
             "title": "Prepositions",
             "guidance": "Choose the correct preposition for common phrases and verbs.",
+            "why": "5 cases (19% of all grammar issues). This changes meaning in key phrases and verb patterns.",
             "examples": [
               {
                 "error": "do you have any strategy on this project",
@@ -186,6 +174,74 @@
               {
                 "error": "join to you because",
                 "correction": "join you because"
+              }
+            ]
+          },
+          {
+            "title": "Verb Form",
+            "guidance": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "why": "5 cases (19% of all grammar issues). This makes grammar sound inconsistent and less natural.",
+            "examples": [
+              {
+                "error": "Some short maybe",
+                "correction": "Some might be short"
+              },
+              {
+                "error": "It's a talk",
+                "correction": "It's talked"
+              }
+            ]
+          }
+        ],
+        "top3_insights": [
+          {
+            "code": "WORD",
+            "title": "Wrong Word",
+            "count": 9,
+            "why": "9 cases (33% of all grammar issues). This lowers precision and can sound unnatural.",
+            "focus": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "examples": [
+              {
+                "error": "speak straightforward to",
+                "correction": "speak directly into"
+              },
+              {
+                "error": "like we have with you",
+                "correction": "like the ones we have"
+              }
+            ]
+          },
+          {
+            "code": "PREP",
+            "title": "Prepositions",
+            "count": 5,
+            "why": "5 cases (19% of all grammar issues). This changes meaning in key phrases and verb patterns.",
+            "focus": "Choose the correct preposition for common phrases and verbs.",
+            "examples": [
+              {
+                "error": "do you have any strategy on this project",
+                "correction": "do you have any strategy for this project"
+              },
+              {
+                "error": "join to you because",
+                "correction": "join you because"
+              }
+            ]
+          },
+          {
+            "code": "VERB",
+            "title": "Verb Form",
+            "count": 5,
+            "why": "5 cases (19% of all grammar issues). This makes grammar sound inconsistent and less natural.",
+            "focus": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "examples": [
+              {
+                "error": "Some short maybe",
+                "correction": "Some might be short"
+              },
+              {
+                "error": "It's a talk",
+                "correction": "It's talked"
               }
             ]
           }
@@ -328,34 +384,90 @@
           {
             "title": "Wrong Word",
             "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "why": "12 cases (39% of all grammar issues). This lowers precision and can sound unnatural.",
             "examples": [
               {
-                "error": "seniors to design head.",
-                "correction": "senior to head of design."
+                "error": "to invite four",
+                "correction": "to do this"
               },
               {
-                "error": "that's the reason why it was not too fast as I wanted",
-                "correction": "that's the reason why it was not as fast as I wanted"
+                "error": "because of me",
+                "correction": "because of my preference"
               }
             ]
           },
           {
             "title": "Articles",
             "guidance": "Use a/an/the (or zero article) correctly before nouns.",
+            "why": "6 cases (19% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
             "examples": [
-              {
-                "error": "give it the full.",
-                "correction": "give it full context."
-              },
               {
                 "error": "as individual service for some participants of club",
                 "correction": "as an individual service for some participants of the club"
+              },
+              {
+                "error": "50 people with lifetime value more than",
+                "correction": "50 people with a lifetime value of more than"
               }
             ]
           },
           {
             "title": "Prepositions",
             "guidance": "Choose the correct preposition for common phrases and verbs.",
+            "why": "5 cases (16% of all grammar issues). This changes meaning in key phrases and verb patterns.",
+            "examples": [
+              {
+                "error": "decrease minutes for the meeting",
+                "correction": "decrease the minutes of the meeting"
+              },
+              {
+                "error": "Let me speak",
+                "correction": "Let me speak from"
+              }
+            ]
+          }
+        ],
+        "top3_insights": [
+          {
+            "code": "WORD",
+            "title": "Wrong Word",
+            "count": 12,
+            "why": "12 cases (39% of all grammar issues). This lowers precision and can sound unnatural.",
+            "focus": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "examples": [
+              {
+                "error": "to invite four",
+                "correction": "to do this"
+              },
+              {
+                "error": "because of me",
+                "correction": "because of my preference"
+              }
+            ]
+          },
+          {
+            "code": "ARTICLE",
+            "title": "Articles",
+            "count": 6,
+            "why": "6 cases (19% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
+            "focus": "Use a/an/the (or zero article) correctly before nouns.",
+            "examples": [
+              {
+                "error": "as individual service for some participants of club",
+                "correction": "as an individual service for some participants of the club"
+              },
+              {
+                "error": "50 people with lifetime value more than",
+                "correction": "50 people with a lifetime value of more than"
+              }
+            ]
+          },
+          {
+            "code": "PREP",
+            "title": "Prepositions",
+            "count": 5,
+            "why": "5 cases (16% of all grammar issues). This changes meaning in key phrases and verb patterns.",
+            "focus": "Choose the correct preposition for common phrases and verbs.",
             "examples": [
               {
                 "error": "decrease minutes for the meeting",
