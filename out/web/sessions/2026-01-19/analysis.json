@@ -1,0 +1,2204 @@
+{
+  "date": "2026-01-19",
+  "session": {
+    "topic": "19.01",
+    "duration_minutes": 30
+  },
+  "participants": [
+    {
+      "name": "Andrey",
+      "role": "student",
+      "metrics": {
+        "word_count": 1305,
+        "turn_count": 50,
+        "avg_words_per_turn": 26.1,
+        "unique_word_count": 331,
+        "lexical_diversity": 0.25
+      },
+      "fluency": {
+        "score": 10.0,
+        "level": "C1"
+      },
+      "llm": {
+        "fluency": {
+          "score": 6,
+          "level": "Intermediate"
+        },
+        "grammar": {
+          "error_count": 12,
+          "top_errors": [
+            {
+              "title": "Subject-Verb Agreement",
+              "count": 4
+            },
+            {
+              "title": "Incorrect Word Form",
+              "count": 3
+            },
+            {
+              "title": "Sentence Fragment",
+              "count": 2
+            }
+          ],
+          "top_recommendations": [
+            "Practice subject-verb agreement in sentences.",
+            "Use correct word forms based on context.",
+            "Ensure sentences are complete with a subject and verb."
+          ],
+          "error_rate_per_100_words": 0.92
+        },
+        "chunked_grammar": {
+          "name": "Speaker A",
+          "total_words": 1438,
+          "total_errors": 70,
+          "error_rate_per_100_words": 4.87,
+          "error_types": [
+            {
+              "title": "Word Order",
+              "count": 29
+            },
+            {
+              "title": "Wrong Word",
+              "count": 18
+            },
+            {
+              "title": "Verb Form",
+              "count": 11
+            },
+            {
+              "title": "Articles",
+              "count": 7
+            },
+            {
+              "title": "Verb Tense",
+              "count": 4
+            },
+            {
+              "title": "Pronoun Misuse",
+              "count": 1
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Word Order",
+              "count": 29
+            },
+            {
+              "title": "Wrong Word",
+              "count": 18
+            },
+            {
+              "title": "Verb Form",
+              "count": 11
+            },
+            {
+              "title": "Articles",
+              "count": 7
+            },
+            {
+              "title": "Verb Tense",
+              "count": 4
+            }
+          ]
+        },
+        "practical_recommendations": [
+          {
+            "title": "Wrong Word",
+            "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "examples": [
+              {
+                "error": "using the Chrome extension to transcribe his.",
+                "correction": "using the Chrome extension to transcribe his speech."
+              },
+              {
+                "error": "to find some mistakes in. I don't know",
+                "correction": "to find some mistakes. I don't know"
+              }
+            ]
+          },
+          {
+            "title": "Verb Form",
+            "guidance": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "examples": [
+              {
+                "error": "what the difference between these words",
+                "correction": "what the difference is between these words"
+              },
+              {
+                "error": "mistakes that something",
+                "correction": "mistakes are something"
+              }
+            ]
+          },
+          {
+            "title": "Articles",
+            "guidance": "Use a/an/the (or zero article) correctly before nouns.",
+            "examples": [
+              {
+                "error": "errors in interface mostly so I can't",
+                "correction": "errors in the interface mostly, so I can't"
+              },
+              {
+                "error": "And this is second question.",
+                "correction": "And this is the second question."
+              }
+            ]
+          }
+        ],
+        "annotation_grammar": {
+          "total_errors": 36,
+          "error_rate_per_100_words": 2.76,
+          "error_types": [
+            {
+              "code": "WORD",
+              "title": "Wrong Word",
+              "count": 13
+            },
+            {
+              "code": "VERB",
+              "title": "Verb Form",
+              "count": 8
+            },
+            {
+              "code": "ARTICLE",
+              "title": "Articles",
+              "count": 5
+            },
+            {
+              "code": "TENSE",
+              "title": "Verb Tense",
+              "count": 5
+            },
+            {
+              "code": "ORDER",
+              "title": "Word Order",
+              "count": 4
+            },
+            {
+              "code": "PREP",
+              "title": "Prepositions",
+              "count": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Roman",
+      "role": "partner",
+      "metrics": {
+        "word_count": 1497,
+        "turn_count": 50,
+        "avg_words_per_turn": 29.94,
+        "unique_word_count": 429,
+        "lexical_diversity": 0.29
+      },
+      "fluency": {
+        "score": 10.0,
+        "level": "C1"
+      },
+      "llm": {
+        "fluency": {
+          "score": 7,
+          "level": "Upper Intermediate"
+        },
+        "grammar": {
+          "error_count": 8,
+          "top_errors": [
+            {
+              "title": "Incorrect Preposition Use",
+              "count": 3
+            },
+            {
+              "title": "Word Order Issues",
+              "count": 2
+            },
+            {
+              "title": "Missing Articles",
+              "count": 2
+            }
+          ],
+          "top_recommendations": [
+            "Review common preposition usage in phrases.",
+            "Practice correct word order in complex sentences.",
+            "Pay attention to the use of articles before nouns."
+          ],
+          "error_rate_per_100_words": 0.53
+        },
+        "chunked_grammar": {
+          "name": "Speaker B",
+          "total_words": 1551,
+          "total_errors": 43,
+          "error_rate_per_100_words": 2.77,
+          "error_types": [
+            {
+              "title": "Word Order",
+              "count": 19
+            },
+            {
+              "title": "Wrong Word",
+              "count": 13
+            },
+            {
+              "title": "Verb Form",
+              "count": 5
+            },
+            {
+              "title": "Articles",
+              "count": 4
+            },
+            {
+              "title": "Verb Tense",
+              "count": 2
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Word Order",
+              "count": 19
+            },
+            {
+              "title": "Wrong Word",
+              "count": 13
+            },
+            {
+              "title": "Verb Form",
+              "count": 5
+            },
+            {
+              "title": "Articles",
+              "count": 4
+            },
+            {
+              "title": "Verb Tense",
+              "count": 2
+            }
+          ]
+        },
+        "practical_recommendations": [
+          {
+            "title": "Wrong Word",
+            "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "examples": [
+              {
+                "error": "some efficient instruments should have in place",
+                "correction": "some efficient instruments should be in place"
+              },
+              {
+                "error": "First one, how we can evaluate the currently our current fluency level",
+                "correction": "First, how we can evaluate our current fluency level"
+              }
+            ]
+          },
+          {
+            "title": "Verb Tense",
+            "guidance": "Match verb tense to time markers and keep tense consistent within a sentence.",
+            "examples": [
+              {
+                "error": "I listening",
+                "correction": "I am listening"
+              },
+              {
+                "error": "I speaking.",
+                "correction": "I am speaking."
+              }
+            ]
+          },
+          {
+            "title": "Verb Form",
+            "guidance": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "examples": [
+              {
+                "error": "Mistakes it what you can make and errors",
+                "correction": "Mistakes are what you can make, and errors"
+              },
+              {
+                "error": "I can explain you, but maybe",
+                "correction": "I can explain to you, but maybe"
+              }
+            ]
+          }
+        ],
+        "annotation_grammar": {
+          "total_errors": 33,
+          "error_rate_per_100_words": 2.2,
+          "error_types": [
+            {
+              "code": "WORD",
+              "title": "Wrong Word",
+              "count": 15
+            },
+            {
+              "code": "TENSE",
+              "title": "Verb Tense",
+              "count": 6
+            },
+            {
+              "code": "VERB",
+              "title": "Verb Form",
+              "count": 5
+            },
+            {
+              "code": "ARTICLE",
+              "title": "Articles",
+              "count": 5
+            },
+            {
+              "code": "ORDER",
+              "title": "Word Order",
+              "count": 1
+            },
+            {
+              "code": "PREP",
+              "title": "Prepositions",
+              "count": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "transcript": "Speaker A: The last time we were talking with.\n\nSpeaker B: Daniel.\n\nSpeaker A: He was using the Chrome extension to transcribe his.\n\nSpeaker B: Speech.\n\nSpeaker A: Idiot.\n\nSpeaker B: Idiot.\n\nSpeaker A: Cat.\n\nSpeaker B: Anyway, I started it. Okay.\n\nSpeaker A: So. So yeah, Daniel was. Was using the Chrome extension to transcribe his speech and to find some mistakes in. I don't know, maybe in pronunciation too, but mostly in. In using words so in dictionary.\n\nSpeaker B: So do you have this extension only for Google Meet.\n\nSpeaker A: It's working. Only for Google Meet. It works.\n\nSpeaker B: Okay, we will check it later.\n\nSpeaker A: You can wipe code something for it just or local.\n\nSpeaker B: I think it's just needed to check. I hope some efficient instruments should have in place. And what is the difference between errors and mistakes in our context?\n\nSpeaker A: I used to see the errors in interface mostly so I can't explain what the difference between these words but in context I know that if you. If we're talking about. So I think maybe. Maybe mistakes that something you did and errors and something happened by itself. Maybe I don't.\n\nSpeaker B: Some more.\n\nSpeaker A: You know.\n\nSpeaker B: One more time please. Mistakes it what you can make and errors. It happens by itself. Okay, maybe. Okay. So do you have any English aim or purpose for this year? Maybe some. Maybe some level or some vocabulary on something like that? No.\n\nSpeaker A: No. There is no reason, no goals for it. We started to practice with. We started our practice with Dania at the end of November of last year just to. Just to. Just to practice because Dana is learning English in Germany. He needs the B1 or B2 level to work to find some work. And I thought at this moment I thought it would be nice to communicate more with Daniel sometimes and also practice English because our level D now is maybe similar just speaking level. Before eight years ago, I was more confident in my level. I speak more fluently. And now I think now I have some troubles. And also when I'm speaking with the international worldwide clients, sometimes it seems like a problem for me. So I just want to speak more fluent. So I started to practice and also I have an idea to create the local mini English speaking club for Russian designers. And maybe we can grow that's into something bigger. So that's useful for me and interesting to try.\n\nSpeaker B: Okay. Have you ever visited any English community in Russia? Small talk groups online?\n\nSpeaker A: When I worked in Ray Peasant bank there was a bank, there was a local English club one time per sprint or per week, I can't recall. And it was really good because you can practice with the presentations and also you can practice in English. So you can choose the topic for the meeting and on the meeting you can prepare the presentation before the meeting. And you can describe your idea only with English. That was good.\n\nSpeaker B: And.\n\nSpeaker A: That'S it. That's. That's the one experience.\n\nSpeaker B: Okay. I visited a couple of times when I came to Moscow. The first time in 2014 years. And it was like a game munchkin and one game, I don't remember how it's called. And I mostly was sitting like this and eating and as I remember everyone should order some meal. It was in restaurant and for me it was quite hard to order. Total amount 1000 rubles. So I just drinking a tea as I remember. So it wasn't very efficient for me I suppose because of my level was too low compared to other group. But currently I think it must be much more efficient.\n\nSpeaker A: Okay. So I think the. For me it seems a little bit useless because when you play you can improve your playing English. So it's different. Yeah. So because when I was playing in Counter Strike when I was playing in Dota with the international mates. So it was useful for me and I thought my. At this time I thought my English is very nice because I can communicate with the other people from other countries. I played with people from Poland, from Europe, from usa, from China also. So I imagined. So I imagined that my English is nice. Yeah but I. But I needed to improve it. When I needed to improve my level for the visa interview, I was disappointed about my level. So the plain English is different from real real English. So also when we speak with Dania we use special design topics or industry topics IT topics to improve the professional English to know just to learn new words to try to speak more fluent. And also sometimes it seems easy because we already use some words in Russia like you know, the interface in Figma when we drawing we use words rectangle so we don't speak primovolnik we just use the rectangle or screen screenshot interface. That's Anglicism in Russia what we use.\n\nSpeaker B: Brother, I suggest to keep your answers a little bit shorter so we have a discussion because sometimes I feel a.\n\nSpeaker A: Little bit boring idea of my. My speeches. We have to prepare some topics, not just try to speak. We have to prepare topics. Startup topics maybe.\n\nSpeaker B: Yeah, sure. So I have a question how you understand your fluency level and second questions. How how you think we can evaluate our fluency level during the time. I have one idea. I can explain you, but maybe you have another one.\n\nSpeaker A: Repeat the first question.\n\nSpeaker B: First question, how we can evaluate our fluency level and progress of it.\n\nSpeaker A: And this is second question.\n\nSpeaker B: Yes.\n\nSpeaker A: What's the first one?\n\nSpeaker B: First one, how we can evaluate the currently our current fluency level and how you can understand that you have progress in it. Two questions.\n\nSpeaker A: Yeah, I think, I think just for both situations we can use transcribe AI soft for it. For example we can, we can set up. It's hard, it's hard to explain. We can use transcribe AI soft to see how much words we can speak through the 30 minutes for example. So we can start it just then transcribe and.\n\nSpeaker B: Compare. Compare.\n\nSpeaker A: So we can compare the amount of text.\n\nSpeaker B: Yes, agree. I have the same idea. And the second metric can be the total amount of mistakes in this volume of text. So then higher your volume of text and lower your level of mistakes. So then higher your fluence level. I suppose.\n\nSpeaker A: I don't think so.\n\nSpeaker B: Because.\n\nSpeaker A: Quantity of mistakes. So big quantity of mistakes doesn't mean that you speak slow. You can make mistakes, but you can speak fluently.\n\nSpeaker B: Okay. But anyway if you increase your level of text of words and you have the same amount of mistakes so it means that you your speech is more fluent, it's higher, it's higher temp. So because I just. Because just I would like to turn one and half or maybe two speed up and when I listening and I also would like to speed up my own speech when I speaking.\n\nSpeaker A: Yeah. I don't like the sounds between the words. So now I think now.\n\nSpeaker B: I have.\n\nSpeaker A: Some troubles in pronunciation and also I have some troubles with thinking because when your English is fluent you can speak. You can just speak. But now when I'm speaking before I have to think and then I have to speak.\n\nSpeaker B: Do you need Russian?\n\nSpeaker A: Then translate and then speak. So that's a big problem for me. And that's because no practice.\n\nSpeaker B: So when you went to America last time, did you have the same problem or you have lack of it after one, two, three months there?\n\nSpeaker A: I fixed this after maybe two weeks in America because when you're working in English speaking area, I don't know the how to translate another way. Not area environment. Yeah. So when you, when you work in English speaking environment with English speaking people, you have to. You have to be adaptive.\n\nSpeaker B: So okay, yeah, I fixed it. And one, one hit. Not hit how it would be one life hack that I came take from my lesson. My English teacher, he said that you need you. He means me myself. He said that you need to explain English words in English words. So you shouldn't say sridha. You have to explain to me this word. So I need to understand and suggest you ways to pronounce it to say.\n\nSpeaker A: That yeah, yeah, yeah, that's. That's good advice. So I used. I used the same advice for Dania when we were speaking.\n\nSpeaker B: Yeah. And it was interesting. That exists English vocabulary to explain such kind of words. Any words in English. It's quite strange, but it's like a big Russian vocabulary of dal or ov. So Russian boards explained by Russian boards. By the way, are you going to take English tutor during this year?\n\nSpeaker A: I don't think so. I have two or three already paid paid lessons on platform.\n\nSpeaker B: Me too, by the way. Me too. I have maybe $100 of deposit if it's still available for me. I don't know, maybe even 500. 500 deposit in my Italki account. I remember I credited my account because of. It was maybe in 2022 year when credit cards or debit cards should be closed. If I'm not mistaken.\n\nSpeaker A: When I was applying to I can't recall the name of company from Portugal.\n\nSpeaker B: Can't recall. Can't recall. You said can't recall?\n\nSpeaker A: Yeah, recall, recall. So you try to. Just like you remember, you know the remember word. You know, remember.\n\nSpeaker B: Yeah.\n\nSpeaker A: So do you know what does mean recall?\n\nSpeaker B: Yes. Recall means when you call back your message or something like that.\n\nSpeaker A: No, no. Recall in your mind that you try to. To find something in your mind and you find it when you find you recall. If you can't find something in your head, you can't recall. So something happened a few time ago, a few years ago and you try to recall it.\n\nSpeaker B: So can you. Can you say your sentence one more time again fully?\n\nSpeaker A: Yeah, I can't recall the name of company. I can't recall the name of company.\n\nSpeaker B: Okay. It means that you can't in 2023. So you. You forgot it.\n\nSpeaker A: Yeah, I forgot and I can't recall.\n\nSpeaker B: Yeah, I understand.\n\nSpeaker A: So what I was talking about. Yeah, I was trying to. To be a part of Portugal company usp and I bought maybe five or six lessons on Russian platform to prepare for interview. So like. Like it was special, not special course, special lessons from the, from the teacher. So I have two or three more lessons on my account, but I didn't use it. I don't use. Maybe. Maybe I have to use it if it's alive, still alive, but we'll see. So I. I don't have any special purpose for this year. So I don't know my need. Need to. To use teacher for it.\n\nSpeaker B: Okay. I hope my $500 are still alive. So I had a question. Okay. So do you have some special thing for today or I can also. Or I can suggest.\n\nSpeaker A: You can suggest. I don't have.\n\nSpeaker B: Okay, I can't.\n\nSpeaker A: But I can't go to perplexity. I had some topics we discussed with Dania and I have some empty.\n\nSpeaker B: Okay, we can discuss today's. Today's pitch for Hartman. As you remember, one time per month he visited such kind of.\n\nSpeaker A: Pitches. And that's not discussion, that's just.\n\nSpeaker B: Yeah, I can. I can. I can tell you what came to my attention today's. No one was succeeded to invest only one team with Agrillo Apollo which is Skolkow residence. And who did investors service. Hartman said that he's ready to keep in touch in some way. And interesting was his mention about churn of lovable. He said that churn's low able is about 19% for me it was quite strange figures. I google it and find nothing about such disaster figures. So maybe he knows something that I don't know. But maybe he missed something or. Or it's incorrect information or something. So what else interesting? This Vladimir Pankhose who is making startups with glasses. Yes. He said that revenue from 1.1 store in his firm is about. From 4 till 10 million rubles. I don't remember. Was it about revenue or. Or net profit? I suppose it's revenue, but he said that it's from three to five times higher than usual optic stores. And it's quite interesting because I. I don't remember. Did I. Did I send you photos of their clubs? Optic clubs?\n\nSpeaker A: I don't think so. Maybe just the slide from presentation.\n\nSpeaker B: Oh, by the way, you can check it in love.comor.\n\nSpeaker A: True.\n\nSpeaker B: So it's quite interesting. I don't remember where he's working. He. He said he's from Yakutia or some north region. And as I'm if I'm not mistaken, they have five or seven.\n\nSpeaker A: I see the pictures.\n\nSpeaker B: What.\n\nSpeaker A: What does it mean?\n\nSpeaker B: Clubs collapse means store.\n\nSpeaker A: Conception. This is a part of conception.\n\nSpeaker B: Yes. And it's interesting to understand too in which cities they are represented. Yeah, he's. Their company is registered in Yakutsk.\n\nSpeaker A: Yeah. There is a five. Oh no, five. Not five. Yeah. 1, 2, 3, 4, 5, 6, 7. Seven addresses.\n\nSpeaker B: Seven. Yes. So let me check the revenue of their company. Official revenue. Interesting. 100 million rubles and net profit is. Net loss for 40 million rubles.\n\nSpeaker A: 40 million for the last year.\n\nSpeaker B: Yes, for the previous year. Interesting. So it's interesting that for some quite special type of business. Maybe not type of business, but style of this kind of business, they have Solid revenue for your Kusk. Just interesting case like maybe like Chico as you remember Chico is Korean store. Korean food store. Yep so what interesting today was else. So Glasses Ah it was Glasses it was investment service Third service was about. Content Content maker Content factory. Content factory. Yes they they have a lot of phones registered in Kazakhstan and maybe something like that and they they concept they are not generate UCG content mostly they distributed it from their customers their clients so their suggestion is too efficient way to distribute content that already created and.\n\nSpeaker A: Hartman said looks looks same with the idea I was talking about today named Buffer the social media planner.\n\nSpeaker B: If I understand correctly the idea of Buffer the Buffer it's when you just. It's just about timing or distribution through different platform. Yes yes but but main idea of service which was presented to Hartman is to boost such kind of content.\n\nSpeaker A: So.\n\nSpeaker B: They they guaranteed for instance rates 100 ruples per 1000 views so it's not. You can. If you use Buffer you can post your content in 100 social medias but it can be not viewed at all and this company guaranteed that it will be boosted or distributed and you will have some how I would say views.\n\nSpeaker A: Yeah, I got it.\n\nSpeaker B: Yes.\n\nSpeaker A: Each rich or what?\n\nSpeaker B: Yes okay and what else Java I was not interested in it but the mostly interested theme in this project was a founder it was a quite young girl and she. She. She take about 500 meetings per month during a month maybe it was only one month and her conversion her conversion rate to sale was about 20% and it was impressive. Yes it impressed Hartmont as well and he said you don't need to raise money just go through couple of months in this temp what is the synonym of temp? I'm not sure the temp is the right what here Pace maybe pace same speed speed or pace base it's like and so it's it's for project and was five. Don't remember. So just ah. Where is Vasily Vlebnikov is investor what is the project? It's what's about Glasses that's it I suppose 55 proof 5th project is not going to mention we have 31 minutes I suggest to stop because it's quite so so it's one slot during which we can evaluate our metrics I can make a Google Doc and we will put this our metrics in every time and one concern that I have that AI will be good enough in determination of determine if determine in definition of mistakes in correct way. Let's.\n\nSpeaker A: Let's check we have to check some tools. So we can try to use maybe different tools. For example, we can use for the transcribation, we can use something like Super Whisper or Fathom or something like that for the full transcribe meeting. And also we can use Google extension to check mistakes. And it will be like the combination of tools but we have to use Google Meet this way.\n\nSpeaker B: Okay, let's try. So that's it for this time?\n\nSpeaker A: Yeah.\n\nSpeaker B: In bye bye Brand.",
+  "speaker_map": {
+    "Speaker A": "Andrey",
+    "Speaker B": "Roman"
+  },
+  "chunks": [
+    {
+      "index": 0,
+      "block_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "text": "Speaker A: The last time we were talking with.\n\nSpeaker B: Daniel.\n\nSpeaker A: He was using the Chrome extension to transcribe his.\n\nSpeaker B: Speech.\n\nSpeaker A: Idiot.\n\nSpeaker B: Idiot.\n",
+      "range": {
+        "start": 0,
+        "end": 190
+      }
+    },
+    {
+      "index": 1,
+      "block_indices": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "text": "\nSpeaker A: Cat.\n\nSpeaker B: Anyway, I started it. Okay.\n\nSpeaker A: So. So yeah, Daniel was. Was using the Chrome extension to transcribe his speech and to find some mistakes in. I don't know, maybe in pronunciation too, but mostly in. In using words so in dictionary.\n\nSpeaker B: So do you have this extension only for Google Meet.\n\nSpeaker A: It's working. Only for Google Meet. It works.\n\nSpeaker B: Okay, we will check it later.\n",
+      "range": {
+        "start": 190,
+        "end": 624
+      }
+    },
+    {
+      "index": 2,
+      "block_indices": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "text": "\nSpeaker A: You can wipe code something for it just or local.\n\nSpeaker B: I think it's just needed to check. I hope some efficient instruments should have in place. And what is the difference between errors and mistakes in our context?\n\nSpeaker A: I used to see the errors in interface mostly so I can't explain what the difference between these words but in context I know that if you. If we're talking about. So I think maybe. Maybe mistakes that something you did and errors and something happened by itself. Maybe I don't.\n\nSpeaker B: Some more.\n\nSpeaker A: You know.\n\nSpeaker B: One more time please. Mistakes it what you can make and errors. It happens by itself. Okay, maybe. Okay. So do you have any English aim or purpose for this year? Maybe some. Maybe some level or some vocabulary on something like that? No.\n",
+      "range": {
+        "start": 624,
+        "end": 1446
+      }
+    },
+    {
+      "index": 3,
+      "block_indices": [
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "text": "\nSpeaker A: No. There is no reason, no goals for it. We started to practice with. We started our practice with Dania at the end of November of last year just to. Just to. Just to practice because Dana is learning English in Germany. He needs the B1 or B2 level to work to find some work. And I thought at this moment I thought it would be nice to communicate more with Daniel sometimes and also practice English because our level D now is maybe similar just speaking level. Before eight years ago, I was more confident in my level. I speak more fluently. And now I think now I have some troubles. And also when I'm speaking with the international worldwide clients, sometimes it seems like a problem for me. So I just want to speak more fluent. So I started to practice and also I have an idea to create the local mini English speaking club for Russian designers. And maybe we can grow that's into something bigger. So that's useful for me and interesting to try.\n\nSpeaker B: Okay. Have you ever visited any English community in Russia? Small talk groups online?\n\nSpeaker A: When I worked in Ray Peasant bank there was a bank, there was a local English club one time per sprint or per week, I can't recall. And it was really good because you can practice with the presentations and also you can practice in English. So you can choose the topic for the meeting and on the meeting you can prepare the presentation before the meeting. And you can describe your idea only with English. That was good.\n\nSpeaker B: And.\n\nSpeaker A: That'S it. That's. That's the one experience.\n\nSpeaker B: Okay. I visited a couple of times when I came to Moscow. The first time in 2014 years. And it was like a game munchkin and one game, I don't remember how it's called. And I mostly was sitting like this and eating and as I remember everyone should order some meal. It was in restaurant and for me it was quite hard to order. Total amount 1000 rubles. So I just drinking a tea as I remember. So it wasn't very efficient for me I suppose because of my level was too low compared to other group. But currently I think it must be much more efficient.\n",
+      "range": {
+        "start": 1446,
+        "end": 3576
+      }
+    },
+    {
+      "index": 4,
+      "block_indices": [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "text": "\nSpeaker A: Okay. So I think the. For me it seems a little bit useless because when you play you can improve your playing English. So it's different. Yeah. So because when I was playing in Counter Strike when I was playing in Dota with the international mates. So it was useful for me and I thought my. At this time I thought my English is very nice because I can communicate with the other people from other countries. I played with people from Poland, from Europe, from usa, from China also. So I imagined. So I imagined that my English is nice. Yeah but I. But I needed to improve it. When I needed to improve my level for the visa interview, I was disappointed about my level. So the plain English is different from real real English. So also when we speak with Dania we use special design topics or industry topics IT topics to improve the professional English to know just to learn new words to try to speak more fluent. And also sometimes it seems easy because we already use some words in Russia like you know, the interface in Figma when we drawing we use words rectangle so we don't speak primovolnik we just use the rectangle or screen screenshot interface. That's Anglicism in Russia what we use.\n\nSpeaker B: Brother, I suggest to keep your answers a little bit shorter so we have a discussion because sometimes I feel a.\n\nSpeaker A: Little bit boring idea of my. My speeches. We have to prepare some topics, not just try to speak. We have to prepare topics. Startup topics maybe.\n\nSpeaker B: Yeah, sure. So I have a question how you understand your fluency level and second questions. How how you think we can evaluate our fluency level during the time. I have one idea. I can explain you, but maybe you have another one.\n\nSpeaker A: Repeat the first question.\n\nSpeaker B: First question, how we can evaluate our fluency level and progress of it.\n",
+      "range": {
+        "start": 3576,
+        "end": 5436
+      }
+    },
+    {
+      "index": 5,
+      "block_indices": [
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ],
+      "text": "\nSpeaker A: And this is second question.\n\nSpeaker B: Yes.\n\nSpeaker A: What's the first one?\n\nSpeaker B: First one, how we can evaluate the currently our current fluency level and how you can understand that you have progress in it. Two questions.\n\nSpeaker A: Yeah, I think, I think just for both situations we can use transcribe AI soft for it. For example we can, we can set up. It's hard, it's hard to explain. We can use transcribe AI soft to see how much words we can speak through the 30 minutes for example. So we can start it just then transcribe and.\n\nSpeaker B: Compare. Compare.\n",
+      "range": {
+        "start": 5436,
+        "end": 6025
+      }
+    },
+    {
+      "index": 6,
+      "block_indices": [
+        36,
+        37,
+        38,
+        39,
+        40,
+        41
+      ],
+      "text": "\nSpeaker A: So we can compare the amount of text.\n\nSpeaker B: Yes, agree. I have the same idea. And the second metric can be the total amount of mistakes in this volume of text. So then higher your volume of text and lower your level of mistakes. So then higher your fluence level. I suppose.\n\nSpeaker A: I don't think so.\n\nSpeaker B: Because.\n\nSpeaker A: Quantity of mistakes. So big quantity of mistakes doesn't mean that you speak slow. You can make mistakes, but you can speak fluently.\n\nSpeaker B: Okay. But anyway if you increase your level of text of words and you have the same amount of mistakes so it means that you your speech is more fluent, it's higher, it's higher temp. So because I just. Because just I would like to turn one and half or maybe two speed up and when I listening and I also would like to speed up my own speech when I speaking.\n",
+      "range": {
+        "start": 6025,
+        "end": 6884
+      }
+    },
+    {
+      "index": 7,
+      "block_indices": [
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "text": "\nSpeaker A: Yeah. I don't like the sounds between the words. So now I think now.\n\nSpeaker B: I have.\n\nSpeaker A: Some troubles in pronunciation and also I have some troubles with thinking because when your English is fluent you can speak. You can just speak. But now when I'm speaking before I have to think and then I have to speak.\n\nSpeaker B: Do you need Russian?\n\nSpeaker A: Then translate and then speak. So that's a big problem for me. And that's because no practice.\n\nSpeaker B: So when you went to America last time, did you have the same problem or you have lack of it after one, two, three months there?\n",
+      "range": {
+        "start": 6884,
+        "end": 7498
+      }
+    },
+    {
+      "index": 8,
+      "block_indices": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53
+      ],
+      "text": "\nSpeaker A: I fixed this after maybe two weeks in America because when you're working in English speaking area, I don't know the how to translate another way. Not area environment. Yeah. So when you, when you work in English speaking environment with English speaking people, you have to. You have to be adaptive.\n\nSpeaker B: So okay, yeah, I fixed it. And one, one hit. Not hit how it would be one life hack that I came take from my lesson. My English teacher, he said that you need you. He means me myself. He said that you need to explain English words in English words. So you shouldn't say sridha. You have to explain to me this word. So I need to understand and suggest you ways to pronounce it to say.\n\nSpeaker A: That yeah, yeah, yeah, that's. That's good advice. So I used. I used the same advice for Dania when we were speaking.\n\nSpeaker B: Yeah. And it was interesting. That exists English vocabulary to explain such kind of words. Any words in English. It's quite strange, but it's like a big Russian vocabulary of dal or ov. So Russian boards explained by Russian boards. By the way, are you going to take English tutor during this year?\n\nSpeaker A: I don't think so. I have two or three already paid paid lessons on platform.\n\nSpeaker B: Me too, by the way. Me too. I have maybe $100 of deposit if it's still available for me. I don't know, maybe even 500. 500 deposit in my Italki account. I remember I credited my account because of. It was maybe in 2022 year when credit cards or debit cards should be closed. If I'm not mistaken.\n",
+      "range": {
+        "start": 7498,
+        "end": 9046
+      }
+    },
+    {
+      "index": 9,
+      "block_indices": [
+        54,
+        55,
+        56,
+        57,
+        58,
+        59
+      ],
+      "text": "\nSpeaker A: When I was applying to I can't recall the name of company from Portugal.\n\nSpeaker B: Can't recall. Can't recall. You said can't recall?\n\nSpeaker A: Yeah, recall, recall. So you try to. Just like you remember, you know the remember word. You know, remember.\n\nSpeaker B: Yeah.\n\nSpeaker A: So do you know what does mean recall?\n\nSpeaker B: Yes. Recall means when you call back your message or something like that.\n",
+      "range": {
+        "start": 9046,
+        "end": 9469
+      }
+    },
+    {
+      "index": 10,
+      "block_indices": [
+        60,
+        61,
+        62,
+        63,
+        64,
+        65
+      ],
+      "text": "\nSpeaker A: No, no. Recall in your mind that you try to. To find something in your mind and you find it when you find you recall. If you can't find something in your head, you can't recall. So something happened a few time ago, a few years ago and you try to recall it.\n\nSpeaker B: So can you. Can you say your sentence one more time again fully?\n\nSpeaker A: Yeah, I can't recall the name of company. I can't recall the name of company.\n\nSpeaker B: Okay. It means that you can't in 2023. So you. You forgot it.\n\nSpeaker A: Yeah, I forgot and I can't recall.\n\nSpeaker B: Yeah, I understand.\n",
+      "range": {
+        "start": 9469,
+        "end": 10059
+      }
+    },
+    {
+      "index": 11,
+      "block_indices": [
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      "text": "\nSpeaker A: So what I was talking about. Yeah, I was trying to. To be a part of Portugal company usp and I bought maybe five or six lessons on Russian platform to prepare for interview. So like. Like it was special, not special course, special lessons from the, from the teacher. So I have two or three more lessons on my account, but I didn't use it. I don't use. Maybe. Maybe I have to use it if it's alive, still alive, but we'll see. So I. I don't have any special purpose for this year. So I don't know my need. Need to. To use teacher for it.\n\nSpeaker B: Okay. I hope my $500 are still alive. So I had a question. Okay. So do you have some special thing for today or I can also. Or I can suggest.\n\nSpeaker A: You can suggest. I don't have.\n\nSpeaker B: Okay, I can't.\n\nSpeaker A: But I can't go to perplexity. I had some topics we discussed with Dania and I have some empty.\n\nSpeaker B: Okay, we can discuss today's. Today's pitch for Hartman. As you remember, one time per month he visited such kind of.\n",
+      "range": {
+        "start": 10059,
+        "end": 11069
+      }
+    },
+    {
+      "index": 12,
+      "block_indices": [
+        72,
+        73,
+        74,
+        75,
+        76,
+        77
+      ],
+      "text": "\nSpeaker A: Pitches. And that's not discussion, that's just.\n\nSpeaker B: Yeah, I can. I can. I can tell you what came to my attention today's. No one was succeeded to invest only one team with Agrillo Apollo which is Skolkow residence. And who did investors service. Hartman said that he's ready to keep in touch in some way. And interesting was his mention about churn of lovable. He said that churn's low able is about 19% for me it was quite strange figures. I google it and find nothing about such disaster figures. So maybe he knows something that I don't know. But maybe he missed something or. Or it's incorrect information or something. So what else interesting? This Vladimir Pankhose who is making startups with glasses. Yes. He said that revenue from 1.1 store in his firm is about. From 4 till 10 million rubles. I don't remember. Was it about revenue or. Or net profit? I suppose it's revenue, but he said that it's from three to five times higher than usual optic stores. And it's quite interesting because I. I don't remember. Did I. Did I send you photos of their clubs? Optic clubs?\n\nSpeaker A: I don't think so. Maybe just the slide from presentation.\n\nSpeaker B: Oh, by the way, you can check it in love.comor.\n\nSpeaker A: True.\n\nSpeaker B: So it's quite interesting. I don't remember where he's working. He. He said he's from Yakutia or some north region. And as I'm if I'm not mistaken, they have five or seven.\n",
+      "range": {
+        "start": 11069,
+        "end": 12502
+      }
+    },
+    {
+      "index": 13,
+      "block_indices": [
+        78,
+        79,
+        80,
+        81,
+        82,
+        83
+      ],
+      "text": "\nSpeaker A: I see the pictures.\n\nSpeaker B: What.\n\nSpeaker A: What does it mean?\n\nSpeaker B: Clubs collapse means store.\n\nSpeaker A: Conception. This is a part of conception.\n\nSpeaker B: Yes. And it's interesting to understand too in which cities they are represented. Yeah, he's. Their company is registered in Yakutsk.\n",
+      "range": {
+        "start": 12502,
+        "end": 12823
+      }
+    },
+    {
+      "index": 14,
+      "block_indices": [
+        84,
+        85,
+        86,
+        87,
+        88,
+        89
+      ],
+      "text": "\nSpeaker A: Yeah. There is a five. Oh no, five. Not five. Yeah. 1, 2, 3, 4, 5, 6, 7. Seven addresses.\n\nSpeaker B: Seven. Yes. So let me check the revenue of their company. Official revenue. Interesting. 100 million rubles and net profit is. Net loss for 40 million rubles.\n\nSpeaker A: 40 million for the last year.\n\nSpeaker B: Yes, for the previous year. Interesting. So it's interesting that for some quite special type of business. Maybe not type of business, but style of this kind of business, they have Solid revenue for your Kusk. Just interesting case like maybe like Chico as you remember Chico is Korean store. Korean food store. Yep so what interesting today was else. So Glasses Ah it was Glasses it was investment service Third service was about. Content Content maker Content factory. Content factory. Yes they they have a lot of phones registered in Kazakhstan and maybe something like that and they they concept they are not generate UCG content mostly they distributed it from their customers their clients so their suggestion is too efficient way to distribute content that already created and.\n\nSpeaker A: Hartman said looks looks same with the idea I was talking about today named Buffer the social media planner.\n\nSpeaker B: If I understand correctly the idea of Buffer the Buffer it's when you just. It's just about timing or distribution through different platform. Yes yes but but main idea of service which was presented to Hartman is to boost such kind of content.\n",
+      "range": {
+        "start": 12823,
+        "end": 14313
+      }
+    },
+    {
+      "index": 15,
+      "block_indices": [
+        90,
+        91,
+        92,
+        93,
+        94,
+        95
+      ],
+      "text": "\nSpeaker A: So.\n\nSpeaker B: They they guaranteed for instance rates 100 ruples per 1000 views so it's not. You can. If you use Buffer you can post your content in 100 social medias but it can be not viewed at all and this company guaranteed that it will be boosted or distributed and you will have some how I would say views.\n\nSpeaker A: Yeah, I got it.\n\nSpeaker B: Yes.\n\nSpeaker A: Each rich or what?\n\nSpeaker B: Yes okay and what else Java I was not interested in it but the mostly interested theme in this project was a founder it was a quite young girl and she. She. She take about 500 meetings per month during a month maybe it was only one month and her conversion her conversion rate to sale was about 20% and it was impressive. Yes it impressed Hartmont as well and he said you don't need to raise money just go through couple of months in this temp what is the synonym of temp? I'm not sure the temp is the right what here Pace maybe pace same speed speed or pace base it's like and so it's it's for project and was five. Don't remember. So just ah. Where is Vasily Vlebnikov is investor what is the project? It's what's about Glasses that's it I suppose 55 proof 5th project is not going to mention we have 31 minutes I suggest to stop because it's quite so so it's one slot during which we can evaluate our metrics I can make a Google Doc and we will put this our metrics in every time and one concern that I have that AI will be good enough in determination of determine if determine in definition of mistakes in correct way. Let's.\n",
+      "range": {
+        "start": 14313,
+        "end": 15858
+      }
+    },
+    {
+      "index": 16,
+      "block_indices": [
+        96,
+        97,
+        98,
+        99
+      ],
+      "text": "\nSpeaker A: Let's check we have to check some tools. So we can try to use maybe different tools. For example, we can use for the transcribation, we can use something like Super Whisper or Fathom or something like that for the full transcribe meeting. And also we can use Google extension to check mistakes. And it will be like the combination of tools but we have to use Google Meet this way.\n\nSpeaker B: Okay, let's try. So that's it for this time?\n\nSpeaker A: Yeah.\n\nSpeaker B: In bye bye Brand.",
+      "range": {
+        "start": 15858,
+        "end": 16355
+      }
+    }
+  ],
+  "llm": {
+    "status": "ok",
+    "model": "gpt-4o-mini",
+    "chunked_metrics": {
+      "status": "ok",
+      "per_chunk": [
+        {
+          "index": 0,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 17,
+              "error_count": 2,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 3,
+              "error_count": 0,
+              "error_types": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 45,
+              "error_count": 4,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 2
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 21,
+              "error_count": 0,
+              "error_types": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 63,
+              "error_count": 5,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 3
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 74,
+              "error_count": 2,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 264,
+              "error_count": 8,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 5
+                },
+                {
+                  "title": "Verb Tense",
+                  "count": 2
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 121,
+              "error_count": 2,
+              "error_types": [
+                {
+                  "title": "Articles",
+                  "count": 1
+                },
+                {
+                  "title": "Verb Tense",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 252,
+              "error_count": 11,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 7
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 77,
+              "error_count": 1,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 68,
+              "error_count": 5,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 3
+                },
+                {
+                  "title": "Articles",
+                  "count": 1
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 28,
+              "error_count": 0,
+              "error_types": []
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 35,
+              "error_count": 2,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 117,
+              "error_count": 5,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 3
+                },
+                {
+                  "title": "Word Order",
+                  "count": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 72,
+              "error_count": 4,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 1
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                },
+                {
+                  "title": "Verb Tense",
+                  "count": 1
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 32,
+              "error_count": 1,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 89,
+              "error_count": 5,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                },
+                {
+                  "title": "Articles",
+                  "count": 2
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 185,
+              "error_count": 8,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 4
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 3
+                },
+                {
+                  "title": "Articles",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 41,
+              "error_count": 4,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 2
+                },
+                {
+                  "title": "Articles",
+                  "count": 1
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 22,
+              "error_count": 1,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 75,
+              "error_count": 5,
+              "error_types": [
+                {
+                  "title": "Articles",
+                  "count": 2
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                },
+                {
+                  "title": "Verb Tense",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 28,
+              "error_count": 1,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 133,
+              "error_count": 6,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 3
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                },
+                {
+                  "title": "Pronoun Misuse",
+                  "count": 1
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 54,
+              "error_count": 0,
+              "error_types": []
+            },
+            {
+              "name": "Speaker A",
+              "word_count": 133,
+              "error_count": 0,
+              "error_types": []
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 54,
+              "error_count": 0,
+              "error_types": []
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 18,
+              "error_count": 1,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 226,
+              "error_count": 7,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 2
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                },
+                {
+                  "title": "Word Order",
+                  "count": 2
+                },
+                {
+                  "title": "Verb Tense",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 15,
+              "error_count": 0,
+              "error_types": []
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 26,
+              "error_count": 1,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 37,
+              "error_count": 4,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 2
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 198,
+              "error_count": 6,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 4
+                },
+                {
+                  "title": "Articles",
+                  "count": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 15,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 9,
+              "error_count": 0,
+              "error_types": []
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 272,
+              "error_count": 7,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 3
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 2
+                },
+                {
+                  "title": "Word Order",
+                  "count": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 16,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 72,
+              "error_count": 4,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                },
+                {
+                  "title": "Articles",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 13,
+              "error_count": 1,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "per_speaker": [
+        {
+          "name": "Speaker A",
+          "total_words": 1438,
+          "total_errors": 70,
+          "error_rate_per_100_words": 4.87,
+          "error_types": [
+            {
+              "title": "Word Order",
+              "count": 29
+            },
+            {
+              "title": "Wrong Word",
+              "count": 18
+            },
+            {
+              "title": "Verb Form",
+              "count": 11
+            },
+            {
+              "title": "Articles",
+              "count": 7
+            },
+            {
+              "title": "Verb Tense",
+              "count": 4
+            },
+            {
+              "title": "Pronoun Misuse",
+              "count": 1
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Word Order",
+              "count": 29
+            },
+            {
+              "title": "Wrong Word",
+              "count": 18
+            },
+            {
+              "title": "Verb Form",
+              "count": 11
+            },
+            {
+              "title": "Articles",
+              "count": 7
+            },
+            {
+              "title": "Verb Tense",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "name": "Speaker B",
+          "total_words": 1551,
+          "total_errors": 43,
+          "error_rate_per_100_words": 2.77,
+          "error_types": [
+            {
+              "title": "Word Order",
+              "count": 19
+            },
+            {
+              "title": "Wrong Word",
+              "count": 13
+            },
+            {
+              "title": "Verb Form",
+              "count": 5
+            },
+            {
+              "title": "Articles",
+              "count": 4
+            },
+            {
+              "title": "Verb Tense",
+              "count": 2
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Word Order",
+              "count": 19
+            },
+            {
+              "title": "Wrong Word",
+              "count": 13
+            },
+            {
+              "title": "Verb Form",
+              "count": 5
+            },
+            {
+              "title": "Articles",
+              "count": 4
+            },
+            {
+              "title": "Verb Tense",
+              "count": 2
+            }
+          ]
+        }
+      ],
+      "meta": {
+        "chunks_processed": 17,
+        "total_chunks": 17
+      }
+    },
+    "metrics_updated_at": "2026-02-10 15:32",
+    "annotations_model": "gpt-4o",
+    "annotations_status": "ok",
+    "annotations_attempted_model": "gpt-4o",
+    "annotation_items": [
+      {
+        "start": 25,
+        "end": 46,
+        "text": "we were talking with.",
+        "correction": "we talked with him.",
+        "explanation": "The phrase 'were talking with' is incomplete and lacks an object. Adding 'him' specifies who was being talked with.",
+        "category": "ORDER"
+      },
+      {
+        "start": 86,
+        "end": 131,
+        "text": "using the Chrome extension to transcribe his.",
+        "correction": "using the Chrome extension to transcribe his speech.",
+        "explanation": "The phrase 'to transcribe his' lacks a noun indicating what is being transcribed. Adding 'speech' completes the idea.",
+        "category": "WORD"
+      },
+      {
+        "start": 344,
+        "end": 382,
+        "text": "to find some mistakes in. I don't know",
+        "correction": "to find some mistakes. I don't know",
+        "explanation": "The phrase should not end with 'in' before an independent clause.",
+        "category": "WORD"
+      },
+      {
+        "start": 412,
+        "end": 458,
+        "text": "but mostly in. In using words so in dictionary",
+        "correction": "but mostly in using words, so in the dictionary",
+        "explanation": "Phrase structure is awkward. Correct the sentence to make it clear and cohesive.",
+        "category": "WORD"
+      },
+      {
+        "start": 475,
+        "end": 522,
+        "text": "do you have this extension only for Google Meet",
+        "correction": "do you have this extension for only Google Meet",
+        "explanation": "Correct the placement of 'only' for proper emphasis.",
+        "category": ""
+      },
+      {
+        "start": 644,
+        "end": 684,
+        "text": "wipe code something for it just or local",
+        "correction": "write some code for it locally",
+        "explanation": "The phrase is grammatically incorrect and unclear. 'Write some code for it locally' is a clearer and correct phrase.",
+        "category": "WORD"
+      },
+      {
+        "start": 740,
+        "end": 787,
+        "text": "some efficient instruments should have in place",
+        "correction": "some efficient instruments should be in place",
+        "explanation": "The phrase 'should have in place' is incorrect. 'Should be in place' is the correct structure.",
+        "category": "WORD"
+      },
+      {
+        "start": 890,
+        "end": 927,
+        "text": "errors in interface mostly so I can't",
+        "correction": "errors in the interface mostly, so I can't",
+        "explanation": "The sentence is missing an article before 'interface' and a comma for proper punctuation.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 936,
+        "end": 975,
+        "text": "what the difference between these words",
+        "correction": "what the difference is between these words",
+        "explanation": "The sentence is missing the verb 'is' for correct subject-verb agreement.",
+        "category": "VERB"
+      },
+      {
+        "start": 1059,
+        "end": 1082,
+        "text": "mistakes that something",
+        "correction": "mistakes are something",
+        "explanation": "The phrase 'mistakes that something' lacks proper verb agreement and clarity.",
+        "category": "VERB"
+      },
+      {
+        "start": 1095,
+        "end": 1115,
+        "text": "errors and something",
+        "correction": "errors are something",
+        "explanation": "This should be 'errors are something' to maintain subject-verb agreement.",
+        "category": "VERB"
+      },
+      {
+        "start": 1230,
+        "end": 1270,
+        "text": "Mistakes it what you can make and errors",
+        "correction": "Mistakes are what you can make, and errors",
+        "explanation": "The sentence should use 'are' instead of 'it' for proper subject-verb agreement.",
+        "category": "VERB"
+      },
+      {
+        "start": 1407,
+        "end": 1441,
+        "text": "vocabulary on something like that?",
+        "correction": "vocabulary or something like that?",
+        "explanation": "Use 'or' instead of 'on' to correctly connect alternatives.",
+        "category": ""
+      },
+      {
+        "start": 1462,
+        "end": 1498,
+        "text": "There is no reason, no goals for it.",
+        "correction": "There are no reasons or goals for it.",
+        "explanation": "The subject 'reasons' and 'goals' are plural, so the verb should be 'are.' Also, the conjunction should be 'or' instead of 'no' to connect reasons and goals.",
+        "category": "VERB"
+      },
+      {
+        "start": 1679,
+        "end": 1733,
+        "text": "He needs the B1 or B2 level to work to find some work.",
+        "correction": "He needs the B1 or B2 level to find some work.",
+        "explanation": "The phrase 'to work to find some work' is redundant. Simplifying to 'to find some work' is clearer.",
+        "category": "WORD"
+      },
+      {
+        "start": 1836,
+        "end": 1919,
+        "text": "also practice English because our level D now is maybe similar just speaking level.",
+        "correction": "also practice English because our speaking levels are maybe similar now.",
+        "explanation": "The phrase ‘our level D now’ is unclear and 'just speaking level' is not correct. Simplified to focus on speaking levels and corrected word order.",
+        "category": "ORDER"
+      },
+      {
+        "start": 1920,
+        "end": 1943,
+        "text": "Before eight years ago,",
+        "correction": "Eight years ago,",
+        "explanation": "'Before eight years ago' is redundant. Simplified to 'Eight years ago.'",
+        "category": "WORD"
+      },
+      {
+        "start": 1978,
+        "end": 2000,
+        "text": "I speak more fluently.",
+        "correction": "I spoke more fluently.",
+        "explanation": "Past context requires the past tense 'spoke.'",
+        "category": "TENSE"
+      },
+      {
+        "start": 2021,
+        "end": 2042,
+        "text": "I have some troubles.",
+        "correction": "I have some trouble.",
+        "explanation": "'Trouble' is an uncountable noun, so it should not be plural.",
+        "category": ""
+      },
+      {
+        "start": 2172,
+        "end": 2190,
+        "text": "speak more fluent.",
+        "correction": "speak more fluently.",
+        "explanation": "'Fluently' is the adverb needed to modify the verb 'speak.'",
+        "category": "VERB"
+      },
+      {
+        "start": 2362,
+        "end": 2409,
+        "text": "So that's useful for me and interesting to try.",
+        "correction": "So that's useful for me and interesting to try out.",
+        "explanation": "The phrase 'to try out' is more idiomatic.",
+        "category": "WORD"
+      },
+      {
+        "start": 2573,
+        "end": 2636,
+        "text": "there was a local English club one time per sprint or per week,",
+        "correction": "there was a local English club once per week or per sprint,",
+        "explanation": "The order 'once per week or per sprint' clarifies the meaning.",
+        "category": ""
+      },
+      {
+        "start": 2909,
+        "end": 2942,
+        "text": "only with English. That was good.",
+        "correction": "only in English. That was good.",
+        "explanation": "'In English' is the correct prepositional phrase to use.",
+        "category": "PREP"
+      },
+      {
+        "start": 3087,
+        "end": 3116,
+        "text": "The first time in 2014 years.",
+        "correction": "The first time in 2014.",
+        "explanation": "'In 2014 years' is incorrect. Should be just 'in 2014.'",
+        "category": ""
+      },
+      {
+        "start": 3319,
+        "end": 3379,
+        "text": "for me it was quite hard to order. Total amount 1000 rubles.",
+        "correction": "for me it was quite hard to order anything. The total amount was 1000 rubles.",
+        "explanation": "Incomplete sentences need to be connected properly.",
+        "category": "ORDER"
+      },
+      {
+        "start": 3465,
+        "end": 3521,
+        "text": "because of my level was too low compared to other group.",
+        "correction": "because my level was too low compared to the other group.",
+        "explanation": "Removed unnecessary 'of' and corrected 'other group' to 'the other group.'",
+        "category": ""
+      },
+      {
+        "start": 3594,
+        "end": 3625,
+        "text": "So I think the. For me it seems",
+        "correction": "So I think that for me it seems",
+        "explanation": "The sentence starts and ends abruptly. Joining them appropriately is necessary for grammatical correctness.",
+        "category": ""
+      },
+      {
+        "start": 3902,
+        "end": 3939,
+        "text": "my English is very nice because I can",
+        "correction": "my English was very nice because I could",
+        "explanation": "'Was' and 'could' maintain the past tense consistency.",
+        "category": "TENSE"
+      },
+      {
+        "start": 4070,
+        "end": 4114,
+        "text": "So I imagined. So I imagined that my English",
+        "correction": "I imagined that my English",
+        "explanation": "Repetition of 'So I imagined' is unnecessary and incorrect.",
+        "category": "WORD"
+      },
+      {
+        "start": 4136,
+        "end": 4221,
+        "text": "But I needed to improve it. When I needed to improve my level for the visa interview,",
+        "correction": "But I needed to improve it for the visa interview,",
+        "explanation": "Repetition of 'needed to improve' is redundant.",
+        "category": "WORD"
+      },
+      {
+        "start": 4474,
+        "end": 4502,
+        "text": "to try to speak more fluent.",
+        "correction": "to try to speak more fluently.",
+        "explanation": "'Fluently' is the correct adverb form.",
+        "category": "VERB"
+      },
+      {
+        "start": 4580,
+        "end": 4622,
+        "text": "like you know, the interface in Figma when",
+        "correction": "a little bit bored with my speeches.",
+        "explanation": "Corrects the phrase to reflect the speaker's intended meaning.",
+        "category": "WORD"
+      },
+      {
+        "start": 4745,
+        "end": 4784,
+        "text": "That's Anglicism in Russia what we use.",
+        "correction": "That's an Anglicism we use in Russia.",
+        "explanation": "Corrects the sentence structure for clarity.",
+        "category": "ORDER"
+      },
+      {
+        "start": 5156,
+        "end": 5191,
+        "text": "second questions. How how you think",
+        "correction": "second question. How do you think",
+        "explanation": "'Questions' should be singular; 'how' should be followed by 'do you think' for correct question format.",
+        "category": ""
+      },
+      {
+        "start": 5260,
+        "end": 5288,
+        "text": "I can explain you, but maybe",
+        "correction": "I can explain to you, but maybe",
+        "explanation": "'Explain to you' is the correct verb phrase.",
+        "category": "VERB"
+      },
+      {
+        "start": 5420,
+        "end": 5435,
+        "text": "progress of it.",
+        "correction": "progress of our fluency level.",
+        "explanation": "Clarifies the object of progress.",
+        "category": ""
+      },
+      {
+        "start": 5448,
+        "end": 5476,
+        "text": "And this is second question.",
+        "correction": "And this is the second question.",
+        "explanation": "The article 'the' is needed before the ordinal 'second' to specify it.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 5540,
+        "end": 5610,
+        "text": "First one, how we can evaluate the currently our current fluency level",
+        "correction": "First, how we can evaluate our current fluency level",
+        "explanation": "'Currently' is redundant and disrupts sentence flow; removing it clarifies meaning.",
+        "category": "WORD"
+      },
+      {
+        "start": 5611,
+        "end": 5667,
+        "text": "and how you can understand that you have progress in it.",
+        "correction": "and how you can understand whether you have made progress in it.",
+        "explanation": "'Have progress' should be 'have made progress' to correctly indicate an accomplishment.",
+        "category": ""
+      },
+      {
+        "start": 5732,
+        "end": 5792,
+        "text": "situations we can use transcribe AI soft for it. For example",
+        "correction": "we can use Transcribe AI software to see how many words",
+        "explanation": "'How much words' should be 'how many words' as words are countable. 'Transcribe AI soft' capitalization is also corrected.",
+        "category": ""
+      },
+      {
+        "start": 5950,
+        "end": 5994,
+        "text": "So we can start it just then transcribe and.",
+        "correction": "So we can start it and then transcribe.",
+        "explanation": "The phrase is unclear and needs restructuring for correct sequence of actions.",
+        "category": "WORD"
+      },
+      {
+        "start": 6087,
+        "end": 6098,
+        "text": "Yes, agree.",
+        "correction": "Yes, I agree.",
+        "explanation": "The verb 'agree' should be preceded by a subject.",
+        "category": "VERB"
+      },
+      {
+        "start": 6203,
+        "end": 6271,
+        "text": "So then higher your volume of text and lower your level of mistakes.",
+        "correction": "The higher your volume of text, the lower your level of mistakes.",
+        "explanation": "Incorrect use of comparative 'higher' and 'lower' without article 'the' or conjunction.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 6272,
+        "end": 6306,
+        "text": "So then higher your fluence level.",
+        "correction": "The higher your fluency level.",
+        "explanation": "Incorrect comparative structure and use of 'fluence' instead of 'fluency'.",
+        "category": ""
+      },
+      {
+        "start": 6403,
+        "end": 6443,
+        "text": "So big quantity of mistakes doesn't mean",
+        "correction": "A large quantity of mistakes doesn’t mean",
+        "explanation": "Incorrect use of 'so big' should be 'a large' for quantity.",
+        "category": ""
+      },
+      {
+        "start": 6679,
+        "end": 6709,
+        "text": "it's higher, it's higher temp.",
+        "correction": "it's a higher tempo.",
+        "explanation": "'Temp' is incorrect; 'tempo' is the correct term.",
+        "category": ""
+      },
+      {
+        "start": 6807,
+        "end": 6818,
+        "text": "I listening",
+        "correction": "I am listening",
+        "explanation": "Incorrect verb form; should be present continuous tense.",
+        "category": "TENSE"
+      },
+      {
+        "start": 6872,
+        "end": 6883,
+        "text": "I speaking.",
+        "correction": "I am speaking.",
+        "explanation": "Incorrect verb form; should be present continuous tense.",
+        "category": "TENSE"
+      },
+      {
+        "start": 6919,
+        "end": 6937,
+        "text": "sounds between the",
+        "correction": "I think now.",
+        "explanation": "Repetition of 'now' is redundant and should be removed.",
+        "category": "WORD"
+      },
+      {
+        "start": 6997,
+        "end": 7013,
+        "text": "Some troubles in",
+        "correction": "Some trouble with",
+        "explanation": "'Trouble' is usually uncountable and takes 'with'.",
+        "category": ""
+      },
+      {
+        "start": 7032,
+        "end": 7062,
+        "text": "also I have some troubles with",
+        "correction": "I also have trouble with",
+        "explanation": "Use 'trouble' instead of 'troubles' and place 'also' correctly.",
+        "category": ""
+      },
+      {
+        "start": 7147,
+        "end": 7191,
+        "text": "now when I'm speaking before I have to think",
+        "correction": "now before I speak, I have to think",
+        "explanation": "The phrase should be reordered for clarity and tense consistency.",
+        "category": "TENSE"
+      },
+      {
+        "start": 7337,
+        "end": 7357,
+        "text": "because no practice.",
+        "correction": "because I have no practice.",
+        "explanation": "Subject 'I' and auxiliary verb 'have' are missing.",
+        "category": "VERB"
+      },
+      {
+        "start": 7439,
+        "end": 7445,
+        "text": "or you",
+        "correction": "or did you",
+        "explanation": "The phrase should have parallel tense structure with 'did' for past actions.",
+        "category": "TENSE"
+      },
+      {
+        "start": 7446,
+        "end": 7461,
+        "text": "have lack of it",
+        "correction": "experience a lack of it",
+        "explanation": "'Lack' as a noun should be paired with 'experience' to denote shortage.",
+        "category": ""
+      },
+      {
+        "start": 7564,
+        "end": 7608,
+        "text": "when you're working in English speaking area",
+        "correction": "when you're working in an English-speaking area",
+        "explanation": "An article 'an' is needed before a singular, unspecified, countable noun, and 'English-speaking' should be hyphenated as a compound adjective.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 7693,
+        "end": 7711,
+        "text": "you, when you work",
+        "correction": "came to take from",
+        "explanation": "The verb 'come' should be in past tense to match 'came', and 'to' is needed for infinitive form.",
+        "category": "TENSE"
+      },
+      {
+        "start": 7987,
+        "end": 8006,
+        "text": "He means me myself.",
+        "correction": "He meant me myself.",
+        "explanation": "The verb should be in past tense to maintain consistency.",
+        "category": "TENSE"
+      },
+      {
+        "start": 8379,
+        "end": 8409,
+        "text": "That exists English vocabulary",
+        "correction": "There exists English vocabulary",
+        "explanation": "The existential phrase 'there exists' is needed instead of 'that exists'.",
+        "category": "WORD"
+      },
+      {
+        "start": 8421,
+        "end": 8439,
+        "text": "such kind of words",
+        "correction": "such kinds of words",
+        "explanation": "'Kinds' should be plural after 'such'.",
+        "category": ""
+      },
+      {
+        "start": 8539,
+        "end": 8553,
+        "text": "Russian boards",
+        "correction": "Russian words",
+        "explanation": "Logical error; 'boards' should be 'words' to match the context.",
+        "category": ""
+      },
+      {
+        "start": 8612,
+        "end": 8647,
+        "text": "take English tutor during this year",
+        "correction": "take English tutoring during this year",
+        "explanation": "The noun form 'tutoring' is required instead of 'tutor'.",
+        "category": ""
+      },
+      {
+        "start": 8707,
+        "end": 8736,
+        "text": "paid paid lessons on platform",
+        "correction": "paid lessons on a platform",
+        "explanation": "Repetition and missing article error; only one 'paid' is needed, and 'a' is needed before 'platform'.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 8961,
+        "end": 8973,
+        "text": "in 2022 year",
+        "correction": "in the year 2022",
+        "explanation": "The prepositional phrase should include 'the year' correctly.",
+        "category": "PREP"
+      },
+      {
+        "start": 9025,
+        "end": 9045,
+        "text": "If I'm not mistaken.",
+        "correction": "If I am not mistaken.",
+        "explanation": "Avoid contractions for formal clarity.",
+        "category": "WORD"
+      },
+      {
+        "start": 9087,
+        "end": 9120,
+        "text": "t recall the name of company from",
+        "correction": "the name of the company from",
+        "explanation": "The article 'the' is needed before 'company' to specify which company is being referred to.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 9360,
+        "end": 9381,
+        "text": "what does mean recall",
+        "correction": "what recall means",
+        "explanation": "The correct word order in indirect questions is 'what + subject + verb.'",
+        "category": "VERB"
+      },
+      {
+        "start": 9681,
+        "end": 9691,
+        "text": "a few time",
+        "correction": "a few times",
+        "explanation": "'Time' should be plural when referring to multiple instances.",
+        "category": ""
+      },
+      {
+        "start": 9853,
+        "end": 9868,
+        "text": "name of company",
+        "correction": "name of the company",
+        "explanation": "'The' is needed before singular, specific nouns.",
+        "category": ""
+      },
+      {
+        "start": 10129,
+        "end": 10155,
+        "text": "a part of Portugal company",
+        "correction": "a part of a Portuguese company",
+        "explanation": "A determiner is needed and \"Portuguese\" is the correct adjective form for something related to Portugal.",
+        "category": ""
+      },
+      {
+        "start": 10199,
+        "end": 10218,
+        "text": "on Russian platform",
+        "correction": "on a Russian platform",
+        "explanation": "A determiner is needed before \"Russian platform.\"",
+        "category": ""
+      },
+      {
+        "start": 10633,
+        "end": 10644,
+        "text": "my $500 are",
+        "correction": "my $500 is",
+        "explanation": "Amounts of money are usually treated as singular.",
+        "category": ""
+      },
+      {
+        "start": 10700,
+        "end": 10718,
+        "text": "some special thing",
+        "correction": "something special",
+        "explanation": "\"Something special\" is the correct expression.",
+        "category": ""
+      },
+      {
+        "start": 10874,
+        "end": 10904,
+        "text": "I had some topics we discussed",
+        "correction": "I had some topics to discuss",
+        "explanation": "The sentence structure is incorrect for expressing intended discussion.",
+        "category": "ORDER"
+      },
+      {
+        "start": 11055,
+        "end": 11067,
+        "text": "such kind of",
+        "correction": "this kind of",
+        "explanation": "The correct expression is \"this kind of.\"",
+        "category": ""
+      },
+      {
+        "start": 11177,
+        "end": 11210,
+        "text": "what came to my attention today's",
+        "correction": "what came to my attention today",
+        "explanation": "The possessive form 'today's' is incorrect in this context; 'today' should be used instead.",
+        "category": ""
+      },
+      {
+        "start": 11212,
+        "end": 11242,
+        "text": "No one was succeeded to invest",
+        "correction": "No one succeeded in investing",
+        "explanation": "The phrase 'was succeeded to invest' is incorrect; it should be 'succeeded in investing'.",
+        "category": "WORD"
+      },
+      {
+        "start": 11309,
+        "end": 11334,
+        "text": "who did investors service",
+        "correction": "who provided investor services",
+        "explanation": "The phrase 'did investors service' is awkward; it should be 'provided investor services'.",
+        "category": "WORD"
+      },
+      {
+        "start": 11464,
+        "end": 11493,
+        "text": "churn's low able is about 19%",
+        "correction": "churn rate is about 19%",
+        "explanation": "The phrase 'churn's low able' is incorrect; it should be 'churn rate'.",
+        "category": "WORD"
+      },
+      {
+        "start": 11571,
+        "end": 11587,
+        "text": "disaster figures",
+        "correction": "disastrous figures",
+        "explanation": "'Disaster' needs to be changed to 'disastrous' to form the correct adjective.",
+        "category": ""
+      },
+      {
+        "start": 11770,
+        "end": 11798,
+        "text": "making startups with glasses",
+        "correction": "creating startups involving glasses",
+        "explanation": "The phrase 'making startups with glasses' is awkward; 'creating startups involving glasses' is clearer.",
+        "category": "WORD"
+      },
+      {
+        "start": 11863,
+        "end": 11892,
+        "text": "From 4 till 10 million rubles",
+        "correction": "From 4 to 10 million rubles",
+        "explanation": "The word 'till' is informal; 'to' is preferred in this context.",
+        "category": ""
+      },
+      {
+        "start": 12003,
+        "end": 12034,
+        "text": "three to five times higher than",
+        "correction": "three to five times that of",
+        "explanation": "The phrase 'times higher than' is incorrect; it should be 'times that of'.",
+        "category": "WORD"
+      },
+      {
+        "start": 12284,
+        "end": 12297,
+        "text": "in love.comor",
+        "correction": "on love.com",
+        "explanation": "'In love.comor' is incorrect; the correct phrase is 'on love.com'.",
+        "category": "WORD"
+      },
+      {
+        "start": 12426,
+        "end": 12443,
+        "text": "some north region",
+        "correction": "some northern region",
+        "explanation": "'North' should be 'northern' for correct adjectival form.",
+        "category": ""
+      },
+      {
+        "start": 12635,
+        "end": 12676,
+        "text": "Conception. This is a part of conception.",
+        "correction": "This is part of a concept.",
+        "explanation": "Repeating 'conception' is redundant and 'concept' is more appropriate here.",
+        "category": "WORD"
+      },
+      {
+        "start": 12777,
+        "end": 12788,
+        "text": "he's. Their",
+        "correction": "they are.",
+        "explanation": "Pronoun agreement issue; 'he's' should be replaced with 'they are'.",
+        "category": "VERB"
+      },
+      {
+        "start": 12847,
+        "end": 12856,
+        "text": "is a five",
+        "correction": "are five",
+        "explanation": "'Five' is plural, so it should be preceded by 'are' instead of 'is'.",
+        "category": ""
+      },
+      {
+        "start": 13469,
+        "end": 13500,
+        "text": "what interesting today was else",
+        "correction": "what else was interesting today",
+        "explanation": "The correct order for the interrogative structure is needed.",
+        "category": ""
+      },
+      {
+        "start": 13750,
+        "end": 13783,
+        "text": "they are not generate UCG content",
+        "correction": "they do not generate UGC content",
+        "explanation": "Improper verb form and abbreviation. 'Are' should be 'do,' and 'UCG' should be 'UGC' (User-Generated Content).",
+        "category": "VERB"
+      },
+      {
+        "start": 13947,
+        "end": 13981,
+        "text": "Hartman said looks looks same with",
+        "correction": "Hartman said looks the same as",
+        "explanation": "Correct idiomatic expression is 'looks the same as'.",
+        "category": ""
+      },
+      {
+        "start": 14113,
+        "end": 14137,
+        "text": "the Buffer it's when you",
+        "correction": "Buffer is when you",
+        "explanation": "Extraneous use of 'the' and contraction is not needed.",
+        "category": ""
+      },
+      {
+        "start": 14183,
+        "end": 14209,
+        "text": "through different platform",
+        "correction": "through different platforms",
+        "explanation": "'Platform' should be plural to match 'different'.",
+        "category": ""
+      },
+      {
+        "start": 14219,
+        "end": 14253,
+        "text": "but but main idea of service which",
+        "correction": "but the main idea of the service which",
+        "explanation": "Missing articles 'the' before 'main idea' and 'service'.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 14341,
+        "end": 14374,
+        "text": "They they guaranteed for instance",
+        "correction": "They guaranteed, for instance,",
+        "explanation": "The word 'They' is repeated unnecessarily and commas are needed for clarity.",
+        "category": "WORD"
+      },
+      {
+        "start": 14494,
+        "end": 14525,
+        "text": "but it can be not viewed at all",
+        "correction": "but it might not be viewed at all",
+        "explanation": "Incorrect phrase structure; 'might not be' is the correct form.",
+        "category": "WORD"
+      },
+      {
+        "start": 14535,
+        "end": 14569,
+        "text": "company guaranteed that it will be",
+        "correction": "company guarantees that it will be",
+        "explanation": "Tense consistency needs to be maintained; 'guarantees' is the correct form here.",
+        "category": "TENSE"
+      },
+      {
+        "start": 14593,
+        "end": 14637,
+        "text": "and you will have some how I would say views",
+        "correction": "and you will have, somehow, what I would call views",
+        "explanation": "Incorrect use of 'somehow'; commas needed for clarity.",
+        "category": "WORD"
+      },
+      {
+        "start": 14808,
+        "end": 14843,
+        "text": "theme in this project was a founder",
+        "correction": "theme in this project was the founder",
+        "explanation": "Incorrect article usage; 'the' specifies the noun.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 14888,
+        "end": 14898,
+        "text": "take about",
+        "correction": "took about",
+        "explanation": "Incorrect verb tense; past tense 'took' is needed.",
+        "category": "TENSE"
+      },
+      {
+        "start": 15125,
+        "end": 15157,
+        "text": "just go through couple of months",
+        "correction": "just go through a couple of months",
+        "explanation": "Missing article 'a' is needed before 'couple'.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 15158,
+        "end": 15170,
+        "text": "in this temp",
+        "correction": "at this pace",
+        "explanation": "Incorrect word choice; 'temp' should be 'pace.'",
+        "category": "WORD"
+      },
+      {
+        "start": 15769,
+        "end": 15822,
+        "text": "determination of determine if determine in definition",
+        "correction": "determining if the definition",
+        "explanation": "Redundant and incorrect phrasing; clarity is needed.",
+        "category": "WORD"
+      },
+      {
+        "start": 15835,
+        "end": 15849,
+        "text": "in correct way",
+        "correction": "in a correct way",
+        "explanation": "An article is needed before 'correct way.'",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 16089,
+        "end": 16107,
+        "text": "transcribe meeting",
+        "correction": "transcribed meeting",
+        "explanation": "'Transcribe' should be in past participle form 'transcribed' to modify 'meeting.'",
+        "category": "TENSE"
+      },
+      {
+        "start": 16338,
+        "end": 16348,
+        "text": "In bye bye",
+        "correction": "Goodbye",
+        "explanation": "'In bye bye' is incorrect. The proper farewell is 'Goodbye.'",
+        "category": ""
+      }
+    ],
+    "annotated_transcript_html": "Speaker A: The last time <mark class=\"grammar-error\" title=\"ORDER: Correct: we talked with him. | The phrase 'were talking with' is incomplete and lacks an object. Adding 'him' specifies who was being talked with.\">we were talking with.</mark>\n\nSpeaker B: Daniel.\n\nSpeaker A: He was <mark class=\"grammar-error\" title=\"WORD: Correct: using the Chrome extension to transcribe his speech. | The phrase 'to transcribe his' lacks a noun indicating what is being transcribed. Adding 'speech' completes the idea.\">using the Chrome extension to transcribe his.</mark>\n\nSpeaker B: Speech.\n\nSpeaker A: Idiot.\n\nSpeaker B: Idiot.\n\nSpeaker A: Cat.\n\nSpeaker B: Anyway, I started it. Okay.\n\nSpeaker A: So. So yeah, Daniel was. Was using the Chrome extension to transcribe his speech and <mark class=\"grammar-error\" title=\"WORD: Correct: to find some mistakes. I don't know | The phrase should not end with 'in' before an independent clause.\">to find some mistakes in. I don't know</mark>, maybe in pronunciation too, <mark class=\"grammar-error\" title=\"WORD: Correct: but mostly in using words, so in the dictionary | Phrase structure is awkward. Correct the sentence to make it clear and cohesive.\">but mostly in. In using words so in dictionary</mark>.\n\nSpeaker B: So <mark class=\"grammar-error\" title=\"Correct: do you have this extension for only Google Meet | Correct the placement of 'only' for proper emphasis.\">do you have this extension only for Google Meet</mark>.\n\nSpeaker A: It's working. Only for Google Meet. It works.\n\nSpeaker B: Okay, we will check it later.\n\nSpeaker A: You can <mark class=\"grammar-error\" title=\"WORD: Correct: write some code for it locally | The phrase is grammatically incorrect and unclear. 'Write some code for it locally' is a clearer and correct phrase.\">wipe code something for it just or local</mark>.\n\nSpeaker B: I think it's just needed to check. I hope <mark class=\"grammar-error\" title=\"WORD: Correct: some efficient instruments should be in place | The phrase 'should have in place' is incorrect. 'Should be in place' is the correct structure.\">some efficient instruments should have in place</mark>. And what is the difference between errors and mistakes in our context?\n\nSpeaker A: I used to see the <mark class=\"grammar-error\" title=\"ARTICLE: Correct: errors in the interface mostly, so I can't | The sentence is missing an article before 'interface' and a comma for proper punctuation.\">errors in interface mostly so I can't</mark> explain <mark class=\"grammar-error\" title=\"VERB: Correct: what the difference is between these words | The sentence is missing the verb 'is' for correct subject-verb agreement.\">what the difference between these words</mark> but in context I know that if you. If we're talking about. So I think maybe. Maybe <mark class=\"grammar-error\" title=\"VERB: Correct: mistakes are something | The phrase 'mistakes that something' lacks proper verb agreement and clarity.\">mistakes that something</mark> you did and <mark class=\"grammar-error\" title=\"VERB: Correct: errors are something | This should be 'errors are something' to maintain subject-verb agreement.\">errors and something</mark> happened by itself. Maybe I don't.\n\nSpeaker B: Some more.\n\nSpeaker A: You know.\n\nSpeaker B: One more time please. <mark class=\"grammar-error\" title=\"VERB: Correct: Mistakes are what you can make, and errors | The sentence should use 'are' instead of 'it' for proper subject-verb agreement.\">Mistakes it what you can make and errors</mark>. It happens by itself. Okay, maybe. Okay. So do you have any English aim or purpose for this year? Maybe some. Maybe some level or some <mark class=\"grammar-error\" title=\"Correct: vocabulary or something like that? | Use 'or' instead of 'on' to correctly connect alternatives.\">vocabulary on something like that?</mark> No.\n\nSpeaker A: No. <mark class=\"grammar-error\" title=\"VERB: Correct: There are no reasons or goals for it. | The subject 'reasons' and 'goals' are plural, so the verb should be 'are.' Also, the conjunction should be 'or' instead of 'no' to connect reasons and goals.\">There is no reason, no goals for it.</mark> We started to practice with. We started our practice with Dania at the end of November of last year just to. Just to. Just to practice because Dana is learning English in Germany. <mark class=\"grammar-error\" title=\"WORD: Correct: He needs the B1 or B2 level to find some work. | The phrase 'to work to find some work' is redundant. Simplifying to 'to find some work' is clearer.\">He needs the B1 or B2 level to work to find some work.</mark> And I thought at this moment I thought it would be nice to communicate more with Daniel sometimes and <mark class=\"grammar-error\" title=\"ORDER: Correct: also practice English because our speaking levels are maybe similar now. | The phrase ‘our level D now’ is unclear and 'just speaking level' is not correct. Simplified to focus on speaking levels and corrected word order.\">also practice English because our level D now is maybe similar just speaking level.</mark> <mark class=\"grammar-error\" title=\"WORD: Correct: Eight years ago, | 'Before eight years ago' is redundant. Simplified to 'Eight years ago.'\">Before eight years ago,</mark> I was more confident in my level. <mark class=\"grammar-error\" title=\"TENSE: Correct: I spoke more fluently. | Past context requires the past tense 'spoke.'\">I speak more fluently.</mark> And now I think now <mark class=\"grammar-error\" title=\"Correct: I have some trouble. | 'Trouble' is an uncountable noun, so it should not be plural.\">I have some troubles.</mark> And also when I'm speaking with the international worldwide clients, sometimes it seems like a problem for me. So I just want to <mark class=\"grammar-error\" title=\"VERB: Correct: speak more fluently. | 'Fluently' is the adverb needed to modify the verb 'speak.'\">speak more fluent.</mark> So I started to practice and also I have an idea to create the local mini English speaking club for Russian designers. And maybe we can grow that's into something bigger. <mark class=\"grammar-error\" title=\"WORD: Correct: So that's useful for me and interesting to try out. | The phrase 'to try out' is more idiomatic.\">So that's useful for me and interesting to try.</mark>\n\nSpeaker B: Okay. Have you ever visited any English community in Russia? Small talk groups online?\n\nSpeaker A: When I worked in Ray Peasant bank there was a bank, <mark class=\"grammar-error\" title=\"Correct: there was a local English club once per week or per sprint, | The order 'once per week or per sprint' clarifies the meaning.\">there was a local English club one time per sprint or per week,</mark> I can't recall. And it was really good because you can practice with the presentations and also you can practice in English. So you can choose the topic for the meeting and on the meeting you can prepare the presentation before the meeting. And you can describe your idea <mark class=\"grammar-error\" title=\"PREP: Correct: only in English. That was good. | 'In English' is the correct prepositional phrase to use.\">only with English. That was good.</mark>\n\nSpeaker B: And.\n\nSpeaker A: That'S it. That's. That's the one experience.\n\nSpeaker B: Okay. I visited a couple of times when I came to Moscow. <mark class=\"grammar-error\" title=\"Correct: The first time in 2014. | 'In 2014 years' is incorrect. Should be just 'in 2014.'\">The first time in 2014 years.</mark> And it was like a game munchkin and one game, I don't remember how it's called. And I mostly was sitting like this and eating and as I remember everyone should order some meal. It was in restaurant and <mark class=\"grammar-error\" title=\"ORDER: Correct: for me it was quite hard to order anything. The total amount was 1000 rubles. | Incomplete sentences need to be connected properly.\">for me it was quite hard to order. Total amount 1000 rubles.</mark> So I just drinking a tea as I remember. So it wasn't very efficient for me I suppose <mark class=\"grammar-error\" title=\"Correct: because my level was too low compared to the other group. | Removed unnecessary 'of' and corrected 'other group' to 'the other group.'\">because of my level was too low compared to other group.</mark> But currently I think it must be much more efficient.\n\nSpeaker A: Okay. <mark class=\"grammar-error\" title=\"Correct: So I think that for me it seems | The sentence starts and ends abruptly. Joining them appropriately is necessary for grammatical correctness.\">So I think the. For me it seems</mark> a little bit useless because when you play you can improve your playing English. So it's different. Yeah. So because when I was playing in Counter Strike when I was playing in Dota with the international mates. So it was useful for me and I thought my. At this time I thought <mark class=\"grammar-error\" title=\"TENSE: Correct: my English was very nice because I could | 'Was' and 'could' maintain the past tense consistency.\">my English is very nice because I can</mark> communicate with the other people from other countries. I played with people from Poland, from Europe, from usa, from China also. <mark class=\"grammar-error\" title=\"WORD: Correct: I imagined that my English | Repetition of 'So I imagined' is unnecessary and incorrect.\">So I imagined. So I imagined that my English</mark> is nice. Yeah but I. <mark class=\"grammar-error\" title=\"WORD: Correct: But I needed to improve it for the visa interview, | Repetition of 'needed to improve' is redundant.\">But I needed to improve it. When I needed to improve my level for the visa interview,</mark> I was disappointed about my level. So the plain English is different from real real English. So also when we speak with Dania we use special design topics or industry topics IT topics to improve the professional English to know just to learn new words <mark class=\"grammar-error\" title=\"VERB: Correct: to try to speak more fluently. | 'Fluently' is the correct adverb form.\">to try to speak more fluent.</mark> And also sometimes it seems easy because we already use some words in Russia <mark class=\"grammar-error\" title=\"WORD: Correct: a little bit bored with my speeches. | Corrects the phrase to reflect the speaker's intended meaning.\">like you know, the interface in Figma when</mark> we drawing we use words rectangle so we don't speak primovolnik we just use the rectangle or screen screenshot interface. <mark class=\"grammar-error\" title=\"ORDER: Correct: That's an Anglicism we use in Russia. | Corrects the sentence structure for clarity.\">That's Anglicism in Russia what we use.</mark>\n\nSpeaker B: Brother, I suggest to keep your answers a little bit shorter so we have a discussion because sometimes I feel a.\n\nSpeaker A: Little bit boring idea of my. My speeches. We have to prepare some topics, not just try to speak. We have to prepare topics. Startup topics maybe.\n\nSpeaker B: Yeah, sure. So I have a question how you understand your fluency level and <mark class=\"grammar-error\" title=\"Correct: second question. How do you think | 'Questions' should be singular; 'how' should be followed by 'do you think' for correct question format.\">second questions. How how you think</mark> we can evaluate our fluency level during the time. I have one idea. <mark class=\"grammar-error\" title=\"VERB: Correct: I can explain to you, but maybe | 'Explain to you' is the correct verb phrase.\">I can explain you, but maybe</mark> you have another one.\n\nSpeaker A: Repeat the first question.\n\nSpeaker B: First question, how we can evaluate our fluency level and <mark class=\"grammar-error\" title=\"Correct: progress of our fluency level. | Clarifies the object of progress.\">progress of it.</mark>\n\nSpeaker A: <mark class=\"grammar-error\" title=\"ARTICLE: Correct: And this is the second question. | The article 'the' is needed before the ordinal 'second' to specify it.\">And this is second question.</mark>\n\nSpeaker B: Yes.\n\nSpeaker A: What's the first one?\n\nSpeaker B: <mark class=\"grammar-error\" title=\"WORD: Correct: First, how we can evaluate our current fluency level | 'Currently' is redundant and disrupts sentence flow; removing it clarifies meaning.\">First one, how we can evaluate the currently our current fluency level</mark> <mark class=\"grammar-error\" title=\"Correct: and how you can understand whether you have made progress in it. | 'Have progress' should be 'have made progress' to correctly indicate an accomplishment.\">and how you can understand that you have progress in it.</mark> Two questions.\n\nSpeaker A: Yeah, I think, I think just for both <mark class=\"grammar-error\" title=\"Correct: we can use Transcribe AI software to see how many words | 'How much words' should be 'how many words' as words are countable. 'Transcribe AI soft' capitalization is also corrected.\">situations we can use transcribe AI soft for it. For example</mark> we can, we can set up. It's hard, it's hard to explain. We can use transcribe AI soft to see how much words we can speak through the 30 minutes for example. <mark class=\"grammar-error\" title=\"WORD: Correct: So we can start it and then transcribe. | The phrase is unclear and needs restructuring for correct sequence of actions.\">So we can start it just then transcribe and.</mark>\n\nSpeaker B: Compare. Compare.\n\nSpeaker A: So we can compare the amount of text.\n\nSpeaker B: <mark class=\"grammar-error\" title=\"VERB: Correct: Yes, I agree. | The verb 'agree' should be preceded by a subject.\">Yes, agree.</mark> I have the same idea. And the second metric can be the total amount of mistakes in this volume of text. <mark class=\"grammar-error\" title=\"ARTICLE: Correct: The higher your volume of text, the lower your level of mistakes. | Incorrect use of comparative 'higher' and 'lower' without article 'the' or conjunction.\">So then higher your volume of text and lower your level of mistakes.</mark> <mark class=\"grammar-error\" title=\"Correct: The higher your fluency level. | Incorrect comparative structure and use of 'fluence' instead of 'fluency'.\">So then higher your fluence level.</mark> I suppose.\n\nSpeaker A: I don't think so.\n\nSpeaker B: Because.\n\nSpeaker A: Quantity of mistakes. <mark class=\"grammar-error\" title=\"Correct: A large quantity of mistakes doesn’t mean | Incorrect use of 'so big' should be 'a large' for quantity.\">So big quantity of mistakes doesn't mean</mark> that you speak slow. You can make mistakes, but you can speak fluently.\n\nSpeaker B: Okay. But anyway if you increase your level of text of words and you have the same amount of mistakes so it means that you your speech is more fluent, <mark class=\"grammar-error\" title=\"Correct: it's a higher tempo. | 'Temp' is incorrect; 'tempo' is the correct term.\">it's higher, it's higher temp.</mark> So because I just. Because just I would like to turn one and half or maybe two speed up and when <mark class=\"grammar-error\" title=\"TENSE: Correct: I am listening | Incorrect verb form; should be present continuous tense.\">I listening</mark> and I also would like to speed up my own speech when <mark class=\"grammar-error\" title=\"TENSE: Correct: I am speaking. | Incorrect verb form; should be present continuous tense.\">I speaking.</mark>\n\nSpeaker A: Yeah. I don't like the <mark class=\"grammar-error\" title=\"WORD: Correct: I think now. | Repetition of 'now' is redundant and should be removed.\">sounds between the</mark> words. So now I think now.\n\nSpeaker B: I have.\n\nSpeaker A: <mark class=\"grammar-error\" title=\"Correct: Some trouble with | 'Trouble' is usually uncountable and takes 'with'.\">Some troubles in</mark> pronunciation and <mark class=\"grammar-error\" title=\"Correct: I also have trouble with | Use 'trouble' instead of 'troubles' and place 'also' correctly.\">also I have some troubles with</mark> thinking because when your English is fluent you can speak. You can just speak. But <mark class=\"grammar-error\" title=\"TENSE: Correct: now before I speak, I have to think | The phrase should be reordered for clarity and tense consistency.\">now when I'm speaking before I have to think</mark> and then I have to speak.\n\nSpeaker B: Do you need Russian?\n\nSpeaker A: Then translate and then speak. So that's a big problem for me. And that's <mark class=\"grammar-error\" title=\"VERB: Correct: because I have no practice. | Subject 'I' and auxiliary verb 'have' are missing.\">because no practice.</mark>\n\nSpeaker B: So when you went to America last time, did you have the same problem <mark class=\"grammar-error\" title=\"TENSE: Correct: or did you | The phrase should have parallel tense structure with 'did' for past actions.\">or you</mark> <mark class=\"grammar-error\" title=\"Correct: experience a lack of it | 'Lack' as a noun should be paired with 'experience' to denote shortage.\">have lack of it</mark> after one, two, three months there?\n\nSpeaker A: I fixed this after maybe two weeks in America because <mark class=\"grammar-error\" title=\"ARTICLE: Correct: when you're working in an English-speaking area | An article 'an' is needed before a singular, unspecified, countable noun, and 'English-speaking' should be hyphenated as a compound adjective.\">when you're working in English speaking area</mark>, I don't know the how to translate another way. Not area environment. Yeah. So when <mark class=\"grammar-error\" title=\"TENSE: Correct: came to take from | The verb 'come' should be in past tense to match 'came', and 'to' is needed for infinitive form.\">you, when you work</mark> in English speaking environment with English speaking people, you have to. You have to be adaptive.\n\nSpeaker B: So okay, yeah, I fixed it. And one, one hit. Not hit how it would be one life hack that I came take from my lesson. My English teacher, he said that you need you. <mark class=\"grammar-error\" title=\"TENSE: Correct: He meant me myself. | The verb should be in past tense to maintain consistency.\">He means me myself.</mark> He said that you need to explain English words in English words. So you shouldn't say sridha. You have to explain to me this word. So I need to understand and suggest you ways to pronounce it to say.\n\nSpeaker A: That yeah, yeah, yeah, that's. That's good advice. So I used. I used the same advice for Dania when we were speaking.\n\nSpeaker B: Yeah. And it was interesting. <mark class=\"grammar-error\" title=\"WORD: Correct: There exists English vocabulary | The existential phrase 'there exists' is needed instead of 'that exists'.\">That exists English vocabulary</mark> to explain <mark class=\"grammar-error\" title=\"Correct: such kinds of words | 'Kinds' should be plural after 'such'.\">such kind of words</mark>. Any words in English. It's quite strange, but it's like a big Russian vocabulary of dal or ov. So <mark class=\"grammar-error\" title=\"Correct: Russian words | Logical error; 'boards' should be 'words' to match the context.\">Russian boards</mark> explained by Russian boards. By the way, are you going to <mark class=\"grammar-error\" title=\"Correct: take English tutoring during this year | The noun form 'tutoring' is required instead of 'tutor'.\">take English tutor during this year</mark>?\n\nSpeaker A: I don't think so. I have two or three already <mark class=\"grammar-error\" title=\"ARTICLE: Correct: paid lessons on a platform | Repetition and missing article error; only one 'paid' is needed, and 'a' is needed before 'platform'.\">paid paid lessons on platform</mark>.\n\nSpeaker B: Me too, by the way. Me too. I have maybe $100 of deposit if it's still available for me. I don't know, maybe even 500. 500 deposit in my Italki account. I remember I credited my account because of. It was maybe <mark class=\"grammar-error\" title=\"PREP: Correct: in the year 2022 | The prepositional phrase should include 'the year' correctly.\">in 2022 year</mark> when credit cards or debit cards should be closed. <mark class=\"grammar-error\" title=\"WORD: Correct: If I am not mistaken. | Avoid contractions for formal clarity.\">If I'm not mistaken.</mark>\n\nSpeaker A: When I was applying to I can'<mark class=\"grammar-error\" title=\"ARTICLE: Correct: the name of the company from | The article 'the' is needed before 'company' to specify which company is being referred to.\">t recall the name of company from</mark> Portugal.\n\nSpeaker B: Can't recall. Can't recall. You said can't recall?\n\nSpeaker A: Yeah, recall, recall. So you try to. Just like you remember, you know the remember word. You know, remember.\n\nSpeaker B: Yeah.\n\nSpeaker A: So do you know <mark class=\"grammar-error\" title=\"VERB: Correct: what recall means | The correct word order in indirect questions is 'what + subject + verb.'\">what does mean recall</mark>?\n\nSpeaker B: Yes. Recall means when you call back your message or something like that.\n\nSpeaker A: No, no. Recall in your mind that you try to. To find something in your mind and you find it when you find you recall. If you can't find something in your head, you can't recall. So something happened <mark class=\"grammar-error\" title=\"Correct: a few times | 'Time' should be plural when referring to multiple instances.\">a few time</mark> ago, a few years ago and you try to recall it.\n\nSpeaker B: So can you. Can you say your sentence one more time again fully?\n\nSpeaker A: Yeah, I can't recall the <mark class=\"grammar-error\" title=\"Correct: name of the company | 'The' is needed before singular, specific nouns.\">name of company</mark>. I can't recall the name of company.\n\nSpeaker B: Okay. It means that you can't in 2023. So you. You forgot it.\n\nSpeaker A: Yeah, I forgot and I can't recall.\n\nSpeaker B: Yeah, I understand.\n\nSpeaker A: So what I was talking about. Yeah, I was trying to. To be <mark class=\"grammar-error\" title=\"Correct: a part of a Portuguese company | A determiner is needed and &quot;Portuguese&quot; is the correct adjective form for something related to Portugal.\">a part of Portugal company</mark> usp and I bought maybe five or six lessons <mark class=\"grammar-error\" title=\"Correct: on a Russian platform | A determiner is needed before &quot;Russian platform.&quot;\">on Russian platform</mark> to prepare for interview. So like. Like it was special, not special course, special lessons from the, from the teacher. So I have two or three more lessons on my account, but I didn't use it. I don't use. Maybe. Maybe I have to use it if it's alive, still alive, but we'll see. So I. I don't have any special purpose for this year. So I don't know my need. Need to. To use teacher for it.\n\nSpeaker B: Okay. I hope <mark class=\"grammar-error\" title=\"Correct: my $500 is | Amounts of money are usually treated as singular.\">my $500 are</mark> still alive. So I had a question. Okay. So do you have <mark class=\"grammar-error\" title=\"Correct: something special | &quot;Something special&quot; is the correct expression.\">some special thing</mark> for today or I can also. Or I can suggest.\n\nSpeaker A: You can suggest. I don't have.\n\nSpeaker B: Okay, I can't.\n\nSpeaker A: But I can't go to perplexity. <mark class=\"grammar-error\" title=\"ORDER: Correct: I had some topics to discuss | The sentence structure is incorrect for expressing intended discussion.\">I had some topics we discussed</mark> with Dania and I have some empty.\n\nSpeaker B: Okay, we can discuss today's. Today's pitch for Hartman. As you remember, one time per month he visited <mark class=\"grammar-error\" title=\"Correct: this kind of | The correct expression is &quot;this kind of.&quot;\">such kind of</mark>.\n\nSpeaker A: Pitches. And that's not discussion, that's just.\n\nSpeaker B: Yeah, I can. I can. I can tell you <mark class=\"grammar-error\" title=\"Correct: what came to my attention today | The possessive form 'today's' is incorrect in this context; 'today' should be used instead.\">what came to my attention today's</mark>. <mark class=\"grammar-error\" title=\"WORD: Correct: No one succeeded in investing | The phrase 'was succeeded to invest' is incorrect; it should be 'succeeded in investing'.\">No one was succeeded to invest</mark> only one team with Agrillo Apollo which is Skolkow residence. And <mark class=\"grammar-error\" title=\"WORD: Correct: who provided investor services | The phrase 'did investors service' is awkward; it should be 'provided investor services'.\">who did investors service</mark>. Hartman said that he's ready to keep in touch in some way. And interesting was his mention about churn of lovable. He said that <mark class=\"grammar-error\" title=\"WORD: Correct: churn rate is about 19% | The phrase 'churn's low able' is incorrect; it should be 'churn rate'.\">churn's low able is about 19%</mark> for me it was quite strange figures. I google it and find nothing about such <mark class=\"grammar-error\" title=\"Correct: disastrous figures | 'Disaster' needs to be changed to 'disastrous' to form the correct adjective.\">disaster figures</mark>. So maybe he knows something that I don't know. But maybe he missed something or. Or it's incorrect information or something. So what else interesting? This Vladimir Pankhose who is <mark class=\"grammar-error\" title=\"WORD: Correct: creating startups involving glasses | The phrase 'making startups with glasses' is awkward; 'creating startups involving glasses' is clearer.\">making startups with glasses</mark>. Yes. He said that revenue from 1.1 store in his firm is about. <mark class=\"grammar-error\" title=\"Correct: From 4 to 10 million rubles | The word 'till' is informal; 'to' is preferred in this context.\">From 4 till 10 million rubles</mark>. I don't remember. Was it about revenue or. Or net profit? I suppose it's revenue, but he said that it's from <mark class=\"grammar-error\" title=\"WORD: Correct: three to five times that of | The phrase 'times higher than' is incorrect; it should be 'times that of'.\">three to five times higher than</mark> usual optic stores. And it's quite interesting because I. I don't remember. Did I. Did I send you photos of their clubs? Optic clubs?\n\nSpeaker A: I don't think so. Maybe just the slide from presentation.\n\nSpeaker B: Oh, by the way, you can check it <mark class=\"grammar-error\" title=\"WORD: Correct: on love.com | 'In love.comor' is incorrect; the correct phrase is 'on love.com'.\">in love.comor</mark>.\n\nSpeaker A: True.\n\nSpeaker B: So it's quite interesting. I don't remember where he's working. He. He said he's from Yakutia or <mark class=\"grammar-error\" title=\"Correct: some northern region | 'North' should be 'northern' for correct adjectival form.\">some north region</mark>. And as I'm if I'm not mistaken, they have five or seven.\n\nSpeaker A: I see the pictures.\n\nSpeaker B: What.\n\nSpeaker A: What does it mean?\n\nSpeaker B: Clubs collapse means store.\n\nSpeaker A: <mark class=\"grammar-error\" title=\"WORD: Correct: This is part of a concept. | Repeating 'conception' is redundant and 'concept' is more appropriate here.\">Conception. This is a part of conception.</mark>\n\nSpeaker B: Yes. And it's interesting to understand too in which cities they are represented. Yeah, <mark class=\"grammar-error\" title=\"VERB: Correct: they are. | Pronoun agreement issue; 'he's' should be replaced with 'they are'.\">he's. Their</mark> company is registered in Yakutsk.\n\nSpeaker A: Yeah. There <mark class=\"grammar-error\" title=\"Correct: are five | 'Five' is plural, so it should be preceded by 'are' instead of 'is'.\">is a five</mark>. Oh no, five. Not five. Yeah. 1, 2, 3, 4, 5, 6, 7. Seven addresses.\n\nSpeaker B: Seven. Yes. So let me check the revenue of their company. Official revenue. Interesting. 100 million rubles and net profit is. Net loss for 40 million rubles.\n\nSpeaker A: 40 million for the last year.\n\nSpeaker B: Yes, for the previous year. Interesting. So it's interesting that for some quite special type of business. Maybe not type of business, but style of this kind of business, they have Solid revenue for your Kusk. Just interesting case like maybe like Chico as you remember Chico is Korean store. Korean food store. Yep so <mark class=\"grammar-error\" title=\"Correct: what else was interesting today | The correct order for the interrogative structure is needed.\">what interesting today was else</mark>. So Glasses Ah it was Glasses it was investment service Third service was about. Content Content maker Content factory. Content factory. Yes they they have a lot of phones registered in Kazakhstan and maybe something like that and they they concept <mark class=\"grammar-error\" title=\"VERB: Correct: they do not generate UGC content | Improper verb form and abbreviation. 'Are' should be 'do,' and 'UCG' should be 'UGC' (User-Generated Content).\">they are not generate UCG content</mark> mostly they distributed it from their customers their clients so their suggestion is too efficient way to distribute content that already created and.\n\nSpeaker A: <mark class=\"grammar-error\" title=\"Correct: Hartman said looks the same as | Correct idiomatic expression is 'looks the same as'.\">Hartman said looks looks same with</mark> the idea I was talking about today named Buffer the social media planner.\n\nSpeaker B: If I understand correctly the idea of Buffer <mark class=\"grammar-error\" title=\"Correct: Buffer is when you | Extraneous use of 'the' and contraction is not needed.\">the Buffer it's when you</mark> just. It's just about timing or distribution <mark class=\"grammar-error\" title=\"Correct: through different platforms | 'Platform' should be plural to match 'different'.\">through different platform</mark>. Yes yes <mark class=\"grammar-error\" title=\"ARTICLE: Correct: but the main idea of the service which | Missing articles 'the' before 'main idea' and 'service'.\">but but main idea of service which</mark> was presented to Hartman is to boost such kind of content.\n\nSpeaker A: So.\n\nSpeaker B: <mark class=\"grammar-error\" title=\"WORD: Correct: They guaranteed, for instance, | The word 'They' is repeated unnecessarily and commas are needed for clarity.\">They they guaranteed for instance</mark> rates 100 ruples per 1000 views so it's not. You can. If you use Buffer you can post your content in 100 social medias <mark class=\"grammar-error\" title=\"WORD: Correct: but it might not be viewed at all | Incorrect phrase structure; 'might not be' is the correct form.\">but it can be not viewed at all</mark> and this <mark class=\"grammar-error\" title=\"TENSE: Correct: company guarantees that it will be | Tense consistency needs to be maintained; 'guarantees' is the correct form here.\">company guaranteed that it will be</mark> boosted or distributed <mark class=\"grammar-error\" title=\"WORD: Correct: and you will have, somehow, what I would call views | Incorrect use of 'somehow'; commas needed for clarity.\">and you will have some how I would say views</mark>.\n\nSpeaker A: Yeah, I got it.\n\nSpeaker B: Yes.\n\nSpeaker A: Each rich or what?\n\nSpeaker B: Yes okay and what else Java I was not interested in it but the mostly interested <mark class=\"grammar-error\" title=\"ARTICLE: Correct: theme in this project was the founder | Incorrect article usage; 'the' specifies the noun.\">theme in this project was a founder</mark> it was a quite young girl and she. She. She <mark class=\"grammar-error\" title=\"TENSE: Correct: took about | Incorrect verb tense; past tense 'took' is needed.\">take about</mark> 500 meetings per month during a month maybe it was only one month and her conversion her conversion rate to sale was about 20% and it was impressive. Yes it impressed Hartmont as well and he said you don't need to raise money <mark class=\"grammar-error\" title=\"ARTICLE: Correct: just go through a couple of months | Missing article 'a' is needed before 'couple'.\">just go through couple of months</mark> <mark class=\"grammar-error\" title=\"WORD: Correct: at this pace | Incorrect word choice; 'temp' should be 'pace.'\">in this temp</mark> what is the synonym of temp? I'm not sure the temp is the right what here Pace maybe pace same speed speed or pace base it's like and so it's it's for project and was five. Don't remember. So just ah. Where is Vasily Vlebnikov is investor what is the project? It's what's about Glasses that's it I suppose 55 proof 5th project is not going to mention we have 31 minutes I suggest to stop because it's quite so so it's one slot during which we can evaluate our metrics I can make a Google Doc and we will put this our metrics in every time and one concern that I have that AI will be good enough in <mark class=\"grammar-error\" title=\"WORD: Correct: determining if the definition | Redundant and incorrect phrasing; clarity is needed.\">determination of determine if determine in definition</mark> of mistakes <mark class=\"grammar-error\" title=\"ARTICLE: Correct: in a correct way | An article is needed before 'correct way.'\">in correct way</mark>. Let's.\n\nSpeaker A: Let's check we have to check some tools. So we can try to use maybe different tools. For example, we can use for the transcribation, we can use something like Super Whisper or Fathom or something like that for the full <mark class=\"grammar-error\" title=\"TENSE: Correct: transcribed meeting | 'Transcribe' should be in past participle form 'transcribed' to modify 'meeting.'\">transcribe meeting</mark>. And also we can use Google extension to check mistakes. And it will be like the combination of tools but we have to use Google Meet this way.\n\nSpeaker B: Okay, let's try. So that's it for this time?\n\nSpeaker A: Yeah.\n\nSpeaker B: <mark class=\"grammar-error\" title=\"Correct: Goodbye | 'In bye bye' is incorrect. The proper farewell is 'Goodbye.'\">In bye bye</mark> Brand.",
+    "annotations_meta": {
+      "chunks_processed": 17,
+      "total_chunks": 17,
+      "processed_chars": 16355,
+      "attempted_model": "gpt-4o"
+    },
+    "annotations_updated_at": "2026-02-10 15:36"
+  }
+}

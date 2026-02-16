@@ -1,0 +1,2049 @@
+{
+  "date": "2026-01-26",
+  "session": {
+    "topic": "26.01",
+    "duration_minutes": 30
+  },
+  "participants": [
+    {
+      "name": "Roman",
+      "role": "student",
+      "metrics": {
+        "word_count": 1396,
+        "turn_count": 34,
+        "avg_words_per_turn": 41.06,
+        "unique_word_count": 389,
+        "lexical_diversity": 0.28
+      },
+      "fluency": {
+        "score": 10.0,
+        "level": "C1"
+      },
+      "llm": {
+        "fluency": {
+          "score": 6.5,
+          "level": "Intermediate"
+        },
+        "grammar": {
+          "error_count": 15,
+          "top_errors": [
+            {
+              "title": "Incorrect verb forms",
+              "count": 5
+            },
+            {
+              "title": "Sentence fragments",
+              "count": 4
+            },
+            {
+              "title": "Subject-verb agreement",
+              "count": 3
+            }
+          ],
+          "top_recommendations": [
+            "Practice using correct verb forms in context.",
+            "Focus on constructing complete sentences.",
+            "Ensure subject-verb agreement in all sentences."
+          ],
+          "error_rate_per_100_words": 1.07
+        },
+        "chunked_grammar": {
+          "name": "Speaker A",
+          "total_words": 1396,
+          "total_errors": 70,
+          "error_rate_per_100_words": 5.01,
+          "error_types": [
+            {
+              "title": "Word Order",
+              "count": 25
+            },
+            {
+              "title": "Wrong Word",
+              "count": 18
+            },
+            {
+              "title": "Verb Form",
+              "count": 14
+            },
+            {
+              "title": "Verb Tense",
+              "count": 7
+            },
+            {
+              "title": "Articles",
+              "count": 5
+            },
+            {
+              "title": "Improper Conjunction Use",
+              "count": 1
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Word Order",
+              "count": 25
+            },
+            {
+              "title": "Wrong Word",
+              "count": 18
+            },
+            {
+              "title": "Verb Form",
+              "count": 14
+            },
+            {
+              "title": "Verb Tense",
+              "count": 7
+            },
+            {
+              "title": "Articles",
+              "count": 5
+            }
+          ]
+        },
+        "practical_recommendations": [
+          {
+            "title": "Wrong Word",
+            "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "examples": [
+              {
+                "error": "how is it good",
+                "correction": "how good it is"
+              },
+              {
+                "error": "or so or something",
+                "correction": "or something like that"
+              }
+            ]
+          },
+          {
+            "title": "Verb Form",
+            "guidance": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "examples": [
+              {
+                "error": "forgot find",
+                "correction": "forgot to find"
+              },
+              {
+                "error": "suggest to. To not interrupt",
+                "correction": "suggest not interrupting"
+              }
+            ]
+          },
+          {
+            "title": "Articles",
+            "guidance": "Use a/an/the (or zero article) correctly before nouns.",
+            "examples": [
+              {
+                "error": "anyway we need only raw.",
+                "correction": "anyway, we need only a raw"
+              },
+              {
+                "error": "Txt file so maybe I can record speakers.",
+                "correction": "a .txt file, so maybe I can record the speakers."
+              }
+            ]
+          }
+        ],
+        "annotation_grammar": {
+          "total_errors": 65,
+          "error_rate_per_100_words": 4.66,
+          "error_types": [
+            {
+              "code": "WORD",
+              "title": "Wrong Word",
+              "count": 22
+            },
+            {
+              "code": "VERB",
+              "title": "Verb Form",
+              "count": 12
+            },
+            {
+              "code": "ARTICLE",
+              "title": "Articles",
+              "count": 12
+            },
+            {
+              "code": "ORDER",
+              "title": "Word Order",
+              "count": 10
+            },
+            {
+              "code": "TENSE",
+              "title": "Verb Tense",
+              "count": 5
+            },
+            {
+              "code": "PREP",
+              "title": "Prepositions",
+              "count": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Andrey",
+      "role": "partner",
+      "metrics": {
+        "word_count": 992,
+        "turn_count": 33,
+        "avg_words_per_turn": 30.06,
+        "unique_word_count": 301,
+        "lexical_diversity": 0.3
+      },
+      "fluency": {
+        "score": 10.0,
+        "level": "C1"
+      },
+      "llm": {
+        "fluency": {
+          "score": 7.0,
+          "level": "Upper Intermediate"
+        },
+        "grammar": {
+          "error_count": 10,
+          "top_errors": [
+            {
+              "title": "Incorrect verb forms",
+              "count": 4
+            },
+            {
+              "title": "Sentence fragments",
+              "count": 3
+            },
+            {
+              "title": "Preposition errors",
+              "count": 2
+            }
+          ],
+          "top_recommendations": [
+            "Review verb conjugation rules for accuracy.",
+            "Work on avoiding sentence fragments by ensuring each sentence has a subject and a verb.",
+            "Practice using prepositions correctly in various contexts."
+          ],
+          "error_rate_per_100_words": 1.01
+        },
+        "chunked_grammar": {
+          "name": "Speaker B",
+          "total_words": 992,
+          "total_errors": 29,
+          "error_rate_per_100_words": 2.92,
+          "error_types": [
+            {
+              "title": "Word Order",
+              "count": 11
+            },
+            {
+              "title": "Wrong Word",
+              "count": 8
+            },
+            {
+              "title": "Verb Form",
+              "count": 5
+            },
+            {
+              "title": "Articles",
+              "count": 3
+            },
+            {
+              "title": "Ambiguous Expression",
+              "count": 1
+            },
+            {
+              "title": "Incorrect Question Structure",
+              "count": 1
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Word Order",
+              "count": 11
+            },
+            {
+              "title": "Wrong Word",
+              "count": 8
+            },
+            {
+              "title": "Verb Form",
+              "count": 5
+            },
+            {
+              "title": "Articles",
+              "count": 3
+            },
+            {
+              "title": "Ambiguous Expression",
+              "count": 1
+            }
+          ]
+        },
+        "practical_recommendations": [
+          {
+            "title": "Articles",
+            "guidance": "Use a/an/the (or zero article) correctly before nouns.",
+            "examples": [
+              {
+                "error": "feels like same",
+                "correction": "feels like the same"
+              },
+              {
+                "error": "try to try to use the context, not context window",
+                "correction": "try to use the context, not the context window"
+              }
+            ]
+          },
+          {
+            "title": "Verb Form",
+            "guidance": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "examples": [
+              {
+                "error": "That's two. No, that's two different devices",
+                "correction": "No, those are two different devices"
+              },
+              {
+                "error": "the one the same cloud account but it is two different devices",
+                "correction": "the same cloud account, but they are two different devices"
+              }
+            ]
+          },
+          {
+            "title": "Wrong Word",
+            "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "examples": [
+              {
+                "error": "there is no know",
+                "correction": "there is no"
+              },
+              {
+                "error": "transcription transcribe transcription",
+                "correction": "transcription"
+              }
+            ]
+          }
+        ],
+        "annotation_grammar": {
+          "total_errors": 22,
+          "error_rate_per_100_words": 2.22,
+          "error_types": [
+            {
+              "code": "ARTICLE",
+              "title": "Articles",
+              "count": 6
+            },
+            {
+              "code": "VERB",
+              "title": "Verb Form",
+              "count": 6
+            },
+            {
+              "code": "WORD",
+              "title": "Wrong Word",
+              "count": 5
+            },
+            {
+              "code": "ORDER",
+              "title": "Word Order",
+              "count": 3
+            },
+            {
+              "code": "PREP",
+              "title": "Prepositions",
+              "count": 2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "transcript": "Speaker A: Let me start my voice recorder. Yes, it started.\n\nSpeaker B: Did you install the new one?\n\nSpeaker A: Not. Not yet. I've checked the description and it seems quite hard to deploy and I forgot find no feedback about this program. I. I found the founder or developer of this GitHub distribution and it was a project for university and he worked like intern slash developer. So I'm not sure how is it good in production way or so or something like that. So I try to find something else and maybe maybe the description from Bisovka that who is using MacWhisper for raw transcript txtf files maybe quite good decision. You can try it on your MacBook.\n\nSpeaker B: I'm on. I'm not on MacBook right now. I'm on Mac Mini so there is no know this so on my MacBook I have a super wister as I think a bit same like you talking about. But there is no split. There is no splitting to speakers and. But there is full transcription transcribe transcription description of meeting. It's just recording all thing that you said.\n\nSpeaker A: Could you repeat? I'm not sure that I understand correctly.\n\nSpeaker B: Yeah, I have the same soft on my MacBook but I have no soft on my Mac mini. On my MacBook I have super Whisper. It feels like same with app you are talking about but there is no split. There is no splitting two speakers. There is just. Just the whole text of your speech not structured, just transcript, just transcriptions.\n\nSpeaker A: Okay, I understand and I'm a bit surprised that Mac OS has different soft than MacBook. Is it? AM I. Am I understand you correctly?\n\nSpeaker B: That's two. No, that's two different devices. Now I'm working on Mac Mini and Sometimes I use MacBook to work on my bed.\n\nSpeaker A: Okay, but you have different.\n\nSpeaker B: It's not one ecosystem. You can use the one the same cloud account but it is two different devices.\n\nSpeaker A: Yeah, I understand. I suggest to. To not interrupt each other because it's hard to transcribe after our speaking for. Yeah, yeah, yeah. And so you. You can't download to Mac OS from Mac Mini from App Store Mac Whisper.\n\nSpeaker B: You mean it's not free? Mac Whisper is payment. Payment. It's. I think I checked it before and it looks like there's no free tariff. There is no free tariff.\n\nSpeaker A: Okay, so maybe anyway we need only raw. Txt file so maybe I can record speakers. We agreed not interrupt each other Brother Splitting is called derisation in context of this kind of instrument. So the main problem for me it's several steps for transcribing. Currently I'm recording our. Our Conversation to voice recorder in my iPhone. Next step I share it with my saved Telegram account. After that I downloaded it to my developed by myself soft and after that I need to use some LLM and the problem is as I understand that the chat GPT or even Manus can't can't catch whole details from our our conversation and I'm not sure that our previous statistic is correct as you remember.\n\nSpeaker B: Did you try complexity for it?\n\nSpeaker A: Not yet, but maybe Gemini can be good because he takes much more bigger context. As I remember, you can try to.\n\nSpeaker B: Use Perplexity because it's really good in transcription. I think you just can try because Perplexity sometimes uses different Python and other libraries for some special tasks. So maybe a few days ago I tried to build a finance model for my idea with English clubs and Perplexity used Python labs to build some tables and some some graphics. So I think you can, you can just try to use Perplexity for it. Also you can change or if you have a subscription you can change different models inside the Perplexity and try to just try.\n\nSpeaker A: Okay, but I. I think the main problem that any LLM used to make summary or something like that and if we need to analyze string by string we need to use API. So maybe it's. It will not be so hard to develop such kind of application.\n\nSpeaker B: We can try to use Granola maybe for it. Because if you ask Granola to transcribe the full transcription of our meeting with the splitting up two speakers, it may work.\n\nSpeaker A: Honestly, I tried to do it and I didn't find splitting our conversation by users. So you can see the splitting in window Granola window. But there is no indication who is one speaker and who is another. So it's one speaker is left or something like that wording on the left side and for the second user it's on the right side. So it's hard to understand who is where.\n\nSpeaker B: You can just try to try to use the context, not context window, just use the chat to catch persons. I will try to use Granola.\n\nSpeaker A: Yes, you can try because I have tried and I thought Granola has the full transcript, but it seems that it's not convenient for our purposes.\n\nSpeaker B: Why so?\n\nSpeaker A: Because as I said, there is no indication who is speaking.\n\nSpeaker B: Just, just. Okay, I will start Granola right now because sometimes you. You have to ask rewrite the transcription of this meeting using special labels for speaker one and speaker two for each phrase. For example, maybe it works. It will work. Maybe I will, I will check. You will check complexity. I Will check, you know.\n\nSpeaker A: Okay, so. I suggest to keep this conversation 30 minutes for so we will have the same duration of our every conversation for tracking our metrics as we discussed last time.\n\nSpeaker B: I didn't understand what did you say?\n\nSpeaker A: Okay, I suggest to Keep this conversation 30 minutes duration for having comparative figures metrics as we discussed last time. So I transcribed our previous conversation. I will transcribe our current conversation and with the same prompt in Manus or Chat, GPT or Gemini and ask them to keep the same metric and track it every time for every conversation. But I would like to understand the logic of and I need an evidence that it the same logic every time and there is no summary from ChatGPT that well you have 15 mistakes or maybe 17 mistakes something like that.\n\nSpeaker B: Okay.\n\nSpeaker A: Okay. Today I earned so next story. Today I earned 30,000 rubles of ref share from commission of agency fee from company which I used for delivery car for my former colleague. I mean we went to Rostov to take Audi CO3 for Kultiap after and before we agreed to take car by this company we agreed with them for revenue share and today it was completed in total amount, total amount of 30,000 rubles and as I understand the whole of their agency fee is about 100,000 rubles.\n\nSpeaker B: So so you now have money to eat something?\n\nSpeaker A: Yes, I, I, I'm trying to understand what, what, what I should I use. I forgotten I've remembered something like that. So the same scheme use uses Torbasov when he or it would be correct to say his agency uses agent for selling their properties. So and, and they have sometimes 15 refshre sometimes even more. It depends on amount of work they do. So it's a very interesting scheme if you good enough in marketing and you can give clients to company and have rev share. It seems quite, quite nice scheme.\n\nSpeaker B: You know in Gitmigit. Where Kate is working now there is a, there are some troubles with the capital, with money and also with salaries. So they want to earn some money in short period. So now they are using partnership, different partnerships. They are looking for sales or different roles to to sell their main product. Talent test. That's talent test. It's a product to, to test and to screen developers CVS to speed up the process of hiring. You know that's something like live coding but for skills. So they're trying to sell their product to different companies and they, they need a big big network wide network of sellers. So now they're acquiring the different roles for selling product. So Kate is responsible for the searching for the demos of product for them. And now they have same rev share model. But they they ready to pay about 50, 40 or 50% for sale. Per sale per contract. Yeah. So that's nothing special. I think that's popular model to sell something.\n\nSpeaker A: Yes, but for me quite interesting. How is usual CSC for instance, for this selling. Selling by buying company. So what is their usual cost of acquisition? Is it lower or bigger than 30,000 rubles or not? So maybe it's sometimes more efficient to push your marketing than share your revenue with agents. Maybe if they put advertising in Yandex Direct for instance, they understand okay, our CAC 10,000 troubles per client. So in this case, is it efficient to share your revenue with agent, for instance? Or it will be efficient to. To give this money to advertising Yandex Advertising.\n\nSpeaker B: I think there is one important thing it's a scheme is the resources. When you try to delegate your work to agent and the agent. If I understand the whole structure is correct, the agent is working. And that's agent's problem. How to find client and you. You're saving your resources inside the company. You can make any other useful things for your company. But if you acquire someone just by direct. By direct Direct, not direct. Using Yandex Direct, for example, you have to spend your your own resources. Yep.\n\nSpeaker A: Yeah, I think I understand. So you mean that if agent gave client to company, it will be much more warm client than from Yandex Direct, for instance. And you need put additional resources to this to client from Yandex Direct.\n\nSpeaker B: What does mean client for this company?\n\nSpeaker A: Client is a person who buy a car and gave them money for this car. And after that or in parallel in that they give for instance 100 rubles by agency commission to this client.\n\nSpeaker B: I don't know. Is it efficient or not?\n\nSpeaker A: Okay.\n\nSpeaker B: Is it effective or not?\n\nSpeaker A: Okay. Thank you for. For consultation. Can I. Can I send you money?\n\nSpeaker B: I'm not so deep in this. In this business area, so I don't know.\n\nSpeaker A: It's. I think it depends of agency scheme. Overall it's not depends on business, but. Okay, your opinion is very valuable for us. Thank you very much. Don't. For instance, interesting how the organization is working after pause. For instance, how a system is. Understand who is speaking right now? For instance, will I Speaker I Speaker B.\n\nSpeaker B: You. Are you asking me?\n\nSpeaker A: It's just my thought, but if you no answer. You can answer.\n\nSpeaker B: I don't know. But I suppose that. For the LLM, any. For any LLM, the voice is just combination of 0 and ones in the end. So I think the. Head of voice is working like as a parameter for LLM so I think that's it. So LLM just takes. A part of audio file and compare with the other part and I think it using it use uses something like method of sort and trying to catch the different speakers using different parameters for different speakers Maybe like this.\n\nSpeaker A: Okay. Can you turn your camera off on? I forgot what I would like to.\n\nSpeaker B: Tell you why why you use forgotten.\n\nSpeaker A: I I said I've forgotten I have forgotten that it means that I forgot it right now because one minute before I remembered it and during your speaking I have forgotten that person.\n\nSpeaker B: Is there a big difference between I.\n\nSpeaker A: Forgot.\n\nSpeaker B: And I have forgotten?\n\nSpeaker A: For me I have forgotten means I just forgot it like this and it for me it seems I I'm trying to keep my speech a little bit more native maybe and when I when I sure when I sure that I can use it correctly I try to use it. That's it.\n\nSpeaker B: Okay, so what did you forget?\n\nSpeaker A: I forgot it.\n\nSpeaker B: When I talk to no by the way I really want to huh.\n\nSpeaker A: Maybe I I remember that I would like to say that this my application which I wipe coded it has derisation it has implied derisation and for our previous conversation it seems it works not bad so sometimes I I I saw their mistakes but overall if we are speaking about big part of my speech or your speech it works correctly as.\n\nSpeaker B: I do you use. I forgot the name of this LLM you use the same what I used for the bot not not 11 labs another one popular named the first letter.\n\nSpeaker A: Is a or E I don't remember honestly neat to use need to check which token I used but I don't remember it right now. Okay okay, so we have three minutes left so we can discuss some short theme.\n\nSpeaker B: Yeah the last time I talked to one of my designer friends we can.\n\nSpeaker A: You can you speak Please strike through microphone because sometimes. Okay.\n\nSpeaker B: Okay. Yeah okay.\n\nSpeaker A: So.\n\nSpeaker B: Yeah when when I talked to my designer friend we were discussing.\n\nSpeaker A: The.\n\nSpeaker B: English level to for working in international companies and the main idea from designer was that you have to worldwide teams prefer to work with non native speakers because it's really easy to understand Non native. Non native speakers are using simple words and try to describe hard things by simple words and it's important in product teams so that's the main idea.\n\nSpeaker A: Okay. I think this approach is understandable and I think that it's always depends on. Person on the second side Is he a good international player? Is he understand that he is an international team because for instance, when we were working with our London teams, only one team person, which is C4 was good enough in pronunciation in he he kept this he kept his tone of voice quite slow and non emotional. So it was very easy to understand which is speaking and compare with him other team players. It was awful like Tasmanian diablo. It was disgusting sometimes so 10 seconds. You can congratulate your father with progressing logic on something with so I I will stop our record.",
+  "speaker_map": {
+    "Speaker A": "Roman",
+    "Speaker B": "Andrey"
+  },
+  "chunks": [
+    {
+      "index": 0,
+      "block_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "text": "Speaker A: Let me start my voice recorder. Yes, it started.\n\nSpeaker B: Did you install the new one?\n\nSpeaker A: Not. Not yet. I've checked the description and it seems quite hard to deploy and I forgot find no feedback about this program. I. I found the founder or developer of this GitHub distribution and it was a project for university and he worked like intern slash developer. So I'm not sure how is it good in production way or so or something like that. So I try to find something else and maybe maybe the description from Bisovka that who is using MacWhisper for raw transcript txtf files maybe quite good decision. You can try it on your MacBook.\n\nSpeaker B: I'm on. I'm not on MacBook right now. I'm on Mac Mini so there is no know this so on my MacBook I have a super wister as I think a bit same like you talking about. But there is no split. There is no splitting to speakers and. But there is full transcription transcribe transcription description of meeting. It's just recording all thing that you said.\n\nSpeaker A: Could you repeat? I'm not sure that I understand correctly.\n\nSpeaker B: Yeah, I have the same soft on my MacBook but I have no soft on my Mac mini. On my MacBook I have super Whisper. It feels like same with app you are talking about but there is no split. There is no splitting two speakers. There is just. Just the whole text of your speech not structured, just transcript, just transcriptions.\n",
+      "range": {
+        "start": 0,
+        "end": 1430
+      }
+    },
+    {
+      "index": 1,
+      "block_indices": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "text": "\nSpeaker A: Okay, I understand and I'm a bit surprised that Mac OS has different soft than MacBook. Is it? AM I. Am I understand you correctly?\n\nSpeaker B: That's two. No, that's two different devices. Now I'm working on Mac Mini and Sometimes I use MacBook to work on my bed.\n\nSpeaker A: Okay, but you have different.\n\nSpeaker B: It's not one ecosystem. You can use the one the same cloud account but it is two different devices.\n\nSpeaker A: Yeah, I understand. I suggest to. To not interrupt each other because it's hard to transcribe after our speaking for. Yeah, yeah, yeah. And so you. You can't download to Mac OS from Mac Mini from App Store Mac Whisper.\n\nSpeaker B: You mean it's not free? Mac Whisper is payment. Payment. It's. I think I checked it before and it looks like there's no free tariff. There is no free tariff.\n",
+      "range": {
+        "start": 1430,
+        "end": 2262
+      }
+    },
+    {
+      "index": 2,
+      "block_indices": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "text": "\nSpeaker A: Okay, so maybe anyway we need only raw. Txt file so maybe I can record speakers. We agreed not interrupt each other Brother Splitting is called derisation in context of this kind of instrument. So the main problem for me it's several steps for transcribing. Currently I'm recording our. Our Conversation to voice recorder in my iPhone. Next step I share it with my saved Telegram account. After that I downloaded it to my developed by myself soft and after that I need to use some LLM and the problem is as I understand that the chat GPT or even Manus can't can't catch whole details from our our conversation and I'm not sure that our previous statistic is correct as you remember.\n\nSpeaker B: Did you try complexity for it?\n\nSpeaker A: Not yet, but maybe Gemini can be good because he takes much more bigger context. As I remember, you can try to.\n\nSpeaker B: Use Perplexity because it's really good in transcription. I think you just can try because Perplexity sometimes uses different Python and other libraries for some special tasks. So maybe a few days ago I tried to build a finance model for my idea with English clubs and Perplexity used Python labs to build some tables and some some graphics. So I think you can, you can just try to use Perplexity for it. Also you can change or if you have a subscription you can change different models inside the Perplexity and try to just try.\n\nSpeaker A: Okay, but I. I think the main problem that any LLM used to make summary or something like that and if we need to analyze string by string we need to use API. So maybe it's. It will not be so hard to develop such kind of application.\n\nSpeaker B: We can try to use Granola maybe for it. Because if you ask Granola to transcribe the full transcription of our meeting with the splitting up two speakers, it may work.\n",
+      "range": {
+        "start": 2262,
+        "end": 4092
+      }
+    },
+    {
+      "index": 3,
+      "block_indices": [
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "text": "\nSpeaker A: Honestly, I tried to do it and I didn't find splitting our conversation by users. So you can see the splitting in window Granola window. But there is no indication who is one speaker and who is another. So it's one speaker is left or something like that wording on the left side and for the second user it's on the right side. So it's hard to understand who is where.\n\nSpeaker B: You can just try to try to use the context, not context window, just use the chat to catch persons. I will try to use Granola.\n\nSpeaker A: Yes, you can try because I have tried and I thought Granola has the full transcript, but it seems that it's not convenient for our purposes.\n\nSpeaker B: Why so?\n\nSpeaker A: Because as I said, there is no indication who is speaking.\n\nSpeaker B: Just, just. Okay, I will start Granola right now because sometimes you. You have to ask rewrite the transcription of this meeting using special labels for speaker one and speaker two for each phrase. For example, maybe it works. It will work. Maybe I will, I will check. You will check complexity. I Will check, you know.\n",
+      "range": {
+        "start": 4092,
+        "end": 5189
+      }
+    },
+    {
+      "index": 4,
+      "block_indices": [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "text": "\nSpeaker A: Okay, so. I suggest to keep this conversation 30 minutes for so we will have the same duration of our every conversation for tracking our metrics as we discussed last time.\n\nSpeaker B: I didn't understand what did you say?\n\nSpeaker A: Okay, I suggest to Keep this conversation 30 minutes duration for having comparative figures metrics as we discussed last time. So I transcribed our previous conversation. I will transcribe our current conversation and with the same prompt in Manus or Chat, GPT or Gemini and ask them to keep the same metric and track it every time for every conversation. But I would like to understand the logic of and I need an evidence that it the same logic every time and there is no summary from ChatGPT that well you have 15 mistakes or maybe 17 mistakes something like that.\n\nSpeaker B: Okay.\n\nSpeaker A: Okay. Today I earned so next story. Today I earned 30,000 rubles of ref share from commission of agency fee from company which I used for delivery car for my former colleague. I mean we went to Rostov to take Audi CO3 for Kultiap after and before we agreed to take car by this company we agreed with them for revenue share and today it was completed in total amount, total amount of 30,000 rubles and as I understand the whole of their agency fee is about 100,000 rubles.\n\nSpeaker B: So so you now have money to eat something?\n",
+      "range": {
+        "start": 5189,
+        "end": 6561
+      }
+    },
+    {
+      "index": 5,
+      "block_indices": [
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ],
+      "text": "\nSpeaker A: Yes, I, I, I'm trying to understand what, what, what I should I use. I forgotten I've remembered something like that. So the same scheme use uses Torbasov when he or it would be correct to say his agency uses agent for selling their properties. So and, and they have sometimes 15 refshre sometimes even more. It depends on amount of work they do. So it's a very interesting scheme if you good enough in marketing and you can give clients to company and have rev share. It seems quite, quite nice scheme.\n\nSpeaker B: You know in Gitmigit. Where Kate is working now there is a, there are some troubles with the capital, with money and also with salaries. So they want to earn some money in short period. So now they are using partnership, different partnerships. They are looking for sales or different roles to to sell their main product. Talent test. That's talent test. It's a product to, to test and to screen developers CVS to speed up the process of hiring. You know that's something like live coding but for skills. So they're trying to sell their product to different companies and they, they need a big big network wide network of sellers. So now they're acquiring the different roles for selling product. So Kate is responsible for the searching for the demos of product for them. And now they have same rev share model. But they they ready to pay about 50, 40 or 50% for sale. Per sale per contract. Yeah. So that's nothing special. I think that's popular model to sell something.\n\nSpeaker A: Yes, but for me quite interesting. How is usual CSC for instance, for this selling. Selling by buying company. So what is their usual cost of acquisition? Is it lower or bigger than 30,000 rubles or not? So maybe it's sometimes more efficient to push your marketing than share your revenue with agents. Maybe if they put advertising in Yandex Direct for instance, they understand okay, our CAC 10,000 troubles per client. So in this case, is it efficient to share your revenue with agent, for instance? Or it will be efficient to. To give this money to advertising Yandex Advertising.\n\nSpeaker B: I think there is one important thing it's a scheme is the resources. When you try to delegate your work to agent and the agent. If I understand the whole structure is correct, the agent is working. And that's agent's problem. How to find client and you. You're saving your resources inside the company. You can make any other useful things for your company. But if you acquire someone just by direct. By direct Direct, not direct. Using Yandex Direct, for example, you have to spend your your own resources. Yep.\n\nSpeaker A: Yeah, I think I understand. So you mean that if agent gave client to company, it will be much more warm client than from Yandex Direct, for instance. And you need put additional resources to this to client from Yandex Direct.\n\nSpeaker B: What does mean client for this company?\n",
+      "range": {
+        "start": 6561,
+        "end": 9475
+      }
+    },
+    {
+      "index": 6,
+      "block_indices": [
+        36,
+        37,
+        38,
+        39,
+        40,
+        41
+      ],
+      "text": "\nSpeaker A: Client is a person who buy a car and gave them money for this car. And after that or in parallel in that they give for instance 100 rubles by agency commission to this client.\n\nSpeaker B: I don't know. Is it efficient or not?\n\nSpeaker A: Okay.\n\nSpeaker B: Is it effective or not?\n\nSpeaker A: Okay. Thank you for. For consultation. Can I. Can I send you money?\n\nSpeaker B: I'm not so deep in this. In this business area, so I don't know.\n",
+      "range": {
+        "start": 9475,
+        "end": 9924
+      }
+    },
+    {
+      "index": 7,
+      "block_indices": [
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "text": "\nSpeaker A: It's. I think it depends of agency scheme. Overall it's not depends on business, but. Okay, your opinion is very valuable for us. Thank you very much. Don't. For instance, interesting how the organization is working after pause. For instance, how a system is. Understand who is speaking right now? For instance, will I Speaker I Speaker B.\n\nSpeaker B: You. Are you asking me?\n\nSpeaker A: It's just my thought, but if you no answer. You can answer.\n\nSpeaker B: I don't know. But I suppose that. For the LLM, any. For any LLM, the voice is just combination of 0 and ones in the end. So I think the. Head of voice is working like as a parameter for LLM so I think that's it. So LLM just takes. A part of audio file and compare with the other part and I think it using it use uses something like method of sort and trying to catch the different speakers using different parameters for different speakers Maybe like this.\n\nSpeaker A: Okay. Can you turn your camera off on? I forgot what I would like to.\n\nSpeaker B: Tell you why why you use forgotten.\n",
+      "range": {
+        "start": 9924,
+        "end": 10983
+      }
+    },
+    {
+      "index": 8,
+      "block_indices": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53
+      ],
+      "text": "\nSpeaker A: I I said I've forgotten I have forgotten that it means that I forgot it right now because one minute before I remembered it and during your speaking I have forgotten that person.\n\nSpeaker B: Is there a big difference between I.\n\nSpeaker A: Forgot.\n\nSpeaker B: And I have forgotten?\n\nSpeaker A: For me I have forgotten means I just forgot it like this and it for me it seems I I'm trying to keep my speech a little bit more native maybe and when I when I sure when I sure that I can use it correctly I try to use it. That's it.\n\nSpeaker B: Okay, so what did you forget?\n",
+      "range": {
+        "start": 10983,
+        "end": 11564
+      }
+    },
+    {
+      "index": 9,
+      "block_indices": [
+        54,
+        55,
+        56,
+        57,
+        58,
+        59
+      ],
+      "text": "\nSpeaker A: I forgot it.\n\nSpeaker B: When I talk to no by the way I really want to huh.\n\nSpeaker A: Maybe I I remember that I would like to say that this my application which I wipe coded it has derisation it has implied derisation and for our previous conversation it seems it works not bad so sometimes I I I saw their mistakes but overall if we are speaking about big part of my speech or your speech it works correctly as.\n\nSpeaker B: I do you use. I forgot the name of this LLM you use the same what I used for the bot not not 11 labs another one popular named the first letter.\n\nSpeaker A: Is a or E I don't remember honestly neat to use need to check which token I used but I don't remember it right now. Okay okay, so we have three minutes left so we can discuss some short theme.\n\nSpeaker B: Yeah the last time I talked to one of my designer friends we can.\n",
+      "range": {
+        "start": 11564,
+        "end": 12431
+      }
+    },
+    {
+      "index": 10,
+      "block_indices": [
+        60,
+        61,
+        62,
+        63,
+        64,
+        65
+      ],
+      "text": "\nSpeaker A: You can you speak Please strike through microphone because sometimes. Okay.\n\nSpeaker B: Okay. Yeah okay.\n\nSpeaker A: So.\n\nSpeaker B: Yeah when when I talked to my designer friend we were discussing.\n\nSpeaker A: The.\n\nSpeaker B: English level to for working in international companies and the main idea from designer was that you have to worldwide teams prefer to work with non native speakers because it's really easy to understand Non native. Non native speakers are using simple words and try to describe hard things by simple words and it's important in product teams so that's the main idea.\n",
+      "range": {
+        "start": 12431,
+        "end": 13039
+      }
+    },
+    {
+      "index": 11,
+      "block_indices": [
+        66
+      ],
+      "text": "\nSpeaker A: Okay. I think this approach is understandable and I think that it's always depends on. Person on the second side Is he a good international player? Is he understand that he is an international team because for instance, when we were working with our London teams, only one team person, which is C4 was good enough in pronunciation in he he kept this he kept his tone of voice quite slow and non emotional. So it was very easy to understand which is speaking and compare with him other team players. It was awful like Tasmanian diablo. It was disgusting sometimes so 10 seconds. You can congratulate your father with progressing logic on something with so I I will stop our record.",
+      "range": {
+        "start": 13039,
+        "end": 13731
+      }
+    }
+  ],
+  "llm": {
+    "status": "ok",
+    "model": "gpt-4o-mini",
+    "chunked_metrics": {
+      "status": "ok",
+      "per_chunk": [
+        {
+          "index": 0,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 119,
+              "error_count": 6,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 4
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                },
+                {
+                  "title": "Improper Conjunction Use",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 135,
+              "error_count": 7,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 3
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 2
+                },
+                {
+                  "title": "Ambiguous Expression",
+                  "count": 1
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 70,
+              "error_count": 5,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 2
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                },
+                {
+                  "title": "Articles",
+                  "count": 1
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 72,
+              "error_count": 2,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                },
+                {
+                  "title": "Articles",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 193,
+              "error_count": 7,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 3
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 2
+                },
+                {
+                  "title": "Verb Tense",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 133,
+              "error_count": 0,
+              "error_types": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 108,
+              "error_count": 5,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 3
+                },
+                {
+                  "title": "Articles",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 85,
+              "error_count": 2,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 214,
+              "error_count": 7,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 3
+                },
+                {
+                  "title": "Word Order",
+                  "count": 3
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 17,
+              "error_count": 1,
+              "error_types": [
+                {
+                  "title": "Incorrect Question Structure",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 232,
+              "error_count": 10,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 4
+                },
+                {
+                  "title": "Verb Tense",
+                  "count": 2
+                },
+                {
+                  "title": "Articles",
+                  "count": 2
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 269,
+              "error_count": 10,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 3
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 3
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 2
+                },
+                {
+                  "title": "Articles",
+                  "count": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 48,
+              "error_count": 4,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 2
+                },
+                {
+                  "title": "Verb Tense",
+                  "count": 1
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 27,
+              "error_count": 0,
+              "error_types": []
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 85,
+              "error_count": 5,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 4
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 101,
+              "error_count": 2,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 87,
+              "error_count": 5,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                },
+                {
+                  "title": "Verb Tense",
+                  "count": 2
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 17,
+              "error_count": 0,
+              "error_types": []
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 106,
+              "error_count": 8,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 5
+                },
+                {
+                  "title": "Word Order",
+                  "count": 2
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 58,
+              "error_count": 3,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 2
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 13,
+              "error_count": 3,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 2
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 78,
+              "error_count": 2,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 121,
+              "error_count": 5,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 3
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "per_speaker": [
+        {
+          "name": "Speaker A",
+          "total_words": 1396,
+          "total_errors": 70,
+          "error_rate_per_100_words": 5.01,
+          "error_types": [
+            {
+              "title": "Word Order",
+              "count": 25
+            },
+            {
+              "title": "Wrong Word",
+              "count": 18
+            },
+            {
+              "title": "Verb Form",
+              "count": 14
+            },
+            {
+              "title": "Verb Tense",
+              "count": 7
+            },
+            {
+              "title": "Articles",
+              "count": 5
+            },
+            {
+              "title": "Improper Conjunction Use",
+              "count": 1
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Word Order",
+              "count": 25
+            },
+            {
+              "title": "Wrong Word",
+              "count": 18
+            },
+            {
+              "title": "Verb Form",
+              "count": 14
+            },
+            {
+              "title": "Verb Tense",
+              "count": 7
+            },
+            {
+              "title": "Articles",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "name": "Speaker B",
+          "total_words": 992,
+          "total_errors": 29,
+          "error_rate_per_100_words": 2.92,
+          "error_types": [
+            {
+              "title": "Word Order",
+              "count": 11
+            },
+            {
+              "title": "Wrong Word",
+              "count": 8
+            },
+            {
+              "title": "Verb Form",
+              "count": 5
+            },
+            {
+              "title": "Articles",
+              "count": 3
+            },
+            {
+              "title": "Ambiguous Expression",
+              "count": 1
+            },
+            {
+              "title": "Incorrect Question Structure",
+              "count": 1
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Word Order",
+              "count": 11
+            },
+            {
+              "title": "Wrong Word",
+              "count": 8
+            },
+            {
+              "title": "Verb Form",
+              "count": 5
+            },
+            {
+              "title": "Articles",
+              "count": 3
+            },
+            {
+              "title": "Ambiguous Expression",
+              "count": 1
+            }
+          ]
+        }
+      ],
+      "meta": {
+        "chunks_processed": 12,
+        "total_chunks": 12
+      }
+    },
+    "metrics_updated_at": "2026-02-13 12:35",
+    "annotations_model": "gpt-4o",
+    "annotations_status": "ok",
+    "annotations_attempted_model": "gpt-4o",
+    "annotation_items": [
+      {
+        "start": 196,
+        "end": 207,
+        "text": "forgot find",
+        "correction": "forgot to find",
+        "explanation": "The infinitive marker 'to' is needed before the verb 'find'.",
+        "category": "VERB"
+      },
+      {
+        "start": 399,
+        "end": 413,
+        "text": "how is it good",
+        "correction": "how good it is",
+        "explanation": "The phrase needs to be rearranged for correct indirect question format.",
+        "category": "WORD"
+      },
+      {
+        "start": 432,
+        "end": 450,
+        "text": "or so or something",
+        "correction": "or something like that",
+        "explanation": "Redundant words; 'like that' sufficiently indicates uncertainty.",
+        "category": "WORD"
+      },
+      {
+        "start": 514,
+        "end": 556,
+        "text": "description from Bisovka that who is using",
+        "correction": "description from Bisovka, who is using",
+        "explanation": "Comma is needed for non-defining relative clause.",
+        "category": ""
+      },
+      {
+        "start": 726,
+        "end": 742,
+        "text": "there is no know",
+        "correction": "there is no",
+        "explanation": "Redundant; 'know' is incorrect here.",
+        "category": "WORD"
+      },
+      {
+        "start": 913,
+        "end": 951,
+        "text": "transcription transcribe transcription",
+        "correction": "transcription",
+        "explanation": "Repetition; use 'transcription' once.",
+        "category": "WORD"
+      },
+      {
+        "start": 1220,
+        "end": 1235,
+        "text": "feels like same",
+        "correction": "feels like the same",
+        "explanation": "Article 'the' is needed for comparison.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 1376,
+        "end": 1429,
+        "text": "not structured, just transcript, just transcriptions.",
+        "correction": "not structured, just a transcription.",
+        "explanation": "Use singular 'transcription' in context.",
+        "category": ""
+      },
+      {
+        "start": 1490,
+        "end": 1528,
+        "text": "Mac OS has different soft than MacBook",
+        "correction": "Mac OS has different software than MacBook",
+        "explanation": "'Soft' is an incorrect abbreviation. The correct term is 'software.'",
+        "category": ""
+      },
+      {
+        "start": 1537,
+        "end": 1572,
+        "text": "AM I. Am I understand you correctly",
+        "correction": "Am I understanding you correctly",
+        "explanation": "The verb 'understand' should be in the present continuous form to match 'Am I.'",
+        "category": "TENSE"
+      },
+      {
+        "start": 1586,
+        "end": 1630,
+        "text": "That's two. No, that's two different devices",
+        "correction": "No, those are two different devices",
+        "explanation": "'Those' is the correct demonstrative pronoun for multiple items. 'Are' is needed for plural subject agreement.",
+        "category": "VERB"
+      },
+      {
+        "start": 1729,
+        "end": 1747,
+        "text": "you have different",
+        "correction": "you have a different setup",
+        "explanation": "The phrase is incomplete and needs a noun to complete the thought.",
+        "category": "ORDER"
+      },
+      {
+        "start": 1797,
+        "end": 1859,
+        "text": "the one the same cloud account but it is two different devices",
+        "correction": "the same cloud account, but they are two different devices",
+        "explanation": "The phrase should use 'the same,' and the conjunction 'but' should introduce a new clause with 'they are' for subject-verb agreement.",
+        "category": "VERB"
+      },
+      {
+        "start": 1895,
+        "end": 1923,
+        "text": "suggest to. To not interrupt",
+        "correction": "suggest not interrupting",
+        "explanation": "The verb 'suggest' should be followed by a gerund, not an infinitive.",
+        "category": "VERB"
+      },
+      {
+        "start": 2009,
+        "end": 2090,
+        "text": "And so you. You can't download to Mac OS from Mac Mini from App Store Mac Whisper",
+        "correction": "And so, you can't download Mac Whisper to Mac Mini from App Store",
+        "explanation": "The sentence structure is awkward and needs reordering for clarity and correctness.",
+        "category": "ORDER"
+      },
+      {
+        "start": 2128,
+        "end": 2160,
+        "text": "Mac Whisper is payment. Payment.",
+        "correction": "Mac Whisper is paid. It requires payment.",
+        "explanation": "'Payment' is a noun and should not be used to describe 'Mac Whisper.' Use 'paid' or state that it 'requires payment.'",
+        "category": ""
+      },
+      {
+        "start": 2289,
+        "end": 2313,
+        "text": "anyway we need only raw.",
+        "correction": "anyway, we need only a raw",
+        "explanation": "Add a comma and an article for grammatical correctness.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 2314,
+        "end": 2354,
+        "text": "Txt file so maybe I can record speakers.",
+        "correction": "a .txt file, so maybe I can record the speakers.",
+        "explanation": "Correct file format, punctuation, and add definite article.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 2390,
+        "end": 2467,
+        "text": "Brother Splitting is called derisation in context of this kind of instrument.",
+        "correction": "Brother Splitting is called 'derisation' in the context of this kind of instrument.",
+        "explanation": "Add articles 'the' and use quotes for clarity.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 2495,
+        "end": 2531,
+        "text": "it's several steps for transcribing.",
+        "correction": "it's the several steps for transcribing.",
+        "explanation": "Add article 'the' for grammatical correctness.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 2532,
+        "end": 2595,
+        "text": "Currently I'm recording our. Our Conversation to voice recorder",
+        "correction": "Currently, I'm recording our conversation on a voice recorder",
+        "explanation": "Correct punctuation and preposition use.",
+        "category": "PREP"
+      },
+      {
+        "start": 2610,
+        "end": 2662,
+        "text": "Next step I share it with my saved Telegram account.",
+        "correction": "Next, I share it with my saved Telegram account.",
+        "explanation": "Add a comma for clarity in listing steps.",
+        "category": "WORD"
+      },
+      {
+        "start": 2663,
+        "end": 2720,
+        "text": "After that I downloaded it to my developed by myself soft",
+        "correction": "After that, I download it to the software I developed myself",
+        "explanation": "Correct tense and rewrite for clarity and grammatical correctness.",
+        "category": "TENSE"
+      },
+      {
+        "start": 2721,
+        "end": 2798,
+        "text": "and after that I need to use some LLM and the problem is as I understand that",
+        "correction": "and then I need to use an LLM, and the problem, as I understand it, is that",
+        "explanation": "Correct sequence of words and punctuation for clarity.",
+        "category": "WORD"
+      },
+      {
+        "start": 2838,
+        "end": 2883,
+        "text": "catch whole details from our our conversation",
+        "correction": "catch all the details from our conversation",
+        "explanation": "Correct determiner use and remove repetition.",
+        "category": "WORD"
+      },
+      {
+        "start": 3058,
+        "end": 3092,
+        "text": "he takes much more bigger context.",
+        "correction": "it takes a much bigger context.",
+        "explanation": "Correct pronoun use and redundant comparative.",
+        "category": "WORD"
+      },
+      {
+        "start": 3280,
+        "end": 3313,
+        "text": "libraries for some special tasks.",
+        "correction": "libraries for specific tasks.",
+        "explanation": "Use 'specific' for clarity.",
+        "category": "WORD"
+      },
+      {
+        "start": 3314,
+        "end": 3370,
+        "text": "So maybe a few days ago I tried to build a finance model",
+        "correction": "So, a few days ago, I tried to build a financial model",
+        "explanation": "Correct punctuation and adjective form.",
+        "category": ""
+      },
+      {
+        "start": 3507,
+        "end": 3541,
+        "text": "just try to use Perplexity for it.",
+        "correction": "try using Perplexity for it.",
+        "explanation": "Correct verb form and redundancy.",
+        "category": "VERB"
+      },
+      {
+        "start": 3592,
+        "end": 3666,
+        "text": "you can change different models inside the Perplexity and try to just try.",
+        "correction": "you can change different models within Perplexity and just try.",
+        "explanation": "Correct preposition use and remove redundancy.",
+        "category": "PREP"
+      },
+      {
+        "start": 3685,
+        "end": 3729,
+        "text": "but I. I think the main problem that any LLM",
+        "correction": "but I think the main problem is that any LLM",
+        "explanation": "Correct punctuation and sentence structure.",
+        "category": "ORDER"
+      },
+      {
+        "start": 3886,
+        "end": 3911,
+        "text": "such kind of application.",
+        "correction": "such an application.",
+        "explanation": "Use correct article form.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 4043,
+        "end": 4091,
+        "text": "with the splitting up two speakers, it may work.",
+        "correction": "with the splitting up of two speakers, it may work.",
+        "explanation": "Correct preposition use for grammatical correctness.",
+        "category": "PREP"
+      },
+      {
+        "start": 4135,
+        "end": 4184,
+        "text": "I didn't find splitting our conversation by users",
+        "correction": "I didn't find how to split our conversation by users",
+        "explanation": "The sentence lacks clarity and grammatical cohesion.",
+        "category": "WORD"
+      },
+      {
+        "start": 4458,
+        "end": 4470,
+        "text": "who is where",
+        "correction": "who is speaking where",
+        "explanation": "The phrase lacks clarity without the word \"speaking.\"",
+        "category": "WORD"
+      },
+      {
+        "start": 4497,
+        "end": 4546,
+        "text": "try to try to use the context, not context window",
+        "correction": "try to use the context, not the context window",
+        "explanation": "Repetitive and missing article \"the\" before \"context window.\"",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 4648,
+        "end": 4706,
+        "text": "I have tried and I thought Granola has the full transcript",
+        "correction": "I have tried and thought Granola had the full transcript",
+        "explanation": "Verb tense consistency error.",
+        "category": "TENSE"
+      },
+      {
+        "start": 4726,
+        "end": 4762,
+        "text": "it's not convenient for our purposes",
+        "correction": "it is not suitable for our purposes",
+        "explanation": "The phrase is more idiomatically clear with \"suitable.\"",
+        "category": "WORD"
+      },
+      {
+        "start": 4951,
+        "end": 4980,
+        "text": "ask rewrite the transcription",
+        "correction": "ask to rewrite the transcription",
+        "explanation": "Missing infinitive form 'to' before 'rewrite.'",
+        "category": "VERB"
+      },
+      {
+        "start": 5096,
+        "end": 5152,
+        "text": "It will work. Maybe I will, I will check. You will check",
+        "correction": "It might work. Maybe I will check, and you will check",
+        "explanation": "Improves logical sequence and connects related actions.",
+        "category": ""
+      },
+      {
+        "start": 5211,
+        "end": 5246,
+        "text": "I suggest to keep this conversation",
+        "correction": "I suggest keeping this conversation",
+        "explanation": "'Suggest' is commonly followed by a gerund, not an infinitive.",
+        "category": "VERB"
+      },
+      {
+        "start": 5258,
+        "end": 5277,
+        "text": "for so we will have",
+        "correction": "so we will have",
+        "explanation": "'For' is unnecessary and ungrammatical here.",
+        "category": ""
+      },
+      {
+        "start": 5296,
+        "end": 5321,
+        "text": "of our every conversation",
+        "correction": "of each of our conversations",
+        "explanation": "'Every' should be 'each of' to fit context and grammar.",
+        "category": ""
+      },
+      {
+        "start": 5386,
+        "end": 5422,
+        "text": "I didn't understand what did you say",
+        "correction": "I didn't understand what you said",
+        "explanation": "The correct indirect question form is needed here.",
+        "category": ""
+      },
+      {
+        "start": 5442,
+        "end": 5480,
+        "text": "I suggest to Keep this conversation 30",
+        "correction": "I suggest keeping this conversation 30",
+        "explanation": "'Suggest' should be followed by 'keeping', and 'Keep' should not be capitalized.",
+        "category": ""
+      },
+      {
+        "start": 5498,
+        "end": 5539,
+        "text": "for having comparative figures metrics as",
+        "correction": "to have comparative figures metrics as",
+        "explanation": "'For having' should be 'to have' to properly form an infinitive phrase.",
+        "category": "VERB"
+      },
+      {
+        "start": 5608,
+        "end": 5659,
+        "text": "I will transcribe our current conversation and with",
+        "correction": "I will transcribe our current conversation with",
+        "explanation": "'And with' is incorrect; use 'with' to connect clauses.",
+        "category": ""
+      },
+      {
+        "start": 5745,
+        "end": 5791,
+        "text": "and track it every time for every conversation",
+        "correction": "and track it for every conversation",
+        "explanation": "'Every time' is redundant here.",
+        "category": "WORD"
+      },
+      {
+        "start": 5834,
+        "end": 5842,
+        "text": "of and I",
+        "correction": "of and",
+        "explanation": "Missing sentence continuation after 'of'.",
+        "category": ""
+      },
+      {
+        "start": 5860,
+        "end": 5893,
+        "text": "that it the same logic every time",
+        "correction": "that it is the same logic every time",
+        "explanation": "'It' requires a verb ('is') to complete the sentence.",
+        "category": "VERB"
+      },
+      {
+        "start": 5898,
+        "end": 5961,
+        "text": "there is no summary from ChatGPT that well you have 15 mistakes",
+        "correction": "there is no summary from ChatGPT saying you have 15 mistakes",
+        "explanation": "Phrase needs restructuring for clarity and grammaticality.",
+        "category": "WORD"
+      },
+      {
+        "start": 6076,
+        "end": 6160,
+        "text": "I earned 30,000 rubles of ref share from commission of agency fee from company which",
+        "correction": "I earned 30,000 rubles as ref share from commission of the agency fee from a company that",
+        "explanation": "'Of' should be 'as' and 'which' should be 'that' for correct relative clause and preposition usage.",
+        "category": "PREP"
+      },
+      {
+        "start": 6281,
+        "end": 6318,
+        "text": "we agreed to take car by this company",
+        "correction": "we agreed to take the car with this company",
+        "explanation": "Missing definite article 'the' and misuse of preposition 'by' should be 'with'.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 6322,
+        "end": 6356,
+        "text": "agreed with them for revenue share",
+        "correction": "agreed with them on a revenue share",
+        "explanation": "Correct preposition is 'on', and use 'a' for clarity in the phrase.",
+        "category": "PREP"
+      },
+      {
+        "start": 6357,
+        "end": 6413,
+        "text": "and today it was completed in total amount, total amount",
+        "correction": "and today it was completed in a total amount",
+        "explanation": "Redundant repetition of 'total amount' should be avoided.",
+        "category": "WORD"
+      },
+      {
+        "start": 6455,
+        "end": 6504,
+        "text": "whole of their agency fee is about 100,000 rubles",
+        "correction": "whole agency fee is about 100,000 rubles",
+        "explanation": "'Of their' is redundant and should be removed for clarity.",
+        "category": "WORD"
+      },
+      {
+        "start": 6621,
+        "end": 6640,
+        "text": "what I should I use",
+        "correction": "what I should use",
+        "explanation": "The phrase \"I should I use\" contains an unnecessary repetition of the subject. It should be \"what I should use.\"",
+        "category": "WORD"
+      },
+      {
+        "start": 6642,
+        "end": 6669,
+        "text": "I forgotten I've remembered",
+        "correction": "I've forgotten I've remembered",
+        "explanation": "The correct form is \"I've forgotten.\" The auxiliary 'have' was missing.",
+        "category": ""
+      },
+      {
+        "start": 6710,
+        "end": 6758,
+        "text": "use uses Torbasov when he or it would be correct",
+        "correction": "uses Torbasov when it would be correct",
+        "explanation": "The phrase is confusing due to redundant wording. \"Use uses\" should be \"uses,\" and \"when he or it would be correct\" should be simplified to \"when it would be correct.\"",
+        "category": "WORD"
+      },
+      {
+        "start": 6777,
+        "end": 6816,
+        "text": "uses agent for selling their properties",
+        "correction": "uses agents for selling its properties",
+        "explanation": "Agreement error. 'Agent' should be 'agents' and 'their' should be 'its' since it refers to a singular agency.",
+        "category": "VERB"
+      },
+      {
+        "start": 6835,
+        "end": 6880,
+        "text": "have sometimes 15 refshre sometimes even more",
+        "correction": "sometimes have 15 revshares or even more",
+        "explanation": "The original phrase lacks proper structure and contains a misspelling. 'Refshre' should be 'revshares.'",
+        "category": "WORD"
+      },
+      {
+        "start": 6885,
+        "end": 6910,
+        "text": "depends on amount of work",
+        "correction": "depends on the amount of work",
+        "explanation": "The sentence is missing the definite article 'the' before 'amount.'",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 6954,
+        "end": 6972,
+        "text": "if you good enough",
+        "correction": "if you are good enough",
+        "explanation": "The verb 'are' is missing from the verb phrase.",
+        "category": "VERB"
+      },
+      {
+        "start": 7051,
+        "end": 7075,
+        "text": "quite, quite nice scheme",
+        "correction": "quite a nice scheme",
+        "explanation": "A determiner 'a' is missing before 'scheme.'",
+        "category": ""
+      },
+      {
+        "start": 7239,
+        "end": 7273,
+        "text": "to earn some money in short period",
+        "correction": "to earn some money in a short period",
+        "explanation": "The article 'a' is missing before 'short period.'",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 7291,
+        "end": 7332,
+        "text": "using partnership, different partnerships",
+        "correction": "using different partnerships",
+        "explanation": "Repetitive and unnecessary use of 'partnership.'",
+        "category": ""
+      },
+      {
+        "start": 7745,
+        "end": 7764,
+        "text": "the different roles",
+        "correction": "different roles",
+        "explanation": "The article 'the' is unnecessary.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 7906,
+        "end": 7928,
+        "text": "they they ready to pay",
+        "correction": "they are ready to pay",
+        "explanation": "The verb 'are' is missing.",
+        "category": "VERB"
+      },
+      {
+        "start": 8023,
+        "end": 8043,
+        "text": "that's popular model",
+        "correction": "that's a popular model",
+        "explanation": "The article 'a' is necessary before 'popular model.'",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 8088,
+        "end": 8108,
+        "text": "me quite interesting",
+        "correction": "me, it is quite interesting",
+        "explanation": "The phrase requires clarity and correct structure.",
+        "category": "WORD"
+      },
+      {
+        "start": 8159,
+        "end": 8184,
+        "text": "Selling by buying company",
+        "correction": "Selling by a buying company",
+        "explanation": "Sentence is missing an article 'a' before 'buying company.'",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 8461,
+        "end": 8495,
+        "text": "our CAC 10,000 troubles per client",
+        "correction": "our CAC is 10,000 rubles per client",
+        "explanation": "Missing verb 'is' and incorrect unit; 'troubles' should be 'rubles.'",
+        "category": "VERB"
+      },
+      {
+        "start": 8776,
+        "end": 8802,
+        "text": "to agent and the agent. If",
+        "correction": "to an agent, and if",
+        "explanation": "Improper article use and punctuation. Needs a comma before 'if.'",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 9041,
+        "end": 9090,
+        "text": "acquire someone just by direct. By direct Direct,",
+        "correction": "acquire someone just by Direct, for example,",
+        "explanation": "Repeated word and improper break. Needs 'for example' instead.",
+        "category": ""
+      },
+      {
+        "start": 9245,
+        "end": 9265,
+        "text": "agent gave client to",
+        "correction": "agent gives a client to",
+        "explanation": "Incorrect verb tense; should be present tense 'gives.'",
+        "category": "TENSE"
+      },
+      {
+        "start": 9385,
+        "end": 9407,
+        "text": "to this to client from",
+        "correction": "to this client from",
+        "explanation": "Unnecessary repetition of 'to.'",
+        "category": "WORD"
+      },
+      {
+        "start": 9487,
+        "end": 9519,
+        "text": "Client is a person who buy a car",
+        "correction": "A client is a person who buys a car",
+        "explanation": "The sentence lacks an article before 'client.' The verb 'buy' should agree with the singular 'who' and be 'buys.'",
+        "category": "VERB"
+      },
+      {
+        "start": 9524,
+        "end": 9552,
+        "text": "gave them money for this car",
+        "correction": "gave the money for this car",
+        "explanation": "The pronoun 'them' is incorrect because it implies multiple people, not the single previous noun 'client.' Use 'the' for specificity.",
+        "category": ""
+      },
+      {
+        "start": 9558,
+        "end": 9601,
+        "text": "after that or in parallel in that they give",
+        "correction": "after that or in parallel, they give",
+        "explanation": "'In parallel in that' is awkward and unclear. It should be revised to clarify the timing.",
+        "category": "WORD"
+      },
+      {
+        "start": 9615,
+        "end": 9661,
+        "text": "100 rubles by agency commission to this client",
+        "correction": "100 rubles as an agency commission to this client",
+        "explanation": "The phrase 'by agency commission' should be 'as an agency commission' to indicate the function of the money.",
+        "category": "WORD"
+      },
+      {
+        "start": 9785,
+        "end": 9817,
+        "text": "Thank you for. For consultation.",
+        "correction": "Thank you for the consultation.",
+        "explanation": "The definite article 'the' is needed before 'consultation' to specify the consultation.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 9950,
+        "end": 9977,
+        "text": "it depends of agency scheme",
+        "correction": "depends on the agency scheme",
+        "explanation": "'Depends of' should be 'depends on,' and 'agency scheme' should be preceded by 'the.'",
+        "category": ""
+      },
+      {
+        "start": 9987,
+        "end": 10015,
+        "text": "it's not depends on business",
+        "correction": "it does not depend on business",
+        "explanation": "Incorrect form 'it's not depends' should be 'it does not depend.'",
+        "category": ""
+      },
+      {
+        "start": 10108,
+        "end": 10151,
+        "text": "interesting how the organization is working",
+        "correction": "it's interesting how the organization works",
+        "explanation": "Incomplete construction 'interesting how' needs to be 'it's interesting how,' and 'is working' should be 'works.'",
+        "category": "ORDER"
+      },
+      {
+        "start": 10179,
+        "end": 10222,
+        "text": "how a system is. Understand who is speaking",
+        "correction": "how a system works. Do you understand who is speaking",
+        "explanation": "Incomplete and confusing fragment corrected to form a complete sentence.",
+        "category": "ORDER"
+      },
+      {
+        "start": 10350,
+        "end": 10383,
+        "text": "if you no answer. You can answer.",
+        "correction": "if you don't answer. You can answer.",
+        "explanation": "'No answer' should be 'don't answer' for correct negation.",
+        "category": "ORDER"
+      },
+      {
+        "start": 10471,
+        "end": 10504,
+        "text": "is just combination of 0 and ones",
+        "correction": "is just a combination of 0s and 1s",
+        "explanation": "'Combination of 0 and ones' should be 'a combination of 0s and 1s.'",
+        "category": ""
+      },
+      {
+        "start": 10550,
+        "end": 10577,
+        "text": "working like as a parameter",
+        "correction": "working like a parameter",
+        "explanation": "'Like as' is incorrect, use 'like.'",
+        "category": ""
+      },
+      {
+        "start": 10684,
+        "end": 10722,
+        "text": "I think it using it use uses something",
+        "correction": "I think it uses something",
+        "explanation": "Incorrect forms 'it using it use uses' should be 'it uses.'",
+        "category": ""
+      },
+      {
+        "start": 10786,
+        "end": 10835,
+        "text": "using different parameters for different speakers",
+        "correction": "distinguishing between different speakers using various parameters",
+        "explanation": "Rephrase for clarity and correct usage.",
+        "category": "WORD"
+      },
+      {
+        "start": 10956,
+        "end": 10981,
+        "text": "why why you use forgotten",
+        "correction": "why you used 'forgotten.'",
+        "explanation": "Repetitive and incomplete; correct to 'used 'forgotten.''",
+        "category": "ORDER"
+      },
+      {
+        "start": 10995,
+        "end": 11076,
+        "text": "I I said I've forgotten I have forgotten that it means that I forgot it right now",
+        "correction": "I said I have forgotten that it means I forgot it right now",
+        "explanation": "Repetitive use of 'I' is grammatically incorrect; should use 'I said I have forgotten'.",
+        "category": ""
+      },
+      {
+        "start": 11123,
+        "end": 11160,
+        "text": "during your speaking I have forgotten",
+        "correction": "while you were speaking, I have forgotten",
+        "explanation": "'During your speaking' is awkward and incorrect; should be 'while you were speaking'.",
+        "category": "WORD"
+      },
+      {
+        "start": 11336,
+        "end": 11384,
+        "text": "like this and it for me it seems I I'm trying to",
+        "correction": "like this, and for me it seems I am trying to",
+        "explanation": "Unnecessary repetition of 'it' and 'I'. Also, a comma is needed.",
+        "category": "WORD"
+      },
+      {
+        "start": 11454,
+        "end": 11470,
+        "text": "when I sure that",
+        "correction": "when I am sure that",
+        "explanation": "Missing verb 'am' in 'I am sure'.",
+        "category": "VERB"
+      },
+      {
+        "start": 11601,
+        "end": 11651,
+        "text": "When I talk to no by the way I really want to huh.",
+        "correction": "When I talk to someone, by the way, I really want to.",
+        "explanation": "Incomplete sentence and missing object for 'talk to'.",
+        "category": "ORDER"
+      },
+      {
+        "start": 11664,
+        "end": 11732,
+        "text": "Maybe I I remember that I would like to say that this my application",
+        "correction": "Maybe I remember that I would like to say this is my application",
+        "explanation": "Repetition of 'I' and incorrect word order.",
+        "category": "ORDER"
+      },
+      {
+        "start": 11752,
+        "end": 11795,
+        "text": "it has derisation it has implied derisation",
+        "correction": "it has a derivation, it has implied derivation",
+        "explanation": "Spelling errors in 'derisation' (should be 'derivation'). Missing article 'a'.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 11830,
+        "end": 11855,
+        "text": "it seems it works not bad",
+        "correction": "it seems to work not badly",
+        "explanation": "Incorrect adverb usage and verb form.",
+        "category": "VERB"
+      },
+      {
+        "start": 11931,
+        "end": 11967,
+        "text": "big part of my speech or your speech",
+        "correction": "a big part of my speech or your speech",
+        "explanation": "Missing article 'a' before 'big part'.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 12003,
+        "end": 12034,
+        "text": "I do you use. I forgot the name",
+        "correction": "Do you use it? I forgot the name",
+        "explanation": "Confusing and fragmented sentence structure.",
+        "category": "ORDER"
+      },
+      {
+        "start": 12076,
+        "end": 12147,
+        "text": "for the bot not not 11 labs another one popular named the first letter.",
+        "correction": "for the bot, not 11 Labs, another popular one named with the first letter.",
+        "explanation": "Repetition of 'not' and unclear phrasing.",
+        "category": "WORD"
+      },
+      {
+        "start": 12160,
+        "end": 12169,
+        "text": "Is a or E",
+        "correction": "Is it A or E",
+        "explanation": "Missing subject 'it'.",
+        "category": "ORDER"
+      },
+      {
+        "start": 12187,
+        "end": 12221,
+        "text": "honestly neat to use need to check",
+        "correction": "honestly need to check",
+        "explanation": "Incorrect use of 'neat' (should be 'need').",
+        "category": ""
+      },
+      {
+        "start": 12320,
+        "end": 12352,
+        "text": "we can discuss some short theme.",
+        "correction": "we can discuss a short topic.",
+        "explanation": "Incorrect use of 'theme' (should be 'topic') and missing article 'a'.",
+        "category": "ARTICLE"
+      },
+      {
+        "start": 12365,
+        "end": 12430,
+        "text": "Yeah the last time I talked to one of my designer friends we can.",
+        "correction": "Yeah, the last time I talked to one of my designer friends, we could.",
+        "explanation": "Incorrect modal verb 'can' (should be 'could') and missing commas.",
+        "category": "VERB"
+      },
+      {
+        "start": 12443,
+        "end": 12512,
+        "text": "You can you speak Please strike through microphone because sometimes.",
+        "correction": "Please speak through the microphone because sometimes you cannot be heard.",
+        "explanation": "The initial sentence is incomplete and awkwardly structured, combining several ideas without clear connections. 'You can you speak' is incorrect; the sentence should be restructured to convey the intended message about using the microphone.",
+        "category": "ORDER"
+      },
+      {
+        "start": 12685,
+        "end": 12691,
+        "text": "to for",
+        "correction": "for",
+        "explanation": "'To for' is incorrect. Only 'for' is necessary to indicate the purpose or context ('for working').",
+        "category": ""
+      },
+      {
+        "start": 12777,
+        "end": 12795,
+        "text": "to worldwide teams",
+        "correction": "that worldwide teams",
+        "explanation": "The use of 'to worldwide teams' is incorrect in this context. It should be connected with 'that' to properly introduce the subordinate clause.",
+        "category": ""
+      },
+      {
+        "start": 13114,
+        "end": 13136,
+        "text": "it's always depends on",
+        "correction": "it always depends on",
+        "explanation": "The subject 'it' requires the verb 'depends' without 'is'.",
+        "category": "VERB"
+      },
+      {
+        "start": 13199,
+        "end": 13215,
+        "text": "Is he understand",
+        "correction": "Does he understand",
+        "explanation": "Correct question form with 'Does' for third person singular.",
+        "category": ""
+      },
+      {
+        "start": 13227,
+        "end": 13248,
+        "text": "an international team",
+        "correction": "part of an international team",
+        "explanation": "Phrasing is incorrect; 'part of' completes the idea properly.",
+        "category": ""
+      },
+      {
+        "start": 13337,
+        "end": 13348,
+        "text": "which is C4",
+        "correction": "who is C4",
+        "explanation": "Use 'who' for people; 'which' is for objects.",
+        "category": ""
+      },
+      {
+        "start": 13382,
+        "end": 13400,
+        "text": "in he he kept this",
+        "correction": "and he kept his",
+        "explanation": "Repetitive 'he'; use conjunction 'and' and possessive 'his'.",
+        "category": "ORDER"
+      },
+      {
+        "start": 13491,
+        "end": 13508,
+        "text": "which is speaking",
+        "correction": "when he was speaking",
+        "explanation": "Clarifies the time frame and subject involved.",
+        "category": ""
+      },
+      {
+        "start": 13513,
+        "end": 13529,
+        "text": "compare with him",
+        "correction": "compared to him",
+        "explanation": "Use past tense 'compared' and preposition 'to' for comparison.",
+        "category": "TENSE"
+      },
+      {
+        "start": 13637,
+        "end": 13684,
+        "text": "congratulate your father with progressing logic",
+        "correction": "congratulate your father on his progress in logic",
+        "explanation": "Correct preposition is 'on,' and the noun 'progress' fits better.",
+        "category": "PREP"
+      }
+    ],
+    "annotated_transcript_html": "Speaker A: Let me start my voice recorder. Yes, it started.\n\nSpeaker B: Did you install the new one?\n\nSpeaker A: Not. Not yet. I've checked the description and it seems quite hard to deploy and I <mark class=\"grammar-error\" title=\"VERB: Correct: forgot to find | The infinitive marker 'to' is needed before the verb 'find'.\">forgot find</mark> no feedback about this program. I. I found the founder or developer of this GitHub distribution and it was a project for university and he worked like intern slash developer. So I'm not sure <mark class=\"grammar-error\" title=\"WORD: Correct: how good it is | The phrase needs to be rearranged for correct indirect question format.\">how is it good</mark> in production way <mark class=\"grammar-error\" title=\"WORD: Correct: or something like that | Redundant words; 'like that' sufficiently indicates uncertainty.\">or so or something</mark> like that. So I try to find something else and maybe maybe the <mark class=\"grammar-error\" title=\"Correct: description from Bisovka, who is using | Comma is needed for non-defining relative clause.\">description from Bisovka that who is using</mark> MacWhisper for raw transcript txtf files maybe quite good decision. You can try it on your MacBook.\n\nSpeaker B: I'm on. I'm not on MacBook right now. I'm on Mac Mini so <mark class=\"grammar-error\" title=\"WORD: Correct: there is no | Redundant; 'know' is incorrect here.\">there is no know</mark> this so on my MacBook I have a super wister as I think a bit same like you talking about. But there is no split. There is no splitting to speakers and. But there is full <mark class=\"grammar-error\" title=\"WORD: Correct: transcription | Repetition; use 'transcription' once.\">transcription transcribe transcription</mark> description of meeting. It's just recording all thing that you said.\n\nSpeaker A: Could you repeat? I'm not sure that I understand correctly.\n\nSpeaker B: Yeah, I have the same soft on my MacBook but I have no soft on my Mac mini. On my MacBook I have super Whisper. It <mark class=\"grammar-error\" title=\"ARTICLE: Correct: feels like the same | Article 'the' is needed for comparison.\">feels like same</mark> with app you are talking about but there is no split. There is no splitting two speakers. There is just. Just the whole text of your speech <mark class=\"grammar-error\" title=\"Correct: not structured, just a transcription. | Use singular 'transcription' in context.\">not structured, just transcript, just transcriptions.</mark>\n\nSpeaker A: Okay, I understand and I'm a bit surprised that <mark class=\"grammar-error\" title=\"Correct: Mac OS has different software than MacBook | 'Soft' is an incorrect abbreviation. The correct term is 'software.'\">Mac OS has different soft than MacBook</mark>. Is it? <mark class=\"grammar-error\" title=\"TENSE: Correct: Am I understanding you correctly | The verb 'understand' should be in the present continuous form to match 'Am I.'\">AM I. Am I understand you correctly</mark>?\n\nSpeaker B: <mark class=\"grammar-error\" title=\"VERB: Correct: No, those are two different devices | 'Those' is the correct demonstrative pronoun for multiple items. 'Are' is needed for plural subject agreement.\">That's two. No, that's two different devices</mark>. Now I'm working on Mac Mini and Sometimes I use MacBook to work on my bed.\n\nSpeaker A: Okay, but <mark class=\"grammar-error\" title=\"ORDER: Correct: you have a different setup | The phrase is incomplete and needs a noun to complete the thought.\">you have different</mark>.\n\nSpeaker B: It's not one ecosystem. You can use <mark class=\"grammar-error\" title=\"VERB: Correct: the same cloud account, but they are two different devices | The phrase should use 'the same,' and the conjunction 'but' should introduce a new clause with 'they are' for subject-verb agreement.\">the one the same cloud account but it is two different devices</mark>.\n\nSpeaker A: Yeah, I understand. I <mark class=\"grammar-error\" title=\"VERB: Correct: suggest not interrupting | The verb 'suggest' should be followed by a gerund, not an infinitive.\">suggest to. To not interrupt</mark> each other because it's hard to transcribe after our speaking for. Yeah, yeah, yeah. <mark class=\"grammar-error\" title=\"ORDER: Correct: And so, you can't download Mac Whisper to Mac Mini from App Store | The sentence structure is awkward and needs reordering for clarity and correctness.\">And so you. You can't download to Mac OS from Mac Mini from App Store Mac Whisper</mark>.\n\nSpeaker B: You mean it's not free? <mark class=\"grammar-error\" title=\"Correct: Mac Whisper is paid. It requires payment. | 'Payment' is a noun and should not be used to describe 'Mac Whisper.' Use 'paid' or state that it 'requires payment.'\">Mac Whisper is payment. Payment.</mark> It's. I think I checked it before and it looks like there's no free tariff. There is no free tariff.\n\nSpeaker A: Okay, so maybe <mark class=\"grammar-error\" title=\"ARTICLE: Correct: anyway, we need only a raw | Add a comma and an article for grammatical correctness.\">anyway we need only raw.</mark> <mark class=\"grammar-error\" title=\"ARTICLE: Correct: a .txt file, so maybe I can record the speakers. | Correct file format, punctuation, and add definite article.\">Txt file so maybe I can record speakers.</mark> We agreed not interrupt each other <mark class=\"grammar-error\" title=\"ARTICLE: Correct: Brother Splitting is called 'derisation' in the context of this kind of instrument. | Add articles 'the' and use quotes for clarity.\">Brother Splitting is called derisation in context of this kind of instrument.</mark> So the main problem for me <mark class=\"grammar-error\" title=\"ARTICLE: Correct: it's the several steps for transcribing. | Add article 'the' for grammatical correctness.\">it's several steps for transcribing.</mark> <mark class=\"grammar-error\" title=\"PREP: Correct: Currently, I'm recording our conversation on a voice recorder | Correct punctuation and preposition use.\">Currently I'm recording our. Our Conversation to voice recorder</mark> in my iPhone. <mark class=\"grammar-error\" title=\"WORD: Correct: Next, I share it with my saved Telegram account. | Add a comma for clarity in listing steps.\">Next step I share it with my saved Telegram account.</mark> <mark class=\"grammar-error\" title=\"TENSE: Correct: After that, I download it to the software I developed myself | Correct tense and rewrite for clarity and grammatical correctness.\">After that I downloaded it to my developed by myself soft</mark> <mark class=\"grammar-error\" title=\"WORD: Correct: and then I need to use an LLM, and the problem, as I understand it, is that | Correct sequence of words and punctuation for clarity.\">and after that I need to use some LLM and the problem is as I understand that</mark> the chat GPT or even Manus can't can't <mark class=\"grammar-error\" title=\"WORD: Correct: catch all the details from our conversation | Correct determiner use and remove repetition.\">catch whole details from our our conversation</mark> and I'm not sure that our previous statistic is correct as you remember.\n\nSpeaker B: Did you try complexity for it?\n\nSpeaker A: Not yet, but maybe Gemini can be good because <mark class=\"grammar-error\" title=\"WORD: Correct: it takes a much bigger context. | Correct pronoun use and redundant comparative.\">he takes much more bigger context.</mark> As I remember, you can try to.\n\nSpeaker B: Use Perplexity because it's really good in transcription. I think you just can try because Perplexity sometimes uses different Python and other <mark class=\"grammar-error\" title=\"WORD: Correct: libraries for specific tasks. | Use 'specific' for clarity.\">libraries for some special tasks.</mark> <mark class=\"grammar-error\" title=\"Correct: So, a few days ago, I tried to build a financial model | Correct punctuation and adjective form.\">So maybe a few days ago I tried to build a finance model</mark> for my idea with English clubs and Perplexity used Python labs to build some tables and some some graphics. So I think you can, you can <mark class=\"grammar-error\" title=\"VERB: Correct: try using Perplexity for it. | Correct verb form and redundancy.\">just try to use Perplexity for it.</mark> Also you can change or if you have a subscription <mark class=\"grammar-error\" title=\"PREP: Correct: you can change different models within Perplexity and just try. | Correct preposition use and remove redundancy.\">you can change different models inside the Perplexity and try to just try.</mark>\n\nSpeaker A: Okay, <mark class=\"grammar-error\" title=\"ORDER: Correct: but I think the main problem is that any LLM | Correct punctuation and sentence structure.\">but I. I think the main problem that any LLM</mark> used to make summary or something like that and if we need to analyze string by string we need to use API. So maybe it's. It will not be so hard to develop <mark class=\"grammar-error\" title=\"ARTICLE: Correct: such an application. | Use correct article form.\">such kind of application.</mark>\n\nSpeaker B: We can try to use Granola maybe for it. Because if you ask Granola to transcribe the full transcription of our meeting <mark class=\"grammar-error\" title=\"PREP: Correct: with the splitting up of two speakers, it may work. | Correct preposition use for grammatical correctness.\">with the splitting up two speakers, it may work.</mark>\n\nSpeaker A: Honestly, I tried to do it and <mark class=\"grammar-error\" title=\"WORD: Correct: I didn't find how to split our conversation by users | The sentence lacks clarity and grammatical cohesion.\">I didn't find splitting our conversation by users</mark>. So you can see the splitting in window Granola window. But there is no indication who is one speaker and who is another. So it's one speaker is left or something like that wording on the left side and for the second user it's on the right side. So it's hard to understand <mark class=\"grammar-error\" title=\"WORD: Correct: who is speaking where | The phrase lacks clarity without the word &quot;speaking.&quot;\">who is where</mark>.\n\nSpeaker B: You can just <mark class=\"grammar-error\" title=\"ARTICLE: Correct: try to use the context, not the context window | Repetitive and missing article &quot;the&quot; before &quot;context window.&quot;\">try to try to use the context, not context window</mark>, just use the chat to catch persons. I will try to use Granola.\n\nSpeaker A: Yes, you can try because <mark class=\"grammar-error\" title=\"TENSE: Correct: I have tried and thought Granola had the full transcript | Verb tense consistency error.\">I have tried and I thought Granola has the full transcript</mark>, but it seems that <mark class=\"grammar-error\" title=\"WORD: Correct: it is not suitable for our purposes | The phrase is more idiomatically clear with &quot;suitable.&quot;\">it's not convenient for our purposes</mark>.\n\nSpeaker B: Why so?\n\nSpeaker A: Because as I said, there is no indication who is speaking.\n\nSpeaker B: Just, just. Okay, I will start Granola right now because sometimes you. You have to <mark class=\"grammar-error\" title=\"VERB: Correct: ask to rewrite the transcription | Missing infinitive form 'to' before 'rewrite.'\">ask rewrite the transcription</mark> of this meeting using special labels for speaker one and speaker two for each phrase. For example, maybe it works. <mark class=\"grammar-error\" title=\"Correct: It might work. Maybe I will check, and you will check | Improves logical sequence and connects related actions.\">It will work. Maybe I will, I will check. You will check</mark> complexity. I Will check, you know.\n\nSpeaker A: Okay, so. <mark class=\"grammar-error\" title=\"VERB: Correct: I suggest keeping this conversation | 'Suggest' is commonly followed by a gerund, not an infinitive.\">I suggest to keep this conversation</mark> 30 minutes <mark class=\"grammar-error\" title=\"Correct: so we will have | 'For' is unnecessary and ungrammatical here.\">for so we will have</mark> the same duration <mark class=\"grammar-error\" title=\"Correct: of each of our conversations | 'Every' should be 'each of' to fit context and grammar.\">of our every conversation</mark> for tracking our metrics as we discussed last time.\n\nSpeaker B: <mark class=\"grammar-error\" title=\"Correct: I didn't understand what you said | The correct indirect question form is needed here.\">I didn't understand what did you say</mark>?\n\nSpeaker A: Okay, <mark class=\"grammar-error\" title=\"Correct: I suggest keeping this conversation 30 | 'Suggest' should be followed by 'keeping', and 'Keep' should not be capitalized.\">I suggest to Keep this conversation 30</mark> minutes duration <mark class=\"grammar-error\" title=\"VERB: Correct: to have comparative figures metrics as | 'For having' should be 'to have' to properly form an infinitive phrase.\">for having comparative figures metrics as</mark> we discussed last time. So I transcribed our previous conversation. <mark class=\"grammar-error\" title=\"Correct: I will transcribe our current conversation with | 'And with' is incorrect; use 'with' to connect clauses.\">I will transcribe our current conversation and with</mark> the same prompt in Manus or Chat, GPT or Gemini and ask them to keep the same metric <mark class=\"grammar-error\" title=\"WORD: Correct: and track it for every conversation | 'Every time' is redundant here.\">and track it every time for every conversation</mark>. But I would like to understand the logic <mark class=\"grammar-error\" title=\"Correct: of and | Missing sentence continuation after 'of'.\">of and I</mark> need an evidence <mark class=\"grammar-error\" title=\"VERB: Correct: that it is the same logic every time | 'It' requires a verb ('is') to complete the sentence.\">that it the same logic every time</mark> and <mark class=\"grammar-error\" title=\"WORD: Correct: there is no summary from ChatGPT saying you have 15 mistakes | Phrase needs restructuring for clarity and grammaticality.\">there is no summary from ChatGPT that well you have 15 mistakes</mark> or maybe 17 mistakes something like that.\n\nSpeaker B: Okay.\n\nSpeaker A: Okay. Today I earned so next story. Today <mark class=\"grammar-error\" title=\"PREP: Correct: I earned 30,000 rubles as ref share from commission of the agency fee from a company that | 'Of' should be 'as' and 'which' should be 'that' for correct relative clause and preposition usage.\">I earned 30,000 rubles of ref share from commission of agency fee from company which</mark> I used for delivery car for my former colleague. I mean we went to Rostov to take Audi CO3 for Kultiap after and before <mark class=\"grammar-error\" title=\"ARTICLE: Correct: we agreed to take the car with this company | Missing definite article 'the' and misuse of preposition 'by' should be 'with'.\">we agreed to take car by this company</mark> we <mark class=\"grammar-error\" title=\"PREP: Correct: agreed with them on a revenue share | Correct preposition is 'on', and use 'a' for clarity in the phrase.\">agreed with them for revenue share</mark> <mark class=\"grammar-error\" title=\"WORD: Correct: and today it was completed in a total amount | Redundant repetition of 'total amount' should be avoided.\">and today it was completed in total amount, total amount</mark> of 30,000 rubles and as I understand the <mark class=\"grammar-error\" title=\"WORD: Correct: whole agency fee is about 100,000 rubles | 'Of their' is redundant and should be removed for clarity.\">whole of their agency fee is about 100,000 rubles</mark>.\n\nSpeaker B: So so you now have money to eat something?\n\nSpeaker A: Yes, I, I, I'm trying to understand what, what, <mark class=\"grammar-error\" title=\"WORD: Correct: what I should use | The phrase &quot;I should I use&quot; contains an unnecessary repetition of the subject. It should be &quot;what I should use.&quot;\">what I should I use</mark>. <mark class=\"grammar-error\" title=\"Correct: I've forgotten I've remembered | The correct form is &quot;I've forgotten.&quot; The auxiliary 'have' was missing.\">I forgotten I've remembered</mark> something like that. So the same scheme <mark class=\"grammar-error\" title=\"WORD: Correct: uses Torbasov when it would be correct | The phrase is confusing due to redundant wording. &quot;Use uses&quot; should be &quot;uses,&quot; and &quot;when he or it would be correct&quot; should be simplified to &quot;when it would be correct.&quot;\">use uses Torbasov when he or it would be correct</mark> to say his agency <mark class=\"grammar-error\" title=\"VERB: Correct: uses agents for selling its properties | Agreement error. 'Agent' should be 'agents' and 'their' should be 'its' since it refers to a singular agency.\">uses agent for selling their properties</mark>. So and, and they <mark class=\"grammar-error\" title=\"WORD: Correct: sometimes have 15 revshares or even more | The original phrase lacks proper structure and contains a misspelling. 'Refshre' should be 'revshares.'\">have sometimes 15 refshre sometimes even more</mark>. It <mark class=\"grammar-error\" title=\"ARTICLE: Correct: depends on the amount of work | The sentence is missing the definite article 'the' before 'amount.'\">depends on amount of work</mark> they do. So it's a very interesting scheme <mark class=\"grammar-error\" title=\"VERB: Correct: if you are good enough | The verb 'are' is missing from the verb phrase.\">if you good enough</mark> in marketing and you can give clients to company and have rev share. It seems <mark class=\"grammar-error\" title=\"Correct: quite a nice scheme | A determiner 'a' is missing before 'scheme.'\">quite, quite nice scheme</mark>.\n\nSpeaker B: You know in Gitmigit. Where Kate is working now there is a, there are some troubles with the capital, with money and also with salaries. So they want <mark class=\"grammar-error\" title=\"ARTICLE: Correct: to earn some money in a short period | The article 'a' is missing before 'short period.'\">to earn some money in short period</mark>. So now they are <mark class=\"grammar-error\" title=\"Correct: using different partnerships | Repetitive and unnecessary use of 'partnership.'\">using partnership, different partnerships</mark>. They are looking for sales or different roles to to sell their main product. Talent test. That's talent test. It's a product to, to test and to screen developers CVS to speed up the process of hiring. You know that's something like live coding but for skills. So they're trying to sell their product to different companies and they, they need a big big network wide network of sellers. So now they're acquiring <mark class=\"grammar-error\" title=\"ARTICLE: Correct: different roles | The article 'the' is unnecessary.\">the different roles</mark> for selling product. So Kate is responsible for the searching for the demos of product for them. And now they have same rev share model. But <mark class=\"grammar-error\" title=\"VERB: Correct: they are ready to pay | The verb 'are' is missing.\">they they ready to pay</mark> about 50, 40 or 50% for sale. Per sale per contract. Yeah. So that's nothing special. I think <mark class=\"grammar-error\" title=\"ARTICLE: Correct: that's a popular model | The article 'a' is necessary before 'popular model.'\">that's popular model</mark> to sell something.\n\nSpeaker A: Yes, but for <mark class=\"grammar-error\" title=\"WORD: Correct: me, it is quite interesting | The phrase requires clarity and correct structure.\">me quite interesting</mark>. How is usual CSC for instance, for this selling. <mark class=\"grammar-error\" title=\"ARTICLE: Correct: Selling by a buying company | Sentence is missing an article 'a' before 'buying company.'\">Selling by buying company</mark>. So what is their usual cost of acquisition? Is it lower or bigger than 30,000 rubles or not? So maybe it's sometimes more efficient to push your marketing than share your revenue with agents. Maybe if they put advertising in Yandex Direct for instance, they understand okay, <mark class=\"grammar-error\" title=\"VERB: Correct: our CAC is 10,000 rubles per client | Missing verb 'is' and incorrect unit; 'troubles' should be 'rubles.'\">our CAC 10,000 troubles per client</mark>. So in this case, is it efficient to share your revenue with agent, for instance? Or it will be efficient to. To give this money to advertising Yandex Advertising.\n\nSpeaker B: I think there is one important thing it's a scheme is the resources. When you try to delegate your work <mark class=\"grammar-error\" title=\"ARTICLE: Correct: to an agent, and if | Improper article use and punctuation. Needs a comma before 'if.'\">to agent and the agent. If</mark> I understand the whole structure is correct, the agent is working. And that's agent's problem. How to find client and you. You're saving your resources inside the company. You can make any other useful things for your company. But if you <mark class=\"grammar-error\" title=\"Correct: acquire someone just by Direct, for example, | Repeated word and improper break. Needs 'for example' instead.\">acquire someone just by direct. By direct Direct,</mark> not direct. Using Yandex Direct, for example, you have to spend your your own resources. Yep.\n\nSpeaker A: Yeah, I think I understand. So you mean that if <mark class=\"grammar-error\" title=\"TENSE: Correct: agent gives a client to | Incorrect verb tense; should be present tense 'gives.'\">agent gave client to</mark> company, it will be much more warm client than from Yandex Direct, for instance. And you need put additional resources <mark class=\"grammar-error\" title=\"WORD: Correct: to this client from | Unnecessary repetition of 'to.'\">to this to client from</mark> Yandex Direct.\n\nSpeaker B: What does mean client for this company?\n\nSpeaker A: <mark class=\"grammar-error\" title=\"VERB: Correct: A client is a person who buys a car | The sentence lacks an article before 'client.' The verb 'buy' should agree with the singular 'who' and be 'buys.'\">Client is a person who buy a car</mark> and <mark class=\"grammar-error\" title=\"Correct: gave the money for this car | The pronoun 'them' is incorrect because it implies multiple people, not the single previous noun 'client.' Use 'the' for specificity.\">gave them money for this car</mark>. And <mark class=\"grammar-error\" title=\"WORD: Correct: after that or in parallel, they give | 'In parallel in that' is awkward and unclear. It should be revised to clarify the timing.\">after that or in parallel in that they give</mark> for instance <mark class=\"grammar-error\" title=\"WORD: Correct: 100 rubles as an agency commission to this client | The phrase 'by agency commission' should be 'as an agency commission' to indicate the function of the money.\">100 rubles by agency commission to this client</mark>.\n\nSpeaker B: I don't know. Is it efficient or not?\n\nSpeaker A: Okay.\n\nSpeaker B: Is it effective or not?\n\nSpeaker A: Okay. <mark class=\"grammar-error\" title=\"ARTICLE: Correct: Thank you for the consultation. | The definite article 'the' is needed before 'consultation' to specify the consultation.\">Thank you for. For consultation.</mark> Can I. Can I send you money?\n\nSpeaker B: I'm not so deep in this. In this business area, so I don't know.\n\nSpeaker A: It's. I think <mark class=\"grammar-error\" title=\"Correct: depends on the agency scheme | 'Depends of' should be 'depends on,' and 'agency scheme' should be preceded by 'the.'\">it depends of agency scheme</mark>. Overall <mark class=\"grammar-error\" title=\"Correct: it does not depend on business | Incorrect form 'it's not depends' should be 'it does not depend.'\">it's not depends on business</mark>, but. Okay, your opinion is very valuable for us. Thank you very much. Don't. For instance, <mark class=\"grammar-error\" title=\"ORDER: Correct: it's interesting how the organization works | Incomplete construction 'interesting how' needs to be 'it's interesting how,' and 'is working' should be 'works.'\">interesting how the organization is working</mark> after pause. For instance, <mark class=\"grammar-error\" title=\"ORDER: Correct: how a system works. Do you understand who is speaking | Incomplete and confusing fragment corrected to form a complete sentence.\">how a system is. Understand who is speaking</mark> right now? For instance, will I Speaker I Speaker B.\n\nSpeaker B: You. Are you asking me?\n\nSpeaker A: It's just my thought, but <mark class=\"grammar-error\" title=\"ORDER: Correct: if you don't answer. You can answer. | 'No answer' should be 'don't answer' for correct negation.\">if you no answer. You can answer.</mark>\n\nSpeaker B: I don't know. But I suppose that. For the LLM, any. For any LLM, the voice <mark class=\"grammar-error\" title=\"Correct: is just a combination of 0s and 1s | 'Combination of 0 and ones' should be 'a combination of 0s and 1s.'\">is just combination of 0 and ones</mark> in the end. So I think the. Head of voice is <mark class=\"grammar-error\" title=\"Correct: working like a parameter | 'Like as' is incorrect, use 'like.'\">working like as a parameter</mark> for LLM so I think that's it. So LLM just takes. A part of audio file and compare with the other part and <mark class=\"grammar-error\" title=\"Correct: I think it uses something | Incorrect forms 'it using it use uses' should be 'it uses.'\">I think it using it use uses something</mark> like method of sort and trying to catch the different speakers <mark class=\"grammar-error\" title=\"WORD: Correct: distinguishing between different speakers using various parameters | Rephrase for clarity and correct usage.\">using different parameters for different speakers</mark> Maybe like this.\n\nSpeaker A: Okay. Can you turn your camera off on? I forgot what I would like to.\n\nSpeaker B: Tell you <mark class=\"grammar-error\" title=\"ORDER: Correct: why you used 'forgotten.' | Repetitive and incomplete; correct to 'used 'forgotten.''\">why why you use forgotten</mark>.\n\nSpeaker A: <mark class=\"grammar-error\" title=\"Correct: I said I have forgotten that it means I forgot it right now | Repetitive use of 'I' is grammatically incorrect; should use 'I said I have forgotten'.\">I I said I've forgotten I have forgotten that it means that I forgot it right now</mark> because one minute before I remembered it and <mark class=\"grammar-error\" title=\"WORD: Correct: while you were speaking, I have forgotten | 'During your speaking' is awkward and incorrect; should be 'while you were speaking'.\">during your speaking I have forgotten</mark> that person.\n\nSpeaker B: Is there a big difference between I.\n\nSpeaker A: Forgot.\n\nSpeaker B: And I have forgotten?\n\nSpeaker A: For me I have forgotten means I just forgot it <mark class=\"grammar-error\" title=\"WORD: Correct: like this, and for me it seems I am trying to | Unnecessary repetition of 'it' and 'I'. Also, a comma is needed.\">like this and it for me it seems I I'm trying to</mark> keep my speech a little bit more native maybe and when I when I sure <mark class=\"grammar-error\" title=\"VERB: Correct: when I am sure that | Missing verb 'am' in 'I am sure'.\">when I sure that</mark> I can use it correctly I try to use it. That's it.\n\nSpeaker B: Okay, so what did you forget?\n\nSpeaker A: I forgot it.\n\nSpeaker B: <mark class=\"grammar-error\" title=\"ORDER: Correct: When I talk to someone, by the way, I really want to. | Incomplete sentence and missing object for 'talk to'.\">When I talk to no by the way I really want to huh.</mark>\n\nSpeaker A: <mark class=\"grammar-error\" title=\"ORDER: Correct: Maybe I remember that I would like to say this is my application | Repetition of 'I' and incorrect word order.\">Maybe I I remember that I would like to say that this my application</mark> which I wipe coded <mark class=\"grammar-error\" title=\"ARTICLE: Correct: it has a derivation, it has implied derivation | Spelling errors in 'derisation' (should be 'derivation'). Missing article 'a'.\">it has derisation it has implied derisation</mark> and for our previous conversation <mark class=\"grammar-error\" title=\"VERB: Correct: it seems to work not badly | Incorrect adverb usage and verb form.\">it seems it works not bad</mark> so sometimes I I I saw their mistakes but overall if we are speaking about <mark class=\"grammar-error\" title=\"ARTICLE: Correct: a big part of my speech or your speech | Missing article 'a' before 'big part'.\">big part of my speech or your speech</mark> it works correctly as.\n\nSpeaker B: <mark class=\"grammar-error\" title=\"ORDER: Correct: Do you use it? I forgot the name | Confusing and fragmented sentence structure.\">I do you use. I forgot the name</mark> of this LLM you use the same what I used <mark class=\"grammar-error\" title=\"WORD: Correct: for the bot, not 11 Labs, another popular one named with the first letter. | Repetition of 'not' and unclear phrasing.\">for the bot not not 11 labs another one popular named the first letter.</mark>\n\nSpeaker A: <mark class=\"grammar-error\" title=\"ORDER: Correct: Is it A or E | Missing subject 'it'.\">Is a or E</mark> I don't remember <mark class=\"grammar-error\" title=\"Correct: honestly need to check | Incorrect use of 'neat' (should be 'need').\">honestly neat to use need to check</mark> which token I used but I don't remember it right now. Okay okay, so we have three minutes left so <mark class=\"grammar-error\" title=\"ARTICLE: Correct: we can discuss a short topic. | Incorrect use of 'theme' (should be 'topic') and missing article 'a'.\">we can discuss some short theme.</mark>\n\nSpeaker B: <mark class=\"grammar-error\" title=\"VERB: Correct: Yeah, the last time I talked to one of my designer friends, we could. | Incorrect modal verb 'can' (should be 'could') and missing commas.\">Yeah the last time I talked to one of my designer friends we can.</mark>\n\nSpeaker A: <mark class=\"grammar-error\" title=\"ORDER: Correct: Please speak through the microphone because sometimes you cannot be heard. | The initial sentence is incomplete and awkwardly structured, combining several ideas without clear connections. 'You can you speak' is incorrect; the sentence should be restructured to convey the intended message about using the microphone.\">You can you speak Please strike through microphone because sometimes.</mark> Okay.\n\nSpeaker B: Okay. Yeah okay.\n\nSpeaker A: So.\n\nSpeaker B: Yeah when when I talked to my designer friend we were discussing.\n\nSpeaker A: The.\n\nSpeaker B: English level <mark class=\"grammar-error\" title=\"Correct: for | 'To for' is incorrect. Only 'for' is necessary to indicate the purpose or context ('for working').\">to for</mark> working in international companies and the main idea from designer was that you have <mark class=\"grammar-error\" title=\"Correct: that worldwide teams | The use of 'to worldwide teams' is incorrect in this context. It should be connected with 'that' to properly introduce the subordinate clause.\">to worldwide teams</mark> prefer to work with non native speakers because it's really easy to understand Non native. Non native speakers are using simple words and try to describe hard things by simple words and it's important in product teams so that's the main idea.\n\nSpeaker A: Okay. I think this approach is understandable and I think that <mark class=\"grammar-error\" title=\"VERB: Correct: it always depends on | The subject 'it' requires the verb 'depends' without 'is'.\">it's always depends on</mark>. Person on the second side Is he a good international player? <mark class=\"grammar-error\" title=\"Correct: Does he understand | Correct question form with 'Does' for third person singular.\">Is he understand</mark> that he is <mark class=\"grammar-error\" title=\"Correct: part of an international team | Phrasing is incorrect; 'part of' completes the idea properly.\">an international team</mark> because for instance, when we were working with our London teams, only one team person, <mark class=\"grammar-error\" title=\"Correct: who is C4 | Use 'who' for people; 'which' is for objects.\">which is C4</mark> was good enough in pronunciation <mark class=\"grammar-error\" title=\"ORDER: Correct: and he kept his | Repetitive 'he'; use conjunction 'and' and possessive 'his'.\">in he he kept this</mark> he kept his tone of voice quite slow and non emotional. So it was very easy to understand <mark class=\"grammar-error\" title=\"Correct: when he was speaking | Clarifies the time frame and subject involved.\">which is speaking</mark> and <mark class=\"grammar-error\" title=\"TENSE: Correct: compared to him | Use past tense 'compared' and preposition 'to' for comparison.\">compare with him</mark> other team players. It was awful like Tasmanian diablo. It was disgusting sometimes so 10 seconds. You can <mark class=\"grammar-error\" title=\"PREP: Correct: congratulate your father on his progress in logic | Correct preposition is 'on,' and the noun 'progress' fits better.\">congratulate your father with progressing logic</mark> on something with so I I will stop our record.",
+    "annotations_meta": {
+      "chunks_processed": 12,
+      "total_chunks": 12,
+      "processed_chars": 13731,
+      "attempted_model": "gpt-4o"
+    },
+    "annotations_updated_at": "2026-02-13 12:37"
+  }
+}

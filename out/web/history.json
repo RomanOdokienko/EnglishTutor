@@ -1,0 +1,100 @@
+{
+  "sessions": [
+    {
+      "date": "2026-01-19",
+      "topic": "19.01",
+      "participants": [
+        {
+          "name": "Andrey",
+          "role": "student",
+          "fluency_score": 10.0,
+          "llm_fluency_score": 6,
+          "grammar_error_count": 12,
+          "llm_error_rate": 2.76,
+          "chunked_error_rate": 4.87
+        },
+        {
+          "name": "Roman",
+          "role": "partner",
+          "fluency_score": 10.0,
+          "llm_fluency_score": 7,
+          "grammar_error_count": 8,
+          "llm_error_rate": 2.2,
+          "chunked_error_rate": 2.77
+        }
+      ]
+    },
+    {
+      "date": "2026-01-26",
+      "topic": "26.01",
+      "participants": [
+        {
+          "name": "Roman",
+          "role": "student",
+          "fluency_score": 10.0,
+          "llm_fluency_score": 6.5,
+          "grammar_error_count": 15,
+          "llm_error_rate": 4.66,
+          "chunked_error_rate": 5.01
+        },
+        {
+          "name": "Andrey",
+          "role": "partner",
+          "fluency_score": 10.0,
+          "llm_fluency_score": 7.0,
+          "grammar_error_count": 10,
+          "llm_error_rate": 2.22,
+          "chunked_error_rate": 2.92
+        }
+      ]
+    },
+    {
+      "date": "2026-02-02",
+      "topic": "02 feb",
+      "participants": [
+        {
+          "name": "Roman",
+          "role": "student",
+          "fluency_score": 10.0,
+          "llm_fluency_score": 70,
+          "grammar_error_count": 12,
+          "llm_error_rate": 3.06,
+          "chunked_error_rate": 4.17
+        },
+        {
+          "name": "Andrey",
+          "role": "partner",
+          "fluency_score": 10.0,
+          "llm_fluency_score": 75,
+          "grammar_error_count": 8,
+          "llm_error_rate": 2.56,
+          "chunked_error_rate": 3.34
+        }
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "topic": "9.02",
+      "participants": [
+        {
+          "name": "Roman",
+          "role": "student",
+          "fluency_score": 10.0,
+          "llm_fluency_score": 7,
+          "grammar_error_count": 5,
+          "llm_error_rate": 3.31,
+          "chunked_error_rate": 4.33
+        },
+        {
+          "name": "Andrey",
+          "role": "partner",
+          "fluency_score": 10.0,
+          "llm_fluency_score": 6,
+          "grammar_error_count": 8,
+          "llm_error_rate": 2.32,
+          "chunked_error_rate": 3.21
+        }
+      ]
+    }
+  ]
+}
