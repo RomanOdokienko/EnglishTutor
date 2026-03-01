@@ -461,13 +461,31 @@ class UploadHandler(SimpleHTTPRequestHandler):
         self.wfile.write(payload)
 
 
+def resolve_bind_settings(default_port: int = 8000) -> tuple[str, int]:
+    raw_port = (os.getenv("PORT") or "").strip()
+    try:
+        port = int(raw_port) if raw_port else default_port
+    except ValueError:
+        port = default_port
+
+    raw_host = (os.getenv("HOST") or "").strip()
+    if raw_host:
+        host = raw_host
+    elif raw_port:
+        host = "0.0.0.0"
+    else:
+        host = "127.0.0.1"
+    return host, port
+
+
 def run_server(port: int = 8000) -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     write_web_assets(OUT_DIR)
     build_all(SESSIONS_DIR, OUT_DIR, use_openai=False, openai_model=None)
     handler = partial(UploadHandler, directory=str(OUT_DIR))
-    server = ThreadingHTTPServer(("127.0.0.1", port), handler)
-    print(f"Serving on http://127.0.0.1:{port}/web/highlights.html")
+    host, resolved_port = resolve_bind_settings(port)
+    server = ThreadingHTTPServer((host, resolved_port), handler)
+    print(f"Serving on http://{host}:{resolved_port}/web/highlights.html")
     server.serve_forever()
 
 
