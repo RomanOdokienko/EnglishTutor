@@ -21,7 +21,7 @@
       },
       "llm": {
         "fluency": {
-          "score": 70,
+          "score": 7.0,
           "level": "Intermediate"
         },
         "grammar": {
@@ -263,7 +263,7 @@
       },
       "llm": {
         "fluency": {
-          "score": 75,
+          "score": 7.5,
           "level": "Intermediate"
         },
         "grammar": {

@@ -172,6 +172,38 @@ def compute_fluency(metrics: SpeakerMetrics) -> tuple[float, str]:
     return score, level
 
 
+def normalize_llm_fluency_score(raw_score: object) -> float | None:
+    if raw_score is None:
+        return None
+    try:
+        score = float(raw_score)
+    except (TypeError, ValueError):
+        return None
+
+    # Keep one canonical scale in storage/UI: 0..10.
+    if 0.0 <= score <= 1.0:
+        score *= 10.0
+    elif 10.0 < score <= 100.0:
+        score /= 10.0
+
+    score = max(0.0, min(10.0, score))
+    return round(score, 1)
+
+
+def normalize_analysis_fluency_scores(analysis: dict) -> None:
+    for participant in analysis.get("participants", []):
+        llm = participant.get("llm")
+        if not isinstance(llm, dict):
+            continue
+        fluency = llm.get("fluency")
+        if not isinstance(fluency, dict):
+            continue
+        normalized = normalize_llm_fluency_score(fluency.get("score"))
+        if normalized is None:
+            continue
+        fluency["score"] = normalized
+
+
 def extract_output_text(response: dict) -> str:
     direct_text = response.get("output_text")
     if isinstance(direct_text, str) and direct_text.strip():
@@ -953,6 +985,7 @@ def call_openai_analysis(
         f"{participant_lines}\n\n"
         "Transcript:\n"
         f"{transcript_text}\n\n"
+        "Fluency score must be on a 0-10 scale (decimals allowed). "
         "For each participant, analyze ONLY clear grammatical errors (ignore fillers, hesitations, false starts). "
         "Return error_count (count of grammatical error instances), top_errors (top 3 most frequent error types with counts), "
         "and 3 practical recommendations based on the typical errors. Keep responses concise."
@@ -973,7 +1006,7 @@ def call_openai_analysis(
                             "type": "object",
                             "additionalProperties": False,
                             "properties": {
-                                "score": {"type": "number"},
+                                "score": {"type": "number", "minimum": 0, "maximum": 10},
                                 "level": {"type": "string"},
                             },
                             "required": ["score", "level"],
@@ -1063,6 +1096,121 @@ def call_openai_analysis(
         return json.loads(output_text), None
     except json.JSONDecodeError as error:
         return None, f"Invalid JSON: {error}"
+
+
+def call_openai_highlight_exercise(
+    *,
+    api_key: str,
+    model: str,
+    participant_name: str,
+    category_code: str,
+    category_title: str,
+    focus_text: str,
+    examples: list[dict] | None = None,
+) -> tuple[dict | None, str | None]:
+    if not api_key:
+        return None, "Missing API key"
+
+    example_lines = []
+    for item in examples or []:
+        error = str(item.get("error") or "").strip()
+        correction = str(item.get("correction") or "").strip()
+        if error and correction:
+            example_lines.append(f"- {error} -> {correction}")
+    examples_text = "\n".join(example_lines) if example_lines else "- No trusted examples available"
+
+    system_prompt = (
+        "You are an English tutor creating one short practice exercise for a learner preparing "
+        "for a 30-minute speaking call. Return strictly valid JSON only."
+    )
+    user_prompt = (
+        f"Learner: {participant_name}\n"
+        f"Focus category: {category_title} ({category_code})\n"
+        f"Focus guidance: {focus_text}\n"
+        "Reference examples:\n"
+        f"{examples_text}\n\n"
+        "Create exactly one practical multiple-choice exercise with 2 or 3 options. "
+        "Keep it short, concrete, and directly related to the examples. "
+        "The learner should be able to solve it in under 20 seconds. "
+        "Prefer sentence-level speaking examples, not abstract theory. "
+        "Return one correct answer, short explanation, and a very short title."
+    )
+
+    schema = {
+        "type": "object",
+        "additionalProperties": False,
+        "properties": {
+            "type": {"type": "string", "enum": ["multiple_choice"]},
+            "title": {"type": "string"},
+            "prompt": {"type": "string"},
+            "question": {"type": "string"},
+            "options": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 3,
+                "items": {"type": "string"},
+            },
+            "answer": {"type": "string"},
+            "explanation": {"type": "string"},
+        },
+        "required": ["type", "title", "prompt", "question", "options", "answer", "explanation"],
+    }
+
+    payload = {
+        "model": model,
+        "temperature": 0.3,
+        "input": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ],
+        "text": {
+            "format": {
+                "type": "json_schema",
+                "name": "highlight_exercise",
+                "schema": schema,
+                "strict": True,
+            }
+        },
+        "max_output_tokens": 400,
+    }
+
+    request = urllib.request.Request(
+        OPENAI_ENDPOINT,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+        },
+        method="POST",
+    )
+
+    try:
+        with urllib.request.urlopen(request, timeout=90) as response:
+            response_payload = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as error:
+        try:
+            body = error.read().decode("utf-8")
+        except Exception:
+            body = str(error)
+        return None, body
+    except Exception as error:
+        return None, str(error)
+
+    output_text = extract_output_text(response_payload)
+    if not output_text:
+        preview = json.dumps(response_payload)[:600]
+        return None, f"Empty response. Raw: {preview}"
+
+    try:
+        exercise = json.loads(output_text)
+    except json.JSONDecodeError as error:
+        return None, f"Invalid JSON: {error}"
+
+    options = [str(option).strip() for option in exercise.get("options", []) if str(option).strip()]
+    answer = str(exercise.get("answer") or "").strip()
+    if len(options) < 2 or answer not in options:
+        return None, "Model returned an invalid exercise payload."
+    return exercise, None
 
 
 def call_openai_chunk_annotations(
@@ -1481,6 +1629,10 @@ def apply_llm_results(analysis: dict, llm_data: dict) -> None:
             "fluency": entry.get("fluency") or {},
             "grammar": entry.get("grammar") or {},
         }
+        normalized_score = normalize_llm_fluency_score(llm_info.get("fluency", {}).get("score"))
+        if normalized_score is not None:
+            llm_info.setdefault("fluency", {})
+            llm_info["fluency"]["score"] = normalized_score
         participant["llm"] = llm_info
 
         word_count = participant.get("metrics", {}).get("word_count", 0)
@@ -1576,6 +1728,7 @@ def annotate_session(
         openai_model=openai_model,
         out_dir=out_dir,
     )
+    normalize_analysis_fluency_scores(analysis)
 
     blocks = parse_transcript_blocks(transcript_text)
     analysis["chunks"] = build_chunks(blocks, transcript_text)
@@ -1764,6 +1917,7 @@ def analyze_session(
         if existing_analysis:
             merge_existing_llm(analysis, existing_analysis)
         analysis.setdefault("llm", {"status": "skipped", "model": openai_model or DEFAULT_OPENAI_MODEL})
+        normalize_analysis_fluency_scores(analysis)
         build_annotation_metrics(analysis, transcript_text)
         build_practical_recommendations(analysis, transcript_text)
         return analysis
@@ -1774,6 +1928,7 @@ def analyze_session(
         if existing_analysis:
             merge_existing_llm(analysis, existing_analysis)
         analysis["llm"] = {"status": "skipped", "model": model}
+        normalize_analysis_fluency_scores(analysis)
         build_annotation_metrics(analysis, transcript_text)
         build_practical_recommendations(analysis, transcript_text)
         return analysis
@@ -1939,6 +2094,7 @@ def analyze_session(
             if name and name in per_speaker_by_name:
                 participant.setdefault("llm", {})
                 participant["llm"]["chunked_grammar"] = per_speaker_by_name[name]
+    normalize_analysis_fluency_scores(analysis)
     build_annotation_metrics(analysis, transcript_text)
     build_practical_recommendations(analysis, transcript_text)
     return analysis
@@ -1964,12 +2120,13 @@ def update_history(out_dir: Path, analysis: dict) -> None:
         llm = participant.get("llm") or {}
         grammar = llm.get("grammar") or {}
         annotation_grammar = llm.get("annotation_grammar") or {}
+        llm_fluency_score = normalize_llm_fluency_score(llm.get("fluency", {}).get("score"))
         entry["participants"].append(
             {
                 "name": participant.get("name"),
                 "role": participant.get("role"),
                 "fluency_score": participant.get("fluency", {}).get("score"),
-                "llm_fluency_score": llm.get("fluency", {}).get("score"),
+                "llm_fluency_score": llm_fluency_score,
                 "grammar_error_count": grammar.get("error_count"),
                 "llm_error_rate": annotation_grammar.get("error_rate_per_100_words") or grammar.get("error_rate_per_100_words"),
                 "chunked_error_rate": llm.get("chunked_grammar", {}).get("error_rate_per_100_words"),
@@ -2284,11 +2441,11 @@ HIGHLIGHTS_HTML = r"""<!doctype html>
     <title>Session Highlights</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
-    <main>
+  <body class="page-highlights">
+    <main class="highlights-page">
       <header>
         <h1>Session Highlights</h1>
-        <p class="subtitle">Three focused, practical takeaways for the next session.</p>
+        <p class="subtitle">Weekly coaching sheet: what to fix first, what should be easy to improve, and what to monitor in the next call.</p>
         <div class="header-actions">
           <div class="header-links">
             <a class="inline-link" href="index.html">Detailed statistics</a>
@@ -2309,9 +2466,100 @@ HIGHLIGHTS_HTML = r"""<!doctype html>
 HIGHLIGHTS_JS = r"""const sessionSelect = document.getElementById('highlight-session-select');
 const highlightsRoot = document.getElementById('highlights-root');
 
+const CATEGORY_LABEL_TO_CODE = {
+  'Verb Tense': 'TENSE',
+  'Verb Form': 'VERB',
+  Articles: 'ARTICLE',
+  Prepositions: 'PREP',
+  'Word Order': 'ORDER',
+  'Wrong Word': 'WORD',
+  Collocation: 'COLLOC',
+};
+
+const EXACT_BLOCKED_EXAMPLES = new Set([
+  'to invite four||to do this',
+  "it's a talk||it's talked",
+]);
+
+const GENERIC_CORRECTION_TOKENS = new Set([
+  'a',
+  'an',
+  'be',
+  'did',
+  'do',
+  'does',
+  'get',
+  'go',
+  'is',
+  'it',
+  "it's",
+  'make',
+  'that',
+  'the',
+  'thing',
+  'things',
+  'this',
+  'to',
+]);
+
+const FUNCTION_WORD_TOKENS = new Set([
+  'a',
+  'an',
+  'am',
+  'are',
+  "aren't",
+  'be',
+  'been',
+  'being',
+  'did',
+  "didn't",
+  'do',
+  'does',
+  "doesn't",
+  "don't",
+  'had',
+  "hadn't",
+  'has',
+  "hasn't",
+  'have',
+  "haven't",
+  'he',
+  'her',
+  'him',
+  'i',
+  "i'm",
+  'is',
+  "isn't",
+  'it',
+  "it's",
+  'its',
+  'me',
+  'she',
+  'that',
+  'the',
+  'their',
+  'them',
+  'they',
+  'this',
+  'those',
+  'we',
+  'were',
+  "weren't",
+  'was',
+  "wasn't",
+  'you',
+]);
+
 const state = {
   history: null,
   analysisCache: new Map(),
+  currentBundle: null,
+  exerciseCache: new Map(),
+  exerciseLoading: new Set(),
+  exerciseErrors: new Map(),
+  exerciseAnswerState: new Map(),
+  exerciseRequestData: new Map(),
+  exerciseSequence: 0,
 };
 
 async function loadHistory() {
@@ -2333,6 +2581,57 @@ async function loadAnalysis(date) {
   const data = await response.json();
   state.analysisCache.set(date, data);
   return data;
+}
+
+function getExerciseCacheKey(date, participantName, categoryCode) {
+  return [
+    encodeURIComponent(String(date || '').trim()),
+    encodeURIComponent(String(participantName || '').trim().toLowerCase()),
+    encodeURIComponent(String(categoryCode || '').trim().toUpperCase()),
+  ].join('::');
+}
+
+function registerExerciseContext(sessionDate, participantName, candidate) {
+  const key = getExerciseCacheKey(sessionDate, participantName, candidate.code);
+  state.exerciseRequestData.set(key, {
+    participant_name: participantName,
+    category_code: candidate.code,
+    category_title: candidate.title,
+    focus_text: candidate.focus,
+    examples: (candidate.examples || []).map((example) => ({
+      error: example.error,
+      correction: example.correction,
+    })),
+  });
+  return key;
+}
+
+function getExerciseEntries(exerciseKey) {
+  const entries = state.exerciseCache.get(exerciseKey);
+  return Array.isArray(entries) ? entries : [];
+}
+
+function createExerciseEntry(exerciseKey, exercise) {
+  state.exerciseSequence += 1;
+  return {
+    id: `${exerciseKey}::${state.exerciseSequence}`,
+    exercise,
+  };
+}
+
+function cleanServerErrorMessage(rawValue, fallback = 'Exercise generation failed.') {
+  const raw = String(rawValue || '').trim();
+  if (!raw) {
+    return fallback;
+  }
+  if (raw.startsWith('<!DOCTYPE') || raw.startsWith('<html')) {
+    const messageMatch = raw.match(/<p>Message:\s*([^<]+)<\/p>/i);
+    if (messageMatch) {
+      return messageMatch[1].trim();
+    }
+    return fallback;
+  }
+  return raw;
 }
 
 function formatSessionDate(value) {
@@ -2363,11 +2662,18 @@ function renderDropdown() {
 
 function sortParticipants(participants) {
   const list = Array.isArray(participants) ? [...participants] : [];
+  const roleOrder = {
+    student: 0,
+    partner: 1,
+  };
   return list.sort((a, b) => {
+    const aRole = roleOrder[(a?.role || '').toLowerCase()] ?? 99;
+    const bRole = roleOrder[(b?.role || '').toLowerCase()] ?? 99;
+    if (aRole !== bRole) {
+      return aRole - bRole;
+    }
     const aName = (a?.name || '').toLowerCase();
     const bName = (b?.name || '').toLowerCase();
-    if (aName === 'roman' && bName !== 'roman') return -1;
-    if (bName === 'roman' && aName !== 'roman') return 1;
     return aName.localeCompare(bName);
   });
 }
@@ -2382,69 +2688,1025 @@ function escapeHtml(value) {
     .replace(/>/g, '&gt;');
 }
 
-function getTopInsights(participant) {
-  const insights = participant.llm?.top3_insights || [];
-  if (insights.length) {
-    return insights.slice(0, 3);
+function parseTranscriptBlocks(text) {
+  const pattern = /^\s*([^:]+):/gm;
+  const matches = [...text.matchAll(pattern)];
+  if (!matches.length) {
+    return [];
   }
-  const practical = participant.llm?.practical_recommendations || [];
-  return practical.slice(0, 3).map((item) => ({
-    title: item.title,
-    why: item.why || '',
-    focus: item.guidance || '',
-    examples: item.examples || [],
-  }));
+  return matches.map((match, index) => {
+    const start = match.index ?? 0;
+    const end = index + 1 < matches.length ? (matches[index + 1].index ?? text.length) : text.length;
+    return { speaker: match[1].trim(), start, end };
+  });
 }
 
-function buildLead(participant, top3) {
-  const totalErrors = participant.llm?.annotation_grammar?.total_errors;
-  const labels = top3.map((item) => item.title).filter(Boolean);
-  if (typeof totalErrors === 'number' && labels.length) {
-    return `${participant.name}: ${totalErrors} total grammar issues. Top recurring patterns are ${labels.join(', ')}.`;
+function buildAnnotationMap(transcriptText, items, speakerMap) {
+  if (!items.length) {
+    return {};
   }
-  if (typeof totalErrors === 'number') {
-    return `${participant.name}: ${totalErrors} total grammar issues in this session.`;
-  }
-  return 'Focused patterns to work on before the next session.';
+  const blocks = parseTranscriptBlocks(transcriptText);
+  const sortedItems = [...items].sort((a, b) => Number(a.start || 0) - Number(b.start || 0));
+  const byName = {};
+  let blockIndex = 0;
+  sortedItems.forEach((item) => {
+    const start = Number(item.start || 0);
+    while (blockIndex < blocks.length && start >= blocks[blockIndex].end) {
+      blockIndex += 1;
+    }
+    if (blockIndex >= blocks.length) {
+      return;
+    }
+    const block = blocks[blockIndex];
+    if (start < block.start || start >= block.end) {
+      return;
+    }
+    const label = block.speaker || '';
+    const name = speakerMap[label] || label;
+    if (!name) {
+      return;
+    }
+    byName[name] = byName[name] || [];
+    byName[name].push(item);
+  });
+  return byName;
 }
 
-function renderHighlights(analysis) {
+function getCategoryCode(error) {
+  if (!error) return '';
+  if (error.code) return String(error.code).toUpperCase();
+  return String(CATEGORY_LABEL_TO_CODE[error.title] || '').toUpperCase();
+}
+
+function normalizeText(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function tokenize(value) {
+  return normalizeText(value)
+    .replace(/[^a-z0-9'\s]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+function lexicalOverlapRatio(left, right) {
+  const leftTokens = new Set(tokenize(left));
+  const rightTokens = new Set(tokenize(right));
+  if (!leftTokens.size || !rightTokens.size) {
+    return 0;
+  }
+  let shared = 0;
+  leftTokens.forEach((token) => {
+    if (rightTokens.has(token)) {
+      shared += 1;
+    }
+  });
+  return shared / Math.max(1, Math.min(leftTokens.size, rightTokens.size));
+}
+
+function getPreviousSessionDates(selectedDate, limit = 3) {
+  const sessions = state.history?.sessions || [];
+  const currentIndex = sessions.findIndex((session) => session.date === selectedDate);
+  if (currentIndex <= 0) {
+    return [];
+  }
+  return sessions
+    .slice(Math.max(0, currentIndex - limit), currentIndex)
+    .map((session) => session.date);
+}
+
+async function loadContextBundle(selectedDate) {
+  const previousDates = getPreviousSessionDates(selectedDate, 3);
+  const [currentAnalysis, ...previousAnalyses] = await Promise.all([
+    loadAnalysis(selectedDate),
+    ...previousDates.map((date) => loadAnalysis(date)),
+  ]);
+  return {
+    currentAnalysis,
+    previousAnalyses,
+  };
+}
+
+function buildSourceSentenceData(transcriptText, item) {
+  if (!transcriptText || !item) {
+    return { text: '', seek: null };
+  }
+  const start = Math.max(0, Number(item.start || 0));
+  const end = Math.max(start, Number(item.end || start));
+  const lineStart = transcriptText.lastIndexOf('\n', Math.max(0, start - 1)) + 1;
+  const rawLineEnd = transcriptText.indexOf('\n', end);
+  const lineEnd = rawLineEnd === -1 ? transcriptText.length : rawLineEnd;
+  const lineText = transcriptText.slice(lineStart, lineEnd).trim();
+  if (!lineText) {
+    return { text: '', seek: start };
+  }
+  const relativeStart = Math.max(0, start - lineStart);
+  const relativeEnd = Math.max(relativeStart, end - lineStart);
+  let sentenceStart = 0;
+  for (let index = relativeStart - 1; index >= 0; index -= 1) {
+    const character = lineText[index];
+    if (character === '.' || character === '?' || character === '!') {
+      sentenceStart = index + 1;
+      break;
+    }
+  }
+  while (sentenceStart < lineText.length && /\s/.test(lineText[sentenceStart])) {
+    sentenceStart += 1;
+  }
+  let sentenceEnd = lineText.length;
+  for (let index = Math.min(lineText.length - 1, relativeEnd); index < lineText.length; index += 1) {
+    const character = lineText[index];
+    if (character === '.' || character === '?' || character === '!') {
+      sentenceEnd = index + 1;
+      break;
+    }
+  }
+  let sentence = lineText.slice(sentenceStart, sentenceEnd).replace(/\s+/g, ' ').trim();
+  if (!sentence) {
+    sentence = lineText.replace(/\s+/g, ' ').trim();
+  }
+  if (sentence.length > 220) {
+    sentence = `${sentence.slice(0, 217).trim()}...`;
+  }
+  return {
+    text: sentence,
+    seek: start,
+    seekEnd: end,
+  };
+}
+
+function isGenericCorrection(correction) {
+  const tokens = tokenize(correction);
+  if (!tokens.length || tokens.length > 3) {
+    return false;
+  }
+  return tokens.every((token) => GENERIC_CORRECTION_TOKENS.has(token));
+}
+
+function isFunctionWordFragment(text) {
+  const tokens = tokenize(text);
+  if (!tokens.length || tokens.length > 3) {
+    return false;
+  }
+  return tokens.every((token) => FUNCTION_WORD_TOKENS.has(token));
+}
+
+function hasRepeatedBigram(text) {
+  const tokens = tokenize(text);
+  if (tokens.length < 4) {
+    return false;
+  }
+  const seen = new Set();
+  for (let index = 0; index < tokens.length - 1; index += 1) {
+    const bigram = `${tokens[index]} ${tokens[index + 1]}`;
+    if (seen.has(bigram)) {
+      return true;
+    }
+    seen.add(bigram);
+  }
+  return false;
+}
+
+function isTeachableExample(example, categoryCode) {
+  if (!example) {
+    return false;
+  }
+  const error = String(example.error || '').trim();
+  const correction = String(example.correction || '').trim();
+  if (!error || !correction) {
+    return false;
+  }
+  const pairKey = `${normalizeText(error)}||${normalizeText(correction)}`;
+  if (EXACT_BLOCKED_EXAMPLES.has(pairKey)) {
+    return false;
+  }
+  if (!/[a-z]/i.test(error) || !/[a-z]/i.test(correction)) {
+    return false;
+  }
+  if (error.includes('\n') || correction.includes('\n')) {
+    return false;
+  }
+  if (error.length < 4 || correction.length < 4 || error.length > 96 || correction.length > 112) {
+    return false;
+  }
+  const errorTokens = tokenize(error);
+  const correctionTokens = tokenize(correction);
+  if (!errorTokens.length || !correctionTokens.length) {
+    return false;
+  }
+  if (errorTokens.length > 12 || correctionTokens.length > 14) {
+    return false;
+  }
+  if (normalizeText(error) === normalizeText(correction)) {
+    return false;
+  }
+  if (isFunctionWordFragment(error) && isFunctionWordFragment(correction)) {
+    return false;
+  }
+  if (hasRepeatedBigram(error)) {
+    return false;
+  }
+  const lengthRatio = correction.length / Math.max(1, error.length);
+  if (lengthRatio < 0.45 || lengthRatio > 2.6) {
+    return false;
+  }
+  const overlap = lexicalOverlapRatio(error, correction);
+  if ((categoryCode === 'ARTICLE' || categoryCode === 'PREP') && overlap < 0.5) {
+    return false;
+  }
+  if ((categoryCode === 'VERB' || categoryCode === 'TENSE' || categoryCode === 'ORDER') && overlap < 0.35) {
+    return false;
+  }
+  if ((categoryCode === 'WORD' || categoryCode === 'COLLOC') && errorTokens.length >= 3 && correctionTokens.length >= 3 && overlap < 0.45) {
+    return false;
+  }
+  if (categoryCode === 'ARTICLE' && !/\b(a|an|the)\b/i.test(correction)) {
+    return false;
+  }
+  if (isGenericCorrection(correction) && overlap < 0.75) {
+    return false;
+  }
+  return true;
+}
+
+function scoreExampleQuality(example, categoryCode) {
+  const errorTokens = tokenize(example.error);
+  const correctionTokens = tokenize(example.correction);
+  const overlap = lexicalOverlapRatio(example.error, example.correction);
+  let score = 0;
+  score += Math.max(0, 18 - Math.max(errorTokens.length, correctionTokens.length));
+  score += overlap * 10;
+  if (example.context) {
+    score += 2;
+  }
+  if (categoryCode === 'ARTICLE' && /\b(a|an|the)\b/i.test(example.correction)) {
+    score += 3;
+  }
+  if (categoryCode === 'PREP' && overlap >= 0.6) {
+    score += 2;
+  }
+  if (categoryCode === 'WORD' && overlap >= 0.6) {
+    score += 1.5;
+  }
+  return score;
+}
+
+function collectBestExamples(items, categoryCode, transcriptText, fallbackExamples = [], limit = 2) {
+  if (!categoryCode) {
+    return [];
+  }
+  const deduped = new Map();
+  const itemList = Array.isArray(items) ? items : [];
+  itemList.forEach((item) => {
+    if (String(item.category || '').toUpperCase() !== categoryCode) {
+      return;
+    }
+    const source = buildSourceSentenceData(transcriptText, item);
+    const example = {
+      error: String(item.text || '').trim(),
+      correction: String(item.correction || '').trim(),
+      context: source.text,
+      seek: source.seek,
+      seekEnd: source.seekEnd,
+    };
+    const key = `${normalizeText(example.error)}||${normalizeText(example.correction)}`;
+    if (!deduped.has(key)) {
+      deduped.set(key, example);
+    }
+  });
+  const fallbackList = Array.isArray(fallbackExamples) ? fallbackExamples : [];
+  fallbackList.forEach((item) => {
+    const example = {
+      error: String(item?.error || '').trim(),
+      correction: String(item?.correction || '').trim(),
+      context: '',
+      seek: null,
+      seekEnd: null,
+    };
+    const key = `${normalizeText(example.error)}||${normalizeText(example.correction)}`;
+    if (!deduped.has(key)) {
+      deduped.set(key, example);
+    }
+  });
+  return [...deduped.values()]
+    .filter((example) => isTeachableExample(example, categoryCode))
+    .sort((left, right) => scoreExampleQuality(right, categoryCode) - scoreExampleQuality(left, categoryCode))
+    .slice(0, limit);
+}
+
+function buildRecurrenceMap(previousAnalyses) {
+  const recurrence = {};
+  const list = Array.isArray(previousAnalyses) ? previousAnalyses : [];
+  list.forEach((analysis) => {
+    sortParticipants(analysis.participants || []).forEach((participant) => {
+      const types = participant.llm?.annotation_grammar?.error_types || [];
+      if (!types.length) {
+        return;
+      }
+      const name = participant.name;
+      recurrence[name] = recurrence[name] || {};
+      const seenCodes = new Set();
+      types.forEach((item) => {
+        const code = getCategoryCode(item);
+        if (code) {
+          seenCodes.add(code);
+        }
+      });
+      seenCodes.forEach((code) => {
+        recurrence[name][code] = (recurrence[name][code] || 0) + 1;
+      });
+    });
+  });
+  return recurrence;
+}
+
+function severityByShare(share) {
+  if (share >= 30) {
+    return 'high';
+  }
+  if (share >= 15) {
+    return 'medium';
+  }
+  return 'low';
+}
+
+function scoreImpact(code) {
+  switch (code) {
+    case 'WORD':
+    case 'ORDER':
+    case 'COLLOC':
+      return 3;
+    case 'VERB':
+    case 'TENSE':
+      return 2.5;
+    case 'PREP':
+    case 'ARTICLE':
+      return 2;
+    default:
+      return 1.5;
+  }
+}
+
+function scoreFixability(code) {
+  switch (code) {
+    case 'ARTICLE':
+      return 3;
+    case 'PREP':
+      return 2.5;
+    case 'VERB':
+    case 'TENSE':
+      return 2;
+    case 'WORD':
+    case 'COLLOC':
+    case 'ORDER':
+      return 1.5;
+    default:
+      return 1;
+  }
+}
+
+function defaultFocusGuidance(code) {
+  switch (code) {
+    case 'ARTICLE':
+      return 'Slow down before singular countable nouns and choose a/an/the on purpose.';
+    case 'PREP':
+      return 'Keep the phrase, but verify the preposition after common verbs and nouns.';
+    case 'VERB':
+      return 'Check the verb shape, especially after he/she/it and modal verbs.';
+    case 'TENSE':
+      return 'Anchor the time first, then match the verb tense to that timeline.';
+    case 'WORD':
+      return 'Prefer the clearest, most concrete word instead of an approximate phrase.';
+    case 'ORDER':
+      return 'Say the simpler sentence first, then add extra detail.';
+    case 'COLLOC':
+      return 'Use standard word pairings instead of literal translations.';
+    default:
+      return 'Use one simple correction pattern and repeat it until it feels automatic.';
+  }
+}
+
+function getInsightMap(participant) {
+  const map = new Map();
+  const sources = [
+    ...(participant.llm?.top3_insights || []),
+    ...((participant.llm?.practical_recommendations || []).map((item) => ({
+      code: getCategoryCode(item),
+      title: item.title,
+      why: item.why || '',
+      focus: item.guidance || '',
+      examples: item.examples || [],
+      count: Number(item.count || 0),
+    }))),
+  ];
+  sources.forEach((item) => {
+    const code = getCategoryCode(item);
+    if (!code || map.has(code)) {
+      return;
+    }
+    map.set(code, {
+      code,
+      title: item.title || code,
+      why: item.why || '',
+      focus: item.focus || item.guidance || '',
+      examples: Array.isArray(item.examples) ? item.examples : [],
+    });
+  });
+  return map;
+}
+
+function getTrendBadge(recurrenceCount, lookbackCount) {
+  if (!lookbackCount) {
+    return null;
+  }
+  if (recurrenceCount >= Math.min(3, lookbackCount) && recurrenceCount >= 2) {
+    return { label: `${recurrenceCount}-session streak`, tone: 'streak' };
+  }
+  if (recurrenceCount >= 2) {
+    return { label: `Seen in ${recurrenceCount} recent sessions`, tone: 'recurring' };
+  }
+  if (recurrenceCount === 1) {
+    return { label: 'Seen recently', tone: 'recurring' };
+  }
+  return { label: 'New this week', tone: 'new' };
+}
+
+function buildFocusWhy(item, share, recurrenceCount, lookbackCount) {
+  const base = item.why
+    ? String(item.why).trim()
+    : `${item.count} cases (${share}% of this session's mapped issues).`;
+  const trendBadge = getTrendBadge(recurrenceCount, lookbackCount);
+  if (!trendBadge || trendBadge.tone === 'new') {
+    return base;
+  }
+  return `${base} ${trendBadge.label}.`;
+}
+
+function buildPracticeTask(code, examples) {
+  const model = examples[0]?.correction ? `"${examples[0].correction}"` : '';
+  switch (code) {
+    case 'ARTICLE':
+      return model
+        ? `Write 3 short work-related phrases that reuse article patterns like ${model}.`
+        : 'Write 3 short work-related phrases and choose a/an/the before each singular noun.';
+    case 'PREP':
+      return 'Take 3 phrases from your work topics and repeat them with the correct preposition.';
+    case 'VERB':
+      return 'Say 3 sentences with he/she/it out loud and check the verb each time.';
+    case 'TENSE':
+      return 'Retell one event from this week in the past, then one plan for next week.';
+    case 'WORD':
+      return model
+        ? `Replace 3 vague phrases with cleaner wording, using models like ${model}.`
+        : 'Replace 3 vague phrases from the transcript with simpler, more direct wording.';
+    case 'ORDER':
+      return 'Answer one question in two short clauses before adding extra detail.';
+    case 'COLLOC':
+      return 'Repeat 3 fixed phrases from your domain until the pairing sounds automatic.';
+    default:
+      return 'Create 3 new sentences that reuse this correction pattern.';
+  }
+}
+
+function buildNextCallTrigger(code) {
+  switch (code) {
+    case 'ARTICLE':
+      return 'Pause briefly before singular countable nouns.';
+    case 'PREP':
+      return 'Double-check the preposition after common verbs and nouns.';
+    case 'VERB':
+      return 'Listen for verb agreement after he/she/it.';
+    case 'TENSE':
+      return 'Name the time first, then choose the tense.';
+    case 'WORD':
+      return 'If a phrase sounds vague, simplify it before you continue.';
+    case 'ORDER':
+      return 'Use a shorter sentence shape first, then expand.';
+    case 'COLLOC':
+      return 'Prefer the phrase you have heard before over a literal translation.';
+    default:
+      return 'Use one short pause to self-check the sentence before you finish it.';
+  }
+}
+
+function buildCandidateBadges(candidate, lookbackCount) {
+  const badges = [];
+  const trendBadge = getTrendBadge(candidate.recurrenceCount, lookbackCount);
+  if (trendBadge) {
+    badges.push(trendBadge);
+  }
+  if (candidate.share >= 25) {
+    badges.push({ label: 'High share', tone: 'impact' });
+  } else if (candidate.fixabilityScore >= 2.5) {
+    badges.push({ label: 'Easy to monitor', tone: 'coach' });
+  }
+  return badges;
+}
+
+function buildSummaryMeta(participant) {
+  const grammar = participant.llm?.annotation_grammar;
+  if (!grammar) {
+    return 'Run annotations to build a weekly plan.';
+  }
+  const totalErrors = Number(grammar.total_errors || 0);
+  const errorRate = grammar.error_rate_per_100_words;
+  if (totalErrors && errorRate !== undefined) {
+    return `${totalErrors} mapped issues / ${errorRate} per 100 words`;
+  }
+  if (totalErrors) {
+    return `${totalErrors} mapped issues`;
+  }
+  return 'No mapped grammar issues';
+}
+
+function buildLead(participant, slots) {
+  const primary = slots.find((slot) => slot.key === 'fix_first')?.candidate || slots[0]?.candidate;
+  const easyWin = slots.find((slot) => slot.key === 'easy_win')?.candidate;
+  if (!primary) {
+    return 'Annotations are missing or too noisy for a weekly plan. Open Detailed statistics to inspect the raw analysis.';
+  }
+  const primaryTitle = String(primary.title || 'this pattern').toLowerCase();
+  const easyWinTitle = easyWin && easyWin.code !== primary.code
+    ? ` The quickest gain is ${String(easyWin.title || '').toLowerCase()}.`
+    : '';
+  const recurringText = primary.recurrenceCount
+    ? ' It has repeated recently, so it needs deliberate practice.'
+    : '';
+  return `Correct ${primaryTitle} first before the next call.${easyWinTitle}${recurringText}`;
+}
+
+function buildFocusStatusLine(candidate, lookbackCount) {
+  const parts = [];
+  const trendBadge = getTrendBadge(candidate.recurrenceCount, lookbackCount);
+  if (trendBadge) {
+    if (trendBadge.tone === 'streak') {
+      parts.push(`Recurring for ${candidate.recurrenceCount} sessions`);
+    } else if (trendBadge.tone === 'recurring') {
+      parts.push(trendBadge.label);
+    } else if (trendBadge.tone === 'new') {
+      parts.push('New this week');
+    }
+  }
+  if (candidate.share >= 25) {
+    parts.push('High share');
+  } else if (candidate.fixabilityScore >= 2.5) {
+    parts.push('Easy to monitor');
+  }
+  return parts.join(' / ');
+}
+
+function buildImpactText(candidate) {
+  let text = String(candidate.why || '').trim();
+  text = text.replace(/^\d+\s+cases?\s*\([^)]*\)\.\s*/i, '');
+  text = text.replace(/\b\d+-session streak\.\s*$/i, '');
+  text = text.replace(/\bSeen in \d+ recent sessions\.\s*$/i, '');
+  text = text.replace(/\bSeen recently\.\s*$/i, '');
+  text = text.replace(/\bNew this week\.\s*$/i, '');
+  text = text.replace(/\s+/g, ' ').trim();
+  return text || 'This pattern is worth deliberate practice before the next call.';
+}
+
+function buildFocusCandidates(participant, itemsForSpeaker, transcriptText, recurrenceMap, lookbackCount) {
+  const grammar = participant.llm?.annotation_grammar;
+  const types = grammar?.error_types || [];
+  const totalFromTypes = types.reduce((sum, item) => sum + Number(item.count || 0), 0);
+  const totalErrors = Number(grammar?.total_errors || totalFromTypes);
+  const insightMap = getInsightMap(participant);
+  const recurrenceByCode = recurrenceMap?.[participant.name] || {};
+  return types
+    .map((item) => {
+      const code = getCategoryCode(item);
+      if (!code) {
+        return null;
+      }
+      const count = Number(item.count || 0);
+      const share = totalErrors > 0 ? Math.round((count / totalErrors) * 100) : 0;
+      const insight = insightMap.get(code) || {};
+      const examples = collectBestExamples(itemsForSpeaker, code, transcriptText, insight.examples || [], 2);
+      const confidenceScore = examples.length >= 2 ? 2 : examples.length === 1 ? 1 : 0;
+      const recurrenceCount = Number(recurrenceByCode[code] || 0);
+      const impactScore = scoreImpact(code);
+      const fixabilityScore = scoreFixability(code);
+      let priorityScore =
+        count * 2
+        + share * 0.15
+        + recurrenceCount * 3
+        + impactScore * 2
+        + fixabilityScore * 1.5
+        + confidenceScore * 2;
+      if (!examples.length) {
+        priorityScore -= 3;
+      }
+      return {
+        code,
+        title: String(item.title || insight.title || code),
+        count,
+        share,
+        severity: severityByShare(share),
+        recurrenceCount,
+        impactScore,
+        fixabilityScore,
+        confidenceScore,
+        priorityScore,
+        why: buildFocusWhy({ ...item, ...insight, count }, share, recurrenceCount, lookbackCount),
+        focus: String(insight.focus || defaultFocusGuidance(code)),
+        practiceTask: buildPracticeTask(code, examples),
+        nextCallTrigger: buildNextCallTrigger(code),
+        examples,
+      };
+    })
+    .filter(Boolean)
+    .sort((left, right) => right.priorityScore - left.priorityScore);
+}
+
+function pickDistinctCandidate(candidates, usedCodes, scorer) {
+  const ranked = [...candidates].sort((left, right) => scorer(right) - scorer(left));
+  return ranked.find((candidate) => !usedCodes.has(candidate.code)) || null;
+}
+
+function selectFocusSlots(candidates) {
+  if (!candidates.length) {
+    return [];
+  }
+  const usedCodes = new Set();
+  const fixFirst = candidates[0] || null;
+  if (fixFirst) {
+    usedCodes.add(fixFirst.code);
+  }
+  const easyWin = pickDistinctCandidate(
+    candidates,
+    usedCodes,
+    (candidate) => candidate.fixabilityScore * 4 + candidate.confidenceScore * 2 + candidate.count
+  );
+  if (easyWin) {
+    usedCodes.add(easyWin.code);
+  }
+  const watchNext = pickDistinctCandidate(
+    candidates,
+    usedCodes,
+    (candidate) => candidate.recurrenceCount * 5 + candidate.confidenceScore * 2 + candidate.priorityScore * 0.1
+  );
+  const slots = [
+    {
+      key: 'fix_first',
+      label: 'Fix First',
+      note: 'Biggest drag on this week\'s speaking.',
+      candidate: fixFirst,
+    },
+    {
+      key: 'easy_win',
+      label: 'Easy Win',
+      note: 'Most realistic gain by the next call.',
+      candidate: easyWin,
+    },
+    {
+      key: 'watch_next',
+      label: 'Watch Next Call',
+      note: 'Keep this in mind during live speech.',
+      candidate: watchNext,
+    },
+  ];
+  return slots.filter((slot) => slot.candidate);
+}
+
+function renderFocusItem(slot, lookbackCount, sessionDate, participantName) {
+  const candidate = slot.candidate;
+  if (!candidate) {
+    return '';
+  }
+  const slotClass = slot.key.replace(/_/g, '-');
+  const exerciseKey = registerExerciseContext(sessionDate, participantName, candidate);
+  const statusLine = buildFocusStatusLine(candidate, lookbackCount);
+  const impactText = buildImpactText(candidate);
+  const examplesHtml = candidate.examples.length
+    ? `<ul class="errors compact highlight-examples-list">${candidate.examples.map((example) => `
+        <li class="highlight-example-row">
+          <span class="example-error">${escapeHtml(example.error)}</span>
+          <span class="example-arrow">&rarr;</span>
+          <span class="example-fix">${escapeHtml(example.correction)}</span>
+          ${renderExampleSource(example, sessionDate)}
+        </li>
+      `).join('')}</ul>`
+    : '<p class="metric-note">Raw examples looked noisy, so they were hidden here. Use Detailed statistics to inspect the full evidence.</p>';
+  return `
+    <section class="highlight-item slot-${slotClass}">
+      <div class="highlight-slot">
+        <span class="highlight-slot-label">${escapeHtml(slot.label)}</span>
+        <span class="highlight-slot-note">${escapeHtml(slot.note)}</span>
+        <span class="highlight-slot-meta">${candidate.count} issues / ${candidate.share}% share</span>
+      </div>
+      <div class="highlight-body">
+        <div class="highlight-item-head">
+          <h3>${escapeHtml(candidate.title)}</h3>
+          <span class="highlight-item-meta">${escapeHtml(candidate.severity)} priority</span>
+        </div>
+        ${statusLine ? `<p class="highlight-status-line">${escapeHtml(statusLine)}</p>` : ''}
+        <div class="highlight-note-card">
+          <p class="highlight-note-kicker">Why it matters</p>
+          <p class="highlight-note-copy">${escapeHtml(impactText)}</p>
+        </div>
+        <p class="highlight-focus-cue"><span class="highlight-focus-label">Focus cue</span>${escapeHtml(candidate.focus)}</p>
+        ${examplesHtml}
+        <div class="highlight-action-card">
+          <div class="highlight-action-head">
+            <p class="highlight-action-title">Practice this week</p>
+            ${renderExerciseTrigger(exerciseKey)}
+          </div>
+          <p class="highlight-action-copy">${escapeHtml(candidate.practiceTask)}</p>
+          ${renderExercisePanel(exerciseKey)}
+        </div>
+        <div class="highlight-trigger-strip">
+          <span class="highlight-trigger-label">Next call trigger</span>
+          <span class="highlight-trigger-copy">${escapeHtml(candidate.nextCallTrigger)}</span>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function buildWeeklyPlan(slots) {
+  return slots.map((slot) => {
+    const title = String(slot.candidate?.title || 'this pattern').toLowerCase();
+    if (slot.key === 'fix_first') {
+      return `Write 3 fresh sentences that deliberately fix ${title}.`;
+    }
+    if (slot.key === 'easy_win') {
+      return `Do a 2-minute self-check for ${title} right before the next call.`;
+    }
+    return `During one long answer next call, pause once and check ${title} live.`;
+  });
+}
+
+function renderWeeklyPlan(slots) {
+  const items = buildWeeklyPlan(slots);
+  if (!items.length) {
+    return '';
+  }
+  return `
+    <section class="highlight-plan">
+      <h3 class="highlight-section-title">This Week Plan</h3>
+      <ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+    </section>
+  `;
+}
+
+function renderExerciseTrigger(exerciseKey) {
+  const loading = state.exerciseLoading.has(exerciseKey);
+  const hasExercise = getExerciseEntries(exerciseKey).length > 0;
+  if (hasExercise) {
+    return '';
+  }
+  const label = loading ? 'Generating...' : 'Generate exercise';
+  return `
+    <button class="ghost exercise-trigger" type="button" data-exercise-key="${exerciseKey}" ${loading ? 'disabled' : ''}>
+      ${label}
+    </button>
+  `;
+}
+
+function renderExercisePanel(exerciseKey) {
+  const loading = state.exerciseLoading.has(exerciseKey);
+  const error = state.exerciseErrors.get(exerciseKey);
+  const entries = getExerciseEntries(exerciseKey);
+  if (!entries.length) {
+    const statusParts = [];
+    if (loading) {
+      statusParts.push('<p class="exercise-status">Generating a new exercise...</p>');
+    }
+    if (error) {
+      statusParts.push(`<p class="exercise-status exercise-status-error">${escapeHtml(error)}</p>`);
+    }
+    return statusParts.join('');
+  }
+
+  const cards = entries.map((entry, entryIndex) => {
+    const exercise = entry.exercise || {};
+    const answerState = state.exerciseAnswerState.get(entry.id);
+    const options = (exercise.options || []).map((option, optionIndex) => {
+      const isCorrect = String(option) === String(exercise.answer);
+      const isSelected = answerState && Number(answerState.selectedIndex) === optionIndex;
+      let className = 'ghost exercise-option';
+      if (answerState) {
+        if (isCorrect) {
+          className += ' is-correct';
+        } else if (isSelected) {
+          className += ' is-wrong';
+        }
+      }
+      return `
+        <button
+          class="${className}"
+          type="button"
+          data-exercise-key="${exerciseKey}"
+          data-exercise-id="${entry.id}"
+          data-option-index="${optionIndex}"
+          ${answerState ? 'disabled' : ''}
+        >${escapeHtml(option)}</button>
+      `;
+    }).join('');
+
+    const showGenerateAnother = entryIndex === entries.length - 1 && !!answerState;
+    const feedbackHtml = answerState
+      ? `
+        <p class="exercise-feedback ${answerState.correct ? 'is-correct' : 'is-wrong'}">
+          ${answerState.correct ? 'Correct.' : `Correct answer: ${escapeHtml(exercise.answer)}`}
+        </p>
+        <p class="exercise-explanation">${escapeHtml(exercise.explanation || '')}</p>
+        ${showGenerateAnother ? `
+          <div class="exercise-actions">
+            <button class="ghost exercise-trigger exercise-trigger-secondary" type="button" data-exercise-key="${exerciseKey}" ${loading ? 'disabled' : ''}>
+              ${loading ? 'Generating...' : 'Generate another one'}
+            </button>
+          </div>
+        ` : ''}
+      `
+      : '<p class="exercise-status">Pick one option.</p>';
+
+    return `
+      <div class="highlight-exercise">
+        <p class="exercise-kicker">${escapeHtml(exercise.title || 'Mini exercise')}</p>
+        <p class="exercise-prompt">${escapeHtml(exercise.prompt || 'Choose the better option.')}</p>
+        <p class="exercise-question">${escapeHtml(exercise.question || '')}</p>
+        <div class="exercise-options">${options}</div>
+        ${feedbackHtml}
+      </div>
+    `;
+  }).join('');
+
+  const statusParts = [];
+  if (loading) {
+    statusParts.push('<p class="exercise-status">Generating a new exercise...</p>');
+  }
+  if (error) {
+    statusParts.push(`<p class="exercise-status exercise-status-error">${escapeHtml(error)}</p>`);
+  }
+
+  return `
+    <div class="highlight-exercise-shell">
+      ${cards}
+      ${statusParts.join('')}
+    </div>
+  `;
+}
+
+async function requestHighlightExercise(exerciseKey) {
+  if (!exerciseKey || state.exerciseLoading.has(exerciseKey)) {
+    return;
+  }
+  const payload = state.exerciseRequestData.get(exerciseKey);
+  if (!payload) {
+    return;
+  }
+  state.exerciseLoading.add(exerciseKey);
+  state.exerciseErrors.delete(exerciseKey);
+  if (state.currentBundle) {
+    renderHighlights(state.currentBundle);
+  }
+  try {
+    const response = await fetch('/api/highlight-exercise', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(cleanServerErrorMessage(errorText));
+    }
+    const result = await response.json();
+    const entries = getExerciseEntries(exerciseKey);
+    state.exerciseCache.set(exerciseKey, entries.concat(createExerciseEntry(exerciseKey, result.exercise)));
+  } catch (error) {
+    state.exerciseErrors.set(exerciseKey, error.message || 'Exercise generation failed.');
+  } finally {
+    state.exerciseLoading.delete(exerciseKey);
+    if (state.currentBundle) {
+      renderHighlights(state.currentBundle);
+    }
+  }
+}
+
+function selectExerciseOption(exerciseKey, exerciseId, optionIndex) {
+  const entry = getExerciseEntries(exerciseKey).find((item) => item.id === exerciseId);
+  const exercise = entry?.exercise;
+  if (!exercise) {
+    return;
+  }
+  const selected = exercise.options?.[optionIndex];
+  if (selected === undefined) {
+    return;
+  }
+  state.exerciseAnswerState.set(exerciseId, {
+    selectedIndex: optionIndex,
+    correct: String(selected) === String(exercise.answer),
+  });
+  if (state.currentBundle) {
+    renderHighlights(state.currentBundle);
+  }
+}
+
+function renderExampleSource(example, sessionDate) {
+  if (!example.context) {
+    return '';
+  }
+  const baseHref = example.seek !== null && example.seek !== undefined
+    ? `index.html?date=${encodeURIComponent(sessionDate)}&seek=${example.seek}${example.seekEnd !== null && example.seekEnd !== undefined ? `&seek_end=${example.seekEnd}` : ''}#transcript-rows`
+    : `index.html?date=${encodeURIComponent(sessionDate)}#transcript-rows`;
+  return `
+    <div class="example-source-row">
+      <div class="example-source-text">${escapeHtml(example.context)}</div>
+      <a class="example-source" href="${baseHref}">Open full sentence</a>
+    </div>
+  `;
+}
+
+function renderErrorMap(participant, itemsForSpeaker, transcriptText, candidates, sessionDate) {
+  const grammar = participant.llm?.annotation_grammar;
+  const types = grammar?.error_types || [];
+  if (!types.length) {
+    return '<p class="metric-note">No mapped grammar categories yet. Run annotations to build the error map.</p>';
+  }
+  const totalFromTypes = types.reduce((sum, item) => sum + Number(item.count || 0), 0);
+  const totalErrors = Number(grammar?.total_errors || totalFromTypes);
+  const candidateByCode = new Map((candidates || []).map((candidate) => [candidate.code, candidate]));
+  const rows = types.slice(0, 6).map((item) => {
+    const title = String(item.title || 'Other');
+    const count = Number(item.count || 0);
+    const code = getCategoryCode(item);
+    const share = totalErrors > 0 ? Math.round((count / totalErrors) * 100) : 0;
+    const severity = severityByShare(share);
+    const barWidth = Math.max(8, Math.min(100, share));
+    const fallbackExamples = candidateByCode.get(code)?.examples || [];
+    const examples = collectBestExamples(itemsForSpeaker, code, transcriptText, fallbackExamples, 2);
+    const examplesHtml = examples.length
+      ? examples.map((example) => `
+          <li>
+            <span class="example-error">${escapeHtml(example.error)}</span>
+            <span class="example-arrow">&rarr;</span>
+            <span class="example-fix">${escapeHtml(example.correction)}</span>
+            ${renderExampleSource(example, sessionDate)}
+          </li>
+        `).join('')
+      : '<li class="metric-note">No trusted examples shown for this category.</li>';
+
+    return `
+      <article class="error-map-item severity-${severity}">
+        <div class="error-map-row">
+          <h4>${escapeHtml(title)}</h4>
+          <div class="error-map-meta">
+            <span>${count} issues</span>
+            <span>${share}%</span>
+          </div>
+        </div>
+        <div class="error-bar"><span style="width:${barWidth}%"></span></div>
+        <ul class="errors compact error-map-examples">${examplesHtml}</ul>
+      </article>
+    `;
+  }).join('');
+
+  return `
+    <details class="highlight-details">
+      <summary>Full error map <span class="highlight-meta">${totalErrors} mapped issues</span></summary>
+      <div class="highlight-details-body">
+        <div class="error-map-list">${rows}</div>
+        <p class="metric-note">Use Detailed statistics for trend charts, the full transcript, and raw annotation evidence.</p>
+      </div>
+    </details>
+  `;
+}
+
+function renderHighlights(bundle) {
   highlightsRoot.innerHTML = '';
+  state.currentBundle = bundle;
+  state.exerciseRequestData.clear();
+  const analysis = bundle.currentAnalysis;
+  const previousAnalyses = bundle.previousAnalyses || [];
+  const lookbackCount = previousAnalyses.length;
+  const recurrenceMap = buildRecurrenceMap(previousAnalyses);
   const participants = sortParticipants(analysis.participants || []);
+  if (!participants.length) {
+    highlightsRoot.innerHTML = '<p>No participant data found for this session.</p>';
+    return;
+  }
+  const transcriptText = analysis.transcript || '';
+  const annotationItems = analysis.llm?.annotation_items || [];
+  const annotationByName = buildAnnotationMap(transcriptText, annotationItems, analysis.speaker_map || {});
+
   participants.forEach((participant) => {
     const card = document.createElement('div');
     card.className = 'highlight-card';
-
-    const top3 = getTopInsights(participant);
-    const items = top3.map((rec, index) => {
-      const examples = (rec.examples || [])
-        .map(
-          (example) =>
-            `<li><span class="example-error">${escapeHtml(example.error)}</span><span class="example-arrow">&rarr;</span><span class="example-fix">${escapeHtml(example.correction)}</span></li>`
-        )
-        .join('');
-      const examplesBlock = examples
-        ? `<ul class="errors compact">${examples}</ul>`
-        : '<p class="metric-note">No examples captured yet.</p>';
-      const why = rec.why || 'Recurring pattern in this session.';
-      const focus = rec.focus ? `<p class="highlight-focus">${escapeHtml(rec.focus)}</p>` : '';
-      return `
-        <div class="highlight-item">
-          <div class="highlight-rank">${index + 1}</div>
-          <div class="highlight-body">
-            <h3>${escapeHtml(rec.title)}</h3>
-            <p class="highlight-why">${escapeHtml(why)}</p>
-            ${focus}
-            ${examplesBlock}
-          </div>
-        </div>
-      `;
-    }).join('');
-    const lead = buildLead(participant, top3);
-
-    const summary = participant.llm?.annotation_grammar?.total_errors
-      ? `${participant.llm.annotation_grammar.total_errors} total errors.`
-      : 'Key focuses for next session.';
+    const itemsForSpeaker = annotationByName[participant.name] || [];
+    const candidates = buildFocusCandidates(participant, itemsForSpeaker, transcriptText, recurrenceMap, lookbackCount);
+    const slots = selectFocusSlots(candidates);
+    const lead = buildLead(participant, slots);
+    const focusHtml = slots.length
+      ? slots.map((slot) => renderFocusItem(slot, lookbackCount, analysis.date, participant.name)).join('')
+      : '<p class="metric-note">No strong focus blocks yet. Run annotations or inspect the detailed page for raw evidence.</p>';
+    const weeklyPlanHtml = renderWeeklyPlan(slots);
+    const errorMapHtml = renderErrorMap(participant, itemsForSpeaker, transcriptText, candidates, analysis.date);
+    const summary = buildSummaryMeta(participant);
 
     card.innerHTML = `
       <div class="highlight-header">
@@ -2452,7 +3714,11 @@ function renderHighlights(analysis) {
         <span class="highlight-meta">${escapeHtml(summary)}</span>
       </div>
       <p class="highlight-lead">${escapeHtml(lead)}</p>
-      ${items || '<p class="metric-note">No highlights yet. Run annotations to generate focus areas.</p>'}
+      <h3 class="highlight-section-title">This Week Focus</h3>
+      ${focusHtml}
+      ${weeklyPlanHtml}
+      ${errorMapHtml}
+      <a class="highlight-link" href="index.html?date=${encodeURIComponent(analysis.date)}">Open full analysis</a>
     `;
     highlightsRoot.appendChild(card);
   });
@@ -2460,18 +3726,46 @@ function renderHighlights(analysis) {
 
 async function handleSelection() {
   const date = sessionSelect.value;
-  const analysis = await loadAnalysis(date);
-  renderHighlights(analysis);
+  if (!date) {
+    highlightsRoot.innerHTML = '<p>No sessions yet.</p>';
+    return;
+  }
+  highlightsRoot.innerHTML = '<p class="metric-note">Loading weekly highlights...</p>';
+  const bundle = await loadContextBundle(date);
+  renderHighlights(bundle);
+}
+
+function attachHighlightsInteractions() {
+  highlightsRoot.addEventListener('click', async (event) => {
+    const trigger = event.target.closest('.exercise-trigger');
+    if (trigger) {
+      const exerciseKey = trigger.dataset.exerciseKey || '';
+      await requestHighlightExercise(exerciseKey);
+      return;
+    }
+    const option = event.target.closest('.exercise-option');
+    if (option) {
+      const exerciseKey = option.dataset.exerciseKey || '';
+      const exerciseId = option.dataset.exerciseId || '';
+      const optionIndex = Number(option.dataset.optionIndex || -1);
+      if (optionIndex >= 0) {
+        selectExerciseOption(exerciseKey, exerciseId, optionIndex);
+      }
+    }
+  });
 }
 
 async function init() {
   try {
     state.history = await loadHistory();
-    renderDropdown();
-    if (state.history.sessions.length) {
-      sessionSelect.value = state.history.sessions[state.history.sessions.length - 1].date;
+    if (!state.history.sessions.length) {
+      highlightsRoot.innerHTML = '<p>No sessions yet. Upload a transcript first.</p>';
+      return;
     }
+    renderDropdown();
+    sessionSelect.value = state.history.sessions[state.history.sessions.length - 1].date;
     sessionSelect.addEventListener('change', handleSelection);
+    attachHighlightsInteractions();
     await handleSelection();
   } catch (error) {
     highlightsRoot.innerHTML = `<p>${error.message}</p>`;
@@ -2500,6 +3794,7 @@ const llmStatus = document.getElementById('llm-status');
 const state = {
   history: null,
   analysisCache: new Map(),
+  pendingTarget: null,
 };
 
 async function loadHistory() {
@@ -2521,6 +3816,38 @@ async function loadAnalysis(date) {
   const data = await response.json();
   state.analysisCache.set(date, data);
   return data;
+}
+
+function readLocationState() {
+  const params = new URLSearchParams(window.location.search);
+  const date = (params.get('date') || '').trim();
+  const seekRaw = params.get('seek');
+  const seekEndRaw = params.get('seek_end');
+  const seek = seekRaw !== null && seekRaw !== '' && !Number.isNaN(Number(seekRaw))
+    ? Number(seekRaw)
+    : null;
+  const seekEnd = seekEndRaw !== null && seekEndRaw !== '' && !Number.isNaN(Number(seekEndRaw))
+    ? Number(seekEndRaw)
+    : null;
+  return { date, seek, seekEnd };
+}
+
+function focusTranscriptTarget(target) {
+  if (!transcriptRowsEl || !target || target.start === null || target.start === undefined) {
+    return;
+  }
+  const rows = [...transcriptRowsEl.querySelectorAll('.transcript-row[data-start]')];
+  rows.forEach((row) => row.classList.remove('transcript-target'));
+  const match = rows.find((row) => {
+    const start = Number(row.dataset.start || 0);
+    const end = Number(row.dataset.end || start);
+    return target.start >= start && target.start < end;
+  });
+  if (!match) {
+    return;
+  }
+  match.classList.add('transcript-target');
+  match.scrollIntoView({ block: 'center', behavior: 'smooth' });
 }
 
 function renderDropdown() {
@@ -2771,12 +4098,37 @@ function buildAnnotatedLine(lineText, items, lineStart) {
   return parts.join('');
 }
 
+function buildTargetedLine(lineText, lineStart, target) {
+  if (!target || target.start === null || target.start === undefined) {
+    return escapeHtml(lineText);
+  }
+  const targetStart = Number(target.start);
+  const targetEnd = target.end !== null && target.end !== undefined
+    ? Math.max(targetStart + 1, Number(target.end))
+    : targetStart + 1;
+  const lineEnd = lineStart + lineText.length;
+  if (targetEnd <= lineStart || targetStart >= lineEnd) {
+    return escapeHtml(lineText);
+  }
+  const start = Math.max(0, targetStart - lineStart);
+  const end = Math.min(lineText.length, targetEnd - lineStart);
+  if (end <= start) {
+    return escapeHtml(lineText);
+  }
+  return [
+    escapeHtml(lineText.slice(0, start)),
+    `<mark class="transcript-target-mark">${escapeHtml(lineText.slice(start, end))}</mark>`,
+    escapeHtml(lineText.slice(end)),
+  ].join('');
+}
+
 function renderTranscript(analysis) {
   if (!transcriptRowsEl) {
     return;
   }
   const transcript = analysis.transcript || '';
   const items = analysis.llm?.annotation_items || analysis.annotation_items || [];
+  const target = state.pendingTarget;
 
   if (transcriptNoteEl) {
     const meta = analysis.llm?.annotations_meta;
@@ -2802,13 +4154,15 @@ function renderTranscript(analysis) {
 
     const row = document.createElement('div');
     row.className = 'transcript-row';
+    row.dataset.start = String(lineStart);
+    row.dataset.end = String(lineEnd);
     if (!lineItems.length) {
       row.classList.add('row-empty');
     }
 
     const originalCell = document.createElement('div');
     originalCell.className = 'transcript-cell transcript-text';
-    originalCell.innerHTML = line ? escapeHtml(line) : '&nbsp;';
+    originalCell.innerHTML = line ? buildTargetedLine(line, lineStart, target) : '&nbsp;';
 
     const annotatedCell = document.createElement('div');
     annotatedCell.className = 'transcript-cell transcript-text';
@@ -2877,9 +4231,9 @@ function renderLlmStatus(analysis) {
     annotationsStatus = 'error';
   }
 
-  llmStatus.textContent = `Metrics: ${metricsStatus} • updated ${metricsAt}`;
+  llmStatus.textContent = `Metrics: ${metricsStatus} / updated ${metricsAt}`;
   if (rebuildMeta) {
-    rebuildMeta.textContent = `Annotations: ${annotationsStatus} • updated ${annotationsAt}`;
+    rebuildMeta.textContent = `Annotations: ${annotationsStatus} / updated ${annotationsAt}`;
   }
 }
 
@@ -3064,6 +4418,10 @@ async function handleSelection() {
   renderParticipants(analysis);
   renderRecommendations(analysis);
   renderTranscript(analysis);
+  if (state.pendingTarget) {
+    focusTranscriptTarget(state.pendingTarget);
+    state.pendingTarget = null;
+  }
   renderLlmStatus(analysis);
   renderRebuildMeta(analysis);
 }
@@ -3229,8 +4587,16 @@ async function init() {
   try {
     state.history = await loadHistory();
     renderDropdown();
+    const locationState = readLocationState();
+    state.pendingTarget = locationState.seek !== null
+      ? { start: locationState.seek, end: locationState.seekEnd }
+      : null;
     if (state.history.sessions.length) {
-      sessionSelect.value = state.history.sessions[state.history.sessions.length - 1].date;
+      const hasDate = locationState.date
+        && state.history.sessions.some((session) => session.date === locationState.date);
+      sessionSelect.value = hasDate
+        ? locationState.date
+        : state.history.sessions[state.history.sessions.length - 1].date;
     }
     renderChart();
     sessionSelect.addEventListener('change', handleSelection);
@@ -3259,10 +4625,45 @@ body {
   color: #0f172a;
 }
 
+body.page-highlights {
+  background:
+    radial-gradient(circle at top right, rgba(34, 197, 94, 0.14), transparent 30%),
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 28%),
+    linear-gradient(180deg, #eef4ff 0%, #eef3f7 32%, #f5f7fb 100%);
+}
+
 main {
   max-width: 1240px;
   margin: 0 auto;
   padding: 32px 20px 48px;
+}
+
+.highlights-page {
+  position: relative;
+}
+
+.highlights-page header {
+  position: relative;
+  margin-bottom: 20px;
+  padding: 24px 26px 22px;
+  border-radius: 22px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.88)),
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.1), transparent 36%);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  box-shadow:
+    0 20px 40px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  overflow: hidden;
+}
+
+.highlights-page header::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 160px;
+  height: 3px;
+  background: linear-gradient(90deg, #2563eb, #14b8a6);
 }
 
 header {
@@ -3277,6 +4678,13 @@ h1 {
 .subtitle {
   margin: 0;
   color: #475569;
+}
+
+.highlights-page .subtitle {
+  max-width: 760px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #334155;
 }
 
 .inline-link {
@@ -3429,6 +4837,17 @@ h1 {
   box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
 }
 
+.highlights-page .controls-highlights {
+  max-width: 380px;
+  border-radius: 18px;
+  border-color: rgba(147, 197, 253, 0.55);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow:
+    0 16px 32px rgba(15, 23, 42, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+}
+
 .controls-highlights label {
   font-size: 12px;
   text-transform: uppercase;
@@ -3484,14 +4903,28 @@ select {
 
 .highlight-grid {
   display: grid;
-  gap: 16px;
+  gap: 20px;
 }
 
 .highlight-card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.92));
+  border-radius: 22px;
+  padding: 22px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  box-shadow:
+    0 24px 44px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  overflow: hidden;
+}
+
+.highlight-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: linear-gradient(180deg, #2563eb, #14b8a6);
 }
 
 .highlight-header {
@@ -3499,71 +4932,568 @@ select {
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 10px;
-  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(203, 213, 225, 0.85);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .highlight-header h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: 24px;
+  letter-spacing: -0.02em;
 }
 
 .highlight-lead {
-  margin: 0 0 12px;
+  margin: 0 0 16px;
   color: #334155;
   font-size: 15px;
+  line-height: 1.65;
 }
 
 .highlight-meta {
   font-size: 12px;
-  color: #64748b;
+  color: #475569;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .highlight-item {
   display: grid;
-  grid-template-columns: 32px 1fr;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 12px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  margin-bottom: 12px;
+  grid-template-columns: minmax(0, 132px) minmax(0, 1fr);
+  gap: 18px;
+  padding: 16px;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.88));
+  border: 1px solid rgba(203, 213, 225, 0.85);
+  margin-bottom: 14px;
+  box-shadow:
+    0 10px 22px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
-.highlight-item:last-child {
-  margin-bottom: 0;
+.highlight-item.slot-fix-first {
+  background:
+    linear-gradient(180deg, rgba(255, 247, 237, 0.96), rgba(255, 251, 235, 0.92));
+  border-color: rgba(251, 146, 60, 0.45);
 }
 
-.highlight-rank {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+.highlight-item.slot-easy-win {
+  background:
+    linear-gradient(180deg, rgba(240, 253, 244, 0.96), rgba(236, 253, 245, 0.92));
+  border-color: rgba(34, 197, 94, 0.32);
+}
+
+.highlight-item.slot-watch-next {
+  background:
+    linear-gradient(180deg, rgba(239, 246, 255, 0.97), rgba(240, 249, 255, 0.92));
+  border-color: rgba(59, 130, 246, 0.34);
+}
+
+.highlight-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+  border-right: 1px solid rgba(203, 213, 225, 0.75);
+}
+
+.highlight-slot-label {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 6px 11px;
+  border-radius: 999px;
   background: #0f172a;
   color: #ffffff;
+  font-size: 11px;
   font-weight: 700;
-  display: grid;
-  place-items: center;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.slot-easy-win .highlight-slot-label {
+  background: #166534;
+}
+
+.slot-watch-next .highlight-slot-label {
+  background: #1d4ed8;
+}
+
+.highlight-slot-note,
+.highlight-slot-meta {
   font-size: 12px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.highlight-slot-meta {
+  font-weight: 600;
+  color: #1e293b;
 }
 
 .highlight-body h3 {
-  margin: 0 0 6px;
-  font-size: 16px;
+  margin: 0;
+  font-size: 20px;
+  letter-spacing: -0.02em;
 }
 
-.highlight-why {
-  margin: 0 0 8px;
-  color: #0f172a;
-  background: #ecfeff;
-  border: 1px solid #bae6fd;
-  border-radius: 10px;
-  padding: 8px 10px;
+.highlight-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
 }
 
-.highlight-focus {
-  margin: 0 0 8px;
+.highlight-item-meta {
+  font-size: 12px;
+  color: #334155;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.highlight-status-line {
+  margin: 8px 0 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.highlight-note-card {
+  margin-top: 12px;
+  padding: 4px 0 4px 14px;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  border-left: 3px solid rgba(37, 99, 235, 0.55);
+}
+
+.highlight-note-kicker {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: #475569;
+}
+
+.highlight-note-copy {
+  margin: 0;
+  color: #0f172a;
+  line-height: 1.65;
+}
+
+.highlight-focus-cue {
+  margin: 12px 0 10px;
+  color: #475569;
+  line-height: 1.65;
+}
+
+.highlight-focus-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.highlight-action-card {
+  margin-top: 14px;
+  padding: 14px 14px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(191, 219, 254, 0.65);
+  border-top: 3px solid rgba(37, 99, 235, 0.45);
+}
+
+.highlight-action-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(191, 219, 254, 0.45);
+}
+
+.highlight-action-title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1e40af;
+}
+
+.highlight-action-copy {
+  margin: 10px 0 0;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.highlight-trigger-strip {
+  margin-top: 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 8px 0 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  border-top: 1px dashed rgba(34, 197, 94, 0.28);
+}
+
+.highlight-trigger-label {
+  display: inline-block;
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #166534;
+  white-space: nowrap;
+}
+
+.highlight-trigger-copy {
+  color: #334155;
+  line-height: 1.55;
+}
+
+.highlight-section-title {
+  margin: 14px 0 10px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.error-map-list {
+  display: grid;
+  gap: 10px;
+}
+
+.highlight-plan {
+  margin: 18px 0 14px;
+  padding: 16px;
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(247, 250, 252, 0.96), rgba(239, 246, 255, 0.92));
+  border: 1px solid rgba(191, 219, 254, 0.8);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52);
+}
+
+.highlight-plan ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.highlight-plan li {
+  margin-bottom: 6px;
+  color: #334155;
+}
+
+.highlight-details {
+  display: block;
+  margin-top: 14px;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  overflow: hidden;
+}
+
+.highlight-details summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 13px 15px;
+  font-weight: 600;
+  background: rgba(248, 250, 252, 0.95);
+}
+
+.highlight-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.highlight-details summary::after {
+  content: '+';
+  float: right;
+  color: #64748b;
+}
+
+.highlight-details[open] summary::after {
+  content: '-';
+}
+
+.highlight-details-body {
+  padding: 14px 15px 15px;
+}
+
+.error-map-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #f8fafc;
+}
+
+.error-map-item.severity-high {
+  border-color: #fecaca;
+  background: #fff1f2;
+}
+
+.error-map-item.severity-medium {
+  border-color: #fde68a;
+  background: #fffbeb;
+}
+
+.error-map-item.severity-low {
+  border-color: #bfdbfe;
+  background: #eff6ff;
+}
+
+.error-map-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.error-map-row h4 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.error-map-meta {
+  display: inline-flex;
+  gap: 10px;
+  font-size: 12px;
+  color: #475569;
+  font-weight: 600;
+}
+
+.error-bar {
+  margin: 7px 0 8px;
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: #dbeafe;
+  overflow: hidden;
+}
+
+.error-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: #0284c7;
+}
+
+.error-map-item.severity-high .error-bar span {
+  background: #dc2626;
+}
+
+.error-map-item.severity-medium .error-bar span {
+  background: #d97706;
+}
+
+.error-map-item.severity-low .error-bar span {
+  background: #2563eb;
+}
+
+.error-map-examples {
+  margin-top: 0;
+}
+
+.error-context {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.highlight-examples-list {
+  margin-top: 4px;
+  border-top: 1px solid rgba(203, 213, 225, 0.65);
+}
+
+.highlight-examples-list .highlight-example-row {
+  margin: 0;
+  padding: 12px 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  border-bottom: 1px solid rgba(203, 213, 225, 0.65);
+}
+
+.highlight-examples-list .highlight-example-row:last-child {
+  border-bottom: none;
+  padding-bottom: 6px;
+}
+
+.highlight-example-row .example-error,
+.highlight-example-row .example-fix {
+  font-size: 15px;
+}
+
+.highlight-example-row .example-arrow {
+  margin: 0 8px;
+}
+
+.example-source-row {
+  margin-top: 6px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.example-source {
+  color: #0f766e;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  opacity: 0.88;
+}
+
+.example-source:hover {
+  text-decoration: underline;
+}
+
+.example-source-text {
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.5;
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.highlight-exercise-shell {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.exercise-actions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 12px;
+}
+
+.exercise-trigger {
+  padding: 7px 12px;
+  border-radius: 12px;
+  border-color: rgba(147, 197, 253, 0.9);
+  background: rgba(239, 246, 255, 0.9);
+  color: #1d4ed8;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.exercise-trigger:hover {
+  background: rgba(219, 234, 254, 0.95);
+}
+
+.highlight-exercise {
+  padding: 14px;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
+  border: 1px solid rgba(147, 197, 253, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.exercise-kicker {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0369a1;
+}
+
+.exercise-prompt {
+  margin: 0 0 4px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.exercise-question {
+  margin: 0;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.exercise-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.exercise-option {
+  justify-content: flex-start;
+  border-radius: 14px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.exercise-option.is-correct {
+  border-color: #86efac;
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.exercise-option.is-wrong {
+  border-color: #fda4af;
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.exercise-status,
+.exercise-feedback,
+.exercise-explanation {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.exercise-status {
+  color: #475569;
+}
+
+.exercise-status-error,
+.exercise-feedback.is-wrong {
+  color: #b91c1c;
+}
+
+.exercise-feedback.is-correct {
+  color: #166534;
+  font-weight: 700;
+}
+
+.exercise-explanation {
+  color: #334155;
+}
+
+.highlight-link {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 14px;
+  color: #0f766e;
+  font-weight: 700;
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(15, 118, 110, 0.18);
+}
+
+.highlight-link:hover {
+  border-bottom-color: rgba(15, 118, 110, 0.52);
 }
 
 .card h3 {
@@ -3712,6 +5642,19 @@ canvas {
   align-items: start;
 }
 
+.transcript-row.transcript-target .transcript-cell {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18);
+}
+
+.transcript-target-mark {
+  background: #fef08a;
+  color: #0f172a;
+  padding: 0 2px;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 rgba(234, 179, 8, 0.35);
+}
+
 .transcript-row.row-empty .transcript-cell {
   background: transparent;
   border-color: transparent;
@@ -3784,9 +5727,9 @@ canvas {
 .errors.compact li {
   margin-bottom: 6px;
   padding: 6px 8px;
-  border-radius: 8px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(203, 213, 225, 0.85);
 }
 
 .recommendations-list {
@@ -3925,6 +5868,32 @@ mark.grammar-error {
   padding: 0 2px;
   border-radius: 3px;
   cursor: help;
+}
+
+@media (max-width: 720px) {
+  .highlight-item {
+    grid-template-columns: 1fr;
+  }
+
+  .highlight-slot {
+    padding-right: 0;
+    padding-bottom: 10px;
+    border-right: none;
+    border-bottom: 1px solid rgba(203, 213, 225, 0.75);
+  }
+
+  .highlight-item-head,
+  .highlight-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .highlight-action-head,
+  .highlight-trigger-strip,
+  .example-source-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 """
 

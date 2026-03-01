@@ -14,6 +14,8 @@ import shutil
 def delete_session(date: str) -> bool:
     if not date:
         return False
+    if not is_valid_session_date(date):
+        return False
     session_dir = SESSIONS_DIR / date
     out_session_dir = OUT_DIR / "sessions" / date
     removed = False
@@ -38,7 +40,9 @@ from cli import (
     analyze_session,
     annotate_session,
     build_all,
+    call_openai_highlight_exercise,
     call_openai_probe,
+    load_json,
     update_history,
     write_analysis,
     write_web_assets,
@@ -54,11 +58,24 @@ DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 LINE_RE = re.compile(r"^\s*([^:]+):\s*(.+)$")
 
 
+def is_valid_session_date(raw_value: str | None) -> bool:
+    if not raw_value:
+        return False
+    value = raw_value.strip()
+    if not DATE_RE.fullmatch(value):
+        return False
+    try:
+        datetime.strptime(value, "%Y-%m-%d")
+    except ValueError:
+        return False
+    return True
+
+
 def normalize_date(raw_value: str | None) -> str:
     if not raw_value:
         return datetime.now().strftime("%Y-%m-%d")
-    if DATE_RE.match(raw_value):
-        return raw_value
+    if is_valid_session_date(raw_value):
+        return raw_value.strip()
     try:
         parsed = datetime.fromisoformat(raw_value)
         return parsed.strftime("%Y-%m-%d")
@@ -172,6 +189,54 @@ class UploadHandler(SimpleHTTPRequestHandler):
             self.wfile.write(payload)
             return
 
+        if self.path == "/api/highlight-exercise":
+            api_key = os.getenv("OPENAI_API_KEY", "")
+            if not api_key:
+                self.send_error(400, "Missing OPENAI_API_KEY.")
+                return
+            content_length = self.headers.get("Content-Length")
+            if not content_length:
+                self.send_error(400, "Missing request body.")
+                return
+            try:
+                body = self.rfile.read(int(content_length))
+                payload = json.loads(body.decode("utf-8"))
+            except Exception:
+                self.send_error(400, "Invalid JSON payload.")
+                return
+
+            participant_name = str(payload.get("participant_name") or "").strip()
+            category_code = str(payload.get("category_code") or "").strip().upper()
+            category_title = str(payload.get("category_title") or "").strip()
+            focus_text = str(payload.get("focus_text") or "").strip()
+            examples = payload.get("examples") if isinstance(payload.get("examples"), list) else []
+
+            if not participant_name or not category_code or not category_title:
+                self.send_error(400, "Missing exercise context.")
+                return
+
+            model = os.getenv("OPENAI_EXERCISE_MODEL") or os.getenv("OPENAI_MODEL") or "gpt-4o-mini"
+            exercise, error = call_openai_highlight_exercise(
+                api_key=api_key,
+                model=model,
+                participant_name=participant_name,
+                category_code=category_code,
+                category_title=category_title,
+                focus_text=focus_text,
+                examples=examples,
+            )
+            if error:
+                self.send_error(500, f"Exercise generation failed: {error}")
+                return
+
+            response_payload = json.dumps({"model": model, "exercise": exercise}).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(response_payload)))
+            self.end_headers()
+            self.wfile.write(response_payload)
+            return
+
         if self.path == "/api/delete":
             content_length = self.headers.get("Content-Length")
             if not content_length:
@@ -187,6 +252,9 @@ class UploadHandler(SimpleHTTPRequestHandler):
 
             if not date:
                 self.send_error(400, "Missing date.")
+                return
+            if not is_valid_session_date(date):
+                self.send_error(400, "Invalid date. Expected YYYY-MM-DD.")
                 return
 
             if not delete_session(date):
@@ -210,7 +278,12 @@ class UploadHandler(SimpleHTTPRequestHandler):
                 try:
                     body = self.rfile.read(int(content_length))
                     payload = json.loads(body.decode("utf-8"))
-                    date = payload.get("date")
+                    raw_date = payload.get("date")
+                    if raw_date not in (None, ""):
+                        if not is_valid_session_date(raw_date):
+                            self.send_error(400, "Invalid date. Expected YYYY-MM-DD.")
+                            return
+                        date = raw_date.strip()
                 except Exception:
                     date = None
 

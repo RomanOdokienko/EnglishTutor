@@ -17,6 +17,7 @@ const llmStatus = document.getElementById('llm-status');
 const state = {
   history: null,
   analysisCache: new Map(),
+  pendingTarget: null,
 };
 
 async function loadHistory() {
@@ -38,6 +39,38 @@ async function loadAnalysis(date) {
   const data = await response.json();
   state.analysisCache.set(date, data);
   return data;
+}
+
+function readLocationState() {
+  const params = new URLSearchParams(window.location.search);
+  const date = (params.get('date') || '').trim();
+  const seekRaw = params.get('seek');
+  const seekEndRaw = params.get('seek_end');
+  const seek = seekRaw !== null && seekRaw !== '' && !Number.isNaN(Number(seekRaw))
+    ? Number(seekRaw)
+    : null;
+  const seekEnd = seekEndRaw !== null && seekEndRaw !== '' && !Number.isNaN(Number(seekEndRaw))
+    ? Number(seekEndRaw)
+    : null;
+  return { date, seek, seekEnd };
+}
+
+function focusTranscriptTarget(target) {
+  if (!transcriptRowsEl || !target || target.start === null || target.start === undefined) {
+    return;
+  }
+  const rows = [...transcriptRowsEl.querySelectorAll('.transcript-row[data-start]')];
+  rows.forEach((row) => row.classList.remove('transcript-target'));
+  const match = rows.find((row) => {
+    const start = Number(row.dataset.start || 0);
+    const end = Number(row.dataset.end || start);
+    return target.start >= start && target.start < end;
+  });
+  if (!match) {
+    return;
+  }
+  match.classList.add('transcript-target');
+  match.scrollIntoView({ block: 'center', behavior: 'smooth' });
 }
 
 function renderDropdown() {
@@ -288,12 +321,37 @@ function buildAnnotatedLine(lineText, items, lineStart) {
   return parts.join('');
 }
 
+function buildTargetedLine(lineText, lineStart, target) {
+  if (!target || target.start === null || target.start === undefined) {
+    return escapeHtml(lineText);
+  }
+  const targetStart = Number(target.start);
+  const targetEnd = target.end !== null && target.end !== undefined
+    ? Math.max(targetStart + 1, Number(target.end))
+    : targetStart + 1;
+  const lineEnd = lineStart + lineText.length;
+  if (targetEnd <= lineStart || targetStart >= lineEnd) {
+    return escapeHtml(lineText);
+  }
+  const start = Math.max(0, targetStart - lineStart);
+  const end = Math.min(lineText.length, targetEnd - lineStart);
+  if (end <= start) {
+    return escapeHtml(lineText);
+  }
+  return [
+    escapeHtml(lineText.slice(0, start)),
+    `<mark class="transcript-target-mark">${escapeHtml(lineText.slice(start, end))}</mark>`,
+    escapeHtml(lineText.slice(end)),
+  ].join('');
+}
+
 function renderTranscript(analysis) {
   if (!transcriptRowsEl) {
     return;
   }
   const transcript = analysis.transcript || '';
   const items = analysis.llm?.annotation_items || analysis.annotation_items || [];
+  const target = state.pendingTarget;
 
   if (transcriptNoteEl) {
     const meta = analysis.llm?.annotations_meta;
@@ -319,13 +377,15 @@ function renderTranscript(analysis) {
 
     const row = document.createElement('div');
     row.className = 'transcript-row';
+    row.dataset.start = String(lineStart);
+    row.dataset.end = String(lineEnd);
     if (!lineItems.length) {
       row.classList.add('row-empty');
     }
 
     const originalCell = document.createElement('div');
     originalCell.className = 'transcript-cell transcript-text';
-    originalCell.innerHTML = line ? escapeHtml(line) : '&nbsp;';
+    originalCell.innerHTML = line ? buildTargetedLine(line, lineStart, target) : '&nbsp;';
 
     const annotatedCell = document.createElement('div');
     annotatedCell.className = 'transcript-cell transcript-text';
@@ -394,9 +454,9 @@ function renderLlmStatus(analysis) {
     annotationsStatus = 'error';
   }
 
-  llmStatus.textContent = `Metrics: ${metricsStatus} • updated ${metricsAt}`;
+  llmStatus.textContent = `Metrics: ${metricsStatus} / updated ${metricsAt}`;
   if (rebuildMeta) {
-    rebuildMeta.textContent = `Annotations: ${annotationsStatus} • updated ${annotationsAt}`;
+    rebuildMeta.textContent = `Annotations: ${annotationsStatus} / updated ${annotationsAt}`;
   }
 }
 
@@ -579,6 +639,10 @@ async function handleSelection() {
   renderParticipants(analysis);
   renderRecommendations(analysis);
   renderTranscript(analysis);
+  if (state.pendingTarget) {
+    focusTranscriptTarget(state.pendingTarget);
+    state.pendingTarget = null;
+  }
   renderLlmStatus(analysis);
   renderRebuildMeta(analysis);
 }
@@ -742,8 +806,16 @@ async function init() {
   try {
     state.history = await loadHistory();
     renderDropdown();
+    const locationState = readLocationState();
+    state.pendingTarget = locationState.seek !== null
+      ? { start: locationState.seek, end: locationState.seekEnd }
+      : null;
     if (state.history.sessions.length) {
-      sessionSelect.value = state.history.sessions[state.history.sessions.length - 1].date;
+      const hasDate = locationState.date
+        && state.history.sessions.some((session) => session.date === locationState.date);
+      sessionSelect.value = hasDate
+        ? locationState.date
+        : state.history.sessions[state.history.sessions.length - 1].date;
     }
     renderChart();
     sessionSelect.addEventListener('change', handleSelection);
