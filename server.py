@@ -161,6 +161,14 @@ def openai_config() -> tuple[bool, str | None]:
 
 
 class UploadHandler(SimpleHTTPRequestHandler):
+    def send_plain_response(self, status_code: int, body: str, content_type: str = "text/plain; charset=utf-8") -> None:
+        payload = (body or "").encode("utf-8", errors="replace")
+        self.send_response(status_code)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(payload)))
+        self.end_headers()
+        self.wfile.write(payload)
+
     def cors_origin(self) -> str:
         return (os.getenv("ENGLISH_TUTOR_CORS_ORIGIN") or "*").strip() or "*"
 
@@ -181,12 +189,7 @@ class UploadHandler(SimpleHTTPRequestHandler):
 
     def do_GET(self) -> None:
         if self.path == "/":
-            payload = b"OK"
-            self.send_response(200)
-            self.send_header("Content-Type", "text/plain; charset=utf-8")
-            self.send_header("Content-Length", str(len(payload)))
-            self.end_headers()
-            self.wfile.write(payload)
+            self.send_plain_response(200, "OK")
             return
         if self.path in ("/web", "/web/"):
             location = "/web/highlights.html"
@@ -218,17 +221,17 @@ class UploadHandler(SimpleHTTPRequestHandler):
         if self.path == "/api/highlight-exercise":
             api_key = os.getenv("OPENAI_API_KEY", "")
             if not api_key:
-                self.send_error(400, "Missing OPENAI_API_KEY.")
+                self.send_plain_response(400, "Missing OPENAI_API_KEY.")
                 return
             content_length = self.headers.get("Content-Length")
             if not content_length:
-                self.send_error(400, "Missing request body.")
+                self.send_plain_response(400, "Missing request body.")
                 return
             try:
                 body = self.rfile.read(int(content_length))
                 payload = json.loads(body.decode("utf-8"))
             except Exception:
-                self.send_error(400, "Invalid JSON payload.")
+                self.send_plain_response(400, "Invalid JSON payload.")
                 return
 
             participant_name = str(payload.get("participant_name") or "").strip()
@@ -238,7 +241,7 @@ class UploadHandler(SimpleHTTPRequestHandler):
             examples = payload.get("examples") if isinstance(payload.get("examples"), list) else []
 
             if not participant_name or not category_code or not category_title:
-                self.send_error(400, "Missing exercise context.")
+                self.send_plain_response(400, "Missing exercise context.")
                 return
 
             model = os.getenv("OPENAI_EXERCISE_MODEL") or os.getenv("OPENAI_MODEL") or "gpt-4o-mini"
@@ -252,7 +255,8 @@ class UploadHandler(SimpleHTTPRequestHandler):
                 examples=examples,
             )
             if error:
-                self.send_error(500, f"Exercise generation failed: {error}")
+                self.log_error("Exercise generation failed: %s", error)
+                self.send_plain_response(500, f"Exercise generation failed: {error}")
                 return
 
             response_payload = json.dumps({"model": model, "exercise": exercise}).encode("utf-8")
