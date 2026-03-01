@@ -14,6 +14,47 @@ const rebuildStatus = document.getElementById('rebuild-status');
 const rebuildMeta = document.getElementById('rebuild-meta');
 const llmStatus = document.getElementById('llm-status');
 
+function normalizeApiBase(rawValue) {
+  const value = String(rawValue || '').trim();
+  return value ? value.replace(/\/+$/, '') : '';
+}
+
+function getConfiguredApiBase() {
+  const params = new URLSearchParams(window.location.search);
+  const queryValue = normalizeApiBase(params.get('api_base'));
+  if (queryValue) {
+    try {
+      window.localStorage.setItem('ENGLISH_TUTOR_API_BASE_URL', queryValue);
+    } catch (error) {}
+    return queryValue;
+  }
+  const inlineValue = normalizeApiBase(window.ENGLISH_TUTOR_API_BASE_URL);
+  if (inlineValue) {
+    return inlineValue;
+  }
+  try {
+    return normalizeApiBase(window.localStorage.getItem('ENGLISH_TUTOR_API_BASE_URL'));
+  } catch (error) {
+    return '';
+  }
+}
+
+function apiUrl(path) {
+  const rawPath = String(path || '');
+  if (!rawPath) {
+    return rawPath;
+  }
+  if (/^https?:\/\//i.test(rawPath)) {
+    return rawPath;
+  }
+  const base = getConfiguredApiBase();
+  if (!base) {
+    return rawPath;
+  }
+  const normalizedPath = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+  return `${base}${normalizedPath}`;
+}
+
 const state = {
   history: null,
   analysisCache: new Map(),
@@ -656,7 +697,7 @@ function attachRebuildMetrics() {
     rebuildStatus.textContent = 'Rebuilding metrics...';
     try {
       const date = sessionSelect.value;
-      const response = await fetch('/api/rebuild-metrics', {
+      const response = await fetch(apiUrl('/api/rebuild-metrics'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ date }),
@@ -695,7 +736,7 @@ function attachRebuildAnnotations() {
     rebuildStatus.textContent = 'Rebuilding annotations...';
     try {
       const date = sessionSelect.value;
-      const response = await fetch('/api/rebuild-annotations', {
+      const response = await fetch(apiUrl('/api/rebuild-annotations'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ date }),
@@ -733,7 +774,7 @@ function attachTestModel() {
     testModelButton.disabled = true;
     rebuildStatus.textContent = 'Testing gpt-5-mini...';
     try {
-      const response = await fetch('/api/test-gpt5', {
+      const response = await fetch(apiUrl('/api/test-gpt5'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({}),
@@ -768,7 +809,7 @@ function attachDelete() {
     deleteButton.disabled = true;
     rebuildStatus.textContent = 'Deleting...';
     try {
-      const response = await fetch('/api/delete', {
+      const response = await fetch(apiUrl('/api/delete'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ date }),

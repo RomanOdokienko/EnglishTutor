@@ -1,6 +1,47 @@
 const sessionSelect = document.getElementById('highlight-session-select');
 const highlightsRoot = document.getElementById('highlights-root');
 
+function normalizeApiBase(rawValue) {
+  const value = String(rawValue || '').trim();
+  return value ? value.replace(/\/+$/, '') : '';
+}
+
+function getConfiguredApiBase() {
+  const params = new URLSearchParams(window.location.search);
+  const queryValue = normalizeApiBase(params.get('api_base'));
+  if (queryValue) {
+    try {
+      window.localStorage.setItem('ENGLISH_TUTOR_API_BASE_URL', queryValue);
+    } catch (error) {}
+    return queryValue;
+  }
+  const inlineValue = normalizeApiBase(window.ENGLISH_TUTOR_API_BASE_URL);
+  if (inlineValue) {
+    return inlineValue;
+  }
+  try {
+    return normalizeApiBase(window.localStorage.getItem('ENGLISH_TUTOR_API_BASE_URL'));
+  } catch (error) {
+    return '';
+  }
+}
+
+function apiUrl(path) {
+  const rawPath = String(path || '');
+  if (!rawPath) {
+    return rawPath;
+  }
+  if (/^https?:\/\//i.test(rawPath)) {
+    return rawPath;
+  }
+  const base = getConfiguredApiBase();
+  if (!base) {
+    return rawPath;
+  }
+  const normalizedPath = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+  return `${base}${normalizedPath}`;
+}
+
 const CATEGORY_LABEL_TO_CODE = {
   'Verb Tense': 'TENSE',
   'Verb Form': 'VERB',
@@ -1101,7 +1142,7 @@ async function requestHighlightExercise(exerciseKey) {
     renderHighlights(state.currentBundle);
   }
   try {
-    const response = await fetch('/api/highlight-exercise', {
+    const response = await fetch(apiUrl('/api/highlight-exercise'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),

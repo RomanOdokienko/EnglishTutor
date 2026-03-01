@@ -2250,6 +2250,9 @@ INDEX_HTML = """<!doctype html>
         <p class="helper" id="transcript-note">Annotations will appear after the chunked LLM analysis is implemented.</p>
       </section>
     </main>
+    <script>
+      window.ENGLISH_TUTOR_API_BASE_URL = __ENGLISH_TUTOR_API_BASE_URL__;
+    </script>
     <script src="app.js"></script>
   </body>
 </html>
@@ -2319,12 +2322,49 @@ UPLOAD_HTML = r"""<!doctype html>
       </section>
     </main>
     <script>
+      window.ENGLISH_TUTOR_API_BASE_URL = __ENGLISH_TUTOR_API_BASE_URL__;
+    </script>
+    <script>
       const form = document.getElementById('upload-form');
       const statusEl = document.getElementById('upload-status');
       const detectedEl = document.getElementById('detected-speakers');
       const speakerAPerson = document.getElementById('speaker-a-person');
       const speakerBPerson = document.getElementById('speaker-b-person');
       let detectedLabels = [];
+
+      function normalizeApiBase(rawValue) {
+        const value = String(rawValue || '').trim();
+        return value ? value.replace(/\/+$/, '') : '';
+      }
+
+      function getConfiguredApiBase() {
+        const params = new URLSearchParams(window.location.search);
+        const queryValue = normalizeApiBase(params.get('api_base'));
+        if (queryValue) {
+          try {
+            window.localStorage.setItem('ENGLISH_TUTOR_API_BASE_URL', queryValue);
+          } catch (error) {}
+          return queryValue;
+        }
+        const inlineValue = normalizeApiBase(window.ENGLISH_TUTOR_API_BASE_URL);
+        if (inlineValue) {
+          return inlineValue;
+        }
+        try {
+          return normalizeApiBase(window.localStorage.getItem('ENGLISH_TUTOR_API_BASE_URL'));
+        } catch (error) {
+          return '';
+        }
+      }
+
+      function apiUrl(path) {
+        const base = getConfiguredApiBase();
+        if (!base) {
+          return path;
+        }
+        const normalizedPath = String(path || '').startsWith('/') ? path : `/${path}`;
+        return `${base}${normalizedPath}`;
+      }
 
       async function readFileAsText(file) {
         return new Promise((resolve, reject) => {
@@ -2413,7 +2453,7 @@ UPLOAD_HTML = r"""<!doctype html>
             speaker_a_person: speakerAPersonValue,
             speaker_b_person: speakerBPersonValue,
           };
-          const response = await fetch('/api/upload', {
+          const response = await fetch(apiUrl('/api/upload'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
@@ -2458,6 +2498,9 @@ HIGHLIGHTS_HTML = r"""<!doctype html>
       </section>
       <section id="highlights-root" class="highlight-grid"></section>
     </main>
+    <script>
+      window.ENGLISH_TUTOR_API_BASE_URL = __ENGLISH_TUTOR_API_BASE_URL__;
+    </script>
     <script src="highlights.js"></script>
   </body>
 </html>
@@ -2465,6 +2508,47 @@ HIGHLIGHTS_HTML = r"""<!doctype html>
 
 HIGHLIGHTS_JS = r"""const sessionSelect = document.getElementById('highlight-session-select');
 const highlightsRoot = document.getElementById('highlights-root');
+
+function normalizeApiBase(rawValue) {
+  const value = String(rawValue || '').trim();
+  return value ? value.replace(/\/+$/, '') : '';
+}
+
+function getConfiguredApiBase() {
+  const params = new URLSearchParams(window.location.search);
+  const queryValue = normalizeApiBase(params.get('api_base'));
+  if (queryValue) {
+    try {
+      window.localStorage.setItem('ENGLISH_TUTOR_API_BASE_URL', queryValue);
+    } catch (error) {}
+    return queryValue;
+  }
+  const inlineValue = normalizeApiBase(window.ENGLISH_TUTOR_API_BASE_URL);
+  if (inlineValue) {
+    return inlineValue;
+  }
+  try {
+    return normalizeApiBase(window.localStorage.getItem('ENGLISH_TUTOR_API_BASE_URL'));
+  } catch (error) {
+    return '';
+  }
+}
+
+function apiUrl(path) {
+  const rawPath = String(path || '');
+  if (!rawPath) {
+    return rawPath;
+  }
+  if (/^https?:\/\//i.test(rawPath)) {
+    return rawPath;
+  }
+  const base = getConfiguredApiBase();
+  if (!base) {
+    return rawPath;
+  }
+  const normalizedPath = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+  return `${base}${normalizedPath}`;
+}
 
 const CATEGORY_LABEL_TO_CODE = {
   'Verb Tense': 'TENSE',
@@ -3566,7 +3650,7 @@ async function requestHighlightExercise(exerciseKey) {
     renderHighlights(state.currentBundle);
   }
   try {
-    const response = await fetch('/api/highlight-exercise', {
+    const response = await fetch(apiUrl('/api/highlight-exercise'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -3790,6 +3874,47 @@ const deleteButton = document.getElementById('delete-button');
 const rebuildStatus = document.getElementById('rebuild-status');
 const rebuildMeta = document.getElementById('rebuild-meta');
 const llmStatus = document.getElementById('llm-status');
+
+function normalizeApiBase(rawValue) {
+  const value = String(rawValue || '').trim();
+  return value ? value.replace(/\/+$/, '') : '';
+}
+
+function getConfiguredApiBase() {
+  const params = new URLSearchParams(window.location.search);
+  const queryValue = normalizeApiBase(params.get('api_base'));
+  if (queryValue) {
+    try {
+      window.localStorage.setItem('ENGLISH_TUTOR_API_BASE_URL', queryValue);
+    } catch (error) {}
+    return queryValue;
+  }
+  const inlineValue = normalizeApiBase(window.ENGLISH_TUTOR_API_BASE_URL);
+  if (inlineValue) {
+    return inlineValue;
+  }
+  try {
+    return normalizeApiBase(window.localStorage.getItem('ENGLISH_TUTOR_API_BASE_URL'));
+  } catch (error) {
+    return '';
+  }
+}
+
+function apiUrl(path) {
+  const rawPath = String(path || '');
+  if (!rawPath) {
+    return rawPath;
+  }
+  if (/^https?:\/\//i.test(rawPath)) {
+    return rawPath;
+  }
+  const base = getConfiguredApiBase();
+  if (!base) {
+    return rawPath;
+  }
+  const normalizedPath = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+  return `${base}${normalizedPath}`;
+}
 
 const state = {
   history: null,
@@ -4435,7 +4560,7 @@ function attachRebuildMetrics() {
     rebuildStatus.textContent = 'Rebuilding metrics...';
     try {
       const date = sessionSelect.value;
-      const response = await fetch('/api/rebuild-metrics', {
+      const response = await fetch(apiUrl('/api/rebuild-metrics'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ date }),
@@ -4474,7 +4599,7 @@ function attachRebuildAnnotations() {
     rebuildStatus.textContent = 'Rebuilding annotations...';
     try {
       const date = sessionSelect.value;
-      const response = await fetch('/api/rebuild-annotations', {
+      const response = await fetch(apiUrl('/api/rebuild-annotations'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ date }),
@@ -4512,7 +4637,7 @@ function attachTestModel() {
     testModelButton.disabled = true;
     rebuildStatus.textContent = 'Testing gpt-5-mini...';
     try {
-      const response = await fetch('/api/test-gpt5', {
+      const response = await fetch(apiUrl('/api/test-gpt5'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({}),
@@ -4549,7 +4674,7 @@ function attachDelete() {
     deleteButton.disabled = true;
     rebuildStatus.textContent = 'Deleting...';
     try {
-      const response = await fetch('/api/delete', {
+      const response = await fetch(apiUrl('/api/delete'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ date }),
@@ -5901,9 +6026,14 @@ mark.grammar-error {
 def write_web_assets(out_dir: Path) -> None:
     web_dir = out_dir / "web"
     web_dir.mkdir(parents=True, exist_ok=True)
-    (web_dir / "index.html").write_text(INDEX_HTML, encoding="utf-8")
-    (web_dir / "upload.html").write_text(UPLOAD_HTML, encoding="utf-8")
-    (web_dir / "highlights.html").write_text(HIGHLIGHTS_HTML, encoding="utf-8")
+    api_base = json.dumps((os.getenv("ENGLISH_TUTOR_API_BASE_URL") or "").strip().rstrip("/"))
+
+    def render_html(template: str) -> str:
+        return template.replace("__ENGLISH_TUTOR_API_BASE_URL__", api_base)
+
+    (web_dir / "index.html").write_text(render_html(INDEX_HTML), encoding="utf-8")
+    (web_dir / "upload.html").write_text(render_html(UPLOAD_HTML), encoding="utf-8")
+    (web_dir / "highlights.html").write_text(render_html(HIGHLIGHTS_HTML), encoding="utf-8")
     (web_dir / "app.js").write_text(APP_JS, encoding="utf-8")
     (web_dir / "highlights.js").write_text(HIGHLIGHTS_JS, encoding="utf-8")
     (web_dir / "styles.css").write_text(STYLES_CSS, encoding="utf-8")

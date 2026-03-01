@@ -161,6 +161,24 @@ def openai_config() -> tuple[bool, str | None]:
 
 
 class UploadHandler(SimpleHTTPRequestHandler):
+    def cors_origin(self) -> str:
+        return (os.getenv("ENGLISH_TUTOR_CORS_ORIGIN") or "*").strip() or "*"
+
+    def end_headers(self) -> None:
+        if self.path.startswith("/api/"):
+            self.send_header("Access-Control-Allow-Origin", self.cors_origin())
+            self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        super().end_headers()
+
+    def do_OPTIONS(self) -> None:
+        if self.path.startswith("/api/"):
+            self.send_response(204)
+            self.end_headers()
+            return
+        self.send_response(204)
+        self.end_headers()
+
     def do_GET(self) -> None:
         if self.path in ("/", "/web", "/web/"):
             location = "/web/highlights.html"

@@ -62,12 +62,49 @@
       </section>
     </main>
     <script>
+      window.ENGLISH_TUTOR_API_BASE_URL = "";
+    </script>
+    <script>
       const form = document.getElementById('upload-form');
       const statusEl = document.getElementById('upload-status');
       const detectedEl = document.getElementById('detected-speakers');
       const speakerAPerson = document.getElementById('speaker-a-person');
       const speakerBPerson = document.getElementById('speaker-b-person');
       let detectedLabels = [];
+
+      function normalizeApiBase(rawValue) {
+        const value = String(rawValue || '').trim();
+        return value ? value.replace(/\/+$/, '') : '';
+      }
+
+      function getConfiguredApiBase() {
+        const params = new URLSearchParams(window.location.search);
+        const queryValue = normalizeApiBase(params.get('api_base'));
+        if (queryValue) {
+          try {
+            window.localStorage.setItem('ENGLISH_TUTOR_API_BASE_URL', queryValue);
+          } catch (error) {}
+          return queryValue;
+        }
+        const inlineValue = normalizeApiBase(window.ENGLISH_TUTOR_API_BASE_URL);
+        if (inlineValue) {
+          return inlineValue;
+        }
+        try {
+          return normalizeApiBase(window.localStorage.getItem('ENGLISH_TUTOR_API_BASE_URL'));
+        } catch (error) {
+          return '';
+        }
+      }
+
+      function apiUrl(path) {
+        const base = getConfiguredApiBase();
+        if (!base) {
+          return path;
+        }
+        const normalizedPath = String(path || '').startsWith('/') ? path : `/${path}`;
+        return `${base}${normalizedPath}`;
+      }
 
       async function readFileAsText(file) {
         return new Promise((resolve, reject) => {
@@ -156,7 +193,7 @@
             speaker_a_person: speakerAPersonValue,
             speaker_b_person: speakerBPersonValue,
           };
-          const response = await fetch('/api/upload', {
+          const response = await fetch(apiUrl('/api/upload'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
