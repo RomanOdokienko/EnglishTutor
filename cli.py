@@ -2316,6 +2316,22 @@ UPLOAD_HTML = r"""<!doctype html>
             </div>
           </div>
           <button class="primary" type="submit">Upload + Analyze</button>
+          <section id="upload-progress" class="upload-progress" hidden aria-live="polite">
+            <div class="upload-progress-head">
+              <p class="upload-progress-title">Upload progress</p>
+              <p id="upload-elapsed" class="upload-progress-elapsed">0s</p>
+            </div>
+            <div class="upload-progress-track" aria-hidden="true">
+              <span id="upload-progress-fill" class="upload-progress-fill"></span>
+            </div>
+            <ol id="upload-progress-steps" class="upload-progress-steps">
+              <li data-step="0">Read transcript file</li>
+              <li data-step="1">Validate speakers and payload</li>
+              <li data-step="2">Run analysis on server</li>
+              <li data-step="3">Save session and refresh data</li>
+            </ol>
+            <p id="upload-progress-note" class="upload-progress-note">Waiting to start.</p>
+          </section>
           <p class="helper" id="upload-status">
             This runs a local upload to the analysis server.
           </p>
@@ -2331,7 +2347,16 @@ UPLOAD_HTML = r"""<!doctype html>
       const detectedEl = document.getElementById('detected-speakers');
       const speakerAPerson = document.getElementById('speaker-a-person');
       const speakerBPerson = document.getElementById('speaker-b-person');
+      const submitButton = form.querySelector('button[type="submit"]');
+      const progressEl = document.getElementById('upload-progress');
+      const progressFillEl = document.getElementById('upload-progress-fill');
+      const progressStepsEl = document.getElementById('upload-progress-steps');
+      const progressNoteEl = document.getElementById('upload-progress-note');
+      const elapsedEl = document.getElementById('upload-elapsed');
       let detectedLabels = [];
+      let uploadTickHandle = null;
+      let uploadHintHandles = [];
+      let uploadStartedAt = 0;
 
       function normalizeApiBase(rawValue) {
         const value = String(rawValue || '').trim();
@@ -2365,6 +2390,86 @@ UPLOAD_HTML = r"""<!doctype html>
         }
         const normalizedPath = String(path || '').startsWith('/') ? path : `/${path}`;
         return `${base}${normalizedPath}`;
+      }
+
+      function clearUploadTimers() {
+        if (uploadTickHandle) {
+          window.clearInterval(uploadTickHandle);
+          uploadTickHandle = null;
+        }
+        uploadHintHandles.forEach((handle) => window.clearTimeout(handle));
+        uploadHintHandles = [];
+      }
+
+      function formatElapsed(ms) {
+        const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+        if (totalSeconds < 60) {
+          return `${totalSeconds}s`;
+        }
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${minutes}m ${seconds}s`;
+      }
+
+      function setUploadProgress(stepIndex, note, state = 'active') {
+        if (!progressEl || !progressStepsEl || !progressFillEl) {
+          return;
+        }
+        progressEl.hidden = false;
+        progressEl.dataset.state = state;
+        const steps = [...progressStepsEl.querySelectorAll('li[data-step]')];
+        const safeIndex = Math.max(0, Math.min(stepIndex, steps.length - 1));
+        const fillRatio = steps.length > 1 ? (safeIndex + 1) / steps.length : 1;
+        progressFillEl.style.width = `${Math.round(fillRatio * 100)}%`;
+        steps.forEach((item, index) => {
+          item.classList.remove('is-active', 'is-complete', 'is-error');
+          if (state === 'error' && index === safeIndex) {
+            item.classList.add('is-error');
+            return;
+          }
+          if (index < safeIndex || (state === 'done' && index <= safeIndex)) {
+            item.classList.add('is-complete');
+          } else if (index === safeIndex) {
+            item.classList.add('is-active');
+          }
+        });
+        if (progressNoteEl) {
+          progressNoteEl.textContent = note || '';
+        }
+      }
+
+      function startUploadProgress() {
+        clearUploadTimers();
+        uploadStartedAt = Date.now();
+        if (elapsedEl) {
+          elapsedEl.textContent = '0s';
+        }
+        uploadTickHandle = window.setInterval(() => {
+          if (elapsedEl && uploadStartedAt) {
+            elapsedEl.textContent = formatElapsed(Date.now() - uploadStartedAt);
+          }
+        }, 1000);
+        setUploadProgress(0, 'Reading the local transcript file.');
+      }
+
+      function scheduleServerProgressHints() {
+        clearUploadTimers();
+        uploadTickHandle = window.setInterval(() => {
+          if (elapsedEl && uploadStartedAt) {
+            elapsedEl.textContent = formatElapsed(Date.now() - uploadStartedAt);
+          }
+        }, 1000);
+        uploadHintHandles = [
+          window.setTimeout(() => {
+            setUploadProgress(2, 'Server is still analyzing. This is normal for larger transcripts.');
+          }, 12000),
+          window.setTimeout(() => {
+            setUploadProgress(2, 'Still working. OpenAI analysis can take 1-3 minutes depending on transcript size.');
+          }, 30000),
+          window.setTimeout(() => {
+            setUploadProgress(2, 'Analysis is still running. If this exceeds 3-4 minutes, check Railway logs.');
+          }, 90000),
+        ];
       }
 
       async function readFileAsText(file) {
@@ -2422,10 +2527,18 @@ UPLOAD_HTML = r"""<!doctype html>
           statusEl.textContent = 'Please pick a transcript file.';
           return;
         }
-        statusEl.textContent = 'Uploading...';
+        submitButton.disabled = true;
+        submitButton.textContent = 'Uploading...';
+        statusEl.textContent = 'Preparing transcript...';
+        startUploadProgress();
         try {
           const transcript = await readFileAsText(fileInput.files[0]);
           if (!isValidTranscript(transcript)) {
+            clearUploadTimers();
+            if (elapsedEl && uploadStartedAt) {
+              elapsedEl.textContent = formatElapsed(Date.now() - uploadStartedAt);
+            }
+            setUploadProgress(0, 'The file format is invalid. Expected "Name: text" per line.', 'error');
             statusEl.textContent = 'Invalid format. Use "Name: text" per line.';
             return;
           }
@@ -2434,6 +2547,11 @@ UPLOAD_HTML = r"""<!doctype html>
             detectedLabels = detectSpeakers(transcript);
           }
           if (detectedLabels.length !== 2) {
+            clearUploadTimers();
+            if (elapsedEl && uploadStartedAt) {
+              elapsedEl.textContent = formatElapsed(Date.now() - uploadStartedAt);
+            }
+            setUploadProgress(1, 'Speaker validation failed. Exactly two speakers are required.', 'error');
             statusEl.textContent = 'Expected exactly 2 speakers in the transcript.';
             return;
           }
@@ -2441,9 +2559,16 @@ UPLOAD_HTML = r"""<!doctype html>
           const speakerAPersonValue = speakerAPerson.value;
           const speakerBPersonValue = speakerBPerson.value;
           if (speakerAPersonValue === speakerBPersonValue) {
+            clearUploadTimers();
+            if (elapsedEl && uploadStartedAt) {
+              elapsedEl.textContent = formatElapsed(Date.now() - uploadStartedAt);
+            }
+            setUploadProgress(1, 'Speaker mapping failed. Pick two different people.', 'error');
             statusEl.textContent = 'Speaker A and B persons must be different.';
             return;
           }
+          setUploadProgress(1, 'Transcript looks valid. Sending it to the server.');
+          statusEl.textContent = 'Sending transcript to the server...';
           const payload = {
             transcript,
             topic: document.getElementById('topic').value,
@@ -2454,6 +2579,9 @@ UPLOAD_HTML = r"""<!doctype html>
             speaker_a_person: speakerAPersonValue,
             speaker_b_person: speakerBPersonValue,
           };
+          setUploadProgress(2, 'Server is running metrics, OpenAI analysis, and annotations.');
+          statusEl.textContent = 'Server is analyzing the session...';
+          scheduleServerProgressHints();
           const response = await fetch(apiUrl('/api/upload'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -2463,10 +2591,25 @@ UPLOAD_HTML = r"""<!doctype html>
             const errorText = await response.text();
             throw new Error(errorText || 'Upload failed.');
           }
+          setUploadProgress(3, 'Server finished analysis. Saving session data...');
+          statusEl.textContent = 'Saving session metadata...';
           const result = await response.json();
+          clearUploadTimers();
+          if (elapsedEl && uploadStartedAt) {
+            elapsedEl.textContent = formatElapsed(Date.now() - uploadStartedAt);
+          }
+          setUploadProgress(3, `Session ${result.date} is ready. Refresh highlights or dashboard to review it.`, 'done');
           statusEl.textContent = `Uploaded session ${result.date}. Open the dashboard to review.`;
         } catch (error) {
+          clearUploadTimers();
+          if (elapsedEl && uploadStartedAt) {
+            elapsedEl.textContent = formatElapsed(Date.now() - uploadStartedAt);
+          }
+          setUploadProgress(2, error.message || 'Upload failed.', 'error');
           statusEl.textContent = error.message || 'Upload failed.';
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Upload + Analyze';
         }
       });
     </script>
@@ -5702,6 +5845,154 @@ input[type='number'] {
 
 .primary:hover {
   background: #1e293b;
+}
+
+.primary:disabled {
+  cursor: wait;
+  opacity: 0.9;
+}
+
+.upload-progress {
+  margin-top: 4px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #dbeafe;
+  background: linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
+}
+
+.upload-progress[hidden] {
+  display: none;
+}
+
+.upload-progress-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.upload-progress-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #1d4ed8;
+}
+
+.upload-progress-elapsed {
+  margin: 0;
+  font-size: 12px;
+  color: #475569;
+  font-variant-numeric: tabular-nums;
+}
+
+.upload-progress-track {
+  margin-top: 10px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(191, 219, 254, 0.6);
+  overflow: hidden;
+}
+
+.upload-progress-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #2563eb, #38bdf8);
+  transition: width 240ms ease;
+}
+
+.upload-progress-steps {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.upload-progress-steps li {
+  position: relative;
+  padding-left: 24px;
+  color: #475569;
+  font-size: 13px;
+}
+
+.upload-progress-steps li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: 2px solid #cbd5e1;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.upload-progress-steps li.is-active {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.upload-progress-steps li.is-active::before {
+  border-color: #2563eb;
+  background: #dbeafe;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.upload-progress-steps li.is-complete {
+  color: #0f766e;
+}
+
+.upload-progress-steps li.is-complete::before {
+  border-color: #14b8a6;
+  background: #14b8a6;
+}
+
+.upload-progress-steps li.is-error {
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.upload-progress-steps li.is-error::before {
+  border-color: #ef4444;
+  background: #fee2e2;
+}
+
+.upload-progress-note {
+  margin: 12px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #334155;
+}
+
+.upload-progress[data-state='done'] {
+  border-color: #bbf7d0;
+  background: linear-gradient(180deg, #f0fdf4 0%, #ecfdf5 100%);
+}
+
+.upload-progress[data-state='done'] .upload-progress-title {
+  color: #15803d;
+}
+
+.upload-progress[data-state='done'] .upload-progress-fill {
+  background: linear-gradient(90deg, #16a34a, #34d399);
+}
+
+.upload-progress[data-state='error'] {
+  border-color: #fecaca;
+  background: linear-gradient(180deg, #fff7f7 0%, #fef2f2 100%);
+}
+
+.upload-progress[data-state='error'] .upload-progress-title {
+  color: #b91c1c;
+}
+
+.upload-progress[data-state='error'] .upload-progress-fill {
+  background: linear-gradient(90deg, #ef4444, #fb7185);
 }
 
 .helper {
