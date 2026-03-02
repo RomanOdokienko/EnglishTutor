@@ -2648,7 +2648,7 @@ const state = {
 };
 
 async function loadHistory() {
-  const response = await fetch('history.json');
+  const response = await fetch(apiUrl('/history.json'));
   if (!response.ok) {
     throw new Error('Unable to load history.json');
   }
@@ -2659,7 +2659,7 @@ async function loadAnalysis(date) {
   if (state.analysisCache.has(date)) {
     return state.analysisCache.get(date);
   }
-  const response = await fetch(`sessions/${date}/analysis.json`);
+  const response = await fetch(apiUrl(`/sessions/${date}/analysis.json`));
   if (!response.ok) {
     throw new Error(`Unable to load analysis for ${date}`);
   }
@@ -3924,7 +3924,7 @@ const state = {
 };
 
 async function loadHistory() {
-  const response = await fetch('history.json');
+  const response = await fetch(apiUrl('/history.json'));
   if (!response.ok) {
     throw new Error('Unable to load history.json');
   }
@@ -3935,7 +3935,7 @@ async function loadAnalysis(date) {
   if (state.analysisCache.has(date)) {
     return state.analysisCache.get(date);
   }
-  const response = await fetch(`sessions/${date}/analysis.json`);
+  const response = await fetch(apiUrl(`/sessions/${date}/analysis.json`));
   if (!response.ok) {
     throw new Error(`Unable to load analysis for ${date}`);
   }

@@ -172,15 +172,23 @@ class UploadHandler(SimpleHTTPRequestHandler):
     def cors_origin(self) -> str:
         return (os.getenv("ENGLISH_TUTOR_CORS_ORIGIN") or "*").strip() or "*"
 
+    def should_send_cors(self) -> bool:
+        path = (self.path or "").split("?", 1)[0]
+        return (
+            path.startswith("/api/")
+            or path == "/history.json"
+            or path.startswith("/sessions/")
+        )
+
     def end_headers(self) -> None:
-        if self.path.startswith("/api/"):
+        if self.should_send_cors():
             self.send_header("Access-Control-Allow-Origin", self.cors_origin())
             self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
             self.send_header("Access-Control-Allow-Headers", "Content-Type")
         super().end_headers()
 
     def do_OPTIONS(self) -> None:
-        if self.path.startswith("/api/"):
+        if self.should_send_cors():
             self.send_response(204)
             self.end_headers()
             return
