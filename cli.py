@@ -1924,6 +1924,7 @@ def analyze_session(
 
     api_key = os.getenv("OPENAI_API_KEY", "")
     model = openai_model or os.getenv("OPENAI_MODEL") or DEFAULT_OPENAI_MODEL
+    annotation_model = os.getenv("OPENAI_ANNOTATION_MODEL") or DEFAULT_ANNOTATION_MODEL
     if not api_key:
         if existing_analysis:
             merge_existing_llm(analysis, existing_analysis)
