@@ -66,6 +66,14 @@ items are not added to a named category density. A session without annotations
 is not evidence of zero grammatical errors; it has no reliable annotation-based
 grammar measurement.
 
+Classification source note (July 2026): the annotation call enforces the v1
+category enum through the response JSON schema and the prompt spells out the
+seven definitions with examples, so new items carry a model-assigned category;
+keyword inference remains only as a fallback for legacy items. The category
+set and meanings are unchanged, so the taxonomy version stays 1, but sessions
+annotated before this change classified categories by keyword inference and
+their per-category splits may show a small step relative to newer sessions.
+
 ## Comparability rules
 
 - Compare values only when metrics and taxonomy versions match.

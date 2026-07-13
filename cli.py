@@ -565,6 +565,23 @@ CATEGORY_LABELS = {
     "COLLOC": "Collocation",
 }
 
+# Taxonomy v1 spelled out for the annotation prompt. Definitions and examples
+# pin the category boundaries so repeated runs classify the same error the
+# same way (docs/metrics-and-taxonomy.md is the canonical reference).
+ANNOTATION_TAXONOMY_PROMPT = (
+    "Classify every error with exactly one category code from this fixed taxonomy:\n"
+    "- TENSE: wrong verb tense or aspect for the timeline. Example: 'Yesterday I go there' -> 'Yesterday I went there'.\n"
+    "- VERB: wrong verb form: subject-verb agreement, infinitive vs gerund, modal, participle. Example: 'He don't know' -> 'He doesn't know'.\n"
+    "- ARTICLE: missing, extra, or wrong a/an/the. Example: 'I have car' -> 'I have a car'.\n"
+    "- PREP: wrong or missing preposition. Example: 'It depends of him' -> 'It depends on him'.\n"
+    "- ORDER: wrong word order, broken or incomplete sentence structure. Example: 'I know what should I do' -> 'I know what I should do'.\n"
+    "- WORD: wrong, non-existent, or redundant word that makes the phrase imprecise. Example: 'something like else' -> 'something else'.\n"
+    "- COLLOC: unnatural word combination, literal translation instead of the standard pairing. Example: 'make a photo' -> 'take a photo'.\n"
+    "The category MUST be exactly one of: TENSE, VERB, ARTICLE, PREP, ORDER, WORD, COLLOC. Never use any other value.\n"
+    "If several codes could apply, prefer the specific grammar code (TENSE, VERB, ARTICLE, PREP, ORDER) over WORD, "
+    "and use COLLOC only when the word combination is unnatural rather than a single word being wrong."
+)
+
 CATEGORY_KEYWORDS = {
     "TENSE": ["tense", "past", "present", "future", "aspect"],
     "VERB": ["verb form", "conjugation", "infinitive", "agreement", "modal", "verb"],
@@ -1245,6 +1262,29 @@ def call_openai_highlight_exercise(
     return exercise, None
 
 
+def locate_annotation_spans(chunk_text: str, errors: list[dict]) -> list[dict]:
+    """Derive start/end offsets for phrases the model quoted verbatim.
+
+    A per-snippet cursor advances past each match so repeated occurrences of
+    the same mistake map to distinct spans. Quotes not found verbatim in the
+    chunk are dropped.
+    """
+    located: list[dict] = []
+    cursors: dict[str, int] = {}
+    for item in errors:
+        snippet = (item.get("text") or "").strip()
+        if not snippet:
+            continue
+        pos = chunk_text.find(snippet, cursors.get(snippet, 0))
+        if pos == -1:
+            pos = chunk_text.find(snippet)
+        if pos == -1:
+            continue
+        cursors[snippet] = pos + 1
+        located.append({**item, "text": snippet, "start": pos, "end": pos + len(snippet)})
+    return located
+
+
 def call_openai_chunk_annotations(
     chunk_text: str,
     api_key: str,
@@ -1254,17 +1294,23 @@ def call_openai_chunk_annotations(
         return None, "Missing API key"
 
     system_prompt = (
-        "You are an English tutor. Identify clear grammatical errors. "
+        "You are an English tutor annotating a transcript of spoken English. "
+        "Identify clear grammatical errors. "
         "Be exhaustive: include every clear grammar error you see. "
-        "Ignore fillers, hesitations, false starts, and stylistic improvements."
+        "Ignore fillers, hesitations, false starts, punctuation, capitalization, "
+        "and purely stylistic improvements."
     )
+    # No character indices in the contract: computing them is the hardest part
+    # of the task for the model and made gpt-5-mini at low reasoning effort
+    # randomly return empty lists for whole chunks (measured July 2026:
+    # 0-26 findings on the same chunk). The model quotes the phrase verbatim
+    # and locate_annotation_spans() derives start/end deterministically.
     user_prompt = (
         "Return JSON with a list of grammar errors found in the transcript chunk. "
-        "Provide 0-based character indices into the chunk text (start inclusive, end exclusive). "
-        "Spans must be short and local (prefer 2-12 words), never multi-sentence. "
-        "Spans must cover the full erroneous phrase (at least 4 characters, include surrounding words if needed). "
-        "Include correction, a short explanation, and a category code from this list: "
-        "TENSE, VERB, ARTICLE, PREP, ORDER, WORD, COLLOC. "
+        "For each error the text field must quote the erroneous phrase EXACTLY as it appears in the chunk: "
+        "copy it verbatim, 2-12 words, never multi-sentence, at least 4 characters; include surrounding words if needed. "
+        "Include correction, a short explanation, and a category.\n"
+        f"{ANNOTATION_TAXONOMY_PROMPT}\n"
         "Exclude transcription artifacts and disfluencies: repeated starts (e.g., 'I. I'), fillers, and discourse markers like 'I mean'/'you know', "
         "unless there is a clear grammar-rule violation. "
         "Do not limit the number of errors.\n\n"
@@ -1280,8 +1326,6 @@ def call_openai_chunk_annotations(
                     "type": "object",
                     "additionalProperties": False,
                     "properties": {
-                        "start": {"type": "integer", "minimum": 0},
-                        "end": {"type": "integer", "minimum": 0},
                         "text": {"type": "string"},
                         "correction": {"type": "string"},
                         "explanation": {"type": "string"},
@@ -1290,41 +1334,39 @@ def call_openai_chunk_annotations(
                             "enum": ["TENSE", "VERB", "ARTICLE", "PREP", "ORDER", "WORD", "COLLOC"],
                         },
                     },
-                    "required": ["start", "end", "text", "correction", "explanation", "category"],
+                    "required": ["text", "correction", "explanation", "category"],
                 },
             }
         },
         "required": ["errors"],
     }
 
+    # json_schema with the category enum is enforced by the API for gpt-5
+    # models too (verified against /v1/responses with gpt-5-mini), so every
+    # item arrives with a valid taxonomy code.
+    payload = {
+        "model": model,
+        "input": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ],
+        "text": {
+            "format": {
+                "type": "json_schema",
+                "name": "chunk_annotations",
+                "schema": schema,
+                "strict": True,
+            }
+        },
+        # Dense chunks can carry 20+ errors with explanations, and for gpt-5
+        # models reasoning tokens draw from the same budget; a tight cap
+        # truncates the JSON mid-string and loses the whole chunk.
+        "max_output_tokens": 8000,
+    }
     if model.startswith("gpt-5"):
-        payload = {
-            "model": model,
-            "input": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt + "\n\nReturn ONLY valid JSON."},
-            ],
-            "reasoning": {"effort": "low"},
-            "text": {"format": {"type": "text"}},
-            "max_output_tokens": 2000,
-        }
-    else:
-        payload = {
-            "model": model,
-            "input": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
-            "text": {
-                "format": {
-                    "type": "json_schema",
-                    "name": "chunk_annotations",
-                    "schema": schema,
-                    "strict": True,
-                }
-            },
-            "max_output_tokens": 2000,
-        }
+        # gpt-5-mini rejects temperature; keep reasoning effort low so the
+        # budget stays with the answer.
+        payload["reasoning"] = {"effort": "low"}
 
     request = urllib.request.Request(
         OPENAI_ENDPOINT,
@@ -1361,9 +1403,9 @@ def call_openai_chunk_annotations(
 
     try:
         parsed = json.loads(output_text)
-        return parsed.get("errors", []), None
     except json.JSONDecodeError as error:
         return None, f"Invalid JSON: {error}"
+    return locate_annotation_spans(chunk_text, parsed.get("errors", [])), None
 
 
 def count_words_in_chunk(chunk_text: str) -> int:
@@ -1586,7 +1628,7 @@ def call_annotation_chunk_with_fallback(
     if (
         not no_fallback
         and error
-        and error.startswith("Empty response")
+        and (error.startswith("Empty response") or error.startswith("Invalid JSON"))
         and annotation_model.startswith("gpt-5")
     ):
         fallback_model = "gpt-4o"
@@ -1594,7 +1636,7 @@ def call_annotation_chunk_with_fallback(
         return errors, error, fallback_model, {
             "fallback_from": annotation_model,
             "fallback_to": fallback_model,
-            "fallback_reason": "Empty response from gpt-5",
+            "fallback_reason": "Unusable response from gpt-5",
         }
     return errors, error, annotation_model, {}
 
@@ -1724,6 +1766,7 @@ def build_chunk_annotations(
                     "text": item["text"],
                     "correction": item.get("correction", ""),
                     "explanation": item.get("explanation", ""),
+                    "category": item.get("category", ""),
                 }
             )
 
@@ -1767,8 +1810,6 @@ def annotate_session(
 
     api_key = os.getenv("OPENAI_API_KEY", "")
     model = openai_model or os.getenv("OPENAI_MODEL") or DEFAULT_OPENAI_MODEL
-    annotation_model = os.getenv("OPENAI_ANNOTATION_MODEL") or DEFAULT_ANNOTATION_MODEL
-    annotation_model = os.getenv("OPENAI_ANNOTATION_MODEL") or DEFAULT_ANNOTATION_MODEL
     annotation_model = os.getenv("OPENAI_ANNOTATION_MODEL") or DEFAULT_ANNOTATION_MODEL
     analysis.setdefault("llm", {"status": "skipped", "model": model})
     analysis["llm"]["annotations_model"] = annotation_model
@@ -1830,6 +1871,7 @@ def annotate_session(
                     "text": item["text"],
                     "correction": item.get("correction", ""),
                     "explanation": item.get("explanation", ""),
+                    "category": item.get("category", ""),
                 }
             )
         processed_chars += len(chunk_text)
