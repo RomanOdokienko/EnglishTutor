@@ -9,3 +9,4 @@ accepted, an ADR is not rewritten; a later ADR supersedes it when needed.
 | 0002 | Accepted | Use derived metrics as the canonical progress data |
 | 0003 | Accepted | Version session source material and generated artifacts in Git |
 | 0004 | Deferred | Formal data policies are not defined yet |
+| 0005 | Accepted | Focus selection is human; closure verdict is a deterministic density rule |

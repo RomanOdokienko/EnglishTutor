@@ -56,7 +56,7 @@
     return node;
   }
 
-  var state = { history: null, speakers: [] };
+  var state = { history: null, speakers: [], focus: { focuses: [] } };
   var tooltip = document.getElementById('pg-tooltip');
 
   function speakerColor(name) {
@@ -241,7 +241,26 @@
     s3.appendChild(g3);
     root.appendChild(s3);
 
-    // 4) Data table (accessibility + contrast relief)
+    // 4) Closed focuses (victories from data/focus.json)
+    var closed = (state.focus.focuses || []).filter(function (f) { return f.status === 'closed'; });
+    if (closed.length) {
+      var s4 = section('Closed focuses', 'Focus errors that were set on a session, worked on, and closed.');
+      var list = document.createElement('div'); list.className = 'pg-victories';
+      var labels = {};
+      CATEGORIES.forEach(function (pair) { labels[pair[0]] = pair[1]; });
+      closed.sort(function (a, b) { return String(b.closed_date || '').localeCompare(String(a.closed_date || '')); });
+      closed.forEach(function (f) {
+        var row = document.createElement('div'); row.className = 'pg-victory';
+        row.innerHTML = '<span class="pg-victory-mark">✓</span><b>' + (labels[f.category_code] || f.category_code) + '</b>'
+          + ' — ' + f.participant
+          + ' <span class="pg-victory-dates">set ' + shortDate(f.set_date) + ' → closed ' + shortDate(f.closed_date) + '</span>';
+        list.appendChild(row);
+      });
+      s4.appendChild(list);
+      root.appendChild(s4);
+    }
+
+    // 5) Data table (accessibility + contrast relief)
     root.appendChild(buildTable(sessions));
   }
 
@@ -289,6 +308,12 @@
     state.history = await res.json();
     state.history.sessions = (state.history.sessions || []).slice().sort(function (a, b) { return (a.date || '').localeCompare(b.date || ''); });
     state.speakers = collectSpeakers(state.history.sessions);
+    try {
+      var focusRes = await fetch(apiUrl('/api/focus'), { cache: 'no-store' });
+      state.focus = focusRes.ok ? await focusRes.json() : { focuses: [] };
+    } catch (e) {
+      state.focus = { focuses: [] };
+    }
   }
 
   function attachReanalyze() {

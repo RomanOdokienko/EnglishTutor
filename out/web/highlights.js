@@ -143,6 +143,9 @@ const state = {
   exerciseAnswerState: new Map(),
   exerciseRequestData: new Map(),
   exerciseSequence: 0,
+  focusData: { focuses: [] },
+  focusSetData: new Map(),
+  focusBusy: false,
 };
 
 async function loadHistory() {
@@ -164,6 +167,30 @@ async function loadAnalysis(date) {
   const data = await response.json();
   state.analysisCache.set(date, data);
   return data;
+}
+
+async function loadFocusData() {
+  try {
+    const response = await fetch(apiUrl('/api/focus'), { cache: 'no-store' });
+    if (!response.ok) {
+      throw new Error('unavailable');
+    }
+    state.focusData = await response.json();
+  } catch (error) {
+    state.focusData = { focuses: [] };
+  }
+}
+
+async function postFocus(payload) {
+  const response = await fetch(apiUrl('/api/focus'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) {
+    throw new Error(cleanServerErrorMessage(await response.text(), 'Focus update failed.'));
+  }
+  state.focusData = await response.json();
 }
 
 function getExerciseCacheKey(date, participantName, categoryCode) {
@@ -645,6 +672,87 @@ function buildEvidenceTrendLine(card) {
   return `${persistence} · density ${trail}`;
 }
 
+// ---- Focus of the week ----
+// Focuses are chosen by a human from the evidence cards and stored in
+// data/focus.json on the backend. The closure verdict is deterministic
+// (rule v1, see docs/adr/0005): the focus category's density in the viewed
+// session fell by 40%+ against the session where the focus was set, on a
+// sample of 120+ English words.
+const FOCUS_CLOSE_RATIO = 0.6;
+
+function activeFocusesFor(participantName) {
+  return (state.focusData?.focuses || []).filter(
+    (item) => item.participant === participantName && item.status === 'active'
+  );
+}
+
+function getGrammarSnapshot(date, participantName) {
+  const session = (state.history?.sessions || []).find((item) => item.date === date);
+  const participant = (session?.participants || []).find((item) => item.name === participantName);
+  if (!participant?.derived) {
+    return null;
+  }
+  return {
+    density: participant.derived.grammar?.by_category_density || {},
+    words: Number(participant.derived.metrics?.english_word_count || 0),
+  };
+}
+
+function buildFocusVerdict(focus, selectedDate) {
+  const baseline = getGrammarSnapshot(focus.set_date, focus.participant);
+  if (!baseline) {
+    return { text: 'Baseline session is missing from history — no verdict.', ready: false };
+  }
+  const baselineDensity = Number(baseline.density[focus.category_code] || 0);
+  if (String(selectedDate || '') <= String(focus.set_date)) {
+    return { text: `Baseline ${baselineDensity}/100w. Open a newer session for a verdict.`, ready: false };
+  }
+  const current = getGrammarSnapshot(selectedDate, focus.participant);
+  if (!current) {
+    return { text: `Baseline ${baselineDensity}/100w. No data in the viewed session.`, ready: false };
+  }
+  const currentDensity = Number(current.density[focus.category_code] || 0);
+  const trail = `${baselineDensity} → ${currentDensity}/100w`;
+  if (current.words < PERSISTENCE_MIN_WORDS) {
+    return { text: `${trail} · low sample (under ${PERSISTENCE_MIN_WORDS} words) — no verdict`, ready: false };
+  }
+  const ready = baselineDensity > 0
+    ? currentDensity <= baselineDensity * FOCUS_CLOSE_RATIO
+    : currentDensity === 0;
+  const change = baselineDensity > 0
+    ? ` (${Math.round(((currentDensity - baselineDensity) / baselineDensity) * 100)}%)`
+    : '';
+  return { text: `${trail}${change}${ready ? ' ✓ ready to close' : ''}`, ready };
+}
+
+function renderFocusBlock(participantName, selectedDate) {
+  const focuses = activeFocusesFor(participantName);
+  if (!focuses.length) {
+    return '';
+  }
+  const rows = focuses.map((focus) => {
+    const verdict = buildFocusVerdict(focus, selectedDate);
+    const label = CATEGORY_CODE_TO_LABEL[focus.category_code] || focus.category_code;
+    return `
+      <div class="focus-entry${verdict.ready ? ' is-ready' : ''}">
+        <div class="focus-entry-main">
+          <span class="focus-entry-title">${escapeHtml(label)}</span>
+          <span class="focus-entry-meta">set ${escapeHtml(formatSessionDate(focus.set_date))}</span>
+        </div>
+        <span class="focus-entry-verdict">${escapeHtml(verdict.text)}</span>
+        <span class="focus-entry-actions">
+          <button class="ghost focus-close-button" type="button" data-focus-id="${escapeHtml(focus.id)}" ${state.focusBusy ? 'disabled' : ''}>Close</button>
+          <button class="ghost focus-remove-button" type="button" data-focus-id="${escapeHtml(focus.id)}" ${state.focusBusy ? 'disabled' : ''}>Remove</button>
+        </span>
+      </div>
+    `;
+  }).join('');
+  return `
+    <h3 class="highlight-section-title">Focus of the week</h3>
+    <div class="focus-block">${rows}</div>
+  `;
+}
+
 function renderEvidenceCard(card, sessionDate, participantName) {
   const exerciseKey = registerExerciseContext(sessionDate, participantName, {
     code: card.code,
@@ -662,12 +770,23 @@ function renderEvidenceCard(card, sessionDate, participantName) {
         </li>
       `).join('')}</ul>`
     : '<p class="metric-note">No clean examples passed the quality filters; see the annotated transcript below for raw evidence.</p>';
+  const focusKey = `${participantName}::${card.code}`;
+  state.focusSetData.set(focusKey, {
+    participant: participantName,
+    category_code: card.code,
+    examples: card.examples.map((example) => ({ error: example.error, correction: example.correction })),
+  });
+  const inFocus = activeFocusesFor(participantName).some((item) => item.category_code === card.code);
+  const focusControl = inFocus
+    ? '<span class="focus-chip">In focus</span>'
+    : `<button class="ghost focus-set-button" type="button" data-focus-key="${escapeHtml(focusKey)}" ${state.focusBusy ? 'disabled' : ''}>Add to focus</button>`;
   return `
     <section class="highlight-item evidence-card">
       <div class="highlight-body">
         <div class="highlight-item-head">
           <h3>${escapeHtml(card.title)}</h3>
           <span class="highlight-item-meta">${escapeHtml(buildEvidenceMeta(card))}</span>
+          ${focusControl}
         </div>
         <p class="highlight-status-line">${escapeHtml(buildEvidenceTrendLine(card))}</p>
         ${examplesHtml}
@@ -891,6 +1010,7 @@ function renderHighlights(bundle) {
         <span class="highlight-meta">${escapeHtml(buildSummaryMeta(participant))}</span>
       </div>
       ${lowSample ? '<p class="metric-note">Low sample (under 30 English words) — treat these numbers as anecdotal.</p>' : ''}
+      ${renderFocusBlock(participant.name, analysis.date)}
       <h3 class="highlight-section-title">Error evidence</h3>
       ${cardsHtml}
     `;
@@ -1117,6 +1237,27 @@ async function handleSelection() {
   renderSessionTranscript(bundle.currentAnalysis);
 }
 
+async function runFocusAction(payload, confirmText) {
+  if (state.focusBusy) {
+    return;
+  }
+  if (confirmText && !window.confirm(confirmText)) {
+    return;
+  }
+  state.focusBusy = true;
+  try {
+    await postFocus(payload);
+    setSessionStatus('');
+  } catch (error) {
+    setSessionStatus(error.message || 'Focus update failed.');
+  } finally {
+    state.focusBusy = false;
+    if (state.currentBundle) {
+      renderHighlights(state.currentBundle);
+    }
+  }
+}
+
 function attachHighlightsInteractions() {
   highlightsRoot.addEventListener('click', async (event) => {
     const trigger = event.target.closest('.exercise-trigger');
@@ -1133,13 +1274,34 @@ function attachHighlightsInteractions() {
       if (optionIndex >= 0) {
         selectExerciseOption(exerciseKey, exerciseId, optionIndex);
       }
+      return;
+    }
+    const setButton = event.target.closest('.focus-set-button');
+    if (setButton) {
+      const request = state.focusSetData.get(setButton.dataset.focusKey || '');
+      if (request) {
+        await runFocusAction({ action: 'set', session_date: sessionSelect.value, ...request });
+      }
+      return;
+    }
+    const closeButton = event.target.closest('.focus-close-button');
+    if (closeButton) {
+      await runFocusAction({ action: 'close', id: closeButton.dataset.focusId || '' });
+      return;
+    }
+    const removeButton = event.target.closest('.focus-remove-button');
+    if (removeButton) {
+      await runFocusAction(
+        { action: 'remove', id: removeButton.dataset.focusId || '' },
+        'Remove this focus without closing it? Use Close if it is actually done.'
+      );
     }
   });
 }
 
 async function init() {
   try {
-    state.history = await loadHistory();
+    [state.history] = await Promise.all([loadHistory(), loadFocusData()]);
     if (!state.history.sessions.length) {
       highlightsRoot.innerHTML = '<p>No sessions yet. Upload a transcript first.</p>';
       return;

@@ -58,6 +58,9 @@ from cli import (
 
 
 REGISTRY_PATH = DATA_DIR / "people.json"
+FOCUS_PATH = DATA_DIR / "focus.json"
+FOCUS_CATEGORY_CODES = {"TENSE", "VERB", "ARTICLE", "PREP", "ORDER", "WORD", "COLLOC"}
+FOCUS_ACTIVE_LIMIT = 3
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 LINE_RE = re.compile(r"^\s*([^:]+):\s*(.+)$")
 
@@ -164,6 +167,18 @@ def openai_config() -> tuple[bool, str | None]:
     return bool(api_key), model
 
 
+def load_focus_data() -> dict:
+    data = load_json(FOCUS_PATH, {"focuses": []})
+    if not isinstance(data.get("focuses"), list):
+        data = {"focuses": []}
+    return data
+
+
+def save_focus_data(data: dict) -> None:
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    FOCUS_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
 class UploadHandler(SimpleHTTPRequestHandler):
     def send_plain_response(self, status_code: int, body: str, content_type: str = "text/plain; charset=utf-8") -> None:
         payload = (body or "").encode("utf-8", errors="replace")
@@ -199,9 +214,20 @@ class UploadHandler(SimpleHTTPRequestHandler):
         self.send_response(204)
         self.end_headers()
 
+    def send_json_response(self, payload: dict, status_code: int = 200) -> None:
+        body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+        self.send_response(status_code)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
     def do_GET(self) -> None:
         if self.path == "/":
             self.send_plain_response(200, "OK")
+            return
+        if urlparse(self.path).path == "/api/focus":
+            self.send_json_response(load_focus_data())
             return
         if self.path in ("/web", "/web/"):
             location = "/web/highlights.html"
@@ -314,8 +340,87 @@ class UploadHandler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(payload)
 
+    def handle_focus(self) -> None:
+        content_length = self.headers.get("Content-Length")
+        try:
+            body = self.rfile.read(int(content_length or "0"))
+            payload = json.loads(body.decode("utf-8"))
+        except (ValueError, UnicodeDecodeError, json.JSONDecodeError):
+            self.send_plain_response(400, "Expected JSON payload.")
+            return
+
+        action = str(payload.get("action") or "").strip().lower()
+        data = load_focus_data()
+        focuses = data["focuses"]
+
+        if action == "set":
+            participant = str(payload.get("participant") or "").strip()
+            category = str(payload.get("category_code") or "").strip().upper()
+            session_date = str(payload.get("session_date") or "").strip()
+            if not participant or category not in FOCUS_CATEGORY_CODES or not is_valid_session_date(session_date):
+                self.send_plain_response(400, "Need participant, a valid category_code and session_date.")
+                return
+            active = [
+                item for item in focuses
+                if item.get("participant") == participant and item.get("status") == "active"
+            ]
+            if any(item.get("category_code") == category for item in active):
+                self.send_plain_response(409, "This category is already an active focus.")
+                return
+            if len(active) >= FOCUS_ACTIVE_LIMIT:
+                self.send_plain_response(409, f"Limit is {FOCUS_ACTIVE_LIMIT} active focuses per participant - close one first.")
+                return
+            raw_examples = payload.get("examples") if isinstance(payload.get("examples"), list) else []
+            examples = []
+            for item in raw_examples[:3]:
+                if not isinstance(item, dict):
+                    continue
+                error = str(item.get("error") or "").strip()
+                correction = str(item.get("correction") or "").strip()
+                if error and correction:
+                    examples.append({"error": error, "correction": correction})
+            base_id = f"{participant.lower()}-{category.lower()}-{session_date}"
+            focus_id = base_id
+            suffix = 2
+            while any(item.get("id") == focus_id for item in focuses):
+                focus_id = f"{base_id}-{suffix}"
+                suffix += 1
+            focuses.append(
+                {
+                    "id": focus_id,
+                    "participant": participant,
+                    "category_code": category,
+                    "note": str(payload.get("note") or "").strip(),
+                    "examples": examples,
+                    "status": "active",
+                    "set_date": session_date,
+                    "closed_date": None,
+                }
+            )
+        elif action in ("close", "remove"):
+            focus_id = str(payload.get("id") or "").strip()
+            entry = next((item for item in focuses if item.get("id") == focus_id), None)
+            if entry is None:
+                self.send_plain_response(404, "Focus not found.")
+                return
+            if action == "remove":
+                focuses.remove(entry)
+            else:
+                entry["status"] = "closed"
+                entry["closed_date"] = datetime.now().strftime("%Y-%m-%d")
+        else:
+            self.send_plain_response(400, "Unknown action. Use set, close or remove.")
+            return
+
+        save_focus_data(data)
+        self.send_json_response(data)
+
     def do_POST(self) -> None:
         request_path = urlparse(self.path).path
+
+        if request_path == "/api/focus":
+            self.handle_focus()
+            return
 
         if request_path == "/api/upload-audio":
             self.handle_upload_audio()
