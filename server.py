@@ -566,7 +566,7 @@ class UploadHandler(SimpleHTTPRequestHandler):
                     return
                 try:
                     if self.path == "/api/rebuild-annotations":
-                        analysis = annotate_session(session_dir, OUT_DIR, openai_model=model)
+                        analysis = annotate_session(session_dir, OUT_DIR, openai_model=model, force_reannotate=True)
                     else:
                         analysis = analyze_session(
                             session_dir,
@@ -603,7 +603,7 @@ class UploadHandler(SimpleHTTPRequestHandler):
                                 continue
                             if not (session_dir / "meta.json").exists():
                                 continue
-                            analysis = annotate_session(session_dir, OUT_DIR, openai_model=model)
+                            analysis = annotate_session(session_dir, OUT_DIR, openai_model=model, force_reannotate=True)
                             now = datetime.now().strftime("%Y-%m-%d %H:%M")
                             analysis.setdefault("llm", {})
                             analysis["llm"]["annotations_updated_at"] = now

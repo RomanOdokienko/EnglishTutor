@@ -1788,6 +1788,7 @@ def annotate_session(
     session_dir: Path,
     out_dir: Path,
     openai_model: str | None = None,
+    force_reannotate: bool = False,
 ) -> dict:
     transcript_path = session_dir / "transcript.txt"
     if not transcript_path.exists():
@@ -1821,7 +1822,13 @@ def annotate_session(
 
     ordered_chunks = sorted(analysis["chunks"], key=lambda item: item["range"]["start"])
     total_chunks = len(ordered_chunks)
-    resume = os.getenv("OPENAI_ANNOTATION_RESUME", "1") in ("1", "true", "yes")
+    # Resume only recovers an interrupted run. An explicit user "Re-run
+    # annotations" (force_reannotate) must start fresh, otherwise a fully
+    # annotated session is skipped chunk-by-chunk and the stale items are kept.
+    resume = (not force_reannotate) and os.getenv("OPENAI_ANNOTATION_RESUME", "1") in ("1", "true", "yes")
+    if force_reannotate:
+        analysis["llm"].pop("annotation_items", None)
+        analysis["llm"].pop("annotations_meta", None)
     existing_meta = analysis["llm"].get("annotations_meta", {}) if resume else {}
     start_index = int(existing_meta.get("chunks_processed", 0)) if resume else 0
     existing_items = analysis["llm"].get("annotation_items", []) if resume else []
