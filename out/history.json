@@ -3,10 +3,52 @@
     {
       "date": "2026-01-19",
       "topic": "19.01",
+      "analysis_version": {
+        "metrics": 1,
+        "taxonomy": 1,
+        "annotation_model": "gpt-4o",
+        "annotations_status": "ok"
+      },
       "participants": [
         {
           "name": "Andrey",
           "role": "student",
+          "derived": {
+            "metrics": {
+              "word_count": 1305,
+              "english_word_count": 1305,
+              "russian_word_count": 0,
+              "turn_count": 50,
+              "avg_words_per_turn": 26.1,
+              "speaking_share_pct": 46.6,
+              "l1_fallback_pct": 0.0,
+              "filler_per_100w": 1.07,
+              "question_pct": 8.0,
+              "lexical_diversity_mattr": 0.696
+            },
+            "grammar": {
+              "error_count": 49,
+              "error_density_per_100w": 3.75,
+              "by_category_count": {
+                "TENSE": 5,
+                "VERB": 8,
+                "ARTICLE": 5,
+                "PREP": 1,
+                "ORDER": 4,
+                "WORD": 13,
+                "COLLOC": 0
+              },
+              "by_category_density": {
+                "TENSE": 0.38,
+                "VERB": 0.61,
+                "ARTICLE": 0.38,
+                "PREP": 0.08,
+                "ORDER": 0.31,
+                "WORD": 1.0,
+                "COLLOC": 0.0
+              }
+            }
+          },
           "fluency_score": 10.0,
           "llm_fluency_score": 6.0,
           "grammar_error_count": 12,
@@ -16,6 +58,42 @@
         {
           "name": "Roman",
           "role": "partner",
+          "derived": {
+            "metrics": {
+              "word_count": 1497,
+              "english_word_count": 1497,
+              "russian_word_count": 0,
+              "turn_count": 50,
+              "avg_words_per_turn": 29.94,
+              "speaking_share_pct": 53.4,
+              "l1_fallback_pct": 0.0,
+              "filler_per_100w": 1.0,
+              "question_pct": 22.0,
+              "lexical_diversity_mattr": 0.74
+            },
+            "grammar": {
+              "error_count": 57,
+              "error_density_per_100w": 3.81,
+              "by_category_count": {
+                "TENSE": 6,
+                "VERB": 5,
+                "ARTICLE": 5,
+                "PREP": 1,
+                "ORDER": 1,
+                "WORD": 15,
+                "COLLOC": 0
+              },
+              "by_category_density": {
+                "TENSE": 0.4,
+                "VERB": 0.33,
+                "ARTICLE": 0.33,
+                "PREP": 0.07,
+                "ORDER": 0.07,
+                "WORD": 1.0,
+                "COLLOC": 0.0
+              }
+            }
+          },
           "fluency_score": 10.0,
           "llm_fluency_score": 7.0,
           "grammar_error_count": 8,
@@ -27,10 +105,52 @@
     {
       "date": "2026-01-26",
       "topic": "26.01",
+      "analysis_version": {
+        "metrics": 1,
+        "taxonomy": 1,
+        "annotation_model": "gpt-4o",
+        "annotations_status": "ok"
+      },
       "participants": [
         {
           "name": "Roman",
           "role": "student",
+          "derived": {
+            "metrics": {
+              "word_count": 1396,
+              "english_word_count": 1396,
+              "russian_word_count": 0,
+              "turn_count": 34,
+              "avg_words_per_turn": 41.06,
+              "speaking_share_pct": 58.5,
+              "l1_fallback_pct": 0.0,
+              "filler_per_100w": 1.0,
+              "question_pct": 20.6,
+              "lexical_diversity_mattr": 0.756
+            },
+            "grammar": {
+              "error_count": 83,
+              "error_density_per_100w": 5.95,
+              "by_category_count": {
+                "TENSE": 5,
+                "VERB": 12,
+                "ARTICLE": 12,
+                "PREP": 4,
+                "ORDER": 10,
+                "WORD": 22,
+                "COLLOC": 0
+              },
+              "by_category_density": {
+                "TENSE": 0.36,
+                "VERB": 0.86,
+                "ARTICLE": 0.86,
+                "PREP": 0.29,
+                "ORDER": 0.72,
+                "WORD": 1.58,
+                "COLLOC": 0.0
+              }
+            }
+          },
           "fluency_score": 10.0,
           "llm_fluency_score": 6.5,
           "grammar_error_count": 15,
@@ -40,6 +160,42 @@
         {
           "name": "Andrey",
           "role": "partner",
+          "derived": {
+            "metrics": {
+              "word_count": 992,
+              "english_word_count": 992,
+              "russian_word_count": 0,
+              "turn_count": 33,
+              "avg_words_per_turn": 30.06,
+              "speaking_share_pct": 41.5,
+              "l1_fallback_pct": 0.0,
+              "filler_per_100w": 1.01,
+              "question_pct": 36.4,
+              "lexical_diversity_mattr": 0.713
+            },
+            "grammar": {
+              "error_count": 34,
+              "error_density_per_100w": 3.43,
+              "by_category_count": {
+                "TENSE": 0,
+                "VERB": 6,
+                "ARTICLE": 6,
+                "PREP": 2,
+                "ORDER": 3,
+                "WORD": 5,
+                "COLLOC": 0
+              },
+              "by_category_density": {
+                "TENSE": 0.0,
+                "VERB": 0.6,
+                "ARTICLE": 0.6,
+                "PREP": 0.2,
+                "ORDER": 0.3,
+                "WORD": 0.5,
+                "COLLOC": 0.0
+              }
+            }
+          },
           "fluency_score": 10.0,
           "llm_fluency_score": 7.0,
           "grammar_error_count": 10,
@@ -51,10 +207,52 @@
     {
       "date": "2026-02-02",
       "topic": "02 feb",
+      "analysis_version": {
+        "metrics": 1,
+        "taxonomy": 1,
+        "annotation_model": "gpt-4o",
+        "annotations_status": "ok"
+      },
       "participants": [
         {
           "name": "Roman",
           "role": "student",
+          "derived": {
+            "metrics": {
+              "word_count": 1701,
+              "english_word_count": 1701,
+              "russian_word_count": 0,
+              "turn_count": 46,
+              "avg_words_per_turn": 36.98,
+              "speaking_share_pct": 62.6,
+              "l1_fallback_pct": 0.0,
+              "filler_per_100w": 1.29,
+              "question_pct": 28.3,
+              "lexical_diversity_mattr": 0.77
+            },
+            "grammar": {
+              "error_count": 81,
+              "error_density_per_100w": 4.76,
+              "by_category_count": {
+                "TENSE": 7,
+                "VERB": 10,
+                "ARTICLE": 6,
+                "PREP": 8,
+                "ORDER": 6,
+                "WORD": 15,
+                "COLLOC": 0
+              },
+              "by_category_density": {
+                "TENSE": 0.41,
+                "VERB": 0.59,
+                "ARTICLE": 0.35,
+                "PREP": 0.47,
+                "ORDER": 0.35,
+                "WORD": 0.88,
+                "COLLOC": 0.0
+              }
+            }
+          },
           "fluency_score": 10.0,
           "llm_fluency_score": 7.0,
           "grammar_error_count": 12,
@@ -64,6 +262,42 @@
         {
           "name": "Andrey",
           "role": "partner",
+          "derived": {
+            "metrics": {
+              "word_count": 1017,
+              "english_word_count": 1017,
+              "russian_word_count": 0,
+              "turn_count": 45,
+              "avg_words_per_turn": 22.6,
+              "speaking_share_pct": 37.4,
+              "l1_fallback_pct": 0.0,
+              "filler_per_100w": 1.18,
+              "question_pct": 26.7,
+              "lexical_diversity_mattr": 0.732
+            },
+            "grammar": {
+              "error_count": 36,
+              "error_density_per_100w": 3.54,
+              "by_category_count": {
+                "TENSE": 1,
+                "VERB": 5,
+                "ARTICLE": 8,
+                "PREP": 2,
+                "ORDER": 5,
+                "WORD": 5,
+                "COLLOC": 0
+              },
+              "by_category_density": {
+                "TENSE": 0.1,
+                "VERB": 0.49,
+                "ARTICLE": 0.79,
+                "PREP": 0.2,
+                "ORDER": 0.49,
+                "WORD": 0.49,
+                "COLLOC": 0.0
+              }
+            }
+          },
           "fluency_score": 10.0,
           "llm_fluency_score": 7.5,
           "grammar_error_count": 8,
@@ -75,10 +309,52 @@
     {
       "date": "2026-02-09",
       "topic": "9.02",
+      "analysis_version": {
+        "metrics": 1,
+        "taxonomy": 1,
+        "annotation_model": "gpt-4o",
+        "annotations_status": "ok"
+      },
       "participants": [
         {
           "name": "Roman",
           "role": "student",
+          "derived": {
+            "metrics": {
+              "word_count": 877,
+              "english_word_count": 877,
+              "russian_word_count": 0,
+              "turn_count": 37,
+              "avg_words_per_turn": 23.7,
+              "speaking_share_pct": 39.6,
+              "l1_fallback_pct": 0.0,
+              "filler_per_100w": 1.14,
+              "question_pct": 40.5,
+              "lexical_diversity_mattr": 0.771
+            },
+            "grammar": {
+              "error_count": 34,
+              "error_density_per_100w": 3.88,
+              "by_category_count": {
+                "TENSE": 2,
+                "VERB": 6,
+                "ARTICLE": 4,
+                "PREP": 6,
+                "ORDER": 1,
+                "WORD": 9,
+                "COLLOC": 1
+              },
+              "by_category_density": {
+                "TENSE": 0.23,
+                "VERB": 0.68,
+                "ARTICLE": 0.46,
+                "PREP": 0.68,
+                "ORDER": 0.11,
+                "WORD": 1.03,
+                "COLLOC": 0.11
+              }
+            }
+          },
           "fluency_score": 10.0,
           "llm_fluency_score": 7.0,
           "grammar_error_count": 5,
@@ -88,11 +364,149 @@
         {
           "name": "Andrey",
           "role": "partner",
+          "derived": {
+            "metrics": {
+              "word_count": 1339,
+              "english_word_count": 1339,
+              "russian_word_count": 0,
+              "turn_count": 36,
+              "avg_words_per_turn": 37.19,
+              "speaking_share_pct": 60.4,
+              "l1_fallback_pct": 0.0,
+              "filler_per_100w": 0.37,
+              "question_pct": 11.1,
+              "lexical_diversity_mattr": 0.726
+            },
+            "grammar": {
+              "error_count": 42,
+              "error_density_per_100w": 3.14,
+              "by_category_count": {
+                "TENSE": 4,
+                "VERB": 3,
+                "ARTICLE": 6,
+                "PREP": 5,
+                "ORDER": 1,
+                "WORD": 12,
+                "COLLOC": 0
+              },
+              "by_category_density": {
+                "TENSE": 0.3,
+                "VERB": 0.22,
+                "ARTICLE": 0.45,
+                "PREP": 0.37,
+                "ORDER": 0.07,
+                "WORD": 0.9,
+                "COLLOC": 0.0
+              }
+            }
+          },
           "fluency_score": 10.0,
           "llm_fluency_score": 6.0,
           "grammar_error_count": 8,
           "llm_error_rate": 2.32,
           "chunked_error_rate": 3.21
+        }
+      ]
+    },
+    {
+      "date": "2026-07-13",
+      "topic": "Recorded session",
+      "analysis_version": {
+        "metrics": 1,
+        "taxonomy": 1,
+        "annotation_model": "gpt-4o-mini",
+        "annotations_status": "skipped"
+      },
+      "participants": [
+        {
+          "name": "Roman",
+          "role": "student",
+          "derived": {
+            "metrics": {
+              "word_count": 52,
+              "english_word_count": 52,
+              "russian_word_count": 0,
+              "turn_count": 3,
+              "avg_words_per_turn": 17.33,
+              "speaking_share_pct": 51.5,
+              "l1_fallback_pct": 0.0,
+              "filler_per_100w": 1.92,
+              "question_pct": 66.7,
+              "lexical_diversity_mattr": 0.78
+            },
+            "grammar": {
+              "error_count": 0,
+              "error_density_per_100w": 0.0,
+              "by_category_count": {
+                "TENSE": 0,
+                "VERB": 0,
+                "ARTICLE": 0,
+                "PREP": 0,
+                "ORDER": 0,
+                "WORD": 0,
+                "COLLOC": 0
+              },
+              "by_category_density": {
+                "TENSE": 0.0,
+                "VERB": 0.0,
+                "ARTICLE": 0.0,
+                "PREP": 0.0,
+                "ORDER": 0.0,
+                "WORD": 0.0,
+                "COLLOC": 0.0
+              }
+            }
+          },
+          "fluency_score": 10.0,
+          "llm_fluency_score": null,
+          "grammar_error_count": null,
+          "llm_error_rate": null,
+          "chunked_error_rate": null
+        },
+        {
+          "name": "Andrey",
+          "role": "partner",
+          "derived": {
+            "metrics": {
+              "word_count": 49,
+              "english_word_count": 49,
+              "russian_word_count": 0,
+              "turn_count": 3,
+              "avg_words_per_turn": 16.33,
+              "speaking_share_pct": 48.5,
+              "l1_fallback_pct": 0.0,
+              "filler_per_100w": 0.0,
+              "question_pct": 0.0,
+              "lexical_diversity_mattr": 0.837
+            },
+            "grammar": {
+              "error_count": 0,
+              "error_density_per_100w": 0.0,
+              "by_category_count": {
+                "TENSE": 0,
+                "VERB": 0,
+                "ARTICLE": 0,
+                "PREP": 0,
+                "ORDER": 0,
+                "WORD": 0,
+                "COLLOC": 0
+              },
+              "by_category_density": {
+                "TENSE": 0.0,
+                "VERB": 0.0,
+                "ARTICLE": 0.0,
+                "PREP": 0.0,
+                "ORDER": 0.0,
+                "WORD": 0.0,
+                "COLLOC": 0.0
+              }
+            }
+          },
+          "fluency_score": 10.0,
+          "llm_fluency_score": null,
+          "grammar_error_count": null,
+          "llm_error_rate": null,
+          "chunked_error_rate": null
         }
       ]
     }

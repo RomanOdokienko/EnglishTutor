@@ -246,6 +246,42 @@
             ]
           }
         ]
+      },
+      "derived": {
+        "metrics": {
+          "word_count": 877,
+          "english_word_count": 877,
+          "russian_word_count": 0,
+          "turn_count": 37,
+          "avg_words_per_turn": 23.7,
+          "speaking_share_pct": 39.6,
+          "l1_fallback_pct": 0.0,
+          "filler_per_100w": 1.14,
+          "question_pct": 40.5,
+          "lexical_diversity_mattr": 0.771
+        },
+        "grammar": {
+          "error_count": 34,
+          "error_density_per_100w": 3.88,
+          "by_category_count": {
+            "TENSE": 2,
+            "VERB": 6,
+            "ARTICLE": 4,
+            "PREP": 6,
+            "ORDER": 1,
+            "WORD": 9,
+            "COLLOC": 1
+          },
+          "by_category_density": {
+            "TENSE": 0.23,
+            "VERB": 0.68,
+            "ARTICLE": 0.46,
+            "PREP": 0.68,
+            "ORDER": 0.11,
+            "WORD": 1.03,
+            "COLLOC": 0.11
+          }
+        }
       }
     },
     {
@@ -480,6 +516,42 @@
             ]
           }
         ]
+      },
+      "derived": {
+        "metrics": {
+          "word_count": 1339,
+          "english_word_count": 1339,
+          "russian_word_count": 0,
+          "turn_count": 36,
+          "avg_words_per_turn": 37.19,
+          "speaking_share_pct": 60.4,
+          "l1_fallback_pct": 0.0,
+          "filler_per_100w": 0.37,
+          "question_pct": 11.1,
+          "lexical_diversity_mattr": 0.726
+        },
+        "grammar": {
+          "error_count": 42,
+          "error_density_per_100w": 3.14,
+          "by_category_count": {
+            "TENSE": 4,
+            "VERB": 3,
+            "ARTICLE": 6,
+            "PREP": 5,
+            "ORDER": 1,
+            "WORD": 12,
+            "COLLOC": 0
+          },
+          "by_category_density": {
+            "TENSE": 0.3,
+            "VERB": 0.22,
+            "ARTICLE": 0.45,
+            "PREP": 0.37,
+            "ORDER": 0.07,
+            "WORD": 0.9,
+            "COLLOC": 0.0
+          }
+        }
       }
     }
   ],
@@ -1869,5 +1941,11 @@
       "attempted_model": "gpt-4o"
     },
     "annotations_updated_at": "2026-02-16 15:08"
+  },
+  "analysis_version": {
+    "metrics": 1,
+    "taxonomy": 1,
+    "annotation_model": "gpt-4o",
+    "annotations_status": "ok"
   }
 }

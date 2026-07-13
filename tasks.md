@@ -1,4 +1,9 @@
-# Tasks: Local English Session Evaluator (MVP)
+# Historical MVP task log
+
+This is the completed MVP implementation log as of February 2026, not the
+current refactor roadmap. The active migration plan is
+[docs/migration/legacy-to-derived-v1.md](docs/migration/legacy-to-derived-v1.md);
+accepted decisions live in [docs/adr/](docs/adr/).
 
 ## Milestone 1: Project scaffolding
 - [x] Create base folders: `sessions/`, `out/`, `out/sessions/`, `out/web/`.
