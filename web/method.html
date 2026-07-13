@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Как это работает</title>
+    <title>How it works</title>
     <link rel="stylesheet" href="styles.css" />
     <style>
       .mt-wrap { max-width: 860px; margin: 0 auto; }
@@ -32,98 +32,98 @@
   <body data-nav="method">
     <main class="mt-wrap">
       <header>
-        <h1>Как это работает</h1>
-        <p class="subtitle">Что означает каждое число на страницах Session и Progress, и откуда оно берется. Читать примерно две минуты.</p>
+        <h1>How it works</h1>
+        <p class="subtitle">What every number on Session and Progress means, and where it comes from. Two minutes to read.</p>
         <div class="header-actions">
           <nav id="app-nav" class="app-nav"></nav>
         </div>
       </header>
 
       <div class="mt-section">
-        <h2>От звонка к числам</h2>
-        <p class="mt-sub">Четыре шага, и только один из них использует AI.</p>
+        <h2>From a call to numbers</h2>
+        <p class="mt-sub">Four steps, and only one of them uses AI.</p>
         <div class="mt-card">
           <ol class="mt-steps">
-            <li><b>Запись.</b> Звонок пишется в два отдельных аудиоканала: твой голос и голос собеседника. Поэтому система точно знает, кто что сказал, и не угадывает спикера.</li>
-            <li><b>Расшифровка.</b> AssemblyAI превращает аудио в текстовый транскрипт.</li>
-            <li><b>Разметка ошибок.</b> AI проходится по транскрипту фрагмент за фрагментом и отмечает явные грамматические ошибки: точную фразу, исправление и одну категорию из фиксированного списка ниже. Это единственный AI-шаг.</li>
-            <li><b>Подсчет.</b> Все числа на странице считаются обычной арифметикой по транскрипту и разметке: количество слов, количество ошибок, деление одного на другое. Без AI-оценок и без скорингов, придуманных моделью.</li>
+            <li><b>Record.</b> The call is recorded in two separate audio channels — your voice and your partner's. So "who said what" is exact, never guessed.</li>
+            <li><b>Transcribe.</b> AssemblyAI turns the audio into a text transcript.</li>
+            <li><b>Mark errors.</b> An AI pass reads the transcript piece by piece and marks clear grammar errors: the exact phrase, a correction, and one category from the fixed list below. This is the only AI step.</li>
+            <li><b>Count.</b> Every number you see is plain arithmetic over those marks and the transcript: counting words, counting marks, dividing one by the other. No AI opinions, no scores invented by a model.</li>
           </ol>
         </div>
       </div>
 
       <div class="mt-section">
-        <h2>Семь категорий ошибок</h2>
-        <p class="mt-sub">Каждая размеченная ошибка получает ровно одну категорию. Список фиксированный, чтобы сессии можно было сравнивать между собой.</p>
+        <h2>The seven error categories</h2>
+        <p class="mt-sub">Every marked error gets exactly one of these. The list is fixed so sessions stay comparable over time.</p>
         <div class="mt-card mt-table-wrap">
           <table class="mt-table">
-            <thead><tr><th>Категория</th><th>Что означает</th><th>Пример</th></tr></thead>
+            <thead><tr><th>Category</th><th>What it means</th><th>Example</th></tr></thead>
             <tbody>
-              <tr><td><b>Verb Tense</b></td><td>Неверное время глагола</td><td class="mt-example"><span class="example-error">Yesterday I go there</span> → <span class="example-fix">Yesterday I went there</span></td></tr>
-              <tr><td><b>Verb Form</b></td><td>Согласование, to/-ing, модальные глаголы, причастия</td><td class="mt-example"><span class="example-error">He don't know</span> → <span class="example-fix">He doesn't know</span></td></tr>
-              <tr><td><b>Articles</b></td><td>Пропущенный, лишний или неверный a/an/the</td><td class="mt-example"><span class="example-error">I have car</span> → <span class="example-fix">I have a car</span></td></tr>
-              <tr><td><b>Prepositions</b></td><td>Неверный или пропущенный предлог</td><td class="mt-example"><span class="example-error">It depends of him</span> → <span class="example-fix">It depends on him</span></td></tr>
-              <tr><td><b>Word Order</b></td><td>Неверный порядок слов или сломанная структура предложения</td><td class="mt-example"><span class="example-error">I know what should I do</span> → <span class="example-fix">I know what I should do</span></td></tr>
-              <tr><td><b>Wrong Word</b></td><td>Неверное, лишнее или несуществующее слово</td><td class="mt-example"><span class="example-error">something like else</span> → <span class="example-fix">something else</span></td></tr>
-              <tr><td><b>Collocation</b></td><td>Неестественная связка слов, калька с другого языка</td><td class="mt-example"><span class="example-error">make a photo</span> → <span class="example-fix">take a photo</span></td></tr>
+              <tr><td><b>Verb Tense</b></td><td>Wrong time form of the verb</td><td class="mt-example"><span class="example-error">Yesterday I go there</span> → <span class="example-fix">Yesterday I went there</span></td></tr>
+              <tr><td><b>Verb Form</b></td><td>Agreement, to/-ing, modals, participles</td><td class="mt-example"><span class="example-error">He don't know</span> → <span class="example-fix">He doesn't know</span></td></tr>
+              <tr><td><b>Articles</b></td><td>Missing, extra or wrong a/an/the</td><td class="mt-example"><span class="example-error">I have car</span> → <span class="example-fix">I have a car</span></td></tr>
+              <tr><td><b>Prepositions</b></td><td>Wrong or missing preposition</td><td class="mt-example"><span class="example-error">It depends of him</span> → <span class="example-fix">It depends on him</span></td></tr>
+              <tr><td><b>Word Order</b></td><td>Wrong order, broken sentence structure</td><td class="mt-example"><span class="example-error">I know what should I do</span> → <span class="example-fix">I know what I should do</span></td></tr>
+              <tr><td><b>Wrong Word</b></td><td>Wrong, extra or non-existent word</td><td class="mt-example"><span class="example-error">something like else</span> → <span class="example-fix">something else</span></td></tr>
+              <tr><td><b>Collocation</b></td><td>Unnatural word pairing, literal translation</td><td class="mt-example"><span class="example-error">make a photo</span> → <span class="example-fix">take a photo</span></td></tr>
             </tbody>
           </table>
         </div>
       </div>
 
       <div class="mt-section">
-        <h2>Как читать evidence card</h2>
-        <p class="mt-sub">Пример: "Wrong Word - 9 cases · 26% of errors · 1.03/100w · Seen in 3 of last 3 comparable sessions · density 1.34 → 1.58 → 0.88 → 1.03".</p>
+        <h2>Reading an evidence card</h2>
+        <p class="mt-sub">Example: "Wrong Word — 9 cases · 26% of errors · 1.03/100w · Seen in 3 of last 3 comparable sessions · density 1.34 → 1.58 → 0.88 → 1.03".</p>
         <div class="mt-card">
-          <p><span class="mt-term">9 cases</span> - в этой сессии у тебя было 9 размеченных ошибок этой категории.</p>
-          <p><span class="mt-term">26% of errors</span> - доля этой категории среди всех твоих размеченных ошибок в сессии.</p>
-          <p><span class="mt-term">1.03/100w</span> - плотность: <span class="mt-formula">ошибки ÷ твои английские слова × 100</span>. Это главное число. Его честно сравнивать между коротким и длинным звонком, потому что это ошибки на 100 слов, а не сырое количество ошибок.</p>
-          <p><span class="mt-term">Seen in 3 of last 3 comparable sessions</span> - категория повторяется из сессии в сессию. Сессия считается сопоставимой, если ты сказал в ней минимум 120 английских слов; категория считается замеченной, если ее плотность была минимум 0.3/100w.</p>
-          <p><span class="mt-term">density 1.34 → 1.58 → 0.88 → 1.03</span> - плотность в трех предыдущих сессиях и в текущей. Если числа снижаются, паттерн закрывается.</p>
-          <p><span class="mt-term">Порядок карточек</span> - сначала идут категории, которые стабильно повторяются, затем самые частые. Больше на порядок ничего не влияет.</p>
+          <p><span class="mt-term">9 cases</span> — you made 9 marked errors of this category in this session.</p>
+          <p><span class="mt-term">26% of errors</span> — the share among all your marked errors that session.</p>
+          <p><span class="mt-term">1.03/100w</span> — density: <span class="mt-formula">errors ÷ your English words × 100</span>. This is the main number. It is fair to compare between a short call and a long one, because it is "errors per 100 words", not a raw count.</p>
+          <p><span class="mt-term">Seen in 3 of last 3 comparable sessions</span> — the category keeps coming back. A session is <i>comparable</i> when you spoke at least 120 English words in it; the category counts as "seen" when its density there was at least 0.3/100w.</p>
+          <p><span class="mt-term">density 1.34 → 1.58 → 0.88 → 1.03</span> — the density in the three previous sessions, then in this one. Falling numbers = the pattern is closing.</p>
+          <p><span class="mt-term">Card order</span> — categories that keep repeating come first, then the most frequent ones. Nothing else affects the order.</p>
         </div>
       </div>
 
       <div class="mt-section">
-        <h2>Числа текущей сессии</h2>
-        <p class="mt-sub">Панель внизу страницы Session. Все считается напрямую из транскрипта.</p>
+        <h2>This session's numbers</h2>
+        <p class="mt-sub">The panel at the bottom of the Session page. All computed directly from the transcript.</p>
         <div class="mt-card mt-table-wrap">
           <table class="mt-table">
-            <thead><tr><th>Число</th><th>Что означает</th></tr></thead>
+            <thead><tr><th>Number</th><th>What it is</th></tr></thead>
             <tbody>
-              <tr><td><b>English words</b></td><td>Сколько слов ты сказал по-английски. Русские слова сюда не входят.</td></tr>
-              <tr><td><b>Words / turn</b></td><td>Средняя длина твоей реплики. Более длинные реплики обычно означают более развернутые ответы, а не односложные фразы.</td></tr>
-              <tr><td><b>Speaking share</b></td><td>Твоя доля всех слов в звонке, в процентах. Около 50% означает сбалансированный разговор.</td></tr>
-              <tr><td><b>Error density</b></td><td>Все твои размеченные ошибки на 100 английских слов. Пример: 34 ошибки в 877 словах → <span class="mt-formula">34 ÷ 877 × 100 = 3.88</span>.</td></tr>
-              <tr><td><b>Fillers</b></td><td>um, uh, you know, I mean, kind of и похожие филлеры на 100 слов. Ниже = чище речь.</td></tr>
-              <tr><td><b>Russian fallback</b></td><td>Процент твоих слов, сказанных по-русски: переключение на русский, когда английское слово не пришло.</td></tr>
-              <tr><td><b>Lexical diversity</b></td><td>MATTR, от 0 до 1: насколько разнообразен словарь. Выше = меньше повторяешь одни и те же слова.</td></tr>
+              <tr><td><b>English words</b></td><td>How many words you said in English. Russian words are not counted here.</td></tr>
+              <tr><td><b>Words / turn</b></td><td>Average length of your speaking turn. Longer turns usually mean more developed answers instead of one-liners.</td></tr>
+              <tr><td><b>Speaking share</b></td><td>Your part of all words in the call, in percent. Around 50% means a balanced conversation.</td></tr>
+              <tr><td><b>Error density</b></td><td>All your marked errors per 100 English words. Example: 34 errors in 877 words → <span class="mt-formula">34 ÷ 877 × 100 = 3.88</span>.</td></tr>
+              <tr><td><b>Fillers</b></td><td>um, uh, you know, I mean, kind of… per 100 words. Lower = cleaner speech.</td></tr>
+              <tr><td><b>Russian fallback</b></td><td>Percent of your words said in Russian — switching to Russian when the English word did not come.</td></tr>
+              <tr><td><b>Lexical diversity</b></td><td>MATTR, from 0 to 1: how varied your vocabulary is. Higher = you repeat the same words less.</td></tr>
             </tbody>
           </table>
         </div>
       </div>
 
       <div class="mt-section">
-        <h2>Фокус-цикл</h2>
-        <p class="mt-sub">Главный смысл инструмента: выбрать слабое место, поработать над ним, закрыть.</p>
+        <h2>The focus loop</h2>
+        <p class="mt-sub">The whole point of the tool: pick a weakness, work on it, close it.</p>
         <div class="mt-card">
           <ol class="mt-steps">
-            <li>На странице Session нажми <b>Add to focus</b> на карточке, с которой стоит поработать (до 3 фокусов одновременно). Плотность этой карточки в день выбора становится <b>baseline</b>.</li>
-            <li>На следующих звонках держи этот паттерн в голове.</li>
-            <li>Блок <b>Focus of the week</b> сравнивает baseline с сессией, которую ты смотришь: "0.86 → 0.46/100w (-47%)". Снижение на 40% или больше при минимум 120 английских словах показывает <b>✓ ready to close</b>.</li>
-            <li>Нажми <b>Close</b> - фокус переедет в <b>Closed focuses</b> на странице Progress. Этот список и есть лог побед.</li>
+            <li>On the Session page, press <b>Add to focus</b> on a card worth working on (up to 3 at a time). The card's density on that day becomes the <b>baseline</b>.</li>
+            <li>Speak on the next calls with that pattern in mind.</li>
+            <li>The <b>Focus of the week</b> block compares the baseline with the session you are viewing: "0.86 → 0.46/100w (−47%)". A drop of 40% or more, with at least 120 English words spoken, shows <b>✓ ready to close</b>.</li>
+            <li>Press <b>Close</b> — the focus moves to <b>Closed focuses</b> on the Progress page. That list is the victory log.</li>
           </ol>
-          <p class="mt-note">Система только предлагает; закрытие фокуса всегда остается твоим решением.</p>
+          <p class="mt-note">The system only proposes; closing is always your decision.</p>
         </div>
       </div>
 
       <div class="mt-section">
-        <h2>Насколько можно доверять числам</h2>
+        <h2>How much to trust the numbers</h2>
         <div class="mt-card">
-          <p><b>Точные:</b> кто что сказал, количество слов, speaking share, филлеры, Russian fallback, разнообразие словаря - это считается механически и полностью воспроизводимо.</p>
-          <p><b>Приблизительные:</b> разметка ошибок приходит от AI, поэтому два прогона одного транскрипта могут немного отличаться. Одиночная ошибка значит мало; важны повторяющиеся категории и тренды по нескольким сессиям.</p>
-          <p><b>Маленькая выборка:</b> сессии, где меньше 120 английских слов, показываются, но не используются для сравнений; на Progress они отображаются пустыми точками.</p>
-          <p class="mt-note">Сессии, размеченные до июля 2026, использовали более старый и шумный extraction. Кнопка "Re-run annotations" на сессии обновляет разметку текущей версией.</p>
+          <p><b>Exact:</b> who said what, word counts, speaking share, fillers, Russian fallback, vocabulary variety — these are computed mechanically and are fully reproducible.</p>
+          <p><b>Approximate:</b> error marks come from AI, so two runs on the same transcript can differ by a few findings. Single errors mean little; repeated categories and multi-session trends are what matters.</p>
+          <p><b>Low sample:</b> sessions with under 120 English words are shown but not used for comparisons, and Progress draws them as hollow points.</p>
+          <p class="mt-note">Sessions annotated before July 2026 used an older, noisier extraction. "Re-run annotations" on a session refreshes it with the current one.</p>
         </div>
       </div>
     </main>
