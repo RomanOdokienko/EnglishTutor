@@ -57,6 +57,7 @@
   var NAV = [
     { key: 'session',  label: 'Session',  href: 'highlights.html' },
     { key: 'progress', label: 'Progress', href: 'progress.html' },
+    { key: 'method',   label: 'How it works', href: 'method.html' },
     { key: 'record',   label: 'Record',   href: 'record.html', accent: true },
   ];
   function renderNav(activeKey) {
