@@ -133,12 +133,16 @@
   ],
   "llm": {
     "status": "skipped",
-    "model": "gpt-4o-mini"
+    "model": "gpt-4o-mini",
+    "annotations_model": "gpt-4o",
+    "annotations_status": "skipped",
+    "annotations_error": "Missing API key",
+    "annotations_updated_at": "2026-07-13 23:41"
   },
   "analysis_version": {
     "metrics": 1,
     "taxonomy": 1,
-    "annotation_model": "gpt-4o-mini",
+    "annotation_model": "gpt-4o",
     "annotations_status": "skipped"
   }
 }

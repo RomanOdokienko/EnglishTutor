@@ -584,7 +584,13 @@ class UploadHandler(SimpleHTTPRequestHandler):
                     write_analysis(OUT_DIR, analysis)
                     update_history(OUT_DIR, analysis)
                     write_web_assets(OUT_DIR)
-                    payload = json.dumps({"sessions": 1, "date": date}).encode("utf-8")
+                    result = {"sessions": 1, "date": date}
+                    if self.path == "/api/rebuild-annotations":
+                        llm = analysis.get("llm", {})
+                        result["annotations_status"] = llm.get("annotations_status")
+                        result["annotations_error"] = llm.get("annotations_error")
+                        result["annotation_items"] = len(llm.get("annotation_items", []))
+                    payload = json.dumps(result).encode("utf-8")
                 except Exception as error:
                     self.send_error(500, f"Rebuild failed: {error}")
                     return

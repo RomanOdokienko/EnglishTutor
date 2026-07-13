@@ -1166,7 +1166,22 @@ async function rerunSession(endpoint, label, button) {
     if (!response.ok) {
       throw new Error((await response.text()) || 'Failed.');
     }
-    setSessionStatus('Done.');
+    let done = 'Done.';
+    try {
+      const result = await response.json();
+      if (result && 'annotations_status' in result) {
+        if (result.annotations_status === 'ok') {
+          done = `Done — ${result.annotation_items} annotation${result.annotation_items === 1 ? '' : 's'}.`;
+        } else if (result.annotations_status === 'skipped') {
+          done = `Skipped: ${result.annotations_error || 'no OpenAI key on this server'}.`;
+        } else if (result.annotations_status === 'error') {
+          done = `Annotation error: ${result.annotations_error || 'see server logs'}.`;
+        }
+      }
+    } catch (parseError) {
+      /* keep the generic Done. */
+    }
+    setSessionStatus(done);
     state.history = await loadHistory();
     renderDropdown();
     sessionSelect.value = date;
