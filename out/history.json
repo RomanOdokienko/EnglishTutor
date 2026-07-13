@@ -414,7 +414,7 @@
       "analysis_version": {
         "metrics": 1,
         "taxonomy": 1,
-        "annotation_model": "gpt-4o-mini",
+        "annotation_model": "gpt-4o",
         "annotations_status": "skipped"
       },
       "participants": [
