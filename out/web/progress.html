@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Progress</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .pg-wrap { max-width: 1040px; margin: 0 auto; }
+      .pg-toolbar { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; margin: 6px 0 22px; }
+      .pg-legend { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+      .pg-leg-item { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #334155; }
+      .pg-swatch { width: 14px; height: 14px; border-radius: 4px; }
+      .pg-actions { display: flex; gap: 10px; align-items: center; }
+      .pg-version { font-size: 12px; color: #94a3b8; }
+      .pg-section { margin: 30px 0; }
+      .pg-section > h2 { font-size: 18px; margin: 0 0 4px; }
+      .pg-section > .pg-sub { margin: 0 0 16px; color: #64748b; font-size: 14px; }
+      .pg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+      .pg-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 16px 10px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05); }
+      .pg-card.pg-hero { grid-column: 1 / -1; }
+      .pg-card h3 { font-size: 14px; margin: 0 0 2px; color: #0f172a; }
+      .pg-hint { font-size: 12px; color: #94a3b8; margin: 0 0 8px; display: flex; align-items: center; gap: 6px; }
+      .pg-hint .arrow { font-weight: 700; }
+      .pg-good { color: #10b981; }
+      .pg-card svg { width: 100%; height: auto; display: block; overflow: visible; }
+      .pg-tooltip { position: fixed; z-index: 30; pointer-events: none; background: #0f172a; color: #f8fafc; font-size: 12px; line-height: 1.5; padding: 8px 10px; border-radius: 8px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.28); opacity: 0; transition: opacity .08s; max-width: 220px; }
+      .pg-tooltip b { font-weight: 600; }
+      .pg-tt-row { display: flex; align-items: center; gap: 6px; }
+      .pg-tt-dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
+      .pg-empty { padding: 40px 20px; text-align: center; color: #64748b; }
+      .pg-note { font-size: 12px; color: #94a3b8; margin-top: 8px; }
+      .pg-table-wrap { overflow-x: auto; margin-top: 10px; }
+      table.pg-table { border-collapse: collapse; font-size: 13px; width: 100%; }
+      table.pg-table th, table.pg-table td { border: 1px solid #e2e8f0; padding: 6px 9px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+      table.pg-table th:first-child, table.pg-table td:first-child { text-align: left; }
+      table.pg-table thead th { background: #f8fafc; }
+      details.pg-table-box { margin-top: 10px; }
+      details.pg-table-box > summary { cursor: pointer; font-size: 13px; color: #0284c7; }
+    </style>
+  </head>
+  <body data-nav="progress">
+    <main class="pg-wrap">
+      <header>
+        <h1>Progress</h1>
+        <p class="subtitle">Reliable, reproducible metrics per speaker over time. Grammar is split by category so you can see which patterns are actually closing.</p>
+        <div class="header-actions">
+          <nav id="app-nav" class="app-nav"></nav>
+        </div>
+      </header>
+
+      <div class="pg-toolbar">
+        <div class="pg-legend" id="pg-legend"></div>
+        <div class="pg-actions">
+          <span class="pg-version" id="pg-version"></span>
+          <button class="ghost" id="pg-reanalyze" type="button">Re-analyze all</button>
+        </div>
+      </div>
+
+      <div id="pg-root"></div>
+      <div class="pg-tooltip" id="pg-tooltip"></div>
+    </main>
+    <script>
+      window.ENGLISH_TUTOR_API_BASE_URL = "https://englishtutor-production-ab18.up.railway.app";
+    </script>
+    <script src="common.js"></script>
+    <script src="progress.js"></script>
+  </body>
+</html>

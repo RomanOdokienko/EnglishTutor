@@ -6,9 +6,12 @@ from datetime import datetime
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 
 
 import shutil
+
+from transcribe import transcribe_audio_file
 
 
 def delete_session(date: str) -> bool:
@@ -37,22 +40,23 @@ def delete_session(date: str) -> bool:
     return removed
 
 from cli import (
+    DATA_DIR,
+    OUT_DIR,
+    SESSIONS_DIR,
     analyze_session,
     annotate_session,
     build_all,
     call_openai_highlight_exercise,
     call_openai_probe,
+    ensure_data_root_seeded,
     load_json,
+    reanalyze_derived_all,
     update_history,
     write_analysis,
     write_web_assets,
 )
 
 
-ROOT_DIR = Path(__file__).resolve().parent
-SESSIONS_DIR = ROOT_DIR / "sessions"
-OUT_DIR = ROOT_DIR / "out"
-DATA_DIR = ROOT_DIR / "data"
 REGISTRY_PATH = DATA_DIR / "people.json"
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 LINE_RE = re.compile(r"^\s*([^:]+):\s*(.+)$")
@@ -207,7 +211,132 @@ class UploadHandler(SimpleHTTPRequestHandler):
             return
         super().do_GET()
 
+    def handle_upload_audio(self) -> None:
+        api_key = os.getenv("ASSEMBLYAI_API_KEY", "").strip()
+        if not api_key:
+            self.send_plain_response(400, "Missing ASSEMBLYAI_API_KEY.")
+            return
+
+        content_length = self.headers.get("Content-Length")
+        if not content_length:
+            self.send_plain_response(400, "Missing audio body.")
+            return
+        try:
+            body_length = int(content_length)
+        except ValueError:
+            self.send_plain_response(400, "Invalid Content-Length.")
+            return
+        if body_length <= 0:
+            self.send_plain_response(400, "Empty audio body.")
+            return
+
+        audio_bytes = self.rfile.read(body_length)
+
+        params = parse_qs(urlparse(self.path).query)
+
+        def q(name: str, default: str = "") -> str:
+            values = params.get(name)
+            return values[0].strip() if values else default
+
+        date = normalize_date(q("date"))
+        topic = q("topic") or "Recorded session"
+        recorder = q("recorder") or "Speaker A"
+        other = q("other") or "Speaker B"
+        try:
+            duration = max(1, int(q("duration", "30")))
+        except ValueError:
+            duration = 30
+        # Empty = auto-detect language (safer than forcing a language and getting no text).
+        language = q("language") or os.getenv("ASSEMBLYAI_LANGUAGE", "")
+        ext = re.sub(r"[^a-z0-9]", "", q("ext", "webm").lower()) or "webm"
+
+        # Persist the raw recording next to the session so it can be re-processed.
+        session_dir = SESSIONS_DIR / date
+        session_dir.mkdir(parents=True, exist_ok=True)
+        audio_path = session_dir / f"audio.{ext}"
+        audio_path.write_bytes(audio_bytes)
+
+        result, error = transcribe_audio_file(api_key, str(audio_path), language_code=language)
+        if error:
+            self.log_error("Transcription failed: %s", error)
+            self.send_plain_response(502, f"Transcription failed: {error}")
+            return
+
+        transcript_text = result["transcript"]
+
+        # Channel 1 (mic) = the person recording; channel 2 = the remote partner.
+        speaker_map = {"Speaker A": recorder, "Speaker B": other}
+        participants = [
+            {"name": recorder, "role": "student"},
+            {"name": other, "role": "partner"},
+        ]
+        if recorder and other and recorder != other:
+            update_registry(speaker_map)
+
+        create_session_files(
+            transcript_text,
+            topic,
+            date,
+            duration,
+            participants=participants,
+            speaker_map=speaker_map,
+        )
+
+        use_openai, model = openai_config()
+        analysis = analyze_session(
+            session_dir,
+            use_openai=use_openai,
+            openai_model=model,
+            out_dir=OUT_DIR,
+        )
+        write_analysis(OUT_DIR, analysis)
+        update_history(OUT_DIR, analysis)
+        write_web_assets(OUT_DIR)
+
+        channels = result.get("channels") or []
+        warning = None
+        if len(channels) < 2:
+            warning = (
+                "Only one audio channel was detected, so both speakers are merged. "
+                "When recording, make sure to share the whole screen with system audio."
+            )
+
+        payload = json.dumps({
+            "date": date,
+            "topic": topic,
+            "channels": channels,
+            "audio_channels": result.get("audio_channels"),
+            "warning": warning,
+        }).encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(payload)))
+        self.end_headers()
+        self.wfile.write(payload)
+
     def do_POST(self) -> None:
+        request_path = urlparse(self.path).path
+
+        if request_path == "/api/upload-audio":
+            self.handle_upload_audio()
+            return
+
+        if request_path == "/api/reanalyze":
+            # Recompute derived metrics for all sessions (no LLM) so the whole
+            # series is comparable under the current metrics/taxonomy version.
+            try:
+                count = reanalyze_derived_all(OUT_DIR)
+            except Exception as error:
+                self.send_plain_response(500, f"Re-analyze failed: {error}")
+                return
+            payload = json.dumps({"reanalyzed": count}).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(payload)))
+            self.end_headers()
+            self.wfile.write(payload)
+            return
+
         if self.path == "/api/test-gpt5":
             api_key = os.getenv("OPENAI_API_KEY", "")
             if not api_key:
@@ -499,6 +628,7 @@ def resolve_bind_settings(default_port: int = 8000) -> tuple[str, int]:
 
 
 def run_server(port: int = 8000) -> None:
+    ensure_data_root_seeded()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     write_web_assets(OUT_DIR)
     build_all(SESSIONS_DIR, OUT_DIR, use_openai=False, openai_model=None)

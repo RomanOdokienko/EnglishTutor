@@ -1,0 +1,144 @@
+{
+  "date": "2026-07-13",
+  "session": {
+    "topic": "Recorded session",
+    "duration_minutes": 30
+  },
+  "participants": [
+    {
+      "name": "Roman",
+      "role": "student",
+      "metrics": {
+        "word_count": 52,
+        "turn_count": 3,
+        "avg_words_per_turn": 17.33,
+        "unique_word_count": 41,
+        "lexical_diversity": 0.79
+      },
+      "fluency": {
+        "score": 10.0,
+        "level": "C1"
+      },
+      "derived": {
+        "metrics": {
+          "word_count": 52,
+          "english_word_count": 52,
+          "russian_word_count": 0,
+          "turn_count": 3,
+          "avg_words_per_turn": 17.33,
+          "speaking_share_pct": 51.5,
+          "l1_fallback_pct": 0.0,
+          "filler_per_100w": 1.92,
+          "question_pct": 66.7,
+          "lexical_diversity_mattr": 0.78
+        },
+        "grammar": {
+          "error_count": 0,
+          "error_density_per_100w": 0.0,
+          "by_category_count": {
+            "TENSE": 0,
+            "VERB": 0,
+            "ARTICLE": 0,
+            "PREP": 0,
+            "ORDER": 0,
+            "WORD": 0,
+            "COLLOC": 0
+          },
+          "by_category_density": {
+            "TENSE": 0.0,
+            "VERB": 0.0,
+            "ARTICLE": 0.0,
+            "PREP": 0.0,
+            "ORDER": 0.0,
+            "WORD": 0.0,
+            "COLLOC": 0.0
+          }
+        }
+      }
+    },
+    {
+      "name": "Andrey",
+      "role": "partner",
+      "metrics": {
+        "word_count": 49,
+        "turn_count": 3,
+        "avg_words_per_turn": 16.33,
+        "unique_word_count": 41,
+        "lexical_diversity": 0.84
+      },
+      "fluency": {
+        "score": 10.0,
+        "level": "C1"
+      },
+      "derived": {
+        "metrics": {
+          "word_count": 49,
+          "english_word_count": 49,
+          "russian_word_count": 0,
+          "turn_count": 3,
+          "avg_words_per_turn": 16.33,
+          "speaking_share_pct": 48.5,
+          "l1_fallback_pct": 0.0,
+          "filler_per_100w": 0.0,
+          "question_pct": 0.0,
+          "lexical_diversity_mattr": 0.837
+        },
+        "grammar": {
+          "error_count": 0,
+          "error_density_per_100w": 0.0,
+          "by_category_count": {
+            "TENSE": 0,
+            "VERB": 0,
+            "ARTICLE": 0,
+            "PREP": 0,
+            "ORDER": 0,
+            "WORD": 0,
+            "COLLOC": 0
+          },
+          "by_category_density": {
+            "TENSE": 0.0,
+            "VERB": 0.0,
+            "ARTICLE": 0.0,
+            "PREP": 0.0,
+            "ORDER": 0.0,
+            "WORD": 0.0,
+            "COLLOC": 0.0
+          }
+        }
+      }
+    }
+  ],
+  "transcript": "Speaker A: Hi, I'm Roman, and there's a test speaking meeting. There was a first phrase and I need one from one phrase. One phrase from you.\nSpeaker B: Hi there, my name is Andrei, nice to meet you. Today.\nSpeaker A: Could you tell me what is cat shouting? Why you didn't kill him already?\nSpeaker B: He's a bit nervous because of vacuum cleaner. He just saw it on the floor in guest room and he decided that it's something strange for him and he's a bit scared, that's why he's meowing.\nSpeaker A: You need to pronounce correctly. Vacuum clear. Like at the back. Really? Okay.\nSpeaker B: That's it.",
+  "speaker_map": {
+    "Speaker A": "Roman",
+    "Speaker B": "Andrey"
+  },
+  "chunks": [
+    {
+      "index": 0,
+      "block_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "text": "Speaker A: Hi, I'm Roman, and there's a test speaking meeting. There was a first phrase and I need one from one phrase. One phrase from you.\nSpeaker B: Hi there, my name is Andrei, nice to meet you. Today.\nSpeaker A: Could you tell me what is cat shouting? Why you didn't kill him already?\nSpeaker B: He's a bit nervous because of vacuum cleaner. He just saw it on the floor in guest room and he decided that it's something strange for him and he's a bit scared, that's why he's meowing.\nSpeaker A: You need to pronounce correctly. Vacuum clear. Like at the back. Really? Okay.\nSpeaker B: That's it.",
+      "range": {
+        "start": 0,
+        "end": 599
+      }
+    }
+  ],
+  "llm": {
+    "status": "skipped",
+    "model": "gpt-4o-mini"
+  },
+  "analysis_version": {
+    "metrics": 1,
+    "taxonomy": 1,
+    "annotation_model": "gpt-4o-mini",
+    "annotations_status": "skipped"
+  }
+}

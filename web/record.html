@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Record a session</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .rec-wrap { max-width: 640px; margin: 0 auto; }
+      .rec-grid { display: grid; gap: 14px; margin: 18px 0; }
+      .rec-field { display: grid; gap: 6px; }
+      .rec-field label { font-weight: 600; font-size: 14px; }
+      .rec-field input { padding: 9px 11px; border: 1px solid #cbd5e1; border-radius: 10px; font: inherit; }
+      .rec-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .rec-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+      .rec-btn { padding: 12px 22px; border-radius: 999px; border: none; font: inherit; font-weight: 650; cursor: pointer; }
+      .rec-btn.start { background: #dc2626; color: #fff; }
+      .rec-btn.stop { background: #0f172a; color: #fff; }
+      .rec-btn:disabled { opacity: .5; cursor: default; }
+      .rec-status { margin-top: 16px; padding: 14px 16px; border-radius: 12px; background: #f1f5f9; font-size: 14px; line-height: 1.5; }
+      .rec-status.warn { background: #fef3c7; }
+      .rec-status.err { background: #fee2e2; }
+      .rec-status.ok { background: #dcfce7; }
+      .rec-note { font-size: 13px; color: #475569; line-height: 1.5; }
+      .rec-dot { display: inline-block; width: 10px; height: 10px; border-radius: 999px; background: #dc2626; margin-right: 8px; animation: pulse 1s infinite; }
+      @keyframes pulse { 50% { opacity: .3; } }
+      .rec-sep { margin: 26px 0; border: none; border-top: 1px solid #e2e8f0; }
+    </style>
+  </head>
+  <body data-nav="record">
+    <main class="rec-wrap">
+      <header>
+        <h1>Record a session</h1>
+        <p class="subtitle">Records your mic and the call's system audio as two separate channels, then transcribes with speaker separation.</p>
+        <div class="header-actions">
+          <nav id="app-nav" class="app-nav"></nav>
+        </div>
+      </header>
+
+      <section class="rec-grid">
+        <div class="rec-two">
+          <div class="rec-field">
+            <label for="rec-you">You (this computer)</label>
+            <input id="rec-you" type="text" value="Roman" />
+          </div>
+          <div class="rec-field">
+            <label for="rec-partner">Partner (on the call)</label>
+            <input id="rec-partner" type="text" value="Andrey" />
+          </div>
+        </div>
+        <div class="rec-two">
+          <div class="rec-field">
+            <label for="rec-date">Date</label>
+            <input id="rec-date" type="date" />
+          </div>
+          <div class="rec-field">
+            <label for="rec-topic">Topic</label>
+            <input id="rec-topic" type="text" placeholder="Weekly call" />
+          </div>
+        </div>
+      </section>
+
+      <div class="rec-actions">
+        <button id="rec-start" class="rec-btn start" type="button">Start recording</button>
+        <button id="rec-stop" class="rec-btn stop" type="button" disabled>Stop &amp; transcribe</button>
+      </div>
+
+      <p class="rec-note" style="margin-top:12px">
+        When the screen picker appears, choose <strong>Entire screen</strong> and tick
+        <strong>Share system audio</strong> &mdash; that captures your partner's voice from the call.
+        Your microphone becomes channel 1 (you); the call audio becomes channel 2 (partner).
+      </p>
+
+      <div id="rec-status" class="rec-status" style="display:none"></div>
+
+      <hr class="rec-sep" />
+      <div class="rec-field">
+        <label for="rec-file">Or upload an existing recording (e.g. from OBS)</label>
+        <input id="rec-file" type="file" accept="audio/*,video/*" />
+        <p class="rec-note">Channel 1 = you, channel 2 = partner. Works best with a 2-channel file.</p>
+        <p class="rec-note">Have a text transcript instead? <a class="inline-link" href="upload.html">Upload text</a>.</p>
+      </div>
+    </main>
+    <script>
+      window.ENGLISH_TUTOR_API_BASE_URL = __ENGLISH_TUTOR_API_BASE_URL__;
+    </script>
+    <script src="common.js"></script>
+    <script src="record.js"></script>
+  </body>
+</html>
