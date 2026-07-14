@@ -86,6 +86,30 @@ their per-category splits may show a small step relative to newer sessions.
 - Preserve original transcript and annotations so a result can be reproduced or
   audited.
 
+## Personal comparison v1
+
+Session, This week and the Progress summary use one stored, chronological
+comparison rule. For a participant in a selected session:
+
+- use at most the three comparable sessions strictly before the selected date;
+- comparable means completed annotations, at least 120 English words, and the
+  same metrics and taxonomy versions;
+- calculate the reference average independently for overall error density and
+  every grammar category;
+- because only earlier dates are eligible, adding a future session never
+  changes the comparison shown for an old session;
+- re-analysing, deleting or backfilling an earlier source session can change a
+  later comparison, because the historical evidence itself changed.
+
+Lower is better. A change is meaningful only when its absolute size reaches
+`max(0.15 errors/100w, 10% of the reference average)`. Status is `improving`,
+`needs_attention` or `steady`; sessions without a valid current sample use
+`short_sample`, `annotations_unavailable`, `metrics_unavailable` or
+`version_unavailable`, and a first eligible session uses `no_baseline`.
+
+Focus progress is deliberately different: it compares with the exact session
+on which the user set the focus, not with comparison v1's rolling reference.
+
 ## Change procedure
 
 1. Propose the formula or taxonomy change with examples and fixtures.

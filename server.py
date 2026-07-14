@@ -37,6 +37,7 @@ def delete_session(date: str) -> bool:
         history["sessions"] = [
             session for session in history.get("sessions", []) if session.get("date") != date
         ]
+        apply_history_comparisons(history["sessions"])
         history_path.write_text(json.dumps(history, indent=2), encoding="utf-8")
     return removed
 
@@ -46,6 +47,7 @@ from cli import (
     SESSIONS_DIR,
     analyze_session,
     annotate_session,
+    apply_history_comparisons,
     build_all,
     build_briefing,
     call_openai_highlight_exercise,

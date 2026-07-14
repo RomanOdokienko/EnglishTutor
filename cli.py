@@ -2198,6 +2198,10 @@ def analyze_session(
 # annotation_items, so re-analysis never needs the LLM.
 METRICS_VERSION = 1
 TAXONOMY_VERSION = 1
+COMPARISON_VERSION = 1
+COMPARISON_WINDOW = 3
+COMPARISON_MIN_WORDS = 120
+COMPARISON_ABSOLUTE_NOISE = 0.15
 
 LATIN_WORD_RE = re.compile(r"[A-Za-z']+")
 RU_WORD_RE = re.compile(r"[А-Яа-яЁё]+")
@@ -2342,6 +2346,127 @@ def write_analysis(out_dir: Path, analysis: dict) -> None:
     write_json(session_dir / "analysis.json", analysis)
 
 
+def _history_participant(session: dict, participant_name: str) -> dict | None:
+    return next(
+        (participant for participant in session.get("participants", []) if participant.get("name") == participant_name),
+        None,
+    )
+
+
+def _comparison_eligibility(session: dict, participant: dict | None) -> str:
+    version = session.get("analysis_version") or {}
+    if version.get("annotations_status") != "ok":
+        return "annotations_unavailable"
+    if version.get("metrics") is None or version.get("taxonomy") is None:
+        return "version_unavailable"
+    words = (((participant or {}).get("derived") or {}).get("metrics") or {}).get("english_word_count", 0) or 0
+    if words < COMPARISON_MIN_WORDS:
+        return "short_sample"
+    grammar = ((participant or {}).get("derived") or {}).get("grammar") or {}
+    if not isinstance(grammar.get("error_density_per_100w"), (int, float)):
+        return "metrics_unavailable"
+    return "comparable"
+
+
+def _comparison_metric(current: object, references: list[dict], eligibility: str) -> dict:
+    current_value = round(float(current), 2) if isinstance(current, (int, float)) else None
+    reference_values = [
+        float(point["value"])
+        for point in references
+        if isinstance(point.get("value"), (int, float))
+    ]
+    result = {
+        "current": current_value,
+        "reference_average": None,
+        "delta": None,
+        "threshold": None,
+        "status": eligibility if eligibility != "comparable" else "no_baseline",
+    }
+    if eligibility != "comparable" or not reference_values:
+        return result
+    baseline = sum(reference_values) / len(reference_values)
+    delta = float(current_value) - baseline
+    threshold = max(COMPARISON_ABSOLUTE_NOISE, abs(baseline) * 0.1)
+    if delta <= -threshold:
+        status = "improving"
+    elif delta >= threshold:
+        status = "needs_attention"
+    else:
+        status = "steady"
+    result.update({
+        "reference_average": round(baseline, 2),
+        "delta": round(delta, 2),
+        "threshold": round(threshold, 2),
+        "status": status,
+    })
+    return result
+
+
+def apply_history_comparisons(sessions: list[dict]) -> None:
+    """Attach reproducible, as-of personal comparisons to every participant.
+
+    A session is compared only with up to three eligible sessions before it,
+    using the same metrics and taxonomy versions. Consequently a later call
+    can never rewrite what an older call meant at the time.
+    """
+    ordered = sorted(sessions, key=lambda item: item.get("date", ""))
+    for index, session in enumerate(ordered):
+        version = session.get("analysis_version") or {}
+        for participant in session.get("participants", []):
+            name = participant.get("name")
+            eligibility = _comparison_eligibility(session, participant)
+            reference_sessions: list[tuple[dict, dict]] = []
+            if name and eligibility == "comparable":
+                for candidate in ordered[:index]:
+                    candidate_version = candidate.get("analysis_version") or {}
+                    candidate_participant = _history_participant(candidate, name)
+                    if _comparison_eligibility(candidate, candidate_participant) != "comparable":
+                        continue
+                    if candidate_version.get("metrics") != version.get("metrics"):
+                        continue
+                    if candidate_version.get("taxonomy") != version.get("taxonomy"):
+                        continue
+                    reference_sessions.append((candidate, candidate_participant or {}))
+            reference_sessions = reference_sessions[-COMPARISON_WINDOW:]
+            reference_dates = [candidate.get("date") for candidate, _ in reference_sessions]
+            current_grammar = (participant.get("derived") or {}).get("grammar") or {}
+            overall_references = [
+                {
+                    "date": candidate.get("date"),
+                    "value": ((candidate_participant.get("derived") or {}).get("grammar") or {}).get("error_density_per_100w"),
+                }
+                for candidate, candidate_participant in reference_sessions
+            ]
+            category_comparisons: dict[str, dict] = {}
+            for code in CATEGORY_LABELS:
+                category_references = [
+                    {
+                        "date": candidate.get("date"),
+                        "value": (((candidate_participant.get("derived") or {}).get("grammar") or {}).get("by_category_density") or {}).get(code),
+                    }
+                    for candidate, candidate_participant in reference_sessions
+                ]
+                category_comparisons[code] = _comparison_metric(
+                    (current_grammar.get("by_category_density") or {}).get(code),
+                    category_references,
+                    eligibility,
+                )
+            participant["comparison"] = {
+                "version": COMPARISON_VERSION,
+                "eligibility": eligibility,
+                "current_date": session.get("date"),
+                "reference_count": len(reference_dates),
+                "reference_dates": reference_dates,
+                "overall_reference_points": overall_references,
+                "overall": _comparison_metric(
+                    current_grammar.get("error_density_per_100w"),
+                    overall_references,
+                    eligibility,
+                ),
+                "categories": category_comparisons,
+            }
+
+
 def update_history(out_dir: Path, analysis: dict) -> None:
     history_path = out_dir / "history.json"
     history = load_json(history_path, {"sessions": []})
@@ -2377,6 +2502,7 @@ def update_history(out_dir: Path, analysis: dict) -> None:
     sessions = [session for session in sessions if session.get("date") != entry["date"]]
     sessions.append(entry)
     sessions.sort(key=lambda item: item.get("date", ""))
+    apply_history_comparisons(sessions)
     history["sessions"] = sessions
     write_json(history_path, history)
 
@@ -2386,36 +2512,6 @@ def _briefing_participant(session: dict, participant_name: str) -> dict | None:
         if participant.get("name") == participant_name:
             return participant
     return None
-
-
-def _briefing_annotation_available(session: dict) -> bool:
-    return (session.get("analysis_version") or {}).get("annotations_status") == "ok"
-
-
-def _briefing_metric_trend(
-    sessions: list[dict], participant_name: str, path: tuple[str, ...], higher_is_better: bool,
-) -> dict | None:
-    values: list[dict] = []
-    for session in sessions:
-        participant = _briefing_participant(session, participant_name)
-        derived = (participant or {}).get("derived") or {}
-        current: object = derived
-        for key in path:
-            current = current.get(key) if isinstance(current, dict) else None
-        if isinstance(current, (int, float)):
-            values.append({"date": session.get("date"), "value": current})
-    if not values:
-        return None
-    recent = values[-3:]
-    first, last = recent[0]["value"], recent[-1]["value"]
-    delta = round(last - first, 2)
-    if len(recent) == 1 or delta == 0:
-        direction = "steady"
-    elif (delta > 0) == higher_is_better:
-        direction = "improving"
-    else:
-        direction = "worsening"
-    return {"values": recent, "current": last, "delta": delta, "direction": direction}
 
 
 def build_briefing(out_dir: Path) -> dict:
@@ -2445,10 +2541,18 @@ def build_briefing(out_dir: Path) -> dict:
     for name in participant_names:
         comparable = [
             session for session in sessions
-            if _briefing_annotation_available(session)
-            and ((_briefing_participant(session, name) or {}).get("derived", {}).get("metrics", {}).get("english_word_count", 0) >= 120)
+            if _comparison_eligibility(session, _briefing_participant(session, name)) == "comparable"
         ]
-        recent_comparable = comparable[-3:]
+        if comparable:
+            latest_version = comparable[-1].get("analysis_version") or {}
+            comparable = [
+                session for session in comparable
+                if (session.get("analysis_version") or {}).get("metrics") == latest_version.get("metrics")
+                and (session.get("analysis_version") or {}).get("taxonomy") == latest_version.get("taxonomy")
+            ]
+        recent_comparable = comparable[-COMPARISON_WINDOW:]
+        recent_dates = [session.get("date") for session in recent_comparable]
+
         category_rows: list[dict] = []
         for code, title in CATEGORY_LABELS.items():
             densities = []
@@ -2457,15 +2561,17 @@ def build_briefing(out_dir: Path) -> dict:
                 density_value = (grammar.get("by_category_density") or {}).get(code)
                 if isinstance(density_value, (int, float)):
                     densities.append(density_value)
-            if densities:
+            if densities and any(value > 0 for value in densities):
                 category_rows.append({
                     "code": code,
                     "title": title,
                     "average_density": round(sum(densities) / len(densities), 2),
                     "seen_sessions": sum(1 for value in densities if value >= 0.3),
                     "sessions_considered": len(densities),
+                    "dates": recent_dates,
                 })
         category_rows.sort(key=lambda item: (-item["average_density"], -item["seen_sessions"], item["title"]))
+        patterns = category_rows[:2]
 
         focus_rows: list[dict] = []
         for focus in active_focuses:
@@ -2483,6 +2589,7 @@ def build_briefing(out_dir: Path) -> dict:
             if isinstance(baseline, (int, float)) and baseline > 0 and isinstance(current, (int, float)):
                 change_pct = round((current - baseline) / baseline * 100)
             focus_rows.append({
+                "kind": "active",
                 "id": focus.get("id"),
                 "code": code,
                 "title": CATEGORY_LABELS.get(code, code),
@@ -2493,15 +2600,30 @@ def build_briefing(out_dir: Path) -> dict:
                 "change_pct": change_pct,
                 "ready_to_close": bool(change_pct is not None and change_pct <= -40),
             })
+        focus_rows.sort(key=lambda item: str(item.get("set_date") or ""), reverse=True)
+        if focus_rows:
+            primary_focus = focus_rows[0]
+        elif patterns:
+            primary_focus = {
+                "kind": "suggested",
+                "code": patterns[0]["code"],
+                "title": patterns[0]["title"],
+                "average_density": patterns[0]["average_density"],
+                "dates": patterns[0]["dates"],
+            }
+        else:
+            primary_focus = None
 
-        examples: list[dict] = []
+        available_examples: list[dict] = []
         seen_examples: set[tuple[str, str]] = set()
-        for session in reversed(sessions):
-            if not _briefing_annotation_available(session):
-                continue
+        for session in reversed(comparable):
             analysis = analyses.get(session.get("date", ""), {})
             items = (analysis.get("llm") or {}).get("annotation_items") or []
-            by_name = map_annotation_items_to_speakers(items, analysis.get("transcript", ""), analysis.get("speaker_map", {}) or {})
+            by_name = map_annotation_items_to_speakers(
+                items,
+                analysis.get("transcript", ""),
+                analysis.get("speaker_map", {}) or {},
+            )
             for item in by_name.get(name, []):
                 error = str(item.get("text") or "").strip()
                 correction = str(item.get("correction") or "").strip()
@@ -2510,37 +2632,58 @@ def build_briefing(out_dir: Path) -> dict:
                     continue
                 seen_examples.add(key)
                 code = (item.get("category") or infer_category_code(item) or "").upper()
-                examples.append({
+                available_examples.append({
                     "date": session.get("date"),
                     "code": code,
                     "category_title": CATEGORY_LABELS.get(code, "Grammar issue"),
                     "error": error,
                     "correction": correction,
                 })
-                if len(examples) >= 4:
-                    break
-            if len(examples) >= 4:
-                break
 
-        metric_sessions = [
-            item for item in sessions
-            if ((_briefing_participant(item, name) or {}).get("derived", {}).get("metrics", {}).get("english_word_count", 0) >= 120)
-        ]
-        grammar_sessions = [item for item in metric_sessions if _briefing_annotation_available(item)]
-        trends = [
-            {"key": "error_density", "label": "Error density", "unit": "/100w", "trend": _briefing_metric_trend(grammar_sessions, name, ("grammar", "error_density_per_100w"), False)},
-            {"key": "russian_fallback", "label": "Russian fallback", "unit": "%", "trend": _briefing_metric_trend(metric_sessions, name, ("metrics", "l1_fallback_pct"), False)},
-            {"key": "lexical_diversity", "label": "Lexical diversity", "unit": "", "trend": _briefing_metric_trend(metric_sessions, name, ("metrics", "lexical_diversity_mattr"), True)},
-        ]
+        preferred_codes: list[str] = []
+        for code in [
+            (primary_focus or {}).get("code"),
+            *[pattern.get("code") for pattern in patterns],
+        ]:
+            if code and code not in preferred_codes:
+                preferred_codes.append(code)
+        examples: list[dict] = []
+        for code in preferred_codes:
+            match = next((item for item in available_examples if item.get("code") == code and item not in examples), None)
+            if match:
+                examples.append(match)
+            if len(examples) == 2:
+                break
+        if len(examples) < 2:
+            examples.extend(item for item in available_examples if item not in examples)
+            examples = examples[:2]
+
+        recent_direction = None
+        if comparable:
+            latest_session = comparable[-1]
+            latest_participant = _briefing_participant(latest_session, name) or {}
+            comparison = latest_participant.get("comparison") or {}
+            points = []
+            for session in recent_comparable:
+                value = (((_briefing_participant(session, name) or {}).get("derived") or {}).get("grammar") or {}).get("error_density_per_100w")
+                if isinstance(value, (int, float)):
+                    points.append({"date": session.get("date"), "value": value})
+            recent_direction = {
+                "points": points,
+                "comparison": comparison.get("overall") or {},
+                "reference_dates": comparison.get("reference_dates") or [],
+            }
+
         people.append({
             "name": name,
-            "active_focuses": focus_rows,
-            "top_categories": category_rows[:3],
+            "focus": primary_focus,
+            "additional_focus_count": max(0, len(focus_rows) - 1),
+            "patterns": patterns,
             "examples": examples,
-            "trends": [item for item in trends if item["trend"]],
+            "recent_direction": recent_direction,
         })
 
-    briefing = {"version": 1, "participants": people}
+    briefing = {"version": 2, "comparison_version": COMPARISON_VERSION, "participants": people}
     write_json(out_dir / "briefing.json", briefing)
     return briefing
 
@@ -2579,6 +2722,11 @@ def write_web_assets(out_dir: Path) -> None:
     web_dir = out_dir / "web"
     web_dir.mkdir(parents=True, exist_ok=True)
     api_base = json.dumps((os.getenv("ENGLISH_TUTOR_API_BASE_URL") or "").strip().rstrip("/"))
+    history_path = out_dir / "history.json"
+    if history_path.exists():
+        history = load_json(history_path, {"sessions": []})
+        apply_history_comparisons(history.get("sessions", []))
+        write_json(history_path, history)
     build_briefing(out_dir)
     nav_html = "".join(
         f'<a class="app-nav-link{(" is-accent" if accent else "")}" data-nav-key="{key}" href="{href}">{label}</a>'
@@ -2602,7 +2750,6 @@ def write_web_assets(out_dir: Path) -> None:
             content = content.replace("__ENGLISH_TUTOR_NAV__", nav_html)
         (web_dir / src.name).write_text(content, encoding="utf-8")
 
-    history_path = out_dir / "history.json"
     if history_path.exists():
         (web_dir / "history.json").write_text(history_path.read_text(encoding="utf-8"), encoding="utf-8")
     briefing_path = out_dir / "briefing.json"

@@ -621,14 +621,29 @@ function safeDomToken(value) {
   return String(value || '').toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '') || 'item';
 }
 
+function getHistoryParticipant(selectedDate, participantName) {
+  const session = (state.history?.sessions || []).find((item) => item.date === selectedDate);
+  return (session?.participants || []).find((item) => item.name === participantName) || null;
+}
+
 function getPreviousGrammarTrail(selectedDate, participantName) {
   const sessions = state.history?.sessions || [];
+  const selectedSession = sessions.find((session) => session.date === selectedDate);
+  const selectedParticipant = getHistoryParticipant(selectedDate, participantName);
+  const canonicalDates = selectedParticipant?.comparison?.version === 1
+    ? selectedParticipant.comparison.reference_dates || []
+    : null;
+  const selectedVersion = selectedSession?.analysis_version || {};
   return sessions
-    .filter((session) => String(session.date || '') < String(selectedDate || ''))
+    .filter((session) => canonicalDates
+      ? canonicalDates.includes(session.date)
+      : String(session.date || '') < String(selectedDate || ''))
     .map((session) => {
       const participant = (session.participants || []).find((item) => item.name === participantName);
       return {
         date: session.date,
+        metricsVersion: session.analysis_version?.metrics,
+        taxonomyVersion: session.analysis_version?.taxonomy,
         annotationsStatus: session.analysis_version?.annotations_status || '',
         words: Number(participant?.derived?.metrics?.english_word_count || 0),
         metrics: participant?.derived?.metrics || null,
@@ -640,7 +655,9 @@ function getPreviousGrammarTrail(selectedDate, participantName) {
       entry.grammar
       && entry.metrics
       && entry.words >= PERSISTENCE_MIN_WORDS
-      && (!entry.annotationsStatus || entry.annotationsStatus === 'ok'))
+      && (!entry.annotationsStatus || entry.annotationsStatus === 'ok')
+      && (canonicalDates || entry.metricsVersion === selectedVersion.metrics)
+      && (canonicalDates || entry.taxonomyVersion === selectedVersion.taxonomy))
     .slice(-TREND_LOOKBACK);
 }
 
@@ -704,17 +721,41 @@ function formatNumber(value, maximumFractionDigits = 2) {
 
 function compareLowerIsBetter(current, baseline) {
   if (!Number.isFinite(current) || !Number.isFinite(baseline)) {
-    return { delta: null, tone: 'neutral', label: 'Personal baseline not ready' };
+    return { delta: null, tone: 'neutral', label: 'Previous-call average not ready', status: 'no_baseline' };
   }
   const delta = current - baseline;
   const threshold = Math.max(0.15, Math.abs(baseline) * 0.1);
   if (delta <= -threshold) {
-    return { delta, tone: 'positive', label: `${formatNumber(Math.abs(delta))} below usual` };
+    return { delta, tone: 'positive', label: `${formatNumber(Math.abs(delta))} below recent average`, status: 'improving' };
   }
   if (delta >= threshold) {
-    return { delta, tone: 'warning', label: `${formatNumber(delta)} above usual` };
+    return { delta, tone: 'warning', label: `${formatNumber(delta)} above recent average`, status: 'needs_attention' };
   }
-  return { delta, tone: 'neutral', label: 'About your usual' };
+  return { delta, tone: 'neutral', label: 'About recent average', status: 'steady' };
+}
+
+function comparisonFromRecord(record) {
+  if (!record || !record.status) {
+    return null;
+  }
+  const delta = Number.isFinite(Number(record.delta)) ? Number(record.delta) : null;
+  const labels = {
+    no_baseline: 'No previous comparable calls',
+    short_sample: 'Not scored: short sample',
+    annotations_unavailable: 'Not scored: annotations unavailable',
+    version_unavailable: 'Not scored: version unavailable',
+    metrics_unavailable: 'Not scored: metrics unavailable',
+  };
+  if (record.status === 'improving') {
+    return { ...record, delta, tone: 'positive', label: `${formatNumber(Math.abs(delta))} below recent average` };
+  }
+  if (record.status === 'needs_attention') {
+    return { ...record, delta, tone: 'warning', label: `${formatNumber(delta)} above recent average` };
+  }
+  if (record.status === 'steady') {
+    return { ...record, delta, tone: 'neutral', label: 'About recent average' };
+  }
+  return { ...record, delta, tone: 'neutral', label: labels[record.status] || 'Comparison unavailable' };
 }
 
 function buildParticipantViewModel(participant, itemsForSpeaker, transcriptText, selectedDate, allAnnotationItems = []) {
@@ -722,7 +763,13 @@ function buildParticipantViewModel(participant, itemsForSpeaker, transcriptText,
   const grammar = derived.grammar || {};
   const metrics = derived.metrics || {};
   const words = Number(metrics.english_word_count || 0);
-  const currentIsComparable = words >= PERSISTENCE_MIN_WORDS;
+  const historyParticipant = getHistoryParticipant(selectedDate, participant.name);
+  const canonicalComparison = historyParticipant?.comparison?.version === 1
+    ? historyParticipant.comparison
+    : null;
+  const currentIsComparable = canonicalComparison
+    ? canonicalComparison.eligibility === 'comparable'
+    : words >= PERSISTENCE_MIN_WORDS;
   const history = getPreviousGrammarTrail(selectedDate, participant.name);
   const evidence = buildEvidenceCards(participant, itemsForSpeaker, transcriptText, selectedDate);
   const evidenceByCode = new Map(evidence.map((card) => [card.code, card]));
@@ -734,7 +781,9 @@ function buildParticipantViewModel(participant, itemsForSpeaker, transcriptText,
   const errorRows = CATEGORY_CODES.map((code) => {
     const currentDensity = Number(densities[code] || 0);
     const baselineDensity = average(history.map((entry) => Number(entry.density?.[code] || 0)));
-    const comparison = compareLowerIsBetter(currentDensity, currentIsComparable ? baselineDensity : null);
+    const canonicalCategory = canonicalComparison?.categories?.[code];
+    const comparison = comparisonFromRecord(canonicalCategory)
+      || compareLowerIsBetter(currentDensity, currentIsComparable ? baselineDensity : null);
     const count = Number(counts[code] || 0);
     const seenIn = history.filter((entry) => Number(entry.density?.[code] || 0) >= PERSISTENCE_DENSITY_FLOOR).length;
     const findings = itemsForSpeaker
@@ -749,7 +798,9 @@ function buildParticipantViewModel(participant, itemsForSpeaker, transcriptText,
       count,
       share: totalErrors > 0 ? Math.round((count / totalErrors) * 100) : 0,
       density: currentDensity,
-      baselineDensity,
+      baselineDensity: typeof canonicalCategory?.reference_average === 'number'
+        ? Number(canonicalCategory.reference_average)
+        : baselineDensity,
       comparison,
       recurring: seenIn >= 2,
       inFocus: activeCodes.has(code),
@@ -773,11 +824,14 @@ function buildParticipantViewModel(participant, itemsForSpeaker, transcriptText,
   errorRows.forEach((row) => { row.priorityRank = priorityRanks.get(row.code) || null; });
 
   const overallDensity = Number(grammar.error_density_per_100w || 0);
-  const overallBaseline = average(history.map((entry) => Number(entry.grammar?.error_density_per_100w || 0)));
+  const calculatedOverallBaseline = average(history.map((entry) => Number(entry.grammar?.error_density_per_100w || 0)));
+  const overallBaseline = typeof canonicalComparison?.overall?.reference_average === 'number'
+    ? Number(canonicalComparison.overall.reference_average)
+    : calculatedOverallBaseline;
   const fillerRate = Number(metrics.filler_per_100w || 0);
   const fillerBaseline = average(history.map((entry) => Number(entry.metrics?.filler_per_100w || 0)));
   const bestImprovement = currentIsComparable ? errorRows
-    .filter((row) => Number.isFinite(row.comparison.delta) && row.comparison.delta < 0)
+    .filter((row) => row.comparison.status === 'improving')
     .sort((left, right) => left.comparison.delta - right.comparison.delta)[0] || null : null;
 
   return {
@@ -787,12 +841,16 @@ function buildParticipantViewModel(participant, itemsForSpeaker, transcriptText,
     priorities,
     overallDensity,
     overallBaseline,
-    overallComparison: compareLowerIsBetter(overallDensity, currentIsComparable ? overallBaseline : null),
+    overallComparison: comparisonFromRecord(canonicalComparison?.overall)
+      || compareLowerIsBetter(overallDensity, currentIsComparable ? overallBaseline : null),
     fillerRate,
     fillerBaseline,
     fillerComparison: compareLowerIsBetter(fillerRate, currentIsComparable ? fillerBaseline : null),
     bestImprovement,
     words,
+    eligibility: canonicalComparison?.eligibility || (currentIsComparable ? 'comparable' : 'short_sample'),
+    referenceDates: canonicalComparison?.reference_dates || history.map((entry) => entry.date),
+    referenceCount: canonicalComparison?.reference_count ?? history.length,
   };
 }
 
@@ -1112,28 +1170,34 @@ function renderExampleSource(example, sessionDate) {
 
 function renderComparisonBadge(comparison) {
   const tone = comparison?.tone || 'neutral';
-  return `<span class="comparison-badge is-${tone}">${escapeHtml(comparison?.label || 'Personal baseline not ready')}</span>`;
+  return `<span class="comparison-badge is-${tone}">${escapeHtml(comparison?.label || 'Previous-call average not ready')}</span>`;
 }
 
 function renderSessionAnswer(viewModel) {
-  const currentIsComparable = viewModel.words >= PERSISTENCE_MIN_WORDS;
-  const baselineText = !currentIsComparable
-    ? `This sample is below ${PERSISTENCE_MIN_WORDS} English words, so it is not scored against your history.`
-    : viewModel.history.length
-    ? `Your recent average: ${formatNumber(viewModel.overallBaseline)} / 100 words across ${viewModel.history.length} comparable ${viewModel.history.length === 1 ? 'session' : 'sessions'}.`
-    : 'Complete more sessions with at least 120 English words to build your baseline.';
+  const currentIsComparable = viewModel.eligibility === 'comparable';
+  const referenceDates = viewModel.referenceDates.map(formatSessionDate).join(', ');
+  let baselineText;
+  if (viewModel.eligibility === 'short_sample') {
+    baselineText = `This sample is below ${PERSISTENCE_MIN_WORDS} English words, so it is not scored against earlier calls.`;
+  } else if (viewModel.eligibility !== 'comparable') {
+    baselineText = 'This session is not scored because completed annotations and current metric versions are required.';
+  } else if (viewModel.referenceCount) {
+    baselineText = `Compared with the average of ${viewModel.referenceCount} comparable ${viewModel.referenceCount === 1 ? 'call' : 'calls'} before this session: ${formatNumber(viewModel.overallBaseline)} / 100w. Reference: ${referenceDates}.`;
+  } else {
+    baselineText = `Complete another annotated session with at least ${PERSISTENCE_MIN_WORDS} English words to build a comparison.`;
+  }
   const best = viewModel.bestImprovement;
   const priority = viewModel.priorities[0];
   const bestHtml = best
     ? `
       <p class="answer-card-kicker">Best progress signal</p>
       <strong class="answer-card-value">${escapeHtml(best.title)}</strong>
-      <span class="answer-card-detail">${formatNumber(Math.abs(best.comparison.delta))} fewer errors / 100 words than your recent average.</span>
+      <span class="answer-card-detail">${formatNumber(best.baselineDensity)} recent avg &rarr; ${formatNumber(best.density)} this session. ${formatNumber(Math.abs(best.comparison.delta))} fewer errors / 100 words.</span>
     `
     : currentIsComparable ? `
       <p class="answer-card-kicker">Best progress signal</p>
-      <strong class="answer-card-value">No clear drop yet</strong>
-      <span class="answer-card-detail">This session did not beat your recent category averages. That is a useful baseline, not a score.</span>
+      <strong class="answer-card-value">No meaningful drop yet</strong>
+      <span class="answer-card-detail">No category improved beyond the comparison noise threshold. Small changes are treated as steady.</span>
     ` : `
       <p class="answer-card-kicker">Best progress signal</p>
       <strong class="answer-card-value">Not scored</strong>
@@ -1250,7 +1314,7 @@ function renderErrorProfile(viewModel) {
       </div>
       <div class="error-profile-table-wrap">
         <table class="error-profile-table">
-          <thead><tr><th>Category</th><th>Findings</th><th>Rate</th><th>Share</th><th>Vs your usual</th></tr></thead>
+          <thead><tr><th>Category</th><th>Findings</th><th>Rate</th><th>Share</th><th>Vs previous ${viewModel.referenceCount || 'calls'}</th></tr></thead>
           <tbody>${rows}</tbody>
         </table>
       </div>
@@ -1272,7 +1336,7 @@ function renderParticipantReview(viewModel, analysisDate) {
           <p class="participant-review-kicker">Personal session review</p>
           <h2>${escapeHtml(participant.name)}</h2>
         </div>
-        <span class="highlight-meta">${viewModel.words} English words &middot; ${viewModel.history.length} comparable prior ${viewModel.history.length === 1 ? 'session' : 'sessions'}</span>
+        <span class="highlight-meta">${viewModel.words} English words &middot; ${viewModel.referenceCount} comparable prior ${viewModel.referenceCount === 1 ? 'session' : 'sessions'}</span>
       </div>
       ${lowSample ? `<p class="sample-warning">Short sample: fewer than ${PERSISTENCE_MIN_WORDS} English words. Keep the transcript, but treat comparisons as directional.</p>` : ''}
       ${renderSessionAnswer(viewModel)}

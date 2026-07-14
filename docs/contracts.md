@@ -64,17 +64,22 @@ history.sessions[] contains date, topic, analysis_version and participants[].
 Each history participant has name, role, derived and temporary legacy values:
 fluency_score, llm_fluency_score, grammar_error_count, llm_error_rate and
 chunked_error_rate. Progress features must read derived rather than those legacy
-values.
+values. Every participant also has `comparison` version 1: eligibility,
+reference dates/count, the overall comparison, and a comparison for every
+grammar category. A metric comparison contains current, reference_average,
+delta, threshold and status. The reference is calculated chronologically from
+up to three comparable sessions strictly before that history entry.
 
 ### This-week briefing
 
 Path: `out/briefing.json` (also copied to `out/web/briefing.json`). It is a
 deterministic read model rebuilt after session analysis, derived reanalysis and
-focus updates. For every known participant it contains active focuses with the
-baseline/latest comparable density, three recurring category candidates,
-recent annotated examples and short metric trends. The browser treats it as a
-convenience briefing; Session analysis and history remain the canonical source
-for detailed evidence.
+focus updates. Version 2 contains one primary active or suggested focus, at
+most two patterns from the latest three comparable calls, at most two matching
+annotation examples and one recent grammar direction record per participant.
+Russian fallback and lexical diversity are intentionally absent from this
+briefing. The browser treats it as a convenience read model; Session analysis
+and history comparison v1 remain the canonical source for detailed evidence.
 
 ## HTTP contract
 

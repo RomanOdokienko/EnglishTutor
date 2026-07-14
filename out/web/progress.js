@@ -355,22 +355,67 @@
       name.className = 'pg-summary-name';
       name.innerHTML = '<span class="pg-swatch" style="background:' + speaker.color + '"></span>' + escapeHtml(speaker.name);
       item.appendChild(name);
-      if (comparable.length < 2) {
-        item.innerHTML += '<strong>Not enough comparable sessions</strong><span>Two sessions with ' + LOW_SAMPLE + '+ English words are needed.</span>';
+      if (!comparable.length) {
+        item.innerHTML += '<strong>Not enough comparable sessions</strong><span>A completed annotated call with ' + LOW_SAMPLE + '+ English words is needed.</span>';
+        grid.appendChild(item);
+        return;
+      }
+      var last = comparable[comparable.length - 1];
+      var session = state.history.sessions[last.index] || {};
+      var participant = (session.participants || []).find(function (entry) { return entry.name === speaker.name; }) || {};
+      var canonical = participant.comparison && participant.comparison.version === 1
+        ? participant.comparison
+        : null;
+      var comparison = canonical && canonical.overall ? canonical.overall : {};
+      var referenceDates = canonical ? canonical.reference_dates || [] : [];
+      if (!canonical) {
+        var fallbackReferences = comparable.slice(Math.max(0, comparable.length - 4), -1);
+        if (fallbackReferences.length) {
+          var referenceAverage = fallbackReferences.reduce(function (sum, entry) { return sum + entry.point.v; }, 0) / fallbackReferences.length;
+          var delta = last.point.v - referenceAverage;
+          var threshold = Math.max(0.15, Math.abs(referenceAverage) * 0.1);
+          comparison = {
+            reference_average: referenceAverage,
+            delta: delta,
+            status: delta <= -threshold ? 'improving' : delta >= threshold ? 'needs_attention' : 'steady',
+          };
+          referenceDates = fallbackReferences.map(function (entry) { return state.history.sessions[entry.index].date; });
+        } else {
+          comparison = { status: 'no_baseline' };
+        }
+      }
+      var statusMap = {
+        improving: ['Improving', 'is-improving'],
+        needs_attention: ['Needs attention', 'is-attention'],
+        steady: ['Steady', 'is-steady'],
+        no_baseline: ['Baseline not ready', 'is-steady'],
+      };
+      var status = statusMap[comparison.status] || ['Not scored', 'is-steady'];
+      var values = document.createElement('div');
+      values.className = 'pg-summary-values';
+      values.innerHTML = '<strong>' + formatValue(last.point.v, 1) + ' <small>/100w</small></strong>'
+        + '<span class="pg-trend-status ' + status[1] + '">' + status[0] + '</span>';
+      item.appendChild(values);
+      var detail = document.createElement('span');
+      detail.className = 'pg-summary-detail';
+      if (typeof comparison.reference_average === 'number') {
+        var deltaValue = Number(comparison.delta || 0);
+        var relation = comparison.status === 'steady'
+          ? 'about the same as'
+          : Math.abs(deltaValue).toFixed(1) + (deltaValue < 0 ? ' below' : ' above');
+        detail.textContent = shortDate(session.date) + ' · ' + relation + ' the average of previous ' + referenceDates.length + ' (' + formatValue(comparison.reference_average, 1) + ')';
       } else {
-        var first = comparable[0];
-        var last = comparable[comparable.length - 1];
-        var delta = last.point.v - first.point.v;
-        var status = delta <= -0.1 ? 'Improving' : delta >= 0.1 ? 'Needs attention' : 'Steady';
-        var statusClass = delta <= -0.1 ? 'is-improving' : delta >= 0.1 ? 'is-attention' : 'is-steady';
-        var values = document.createElement('div');
-        values.className = 'pg-summary-values';
-        values.innerHTML = '<strong>' + formatValue(first.point.v, 1) + ' <span>→</span> ' + formatValue(last.point.v, 1) + '</strong>'
-          + '<span class="pg-trend-status ' + statusClass + '">' + status + '</span>';
-        item.appendChild(values);
-        var context = document.createElement('span');
-        context.textContent = 'errors / 100 words · ' + comparable.length + ' comparable sessions';
-        item.appendChild(context);
+        detail.textContent = shortDate(session.date) + ' · first comparable result';
+      }
+      item.appendChild(detail);
+      var context = document.createElement('span');
+      context.textContent = comparable.length + ' comparable calls since ' + shortDate(state.history.sessions[comparable[0].index].date);
+      item.appendChild(context);
+      if (referenceDates.length) {
+        var reference = document.createElement('span');
+        reference.className = 'pg-summary-reference';
+        reference.textContent = 'Reference: ' + referenceDates.map(shortDate).join(', ');
+        item.appendChild(reference);
       }
       grid.appendChild(item);
     });
@@ -525,7 +570,7 @@
     }).join('');
 
     var grammarSeries = overallSeries();
-    var overview = section('Grammar trend', 'The main signal: comparable grammar errors per 100 English words. Lower is better.');
+    var overview = section('Grammar trend', 'Latest comparable result against that person\'s previous three comparable calls. Lower is better; the chart keeps the full history.');
     overview.appendChild(trendSummary(grammarSeries));
     var overviewGrid = document.createElement('div');
     overviewGrid.className = 'pg-grid';

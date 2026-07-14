@@ -1,47 +1,48 @@
 {
-  "version": 1,
+  "version": 2,
+  "comparison_version": 1,
   "participants": [
     {
       "name": "Andrey",
-      "active_focuses": [],
-      "top_categories": [
+      "focus": {
+        "kind": "suggested",
+        "code": "WORD",
+        "title": "Wrong Word",
+        "average_density": 0.63,
+        "dates": [
+          "2026-01-26",
+          "2026-02-02",
+          "2026-02-09"
+        ]
+      },
+      "additional_focus_count": 0,
+      "patterns": [
         {
           "code": "WORD",
           "title": "Wrong Word",
           "average_density": 0.63,
           "seen_sessions": 3,
-          "sessions_considered": 3
+          "sessions_considered": 3,
+          "dates": [
+            "2026-01-26",
+            "2026-02-02",
+            "2026-02-09"
+          ]
         },
         {
           "code": "ARTICLE",
           "title": "Articles",
           "average_density": 0.61,
           "seen_sessions": 3,
-          "sessions_considered": 3
-        },
-        {
-          "code": "VERB",
-          "title": "Verb Form",
-          "average_density": 0.44,
-          "seen_sessions": 2,
-          "sessions_considered": 3
+          "sessions_considered": 3,
+          "dates": [
+            "2026-01-26",
+            "2026-02-02",
+            "2026-02-09"
+          ]
         }
       ],
       "examples": [
-        {
-          "date": "2026-02-09",
-          "code": "",
-          "category_title": "Grammar issue",
-          "error": "pilot meeting of my English speaking clubs.",
-          "correction": "pilot meeting of my English-speaking club."
-        },
-        {
-          "date": "2026-02-09",
-          "code": "",
-          "category_title": "Grammar issue",
-          "error": "It was six people",
-          "correction": "There were six people"
-        },
         {
           "date": "2026-02-09",
           "code": "WORD",
@@ -51,111 +52,79 @@
         },
         {
           "date": "2026-02-09",
-          "code": "WORD",
-          "category_title": "Wrong Word",
-          "error": "that's the reason why it was not too fast as I wanted",
-          "correction": "that's the reason why it was not as fast as I wanted"
+          "code": "ARTICLE",
+          "category_title": "Articles",
+          "error": "give it the full.",
+          "correction": "give it full context."
         }
       ],
-      "trends": [
-        {
-          "key": "error_density",
-          "label": "Error density",
-          "unit": "/100w",
-          "trend": {
-            "values": [
-              {
-                "date": "2026-01-26",
-                "value": 3.43
-              },
-              {
-                "date": "2026-02-02",
-                "value": 3.54
-              },
-              {
-                "date": "2026-02-09",
-                "value": 3.14
-              }
-            ],
-            "current": 3.14,
-            "delta": -0.29,
-            "direction": "improving"
+      "recent_direction": {
+        "points": [
+          {
+            "date": "2026-01-26",
+            "value": 3.43
+          },
+          {
+            "date": "2026-02-02",
+            "value": 3.54
+          },
+          {
+            "date": "2026-02-09",
+            "value": 3.14
           }
+        ],
+        "comparison": {
+          "current": 3.14,
+          "reference_average": 3.57,
+          "delta": -0.43,
+          "threshold": 0.36,
+          "status": "improving"
         },
-        {
-          "key": "russian_fallback",
-          "label": "Russian fallback",
-          "unit": "%",
-          "trend": {
-            "values": [
-              {
-                "date": "2026-01-26",
-                "value": 0.0
-              },
-              {
-                "date": "2026-02-02",
-                "value": 0.0
-              },
-              {
-                "date": "2026-02-09",
-                "value": 0.0
-              }
-            ],
-            "current": 0.0,
-            "delta": 0.0,
-            "direction": "steady"
-          }
-        },
-        {
-          "key": "lexical_diversity",
-          "label": "Lexical diversity",
-          "unit": "",
-          "trend": {
-            "values": [
-              {
-                "date": "2026-01-26",
-                "value": 0.713
-              },
-              {
-                "date": "2026-02-02",
-                "value": 0.732
-              },
-              {
-                "date": "2026-02-09",
-                "value": 0.726
-              }
-            ],
-            "current": 0.726,
-            "delta": 0.01,
-            "direction": "improving"
-          }
-        }
-      ]
+        "reference_dates": [
+          "2026-01-19",
+          "2026-01-26",
+          "2026-02-02"
+        ]
+      }
     },
     {
       "name": "Roman",
-      "active_focuses": [],
-      "top_categories": [
+      "focus": {
+        "kind": "suggested",
+        "code": "WORD",
+        "title": "Wrong Word",
+        "average_density": 1.16,
+        "dates": [
+          "2026-01-26",
+          "2026-02-02",
+          "2026-02-09"
+        ]
+      },
+      "additional_focus_count": 0,
+      "patterns": [
         {
           "code": "WORD",
           "title": "Wrong Word",
           "average_density": 1.16,
           "seen_sessions": 3,
-          "sessions_considered": 3
+          "sessions_considered": 3,
+          "dates": [
+            "2026-01-26",
+            "2026-02-02",
+            "2026-02-09"
+          ]
         },
         {
           "code": "VERB",
           "title": "Verb Form",
           "average_density": 0.71,
           "seen_sessions": 3,
-          "sessions_considered": 3
-        },
-        {
-          "code": "ARTICLE",
-          "title": "Articles",
-          "average_density": 0.56,
-          "seen_sessions": 3,
-          "sessions_considered": 3
+          "sessions_considered": 3,
+          "dates": [
+            "2026-01-26",
+            "2026-02-02",
+            "2026-02-09"
+          ]
         }
       ],
       "examples": [
@@ -168,100 +137,40 @@
         },
         {
           "date": "2026-02-09",
-          "code": "TENSE",
-          "category_title": "Verb Tense",
-          "error": "I hear nothing from your last paragraph from beginning.",
-          "correction": "I heard nothing from the beginning of your last paragraph."
-        },
-        {
-          "date": "2026-02-09",
           "code": "VERB",
           "category_title": "Verb Form",
           "error": "I mean I. I didn't Hear any part of your answer for my question.",
           "correction": "I mean, I didn't hear any part of your answer to my question."
-        },
-        {
-          "date": "2026-02-09",
-          "code": "WORD",
-          "category_title": "Wrong Word",
-          "error": "speak straightforward to",
-          "correction": "speak directly into"
         }
       ],
-      "trends": [
-        {
-          "key": "error_density",
-          "label": "Error density",
-          "unit": "/100w",
-          "trend": {
-            "values": [
-              {
-                "date": "2026-01-26",
-                "value": 5.95
-              },
-              {
-                "date": "2026-02-02",
-                "value": 4.76
-              },
-              {
-                "date": "2026-02-09",
-                "value": 3.88
-              }
-            ],
-            "current": 3.88,
-            "delta": -2.07,
-            "direction": "improving"
+      "recent_direction": {
+        "points": [
+          {
+            "date": "2026-01-26",
+            "value": 5.95
+          },
+          {
+            "date": "2026-02-02",
+            "value": 4.76
+          },
+          {
+            "date": "2026-02-09",
+            "value": 3.88
           }
+        ],
+        "comparison": {
+          "current": 3.88,
+          "reference_average": 4.84,
+          "delta": -0.96,
+          "threshold": 0.48,
+          "status": "improving"
         },
-        {
-          "key": "russian_fallback",
-          "label": "Russian fallback",
-          "unit": "%",
-          "trend": {
-            "values": [
-              {
-                "date": "2026-01-26",
-                "value": 0.0
-              },
-              {
-                "date": "2026-02-02",
-                "value": 0.0
-              },
-              {
-                "date": "2026-02-09",
-                "value": 0.0
-              }
-            ],
-            "current": 0.0,
-            "delta": 0.0,
-            "direction": "steady"
-          }
-        },
-        {
-          "key": "lexical_diversity",
-          "label": "Lexical diversity",
-          "unit": "",
-          "trend": {
-            "values": [
-              {
-                "date": "2026-01-26",
-                "value": 0.756
-              },
-              {
-                "date": "2026-02-02",
-                "value": 0.77
-              },
-              {
-                "date": "2026-02-09",
-                "value": 0.771
-              }
-            ],
-            "current": 0.771,
-            "delta": 0.02,
-            "direction": "improving"
-          }
-        }
-      ]
+        "reference_dates": [
+          "2026-01-19",
+          "2026-01-26",
+          "2026-02-02"
+        ]
+      }
     }
   ]
 }
