@@ -41,10 +41,6 @@ main {
 }
 
 .home-header {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 22px;
   margin-bottom: 22px;
   padding: 24px 26px;
   border: 1px solid rgba(191, 219, 254, 0.7);
@@ -55,6 +51,7 @@ main {
 
 .home-header h1 { margin: 0; }
 .home-header .subtitle { margin: 6px 0 0; }
+.home-header .app-nav { margin-top: 18px; }
 .home-eyebrow { margin: 0 0 6px; color: #0369a1; font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
 
 .briefing-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
