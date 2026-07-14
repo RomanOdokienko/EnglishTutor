@@ -149,7 +149,7 @@ const state = {
 };
 
 async function loadHistory() {
-  const response = await fetch(apiUrl('/history.json'));
+  const response = await fetch(apiUrl('/history.json'), { cache: 'no-store' });
   if (!response.ok) {
     throw new Error('Unable to load history.json');
   }
@@ -160,7 +160,7 @@ async function loadAnalysis(date) {
   if (state.analysisCache.has(date)) {
     return state.analysisCache.get(date);
   }
-  const response = await fetch(apiUrl(`/sessions/${date}/analysis.json`));
+  const response = await fetch(apiUrl(`/sessions/${date}/analysis.json`), { cache: 'no-store' });
   if (!response.ok) {
     throw new Error(`Unable to load analysis for ${date}`);
   }
@@ -1182,6 +1182,9 @@ async function rerunSession(endpoint, label, button) {
       /* keep the generic Done. */
     }
     setSessionStatus(done);
+    // The rebuild rewrote this session server-side; drop the cached copy so
+    // the transcript and evidence cards re-render from the fresh analysis.
+    state.analysisCache.delete(date);
     state.history = await loadHistory();
     renderDropdown();
     sessionSelect.value = date;
