@@ -604,6 +604,23 @@ const TREND_LOOKBACK = 3;
 const PERSISTENCE_DENSITY_FLOOR = 0.3;
 const PERSISTENCE_MIN_WORDS = 120;
 
+function annotationCategoryCode(item) {
+  const raw = String(item?.category_code || item?.category || '').trim();
+  return CATEGORY_LABEL_TO_CODE[raw] || raw.toUpperCase();
+}
+
+function transcriptAnnotationId(item, allItems) {
+  const index = allItems.indexOf(item);
+  if (index >= 0) {
+    return `transcript-annotation-${index + 1}`;
+  }
+  return `transcript-annotation-${Number(item?.start || 0)}-${Number(item?.end || 0)}`;
+}
+
+function safeDomToken(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '') || 'item';
+}
+
 function getPreviousGrammarTrail(selectedDate, participantName) {
   const sessions = state.history?.sessions || [];
   return sessions
@@ -700,7 +717,7 @@ function compareLowerIsBetter(current, baseline) {
   return { delta, tone: 'neutral', label: 'About your usual' };
 }
 
-function buildParticipantViewModel(participant, itemsForSpeaker, transcriptText, selectedDate) {
+function buildParticipantViewModel(participant, itemsForSpeaker, transcriptText, selectedDate, allAnnotationItems = []) {
   const derived = participant.derived || {};
   const grammar = derived.grammar || {};
   const metrics = derived.metrics || {};
@@ -720,6 +737,12 @@ function buildParticipantViewModel(participant, itemsForSpeaker, transcriptText,
     const comparison = compareLowerIsBetter(currentDensity, currentIsComparable ? baselineDensity : null);
     const count = Number(counts[code] || 0);
     const seenIn = history.filter((entry) => Number(entry.density?.[code] || 0) >= PERSISTENCE_DENSITY_FLOOR).length;
+    const findings = itemsForSpeaker
+      .filter((item) => annotationCategoryCode(item) === code)
+      .map((item) => ({
+        ...item,
+        _transcriptAnnotationId: transcriptAnnotationId(item, allAnnotationItems),
+      }));
     return {
       code,
       title: CATEGORY_CODE_TO_LABEL[code] || code,
@@ -731,6 +754,7 @@ function buildParticipantViewModel(participant, itemsForSpeaker, transcriptText,
       recurring: seenIn >= 2,
       inFocus: activeCodes.has(code),
       evidence: evidenceByCode.get(code) || null,
+      findings,
     };
   });
 
@@ -1142,6 +1166,43 @@ function renderSessionAnswer(viewModel) {
   `;
 }
 
+function renderProfileFindings(row, participantName) {
+  if (!row.findings.length) {
+    return '<p class="profile-findings-empty">No transcript findings are linked to this category.</p>';
+  }
+  const countMatches = row.findings.length === row.count;
+  const summary = countMatches
+    ? `${row.findings.length} ${row.findings.length === 1 ? 'finding' : 'findings'} counted in this metric`
+    : `${row.count} counted cases · ${row.findings.length} transcript findings linked`;
+  const findings = row.findings.map((finding, index) => {
+    const annotationId = finding._transcriptAnnotationId || '';
+    return `
+      <li class="profile-finding">
+        <div class="profile-finding-main">
+          <span class="profile-finding-number">${index + 1}</span>
+          <span class="profile-finding-error">${escapeHtml(finding.text || 'Marked phrase')}</span>
+          <span class="profile-finding-arrow" aria-hidden="true">→</span>
+          <span class="profile-finding-fix">${escapeHtml(finding.correction || 'No suggested rewrite')}</span>
+        </div>
+        <div class="profile-finding-actions">
+          <details class="profile-finding-why">
+            <summary>Why?</summary>
+            <p>${escapeHtml(finding.explanation || 'No explanation stored.')}</p>
+          </details>
+          <button class="finding-transcript-link" type="button" data-transcript-annotation-id="${escapeHtml(annotationId)}">Find in transcript</button>
+        </div>
+      </li>
+    `;
+  }).join('');
+  return `
+    <div class="profile-findings-head">
+      <strong>${escapeHtml(summary)}</strong>
+      <span>These are the raw annotations behind the category total, not only the examples selected for practice.</span>
+    </div>
+    <ol class="profile-findings-list" aria-label="${escapeHtml(row.title)} findings for ${escapeHtml(participantName)}">${findings}</ol>
+  `;
+}
+
 function renderErrorProfile(viewModel) {
   const orderedRows = [...viewModel.errorRows].sort((left, right) => {
     if (left.priorityRank && right.priorityRank) return left.priorityRank - right.priorityRank;
@@ -1149,21 +1210,35 @@ function renderErrorProfile(viewModel) {
     if (right.priorityRank) return 1;
     return (right.density - left.density) || left.code.localeCompare(right.code);
   });
-  const rows = orderedRows.map((row) => `
-    <tr class="${row.priorityRank ? 'is-priority' : ''}">
+  const rows = orderedRows.map((row) => {
+    const panelId = `profile-findings-${safeDomToken(viewModel.participant.name)}-${safeDomToken(row.code)}`;
+    const hasFindings = row.findings.length > 0;
+    return `
+    <tr class="error-profile-data-row${row.priorityRank ? ' is-priority' : ''}">
       <th scope="row">
         <span class="error-category-title">
           ${row.priorityRank ? `<span class="priority-number">${row.priorityRank}</span>` : '<span class="priority-placeholder"></span>'}
           <span>${escapeHtml(row.title)}</span>
         </span>
         ${row.recurring ? '<small>Recurring in recent sessions</small>' : ''}
+        ${hasFindings ? `
+          <button class="category-findings-toggle" type="button" aria-expanded="false" aria-controls="${panelId}" data-findings-target="${panelId}">
+            View ${row.findings.length} ${row.findings.length === 1 ? 'finding' : 'findings'}
+          </button>
+        ` : ''}
       </th>
-      <td><strong>${row.count}</strong><small>${row.count === 1 ? 'example' : 'examples'}</small></td>
+      <td><strong>${row.count}</strong><small>${row.count === 1 ? 'finding' : 'findings'}</small></td>
       <td><strong>${formatNumber(row.density)}</strong><small>errors / 100w</small></td>
       <td><strong>${row.share}%</strong><small>of mapped errors</small></td>
       <td>${renderComparisonBadge(row.comparison)}</td>
     </tr>
-  `).join('');
+    ${hasFindings ? `
+      <tr class="category-findings-row" id="${panelId}" hidden>
+        <td colspan="5">${renderProfileFindings(row, viewModel.participant.name)}</td>
+      </tr>
+    ` : ''}
+  `;
+  }).join('');
   return `
     <section class="error-profile">
       <div class="section-heading-row">
@@ -1175,7 +1250,7 @@ function renderErrorProfile(viewModel) {
       </div>
       <div class="error-profile-table-wrap">
         <table class="error-profile-table">
-          <thead><tr><th>Category</th><th>Cases</th><th>Rate</th><th>Share</th><th>Vs your usual</th></tr></thead>
+          <thead><tr><th>Category</th><th>Findings</th><th>Rate</th><th>Share</th><th>Vs your usual</th></tr></thead>
           <tbody>${rows}</tbody>
         </table>
       </div>
@@ -1234,7 +1309,13 @@ function renderHighlights(bundle) {
 
   participants.forEach((participant) => {
     const itemsForSpeaker = annotationByName[participant.name] || [];
-    const viewModel = buildParticipantViewModel(participant, itemsForSpeaker, transcriptText, analysis.date);
+    const viewModel = buildParticipantViewModel(
+      participant,
+      itemsForSpeaker,
+      transcriptText,
+      analysis.date,
+      annotationItems
+    );
     highlightsRoot.insertAdjacentHTML('beforeend', renderParticipantReview(viewModel, analysis.date));
   });
 }
@@ -1361,6 +1442,34 @@ function renderSessionStats(analysis) {
   }).join('');
 }
 
+function renderCompactTranscriptIssue(item) {
+  const annotationId = item._transcriptAnnotationId || '';
+  const annotationNumber = item._transcriptAnnotationNumber || '';
+  const original = item.text || 'Marked phrase';
+  const correction = item.correction || 'No suggested rewrite';
+  const explanation = item.explanation || 'No explanation stored.';
+  const categoryCode = annotationCategoryCode(item);
+  const categoryLabel = CATEGORY_CODE_TO_LABEL[categoryCode] || item.category || '';
+  return `
+    <li class="issue-item transcript-compact-issue" tabindex="0" data-transcript-annotation-id="${escapeHtml(annotationId)}"
+      aria-controls="${escapeHtml(annotationId)}-text" aria-label="Issue ${annotationNumber}: ${escapeHtml(original)}">
+      <div class="transcript-compact-meta">
+        <span class="issue-number">${escapeHtml(annotationNumber)}</span>
+        ${categoryLabel ? `<span class="issue-category">${escapeHtml(categoryLabel)}</span>` : ''}
+      </div>
+      <div class="transcript-compact-rewrite">
+        <span class="compact-error">${escapeHtml(original)}</span>
+        <span class="compact-arrow" aria-hidden="true">→</span>
+        <span class="compact-fix">${escapeHtml(correction)}</span>
+      </div>
+      <details class="issue-explanation-details">
+        <summary>Why?</summary>
+        <p>${escapeHtml(explanation)}</p>
+      </details>
+    </li>
+  `;
+}
+
 function renderSessionTranscript(analysis) {
   if (!sessionTranscriptRows) {
     return;
@@ -1372,11 +1481,11 @@ function renderSessionTranscript(analysis) {
   const items = state.selectedParticipant === 'both'
     ? allItems
     : (annotationByName[state.selectedParticipant] || []);
-  const annotationIds = new Map(items.map((item, index) => [item, `transcript-annotation-${index + 1}`]));
+  const annotationIds = new Map(items.map((item) => [item, transcriptAnnotationId(item, allItems)]));
   const itemNumbers = new Map(items.map((item, index) => [item, index + 1]));
   const selectedLabel = state.selectedParticipant === 'both' ? 'both participants' : state.selectedParticipant;
   if (transcriptLinkingHint) {
-    transcriptLinkingHint.textContent = `Showing issues for ${selectedLabel}. Select a correction to find the matching phrase in context.`;
+    transcriptLinkingHint.textContent = `Showing issues for ${selectedLabel}. Each paragraph is matched with its corrections; open Why? only when you need the explanation.`;
   }
   if (sessionTranscriptNote) {
     const meta = analysis.llm?.annotations_meta;
@@ -1391,11 +1500,14 @@ function renderSessionTranscript(analysis) {
 
   const lines = transcript.split('\n');
   let offset = 0;
-  const annotatedLines = [];
+  const paragraphRows = [];
   lines.forEach((line) => {
     const lineStart = offset;
     const lineEnd = offset + line.length;
     offset += line.length + 1;
+    if (!line.trim()) {
+      return;
+    }
     const lineItems = items
       .filter((item) => item.start < lineEnd && item.end > lineStart)
       .map((item) => ({
@@ -1409,55 +1521,33 @@ function renderSessionTranscript(analysis) {
     const isContext = state.selectedParticipant !== 'both'
       && speakerName
       && speakerName !== state.selectedParticipant;
-    annotatedLines.push(`
-      <div class="transcript-document-line${isContext ? ' is-context' : ''}">
-        ${line ? buildAnnotatedLine(line, lineItems, lineStart) : '&nbsp;'}
-      </div>
+    const firstIssues = lineItems.slice(0, 5);
+    const extraIssues = lineItems.slice(5);
+    const issueList = firstIssues.length
+      ? `<ol class="transcript-compact-list">${firstIssues.map(renderCompactTranscriptIssue).join('')}</ol>`
+      : '<p class="transcript-no-issues">No mapped issues in this paragraph.</p>';
+    const extraList = extraIssues.length
+      ? `
+        <details class="transcript-more-issues">
+          <summary>Show ${extraIssues.length} more ${extraIssues.length === 1 ? 'correction' : 'corrections'}</summary>
+          <ol class="transcript-compact-list">${extraIssues.map(renderCompactTranscriptIssue).join('')}</ol>
+        </details>
+      `
+      : '';
+    paragraphRows.push(`
+      <article class="transcript-paragraph-row${isContext ? ' is-context' : ''}">
+        <div class="transcript-paragraph-text">${buildAnnotatedLine(line, lineItems, lineStart)}</div>
+        <div class="transcript-paragraph-review">${issueList}${extraList}</div>
+      </article>
     `);
   });
 
-  const issuesHtml = items.length
-    ? items.map((item) => {
-      const annotationId = annotationIds.get(item) || '';
-      const annotationNumber = itemNumbers.get(item) || '';
-      const original = item.text || 'Marked phrase';
-      const correction = item.correction || 'No suggested rewrite';
-      const explanation = item.explanation || 'No explanation stored.';
-      const categoryCode = item.category_code || CATEGORY_LABEL_TO_CODE[item.category] || item.category || '';
-      const categoryLabel = CATEGORY_CODE_TO_LABEL[categoryCode] || item.category || '';
-      return `
-        <li class="issue-item" tabindex="0" data-transcript-annotation-id="${escapeHtml(annotationId)}"
-          aria-controls="${escapeHtml(annotationId)}-text" aria-label="Issue ${annotationNumber}: ${escapeHtml(original)}">
-          <div class="issue-reference">
-            <span class="issue-number">${escapeHtml(annotationNumber)}</span>
-            ${categoryLabel ? `<span class="issue-category">${escapeHtml(categoryLabel)}</span>` : ''}
-          </div>
-          <div class="issue-rewrite">
-            <div class="issue-version is-error"><small>You said</small><span>${escapeHtml(original)}</span></div>
-            <span class="issue-arrow" aria-hidden="true">→</span>
-            <div class="issue-version is-fix"><small>Try</small><span>${escapeHtml(correction)}</span></div>
-          </div>
-          <p class="issue-explanation">${escapeHtml(explanation)}</p>
-        </li>
-      `;
-    }).join('')
-    : '<li class="transcript-empty-state">No issues for this participant in the stored annotations.</li>';
-
   sessionTranscriptRows.innerHTML = `
-    <section class="transcript-pane" aria-label="Annotated transcript">
-      <div class="transcript-pane-heading">
-        <div><p>Transcript</p><h3>Phrase in context</h3></div>
-        <span>Other speaker remains visible for context</span>
-      </div>
-      <div class="transcript-pane-body transcript-document">${annotatedLines.join('')}</div>
-    </section>
-    <section class="transcript-pane" aria-label="Corrections">
-      <div class="transcript-pane-heading">
-        <div><p>Review</p><h3>${items.length} ${items.length === 1 ? 'correction' : 'corrections'}</h3></div>
-        <span>Click to pin the matching phrase</span>
-      </div>
-      <div class="transcript-pane-body transcript-issue-scroll"><ol class="issue-list compact">${issuesHtml}</ol></div>
-    </section>
+    <div class="transcript-flow-header" aria-hidden="true">
+      <span>Paragraph in context</span>
+      <span>Corrections</span>
+    </div>
+    <div class="transcript-paragraphs">${paragraphRows.join('')}</div>
   `;
 }
 
@@ -1476,6 +1566,10 @@ function setActiveTranscriptAnnotation(annotationId, options = {}) {
   if (options.scroll && matches.length) {
     const mark = [...matches].find((element) => element.classList.contains('grammar-error'));
     const issue = [...matches].find((element) => element.classList.contains('issue-item'));
+    const hiddenIssues = issue?.closest('details.transcript-more-issues');
+    if (hiddenIssues) {
+      hiddenIssues.open = true;
+    }
     mark?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     issue?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
@@ -1748,6 +1842,31 @@ async function runFocusAction(payload, confirmText) {
 
 function attachHighlightsInteractions() {
   highlightsRoot.addEventListener('click', async (event) => {
+    const findingsToggle = event.target.closest('.category-findings-toggle');
+    if (findingsToggle) {
+      const panel = document.getElementById(findingsToggle.dataset.findingsTarget || '');
+      if (panel) {
+        const willOpen = panel.hidden;
+        panel.hidden = !willOpen;
+        findingsToggle.setAttribute('aria-expanded', String(willOpen));
+        findingsToggle.closest('.error-profile-data-row')?.classList.toggle('is-expanded', willOpen);
+      }
+      return;
+    }
+    const transcriptLink = event.target.closest('.finding-transcript-link');
+    if (transcriptLink) {
+      const annotationId = transcriptLink.dataset.transcriptAnnotationId || '';
+      if (annotationId) {
+        if (state.pinnedTranscriptAnnotationId) {
+          const previous = state.pinnedTranscriptAnnotationId;
+          state.pinnedTranscriptAnnotationId = '';
+          clearActiveTranscriptAnnotation(previous);
+        }
+        state.pinnedTranscriptAnnotationId = annotationId;
+        setActiveTranscriptAnnotation(annotationId, { scroll: true });
+      }
+      return;
+    }
     const trigger = event.target.closest('.exercise-trigger');
     if (trigger) {
       const exerciseKey = trigger.dataset.exerciseKey || '';
