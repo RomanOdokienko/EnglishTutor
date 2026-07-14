@@ -22,7 +22,7 @@ Path: sessions/<YYYY-MM-DD>/
 | --- | --- | --- |
 | meta.json | date, topic, participants, duration_minutes | speaker_map and speaker_labels are present when mapping is supplied |
 | transcript.txt | Speaker-labelled conversational turns | Original retained source text |
-| audio.<ext> | Optional raw recorded audio | Retained when the recording flow is used |
+| audio.<ext> | Optional raw recorded audio | Temporary during transcription; retained on provider failure and removed after a successful transcript |
 
 Date must be a real YYYY-MM-DD date. A participant has name and role. Speaker
 mapping maps a transcript label to a participant name.
@@ -87,7 +87,7 @@ Date bodies use JSON unless noted otherwise.
 | GET /history.json | None | History JSON | Static read contract |
 | GET /sessions/<date>/analysis.json | None | Analysis JSON | Static read contract |
 | POST /api/upload | transcript required; optional topic, date, duration and speaker mapping fields | date and topic | Creates session, analyses and rebuilds artifacts |
-| POST /api/upload-audio | Audio bytes; query includes date, topic, recorder, other, duration, language and ext | date, topic, channels and optional warning | Requires ASSEMBLYAI_API_KEY |
+| POST /api/upload-audio | Audio bytes; query includes date, topic, recorder, other, duration, language and ext | date, topic, channels, analysis_status and optional warning | Requires ASSEMBLYAI_API_KEY; returns after transcription and deterministic metrics, while model analysis may continue in the background |
 | POST /api/rebuild | Optional date body | Number of rebuilt sessions, optionally date | Rebuilds metrics and annotations according to configured keys |
 | POST /api/rebuild-metrics | Optional date body | Number of rebuilt sessions, optionally date | Metrics only |
 | POST /api/rebuild-annotations | Optional date body | Number of rebuilt sessions, optionally date | Annotations only; requires OpenAI configuration |

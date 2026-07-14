@@ -7,12 +7,13 @@
 | Participant names and speaker aliases | data/people.json and session metadata | May be included with analysis context |
 | Session metadata | sessions/<date>/meta.json | May be included with analysis context |
 | Conversation transcript | sessions/<date>/transcript.txt and analysis outputs | Sent to OpenAI for optional analysis and annotations |
-| Raw recorded audio | sessions/<date>/audio.<ext> | Sent to AssemblyAI for transcription |
+| Raw recorded audio | Browser download plus temporary sessions/<date>/audio.<ext> | Saved locally before upload and sent to AssemblyAI; the backend copy is removed after successful transcription and retained on failure |
 | Analysis, annotations and exercises | out/sessions and out/history | Model-generated content may originate from OpenAI |
 | Static publishing copy | out/web | Published through Vercel when deployed |
 
-The accepted repository policy is to commit inputs and generated artifacts,
-including raw audio and transcripts.
+The accepted repository policy is to commit transcript inputs and generated
+artifacts. Raw audio is a local recovery copy, not a routine repository
+artifact; a backend copy exists only while transcription is pending or failed.
 
 ## Explicitly deferred
 

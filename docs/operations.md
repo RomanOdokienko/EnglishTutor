@@ -99,3 +99,4 @@ long — the access token task (plan 1.3) covers this.
 | Static site has old data | Rebuild out/web, commit/publish the artifact, then invalidate any hosting cache |
 | Accidental session deletion | Restore sessions/<date> and its analysis from Git, rebuild history and out/web |
 | Provider credential missing | Set the relevant environment variable; do not add it to source files |
+| Audio upload or transcription fails | Use Retry upload from the still-open Record page or upload the automatically downloaded local recording; inspect the retained sessions/<date>/audio.<ext> on the Railway volume if provider diagnosis is needed |

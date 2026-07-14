@@ -2,6 +2,7 @@
 import json
 import os
 import re
+import threading
 from datetime import datetime
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -65,6 +66,7 @@ FOCUS_CATEGORY_CODES = {"TENSE", "VERB", "ARTICLE", "PREP", "ORDER", "WORD", "CO
 FOCUS_ACTIVE_LIMIT = 3
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 LINE_RE = re.compile(r"^\s*([^:]+):\s*(.+)$")
+ANALYSIS_LOCK = threading.Lock()
 
 
 def is_valid_session_date(raw_value: str | None) -> bool:
@@ -167,6 +169,24 @@ def openai_config() -> tuple[bool, str | None]:
     api_key = clean_env("OPENAI_API_KEY")
     model = clean_env("OPENAI_MODEL") or None
     return bool(api_key), model
+
+
+def finish_session_analysis(session_dir: Path, model: str | None) -> None:
+    """Finish slow model analysis after the transcript is already durable."""
+    try:
+        with ANALYSIS_LOCK:
+            analysis = analyze_session(
+                session_dir,
+                use_openai=True,
+                openai_model=model,
+                out_dir=OUT_DIR,
+            )
+            write_analysis(OUT_DIR, analysis)
+            update_history(OUT_DIR, analysis)
+            write_web_assets(OUT_DIR)
+        print(f"Background analysis complete: {session_dir.name}", flush=True)
+    except Exception as error:
+        print(f"Background analysis failed for {session_dir.name}: {error}", flush=True)
 
 
 def load_focus_data() -> dict:
@@ -311,16 +331,36 @@ class UploadHandler(SimpleHTTPRequestHandler):
             speaker_map=speaker_map,
         )
 
+        # Publish the transcript and deterministic metrics immediately. Model
+        # annotations run after the response so this request does not remain
+        # open for the slowest part of the pipeline.
         use_openai, model = openai_config()
         analysis = analyze_session(
             session_dir,
-            use_openai=use_openai,
+            use_openai=False,
             openai_model=model,
             out_dir=OUT_DIR,
         )
         write_analysis(OUT_DIR, analysis)
         update_history(OUT_DIR, analysis)
         write_web_assets(OUT_DIR)
+
+        # AssemblyAI has its own temporary upload and transcript.txt is now the
+        # durable source. Retain raw audio only when transcription fails.
+        try:
+            audio_path.unlink(missing_ok=True)
+        except OSError as error:
+            self.log_error("Could not remove temporary audio %s: %s", audio_path, error)
+
+        analysis_status = "ready"
+        if use_openai:
+            analysis_status = "processing"
+            threading.Thread(
+                target=finish_session_analysis,
+                args=(session_dir, model),
+                daemon=True,
+                name=f"analysis-{date}",
+            ).start()
 
         channels = result.get("channels") or []
         warning = None
@@ -336,6 +376,7 @@ class UploadHandler(SimpleHTTPRequestHandler):
             "channels": channels,
             "audio_channels": result.get("audio_channels"),
             "warning": warning,
+            "analysis_status": analysis_status,
         }).encode("utf-8")
         self.send_response(200)
         self.send_header("Content-Type", "application/json")

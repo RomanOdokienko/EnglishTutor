@@ -11,6 +11,7 @@
       .rec-wrap > .rec-actions,
       .rec-wrap > .rec-note,
       .rec-wrap > .rec-status,
+      .rec-wrap > .rec-recovery,
       .rec-wrap > .rec-sep,
       .rec-wrap > .rec-field { max-width: 640px; }
       .rec-grid { display: grid; gap: 14px; margin: 18px 0; }
@@ -27,6 +28,11 @@
       .rec-status.warn { background: #fef3c7; }
       .rec-status.err { background: #fee2e2; }
       .rec-status.ok { background: #dcfce7; }
+      .rec-recovery { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+      .rec-recovery[hidden] { display: none; }
+      .rec-recovery button, .rec-recovery a { padding: 8px 12px; border: 1px solid #bae6fd; border-radius: 999px; background: #f0f9ff; color: #0369a1; font: inherit; font-size: 13px; font-weight: 700; text-decoration: none; cursor: pointer; }
+      .rec-recovery button:disabled { opacity: .5; cursor: default; }
+      .rec-local-note { color: #475569; font-size: 12px; }
       .rec-note { font-size: 13px; color: #475569; line-height: 1.5; }
       .rec-dot { display: inline-block; width: 10px; height: 10px; border-radius: 999px; background: #dc2626; margin-right: 8px; animation: pulse 1s infinite; }
       @keyframes pulse { 50% { opacity: .3; } }
@@ -81,6 +87,11 @@
       </p>
 
       <div id="rec-status" class="rec-status" style="display:none"></div>
+      <div id="rec-recovery" class="rec-recovery" hidden>
+        <button id="rec-retry" type="button" hidden>Retry upload</button>
+        <a id="rec-download" href="#" hidden>Download recording again</a>
+        <span id="rec-local-note" class="rec-local-note"></span>
+      </div>
 
       <hr class="rec-sep" />
       <div class="rec-field">
