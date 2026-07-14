@@ -65,13 +65,15 @@
     var mount = document.getElementById('app-nav');
     if (!mount) return;
     mount.className = 'app-nav';
-    mount.innerHTML = NAV.map(function (item, i) {
-      var cls = 'app-nav-link'
-        + (item.key === activeKey ? ' is-active' : '')
-        + (item.accent ? ' is-accent' : '');
-      var sep = item.accent && i > 0 ? '<span class="app-nav-spacer"></span>' : '';
-      return sep + '<a class="' + cls + '" href="' + item.href + '">' + item.label + '</a>';
-    }).join('');
+    if (!mount.children.length) {
+      mount.innerHTML = NAV.map(function (item) {
+        var cls = 'app-nav-link' + (item.accent ? ' is-accent' : '');
+        return '<a class="' + cls + '" data-nav-key="' + item.key + '" href="' + item.href + '">' + item.label + '</a>';
+      }).join('');
+    }
+    mount.querySelectorAll('.app-nav-link').forEach(function (link) {
+      link.classList.toggle('is-active', link.getAttribute('data-nav-key') === activeKey);
+    });
   }
 
   function initNav() {

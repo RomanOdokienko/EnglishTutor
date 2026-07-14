@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   font-family: 'Inter', 'Segoe UI', sans-serif;
   margin: 0;
@@ -19,7 +23,43 @@ body.page-highlights {
 main {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 32px 20px 48px;
+  padding: 28px 20px 48px;
+}
+
+.app-shell {
+  min-height: 68px;
+  margin: 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.24);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.app-shell-inner {
+  max-width: 1240px;
+  min-height: 68px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.app-brand {
+  flex: 0 0 auto;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.page-heading {
+  min-height: 78px;
+  margin: 0 0 24px;
+}
+
+.page-heading h1 {
+  margin: 0 0 8px;
 }
 
 .highlights-page {
@@ -37,21 +77,15 @@ main {
 .home-page {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 32px 20px 48px;
+  padding: 28px 20px 48px;
 }
 
 .home-header {
-  margin-bottom: 22px;
-  padding: 24px 26px;
-  border: 1px solid rgba(191, 219, 254, 0.7);
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.07);
+  margin-bottom: 24px;
 }
 
 .home-header h1 { margin: 0; }
 .home-header .subtitle { margin: 6px 0 0; }
-.home-header .app-nav { margin-top: 18px; }
 .home-eyebrow { margin: 0 0 6px; color: #0369a1; font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
 
 .briefing-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
@@ -88,34 +122,6 @@ main {
 .briefing-trend-worsening .briefing-trend-arrow { color: #b45309; }
 .briefing-session-link { display: inline-block; margin-top: 20px; color: #0369a1; font-size: 13px; font-weight: 750; text-decoration: none; }
 .briefing-session-link:hover { text-decoration: underline; }
-
-.highlights-page header {
-  position: relative;
-  margin-bottom: 20px;
-  padding: 24px 26px 22px;
-  border-radius: 22px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.88)),
-    radial-gradient(circle at top right, rgba(14, 165, 233, 0.1), transparent 36%);
-  border: 1px solid rgba(148, 163, 184, 0.22);
-  box-shadow:
-    0 20px 40px rgba(15, 23, 42, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.55);
-  overflow: hidden;
-}
-
-.highlights-page header::before {
-  content: '';
-  position: absolute;
-  inset: 0 auto auto 0;
-  width: 160px;
-  height: 3px;
-  background: linear-gradient(90deg, #2563eb, #14b8a6);
-}
-
-header {
-  margin-bottom: 24px;
-}
 
 h1 {
   margin: 0 0 8px;
@@ -1336,7 +1342,8 @@ mark.grammar-error:focus-visible {
 
 @media (max-width: 720px) {
   .home-page { padding: 18px 14px 32px; }
-  .home-header { align-items: flex-start; flex-direction: column; padding: 20px; }
+  .app-shell-inner { align-items: flex-start; flex-direction: column; gap: 8px; padding: 12px 14px; }
+  .page-heading { min-height: 0; }
   .briefing-grid { grid-template-columns: 1fr; }
 
   .highlight-item {
@@ -1349,20 +1356,18 @@ mark.grammar-error:focus-visible {
     align-items: flex-start;
   }
 
-  .highlight-action-head,
+  .highlight-action-head {
+    align-items: flex-start;
+  }
 }
 
-/* ---- Shared app navigation (rendered by common.js) ---- */
+/* ---- Shared app navigation (injected at build time) ---- */
 .app-nav {
   display: flex;
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
-  margin: 0 0 4px;
-}
-.app-nav-spacer {
-  flex: 1 1 auto;
-  min-width: 8px;
+  margin: 0 0 0 auto;
 }
 .app-nav-link {
   font-size: 14px;
@@ -1383,6 +1388,15 @@ mark.grammar-error:focus-visible {
   color: #0369a1;
   border-color: #bae6fd;
 }
+body[data-nav='home'] .app-nav-link[data-nav-key='home'],
+body[data-nav='session'] .app-nav-link[data-nav-key='session'],
+body[data-nav='progress'] .app-nav-link[data-nav-key='progress'],
+body[data-nav='method'] .app-nav-link[data-nav-key='method'],
+body[data-nav='record'] .app-nav-link[data-nav-key='record'] {
+  background: #e0f2fe;
+  color: #0369a1;
+  border-color: #bae6fd;
+}
 .app-nav-link.is-accent {
   color: #c2410c;
 }
@@ -1394,6 +1408,16 @@ mark.grammar-error:focus-visible {
   background: #ffedd5;
   color: #9a3412;
   border-color: #fed7aa;
+}
+body[data-nav='record'] .app-nav-link[data-nav-key='record'] {
+  background: #ffedd5;
+  color: #9a3412;
+  border-color: #fed7aa;
+}
+
+@media (max-width: 720px) {
+  .app-nav { margin-left: 0; }
+  .app-nav-link { padding: 6px 10px; }
 }
 
 /* ---- Session page: controls, actions, per-session stats ---- */

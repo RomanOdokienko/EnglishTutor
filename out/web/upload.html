@@ -7,13 +7,18 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body data-nav="upload">
+    <header class="app-shell">
+      <div class="app-shell-inner">
+        <a class="app-brand" href="home.html">English Tutor</a>
+        <nav id="app-nav" class="app-nav" aria-label="Primary navigation"><a class="app-nav-link" data-nav-key="home" href="home.html">This week</a><a class="app-nav-link" data-nav-key="session" href="highlights.html">Session</a><a class="app-nav-link" data-nav-key="progress" href="progress.html">Progress</a><a class="app-nav-link" data-nav-key="method" href="method.html">How it works</a><a class="app-nav-link is-accent" data-nav-key="record" href="record.html">Record</a></nav>
+      </div>
+    </header>
     <main>
-      <header>
+      <header class="page-heading">
         <h1>Upload a transcript</h1>
         <p class="subtitle">
           Select a .txt transcript file to analyze locally.
         </p>
-        <nav id="app-nav" class="app-nav"></nav>
       </header>
       <section class="card upload-card">
         <form id="upload-form">

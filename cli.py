@@ -2580,6 +2580,16 @@ def write_web_assets(out_dir: Path) -> None:
     web_dir.mkdir(parents=True, exist_ok=True)
     api_base = json.dumps((os.getenv("ENGLISH_TUTOR_API_BASE_URL") or "").strip().rstrip("/"))
     build_briefing(out_dir)
+    nav_html = "".join(
+        f'<a class="app-nav-link{(" is-accent" if accent else "")}" data-nav-key="{key}" href="{href}">{label}</a>'
+        for key, label, href, accent in (
+            ("home", "This week", "home.html", False),
+            ("session", "Session", "highlights.html", False),
+            ("progress", "Progress", "progress.html", False),
+            ("method", "How it works", "method.html", False),
+            ("record", "Record", "record.html", True),
+        )
+    )
 
     # Frontend sources live as real files under web/; copy them to out/web,
     # injecting the API base URL into HTML templates on the way.
@@ -2589,6 +2599,7 @@ def write_web_assets(out_dir: Path) -> None:
         content = src.read_text(encoding="utf-8")
         if src.suffix == ".html":
             content = content.replace("__ENGLISH_TUTOR_API_BASE_URL__", api_base)
+            content = content.replace("__ENGLISH_TUTOR_NAV__", nav_html)
         (web_dir / src.name).write_text(content, encoding="utf-8")
 
     history_path = out_dir / "history.json"
