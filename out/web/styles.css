@@ -955,6 +955,12 @@ canvas {
   margin-top: 24px;
 }
 
+.transcript-linking-hint {
+  margin: -4px 0 12px;
+  color: #64748b;
+  font-size: 13px;
+}
+
 .transcript-rows {
   display: flex;
   flex-direction: column;
@@ -1027,6 +1033,60 @@ canvas {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   margin-bottom: 6px;
+  cursor: pointer;
+  transition: border-color 0.14s ease, background 0.14s ease, box-shadow 0.14s ease;
+}
+
+.issue-list.compact li:hover,
+.issue-list.compact li:focus-visible,
+.issue-list.compact li.is-active {
+  background: #fffbeb;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.16);
+  outline: none;
+}
+
+.issue-reference {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 3px;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.issue-reference q {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.issue-number,
+mark.grammar-error::before {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 15px;
+  height: 15px;
+  margin-right: 4px;
+  border-radius: 999px;
+  background: #a16207;
+  color: #ffffff;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+  vertical-align: 1px;
+}
+
+mark.grammar-error::before {
+  content: attr(data-transcript-annotation-number);
+}
+
+.issue-number {
+  flex: 0 0 auto;
+  margin-right: 0;
 }
 
 .issue-why {
@@ -1194,6 +1254,21 @@ mark.grammar-error {
   padding: 0 2px;
   border-radius: 3px;
   cursor: help;
+  transition: background 0.14s ease, box-shadow 0.14s ease, outline-color 0.14s ease;
+}
+
+mark.grammar-error:hover,
+mark.grammar-error:focus-visible,
+mark.grammar-error.is-active {
+  background: #fbbf24;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.28);
+  outline: 2px solid #b45309;
+  outline-offset: 1px;
+  cursor: pointer;
+}
+
+mark.grammar-error:focus-visible {
+  outline-color: #0369a1;
 }
 
 @media (max-width: 720px) {

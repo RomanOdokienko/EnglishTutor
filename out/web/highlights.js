@@ -146,6 +146,7 @@ const state = {
   focusData: { focuses: [] },
   focusSetData: new Map(),
   focusBusy: false,
+  pinnedTranscriptAnnotationId: '',
 };
 
 async function loadHistory() {
@@ -1041,7 +1042,12 @@ function buildAnnotatedLine(lineText, items, lineStart) {
     if (correction && explanation) {
       title = `${correction} | ${explanation}`;
     }
-    parts.push(`<mark class="grammar-error" title="${escapeHtml(title)}">${segment}</mark>`);
+    const annotationId = item._transcriptAnnotationId || '';
+    const annotationNumber = item._transcriptAnnotationNumber || '';
+    parts.push(
+      `<mark class="grammar-error" id="${escapeHtml(annotationId)}-text" data-transcript-annotation-id="${escapeHtml(annotationId)}" `
+      + `data-transcript-annotation-number="${escapeHtml(annotationNumber)}" title="${escapeHtml(title)}" tabindex="0">${segment}</mark>`
+    );
     cursor = end;
   });
   if (cursor < lineText.length) {
@@ -1087,8 +1093,10 @@ function renderSessionTranscript(analysis) {
   if (!sessionTranscriptRows) {
     return;
   }
+  state.pinnedTranscriptAnnotationId = '';
   const transcript = analysis.transcript || '';
   const items = analysis.llm?.annotation_items || analysis.annotation_items || [];
+  const annotationIds = new Map(items.map((item, index) => [item, `transcript-annotation-${index + 1}`]));
   if (sessionTranscriptNote) {
     const meta = analysis.llm?.annotations_meta;
     if (meta && meta.total_chunks !== undefined) {
@@ -1107,7 +1115,13 @@ function renderSessionTranscript(analysis) {
     const lineStart = offset;
     const lineEnd = offset + line.length;
     offset += line.length + 1;
-    const lineItems = items.filter((item) => item.start < lineEnd && item.end > lineStart);
+    const lineItems = items
+      .filter((item) => item.start < lineEnd && item.end > lineStart)
+      .map((item, index) => ({
+        ...item,
+        _transcriptAnnotationId: annotationIds.get(item),
+        _transcriptAnnotationNumber: items.indexOf(item) + 1,
+      }));
 
     const row = document.createElement('div');
     row.className = 'transcript-row' + (lineItems.length ? '' : ' row-empty');
@@ -1129,9 +1143,19 @@ function renderSessionTranscript(analysis) {
       list.className = 'issue-list compact';
       lineItems.forEach((item) => {
         const li = document.createElement('li');
+        const annotationId = item._transcriptAnnotationId || '';
+        const annotationNumber = item._transcriptAnnotationNumber || '';
+        li.className = 'issue-item';
+        li.tabIndex = 0;
+        li.dataset.transcriptAnnotationId = annotationId;
+        li.setAttribute('aria-controls', `${annotationId}-text`);
+        li.setAttribute('aria-label', `Issue ${annotationNumber}: ${item.text || item.explanation || 'grammar issue'}`);
         const explanation = item.explanation ? item.explanation : '—';
         const correction = item.correction ? ` (${item.correction})` : '';
-        li.innerHTML = `<div class="issue-why">${escapeHtml(explanation)}${escapeHtml(correction)}</div>`;
+        li.innerHTML = `
+          <div class="issue-reference"><span class="issue-number">${escapeHtml(annotationNumber)}</span><q>${escapeHtml(item.text || 'Marked phrase')}</q></div>
+          <div class="issue-why">${escapeHtml(explanation)}${escapeHtml(correction)}</div>
+        `;
         list.appendChild(li);
       });
       issuesCell.appendChild(list);
@@ -1141,6 +1165,80 @@ function renderSessionTranscript(analysis) {
     row.appendChild(annotatedCell);
     row.appendChild(issuesCell);
     sessionTranscriptRows.appendChild(row);
+  });
+}
+
+function transcriptAnnotationIdFromTarget(target) {
+  const source = target && target.closest ? target.closest('[data-transcript-annotation-id]') : null;
+  return source?.dataset.transcriptAnnotationId || '';
+}
+
+function setActiveTranscriptAnnotation(annotationId, options = {}) {
+  if (!sessionTranscriptRows) {
+    return;
+  }
+  const selector = `[data-transcript-annotation-id="${CSS.escape(annotationId)}"]`;
+  const matches = sessionTranscriptRows.querySelectorAll(selector);
+  matches.forEach((element) => element.classList.toggle('is-active', Boolean(annotationId)));
+  if (options.scroll && matches.length) {
+    const mark = [...matches].find((element) => element.classList.contains('grammar-error'));
+    mark?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+}
+
+function clearActiveTranscriptAnnotation(annotationId) {
+  if (!annotationId || annotationId === state.pinnedTranscriptAnnotationId || !sessionTranscriptRows) {
+    return;
+  }
+  const selector = `[data-transcript-annotation-id="${CSS.escape(annotationId)}"]`;
+  sessionTranscriptRows.querySelectorAll(selector).forEach((element) => element.classList.remove('is-active'));
+}
+
+function attachTranscriptInteractions() {
+  if (!sessionTranscriptRows) {
+    return;
+  }
+  sessionTranscriptRows.addEventListener('pointerover', (event) => {
+    const annotationId = transcriptAnnotationIdFromTarget(event.target);
+    if (annotationId) {
+      setActiveTranscriptAnnotation(annotationId);
+    }
+  });
+  sessionTranscriptRows.addEventListener('pointerout', (event) => {
+    const annotationId = transcriptAnnotationIdFromTarget(event.target);
+    if (annotationId && annotationId !== transcriptAnnotationIdFromTarget(event.relatedTarget)) {
+      clearActiveTranscriptAnnotation(annotationId);
+    }
+  });
+  sessionTranscriptRows.addEventListener('focusin', (event) => {
+    const annotationId = transcriptAnnotationIdFromTarget(event.target);
+    if (annotationId) {
+      setActiveTranscriptAnnotation(annotationId, { scroll: true });
+    }
+  });
+  sessionTranscriptRows.addEventListener('focusout', (event) => {
+    const annotationId = transcriptAnnotationIdFromTarget(event.target);
+    if (annotationId && annotationId !== transcriptAnnotationIdFromTarget(event.relatedTarget)) {
+      clearActiveTranscriptAnnotation(annotationId);
+    }
+  });
+  sessionTranscriptRows.addEventListener('click', (event) => {
+    const annotationId = transcriptAnnotationIdFromTarget(event.target);
+    if (!annotationId) {
+      return;
+    }
+    if (state.pinnedTranscriptAnnotationId === annotationId) {
+      state.pinnedTranscriptAnnotationId = '';
+      clearActiveTranscriptAnnotation(annotationId);
+      return;
+    }
+    if (state.pinnedTranscriptAnnotationId) {
+      const previous = state.pinnedTranscriptAnnotationId;
+      state.pinnedTranscriptAnnotationId = '';
+      clearActiveTranscriptAnnotation(previous);
+    }
+    state.pinnedTranscriptAnnotationId = annotationId;
+    setActiveTranscriptAnnotation(annotationId, { scroll: true });
   });
 }
 
@@ -1328,6 +1426,7 @@ async function init() {
     sessionSelect.value = state.history.sessions[state.history.sessions.length - 1].date;
     sessionSelect.addEventListener('change', handleSelection);
     attachHighlightsInteractions();
+    attachTranscriptInteractions();
     attachSessionActions();
     await handleSelection();
   } catch (error) {
