@@ -148,7 +148,15 @@
     var points = validPoints(series);
     var rawMax = points.length ? Math.max.apply(null, points.map(function (point) { return point.v; })) : 1;
     var max = niceMax(rawMax * 1.12);
-    var count = dates.length;
+    // Do not reserve an x-axis position for a date excluded for every speaker.
+    // It remains visible in the exclusion notice below the chart.
+    var visibleIndexes = dates.map(function (_date, index) { return index; }).filter(function (index) {
+      return series.some(function (speaker) {
+        var point = speaker.values[index];
+        return point && !point.excluded;
+      });
+    });
+    var count = visibleIndexes.length;
 
     function xAt(index) { return pad.l + (count > 1 ? (index / (count - 1)) * plotWidth : plotWidth / 2); }
     function yAt(value) { return pad.t + (1 - value / max) * plotHeight; }
@@ -167,16 +175,16 @@
       svg.appendChild(label);
     });
 
-    dates.forEach(function (date, index) {
-      if (compact && index !== 0 && index !== count - 1) return;
+    visibleIndexes.forEach(function (sourceIndex, displayIndex) {
+      if (compact && displayIndex !== 0 && displayIndex !== count - 1) return;
       var label = svgElement('text', {
-        x: xAt(index),
+        x: xAt(displayIndex),
         y: height - 8,
-        'text-anchor': index === 0 ? 'start' : index === count - 1 ? 'end' : 'middle',
+        'text-anchor': displayIndex === 0 ? 'start' : displayIndex === count - 1 ? 'end' : 'middle',
         'font-size': 11,
         fill: '#8492aa',
       });
-      label.textContent = shortDate(date);
+      label.textContent = shortDate(dates[sourceIndex]);
       svg.appendChild(label);
     });
 
@@ -184,12 +192,13 @@
       var path = '';
       var segmentOpen = false;
       var renderedPoints = [];
-      speaker.values.forEach(function (point, index) {
+      visibleIndexes.forEach(function (sourceIndex, displayIndex) {
+        var point = speaker.values[sourceIndex];
         if (!point || point.excluded) {
           segmentOpen = false;
           return;
         }
-        var x = xAt(index);
+        var x = xAt(displayIndex);
         var y = yAt(point.v);
         path += (segmentOpen ? ' L' : ' M') + x + ' ' + y;
         segmentOpen = true;
@@ -248,19 +257,20 @@
       var rect = svg.getBoundingClientRect();
       var relativeX = (event.clientX - rect.left) / rect.width * width;
       var divisor = plotWidth / (count > 1 ? count - 1 : 1);
-      var index = Math.max(0, Math.min(count - 1, Math.round((relativeX - pad.l) / divisor)));
-      crosshair.setAttribute('x1', xAt(index));
-      crosshair.setAttribute('x2', xAt(index));
+      var displayIndex = Math.max(0, Math.min(count - 1, Math.round((relativeX - pad.l) / divisor)));
+      var sourceIndex = visibleIndexes[displayIndex];
+      crosshair.setAttribute('x1', xAt(displayIndex));
+      crosshair.setAttribute('x2', xAt(displayIndex));
       crosshair.setAttribute('opacity', 1);
       var rows = series.map(function (speaker) {
-        var point = speaker.values[index];
+        var point = speaker.values[sourceIndex];
         var content = 'No data';
         if (point && point.excluded) content = 'Excluded · ' + escapeHtml(point.reason.toLowerCase());
         if (point && !point.excluded) content = '<b>' + formatValue(point.v, decimals) + '</b> · ' + point.words.toLocaleString('en-US') + ' words';
         return '<div class="pg-tt-row"><span class="pg-tt-dot" style="background:' + speaker.color + '"></span><span>'
           + escapeHtml(speaker.name) + ': ' + content + '</span></div>';
       }).join('');
-      tooltip.innerHTML = '<b>' + escapeHtml(shortDate(dates[index])) + '</b>' + rows;
+      tooltip.innerHTML = '<b>' + escapeHtml(shortDate(dates[sourceIndex])) + '</b>' + rows;
       tooltip.style.opacity = 1;
       tooltip.style.left = Math.min(event.clientX + 14, window.innerWidth - 250) + 'px';
       tooltip.style.top = Math.min(event.clientY + 14, window.innerHeight - 120) + 'px';

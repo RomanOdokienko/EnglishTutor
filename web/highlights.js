@@ -1126,10 +1126,6 @@ function renderSessionTranscript(analysis) {
     const row = document.createElement('div');
     row.className = 'transcript-row' + (lineItems.length ? '' : ' row-empty');
 
-    const originalCell = document.createElement('div');
-    originalCell.className = 'transcript-cell transcript-text';
-    originalCell.innerHTML = line ? escapeHtml(line) : '&nbsp;';
-
     const annotatedCell = document.createElement('div');
     annotatedCell.className = 'transcript-cell transcript-text';
     annotatedCell.innerHTML = line ? buildAnnotatedLine(line, lineItems, lineStart) : '&nbsp;';
@@ -1161,7 +1157,6 @@ function renderSessionTranscript(analysis) {
       issuesCell.appendChild(list);
     }
 
-    row.appendChild(originalCell);
     row.appendChild(annotatedCell);
     row.appendChild(issuesCell);
     sessionTranscriptRows.appendChild(row);
