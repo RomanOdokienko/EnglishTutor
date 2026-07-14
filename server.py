@@ -198,6 +198,7 @@ class UploadHandler(SimpleHTTPRequestHandler):
         return (
             path.startswith("/api/")
             or path == "/history.json"
+            or path == "/briefing.json"
             or path.startswith("/sessions/")
         )
 
