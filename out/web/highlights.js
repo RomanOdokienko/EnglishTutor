@@ -290,10 +290,10 @@ function sortParticipants(participants) {
 }
 
 function escapeHtml(value) {
-  if (!value) {
+  if (value === null || value === undefined) {
     return '';
   }
-  return value
+  return String(value)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
