@@ -6,6 +6,8 @@ const sessionStatus = document.getElementById('session-status');
 const sessionStatsEl = document.getElementById('session-stats');
 const sessionTranscriptRows = document.getElementById('session-transcript-rows');
 const sessionTranscriptNote = document.getElementById('session-transcript-note');
+const transcriptLinkingHint = document.getElementById('transcript-linking-hint');
+const participantSwitch = document.getElementById('session-participant-switch');
 const highlightsRoot = document.getElementById('highlights-root');
 
 function normalizeApiBase(rawValue) {
@@ -147,7 +149,10 @@ const state = {
   focusSetData: new Map(),
   focusBusy: false,
   pinnedTranscriptAnnotationId: '',
+  selectedParticipant: '',
 };
+
+const PARTICIPANT_PREFERENCE_KEY = 'ENGLISH_TUTOR_SESSION_PARTICIPANT';
 
 async function loadHistory() {
   const response = await fetch(apiUrl('/history.json'), { cache: 'no-store' });
@@ -584,11 +589,10 @@ function collectBestExamples(items, categoryCode, transcriptText, fallbackExampl
     .slice(0, limit);
 }
 
-// ---- Evidence cards ----
-// The Session page is a witness, not a coach: every card is built only from
-// stored data (counts and densities from derived.grammar, trend from
-// history.json, examples from the transcript). No hidden weights, no advice
-// templates. Picking a focus is a human decision (plan task 2.3).
+// ---- Personal session view model ----
+// Every comparison is built from canonical derived metrics in history.json;
+// examples still come from the stored transcript annotations. The view model
+// keeps ranking and baseline rules separate from DOM rendering.
 
 const CATEGORY_CODES = ['TENSE', 'VERB', 'ARTICLE', 'PREP', 'ORDER', 'WORD', 'COLLOC'];
 const CATEGORY_CODE_TO_LABEL = Object.fromEntries(
@@ -599,21 +603,28 @@ const TREND_LOOKBACK = 3;
 // floor (about two errors in a 700-word session) on a big-enough sample.
 const PERSISTENCE_DENSITY_FLOOR = 0.3;
 const PERSISTENCE_MIN_WORDS = 120;
-const LOW_SAMPLE_WORDS = 30;
 
 function getPreviousGrammarTrail(selectedDate, participantName) {
   const sessions = state.history?.sessions || [];
   return sessions
     .filter((session) => String(session.date || '') < String(selectedDate || ''))
-    .slice(-TREND_LOOKBACK)
     .map((session) => {
       const participant = (session.participants || []).find((item) => item.name === participantName);
       return {
         date: session.date,
+        annotationsStatus: session.analysis_version?.annotations_status || '',
         words: Number(participant?.derived?.metrics?.english_word_count || 0),
+        metrics: participant?.derived?.metrics || null,
+        grammar: participant?.derived?.grammar || null,
         density: participant?.derived?.grammar?.by_category_density || null,
       };
-    });
+    })
+    .filter((entry) =>
+      entry.grammar
+      && entry.metrics
+      && entry.words >= PERSISTENCE_MIN_WORDS
+      && (!entry.annotationsStatus || entry.annotationsStatus === 'ok'))
+    .slice(-TREND_LOOKBACK);
 }
 
 function buildEvidenceCards(participant, itemsForSpeaker, transcriptText, selectedDate) {
@@ -625,7 +636,7 @@ function buildEvidenceCards(participant, itemsForSpeaker, transcriptText, select
   const densities = grammar.by_category_density || {};
   const totalErrors = Number(grammar.error_count || 0);
   const trail = getPreviousGrammarTrail(selectedDate, participant.name);
-  const comparable = trail.filter((entry) => entry.density && entry.words >= PERSISTENCE_MIN_WORDS);
+  const comparable = trail.filter((entry) => entry.density);
 
   return CATEGORY_CODES
     .map((code) => {
@@ -645,6 +656,9 @@ function buildEvidenceCards(participant, itemsForSpeaker, transcriptText, select
         comparableCount: comparable.length,
         recurring: seenIn >= 2,
         densityTrail: comparable.map((entry) => Number(entry.density[code] || 0)),
+        baselineDensity: comparable.length
+          ? comparable.reduce((sum, entry) => sum + Number(entry.density[code] || 0), 0) / comparable.length
+          : null,
         examples: collectBestExamples(itemsForSpeaker, code, transcriptText, [], 3),
       };
     })
@@ -656,9 +670,106 @@ function buildEvidenceCards(participant, itemsForSpeaker, transcriptText, select
       || a.code.localeCompare(b.code));
 }
 
-function buildEvidenceMeta(card) {
-  const cases = card.count === 1 ? '1 case' : `${card.count} cases`;
-  return `${cases} · ${card.share}% of errors · ${card.density}/100w`;
+function average(values) {
+  const numbers = values.filter((value) => Number.isFinite(value));
+  return numbers.length ? numbers.reduce((sum, value) => sum + value, 0) / numbers.length : null;
+}
+
+function formatNumber(value, maximumFractionDigits = 2) {
+  if (!Number.isFinite(Number(value))) {
+    return '—';
+  }
+  return Number(value).toLocaleString('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits,
+  });
+}
+
+function compareLowerIsBetter(current, baseline) {
+  if (!Number.isFinite(current) || !Number.isFinite(baseline)) {
+    return { delta: null, tone: 'neutral', label: 'Personal baseline not ready' };
+  }
+  const delta = current - baseline;
+  const threshold = Math.max(0.15, Math.abs(baseline) * 0.1);
+  if (delta <= -threshold) {
+    return { delta, tone: 'positive', label: `${formatNumber(Math.abs(delta))} below usual` };
+  }
+  if (delta >= threshold) {
+    return { delta, tone: 'warning', label: `${formatNumber(delta)} above usual` };
+  }
+  return { delta, tone: 'neutral', label: 'About your usual' };
+}
+
+function buildParticipantViewModel(participant, itemsForSpeaker, transcriptText, selectedDate) {
+  const derived = participant.derived || {};
+  const grammar = derived.grammar || {};
+  const metrics = derived.metrics || {};
+  const words = Number(metrics.english_word_count || 0);
+  const currentIsComparable = words >= PERSISTENCE_MIN_WORDS;
+  const history = getPreviousGrammarTrail(selectedDate, participant.name);
+  const evidence = buildEvidenceCards(participant, itemsForSpeaker, transcriptText, selectedDate);
+  const evidenceByCode = new Map(evidence.map((card) => [card.code, card]));
+  const counts = grammar.by_category_count || {};
+  const densities = grammar.by_category_density || {};
+  const totalErrors = Number(grammar.error_count || 0);
+  const activeCodes = new Set(activeFocusesFor(participant.name).map((focus) => focus.category_code));
+
+  const errorRows = CATEGORY_CODES.map((code) => {
+    const currentDensity = Number(densities[code] || 0);
+    const baselineDensity = average(history.map((entry) => Number(entry.density?.[code] || 0)));
+    const comparison = compareLowerIsBetter(currentDensity, currentIsComparable ? baselineDensity : null);
+    const count = Number(counts[code] || 0);
+    const seenIn = history.filter((entry) => Number(entry.density?.[code] || 0) >= PERSISTENCE_DENSITY_FLOOR).length;
+    return {
+      code,
+      title: CATEGORY_CODE_TO_LABEL[code] || code,
+      count,
+      share: totalErrors > 0 ? Math.round((count / totalErrors) * 100) : 0,
+      density: currentDensity,
+      baselineDensity,
+      comparison,
+      recurring: seenIn >= 2,
+      inFocus: activeCodes.has(code),
+      evidence: evidenceByCode.get(code) || null,
+    };
+  });
+
+  const priorities = errorRows
+    .filter((row) => row.count > 0 && row.evidence)
+    .sort((left, right) => {
+      const leftRegression = Math.max(0, left.comparison.delta || 0);
+      const rightRegression = Math.max(0, right.comparison.delta || 0);
+      const leftScore = left.density + leftRegression + (left.recurring ? 0.25 : 0) + (left.inFocus ? 0.25 : 0);
+      const rightScore = right.density + rightRegression + (right.recurring ? 0.25 : 0) + (right.inFocus ? 0.25 : 0);
+      return (rightScore - leftScore) || (right.count - left.count) || left.code.localeCompare(right.code);
+    })
+    .slice(0, 3)
+    .map((row, index) => ({ ...row, rank: index + 1 }));
+  const priorityRanks = new Map(priorities.map((row) => [row.code, row.rank]));
+  errorRows.forEach((row) => { row.priorityRank = priorityRanks.get(row.code) || null; });
+
+  const overallDensity = Number(grammar.error_density_per_100w || 0);
+  const overallBaseline = average(history.map((entry) => Number(entry.grammar?.error_density_per_100w || 0)));
+  const fillerRate = Number(metrics.filler_per_100w || 0);
+  const fillerBaseline = average(history.map((entry) => Number(entry.metrics?.filler_per_100w || 0)));
+  const bestImprovement = currentIsComparable ? errorRows
+    .filter((row) => Number.isFinite(row.comparison.delta) && row.comparison.delta < 0)
+    .sort((left, right) => left.comparison.delta - right.comparison.delta)[0] || null : null;
+
+  return {
+    participant,
+    history,
+    errorRows,
+    priorities,
+    overallDensity,
+    overallBaseline,
+    overallComparison: compareLowerIsBetter(overallDensity, currentIsComparable ? overallBaseline : null),
+    fillerRate,
+    fillerBaseline,
+    fillerComparison: compareLowerIsBetter(fillerRate, currentIsComparable ? fillerBaseline : null),
+    bestImprovement,
+    words,
+  };
 }
 
 function buildEvidenceTrendLine(card) {
@@ -754,7 +865,7 @@ function renderFocusBlock(participantName, selectedDate) {
   `;
 }
 
-function renderEvidenceCard(card, sessionDate, participantName) {
+function renderPracticeItem(card, sessionDate, participantName, priorityRank) {
   const exerciseKey = registerExerciseContext(sessionDate, participantName, {
     code: card.code,
     title: card.title,
@@ -782,37 +893,31 @@ function renderEvidenceCard(card, sessionDate, participantName) {
     ? '<span class="focus-chip">In focus</span>'
     : `<button class="ghost focus-set-button" type="button" data-focus-key="${escapeHtml(focusKey)}" ${state.focusBusy ? 'disabled' : ''}>Add to focus</button>`;
   return `
-    <section class="highlight-item evidence-card">
-      <div class="highlight-body">
-        <div class="highlight-item-head">
-          <h3>${escapeHtml(card.title)}</h3>
-          <span class="highlight-item-meta">${escapeHtml(buildEvidenceMeta(card))}</span>
+    <details class="practice-item" ${priorityRank === 1 ? 'open' : ''}>
+      <summary class="practice-summary">
+        <span class="priority-number">${priorityRank}</span>
+        <span class="practice-summary-main">
+          <strong>${escapeHtml(card.title)}</strong>
+          <small>${card.count} ${card.count === 1 ? 'example' : 'examples'} in this session &middot; ${formatNumber(card.density)} errors / 100 words</small>
+        </span>
+        <span class="practice-summary-action">Practice</span>
+      </summary>
+      <div class="practice-body">
+        <div class="practice-context">
+          <span>${escapeHtml(buildEvidenceTrendLine(card))}</span>
           ${focusControl}
         </div>
-        <p class="highlight-status-line">${escapeHtml(buildEvidenceTrendLine(card))}</p>
         ${examplesHtml}
         <div class="highlight-action-card">
           <div class="highlight-action-head">
-            <p class="highlight-action-title">Practice</p>
+            <p class="highlight-action-title">Mini exercise</p>
             ${renderExerciseTrigger(exerciseKey)}
           </div>
           ${renderExercisePanel(exerciseKey)}
         </div>
       </div>
-    </section>
+    </details>
   `;
-}
-
-function buildSummaryMeta(participant) {
-  const grammar = participant.derived?.grammar;
-  if (!grammar) {
-    return 'Run metrics to build evidence.';
-  }
-  const total = Number(grammar.error_count || 0);
-  if (!total) {
-    return 'No mapped grammar issues';
-  }
-  return `${total} mapped issues / ${grammar.error_density_per_100w} per 100 words`;
 }
 
 function renderExerciseTrigger(exerciseKey) {
@@ -981,12 +1086,144 @@ function renderExampleSource(example, sessionDate) {
   `;
 }
 
+function renderComparisonBadge(comparison) {
+  const tone = comparison?.tone || 'neutral';
+  return `<span class="comparison-badge is-${tone}">${escapeHtml(comparison?.label || 'Personal baseline not ready')}</span>`;
+}
+
+function renderSessionAnswer(viewModel) {
+  const currentIsComparable = viewModel.words >= PERSISTENCE_MIN_WORDS;
+  const baselineText = !currentIsComparable
+    ? `This sample is below ${PERSISTENCE_MIN_WORDS} English words, so it is not scored against your history.`
+    : viewModel.history.length
+    ? `Your recent average: ${formatNumber(viewModel.overallBaseline)} / 100 words across ${viewModel.history.length} comparable ${viewModel.history.length === 1 ? 'session' : 'sessions'}.`
+    : 'Complete more sessions with at least 120 English words to build your baseline.';
+  const best = viewModel.bestImprovement;
+  const priority = viewModel.priorities[0];
+  const bestHtml = best
+    ? `
+      <p class="answer-card-kicker">Best progress signal</p>
+      <strong class="answer-card-value">${escapeHtml(best.title)}</strong>
+      <span class="answer-card-detail">${formatNumber(Math.abs(best.comparison.delta))} fewer errors / 100 words than your recent average.</span>
+    `
+    : currentIsComparable ? `
+      <p class="answer-card-kicker">Best progress signal</p>
+      <strong class="answer-card-value">No clear drop yet</strong>
+      <span class="answer-card-detail">This session did not beat your recent category averages. That is a useful baseline, not a score.</span>
+    ` : `
+      <p class="answer-card-kicker">Best progress signal</p>
+      <strong class="answer-card-value">Not scored</strong>
+      <span class="answer-card-detail">The transcript is useful, but this sample is too short for a fair comparison.</span>
+    `;
+  const priorityHtml = priority
+    ? `
+      <p class="answer-card-kicker">What to do next</p>
+      <strong class="answer-card-value">Practice ${escapeHtml(priority.title)}</strong>
+      <span class="answer-card-detail">${priority.count} examples at ${formatNumber(priority.density)} / 100 words. The plan below starts here.</span>
+    `
+    : `
+      <p class="answer-card-kicker">What to do next</p>
+      <strong class="answer-card-value">Review the transcript</strong>
+      <span class="answer-card-detail">There is not enough categorized evidence for a practice priority yet.</span>
+    `;
+  return `
+    <div class="session-answer-grid">
+      <article class="answer-card">
+        <p class="answer-card-kicker">Grammar this session</p>
+        <div class="answer-card-value-row">
+          <strong class="answer-card-value">${formatNumber(viewModel.overallDensity)} / 100w</strong>
+          ${renderComparisonBadge(viewModel.overallComparison)}
+        </div>
+        <span class="answer-card-detail">${escapeHtml(baselineText)}</span>
+      </article>
+      <article class="answer-card is-positive">${bestHtml}</article>
+      <article class="answer-card is-action">${priorityHtml}</article>
+    </div>
+  `;
+}
+
+function renderErrorProfile(viewModel) {
+  const orderedRows = [...viewModel.errorRows].sort((left, right) => {
+    if (left.priorityRank && right.priorityRank) return left.priorityRank - right.priorityRank;
+    if (left.priorityRank) return -1;
+    if (right.priorityRank) return 1;
+    return (right.density - left.density) || left.code.localeCompare(right.code);
+  });
+  const rows = orderedRows.map((row) => `
+    <tr class="${row.priorityRank ? 'is-priority' : ''}">
+      <th scope="row">
+        <span class="error-category-title">
+          ${row.priorityRank ? `<span class="priority-number">${row.priorityRank}</span>` : '<span class="priority-placeholder"></span>'}
+          <span>${escapeHtml(row.title)}</span>
+        </span>
+        ${row.recurring ? '<small>Recurring in recent sessions</small>' : ''}
+      </th>
+      <td><strong>${row.count}</strong><small>${row.count === 1 ? 'example' : 'examples'}</small></td>
+      <td><strong>${formatNumber(row.density)}</strong><small>errors / 100w</small></td>
+      <td><strong>${row.share}%</strong><small>of mapped errors</small></td>
+      <td>${renderComparisonBadge(row.comparison)}</td>
+    </tr>
+  `).join('');
+  return `
+    <section class="error-profile">
+      <div class="section-heading-row">
+        <div>
+          <h3>Your error profile</h3>
+          <p>All mapped grammar categories. The numbered top three become the practice plan below.</p>
+        </div>
+        <span class="info-note" title="Priorities combine current frequency, change versus your own recent average, and whether the pattern recurs.">How priorities work</span>
+      </div>
+      <div class="error-profile-table-wrap">
+        <table class="error-profile-table">
+          <thead><tr><th>Category</th><th>Cases</th><th>Rate</th><th>Share</th><th>Vs your usual</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </section>
+  `;
+}
+
+function renderParticipantReview(viewModel, analysisDate) {
+  const participant = viewModel.participant;
+  const lowSample = viewModel.words < PERSISTENCE_MIN_WORDS;
+  const practiceHtml = viewModel.priorities.length
+    ? viewModel.priorities.map((priority) =>
+      renderPracticeItem(priority.evidence, analysisDate, participant.name, priority.rank)).join('')
+    : '<p class="metric-note">No categorized examples are available for a practice plan.</p>';
+  return `
+    <article class="highlight-card participant-review">
+      <div class="highlight-header participant-review-header">
+        <div>
+          <p class="participant-review-kicker">Personal session review</p>
+          <h2>${escapeHtml(participant.name)}</h2>
+        </div>
+        <span class="highlight-meta">${viewModel.words} English words &middot; ${viewModel.history.length} comparable prior ${viewModel.history.length === 1 ? 'session' : 'sessions'}</span>
+      </div>
+      ${lowSample ? `<p class="sample-warning">Short sample: fewer than ${PERSISTENCE_MIN_WORDS} English words. Keep the transcript, but treat comparisons as directional.</p>` : ''}
+      ${renderSessionAnswer(viewModel)}
+      ${renderFocusBlock(participant.name, analysisDate)}
+      ${renderErrorProfile(viewModel)}
+      <section class="practice-plan">
+        <div class="section-heading-row">
+          <div>
+            <h3>Practice plan</h3>
+            <p>Start with the first category. Open the others when you are ready.</p>
+          </div>
+          <span class="practice-count">${viewModel.priorities.length} priorities</span>
+        </div>
+        <div class="practice-list">${practiceHtml}</div>
+      </section>
+    </article>
+  `;
+}
+
 function renderHighlights(bundle) {
   highlightsRoot.innerHTML = '';
   state.currentBundle = bundle;
   state.exerciseRequestData.clear();
+  state.focusSetData.clear();
   const analysis = bundle.currentAnalysis;
-  const participants = sortParticipants(analysis.participants || []);
+  const participants = selectedParticipantsFor(analysis);
   if (!participants.length) {
     highlightsRoot.innerHTML = '<p>No participant data found for this session.</p>';
     return;
@@ -996,26 +1233,9 @@ function renderHighlights(bundle) {
   const annotationByName = buildAnnotationMap(transcriptText, annotationItems, analysis.speaker_map || {});
 
   participants.forEach((participant) => {
-    const card = document.createElement('div');
-    card.className = 'highlight-card';
     const itemsForSpeaker = annotationByName[participant.name] || [];
-    const evidenceCards = buildEvidenceCards(participant, itemsForSpeaker, transcriptText, analysis.date);
-    const lowSample = Number(participant.derived?.metrics?.english_word_count || 0) < LOW_SAMPLE_WORDS;
-    const cardsHtml = evidenceCards.length
-      ? evidenceCards.map((item) => renderEvidenceCard(item, analysis.date, participant.name)).join('')
-      : '<p class="metric-note">No categorized errors stored for this session. Run annotations to build the evidence.</p>';
-
-    card.innerHTML = `
-      <div class="highlight-header">
-        <h2>${escapeHtml(participant.name)}</h2>
-        <span class="highlight-meta">${escapeHtml(buildSummaryMeta(participant))}</span>
-      </div>
-      ${lowSample ? '<p class="metric-note">Low sample (under 30 English words) — treat these numbers as anecdotal.</p>' : ''}
-      ${renderFocusBlock(participant.name, analysis.date)}
-      <h3 class="highlight-section-title">Error evidence</h3>
-      ${cardsHtml}
-    `;
-    highlightsRoot.appendChild(card);
+    const viewModel = buildParticipantViewModel(participant, itemsForSpeaker, transcriptText, analysis.date);
+    highlightsRoot.insertAdjacentHTML('beforeend', renderParticipantReview(viewModel, analysis.date));
   });
 }
 
@@ -1057,20 +1277,65 @@ function buildAnnotatedLine(lineText, items, lineStart) {
 }
 
 const SESSION_METRICS = [
-  ['English words', (d) => d.metrics?.english_word_count, ''],
-  ['Words / turn', (d) => d.metrics?.avg_words_per_turn, ''],
-  ['Speaking share', (d) => d.metrics?.speaking_share_pct, '%'],
-  ['Error density', (d) => d.grammar?.error_density_per_100w, ' /100w'],
-  ['Fillers', (d) => d.metrics?.filler_per_100w, ' /100w'],
-  ['Russian fallback', (d) => d.metrics?.l1_fallback_pct, '%'],
-  ['Lexical diversity', (d) => d.metrics?.lexical_diversity_mattr, ''],
+  {
+    label: 'English words',
+    get: (d) => Number(d.metrics?.english_word_count),
+    unit: '',
+    description: 'Sample size used for grammar comparisons.',
+  },
+  {
+    label: 'Words / turn',
+    get: (d) => Number(d.metrics?.avg_words_per_turn),
+    unit: '',
+    description: 'Average length of one speaking turn. Context, not a score.',
+  },
+  {
+    label: 'Speaking share',
+    get: (d) => Number(d.metrics?.speaking_share_pct),
+    unit: '%',
+    description: 'Share of English words in this conversation.',
+  },
+  {
+    label: 'Error density',
+    get: (d) => Number(d.grammar?.error_density_per_100w),
+    unit: ' /100w',
+    lowerIsBetter: true,
+    description: 'Mapped grammar errors per 100 English words.',
+  },
+  {
+    label: 'Fillers',
+    get: (d) => Number(d.metrics?.filler_per_100w),
+    unit: ' /100w',
+    lowerIsBetter: true,
+    description: 'Um, uh and similar fillers per 100 English words.',
+  },
+  {
+    label: 'Lexical diversity',
+    get: (d) => Number(d.metrics?.lexical_diversity_mattr),
+    unit: '',
+    description: 'Vocabulary variety adjusted for transcript length. Context, not a score.',
+  },
 ];
+
+function renderMetricContext(metric, current, history) {
+  if (metric.label === 'English words') {
+    return current >= PERSISTENCE_MIN_WORDS ? 'Reliable sample' : 'Short sample';
+  }
+  const baseline = average(history.map((entry) => metric.get({ metrics: entry.metrics, grammar: entry.grammar })));
+  if (!Number.isFinite(baseline)) {
+    return 'No personal baseline yet';
+  }
+  if (metric.lowerIsBetter) {
+    return compareLowerIsBetter(current, baseline).label;
+  }
+  return `Recent avg ${formatNumber(baseline)}${metric.unit}`;
+}
 
 function renderSessionStats(analysis) {
   if (!sessionStatsEl) {
     return;
   }
-  const participants = sortParticipants(analysis.participants || []);
+  const participants = selectedParticipantsFor(analysis);
   if (!participants.length) {
     sessionStatsEl.innerHTML = '<p class="metric-note">No participant data.</p>';
     return;
@@ -1080,10 +1345,17 @@ function renderSessionStats(analysis) {
     if (!derived) {
       return `<div class="stat-card"><h3>${escapeHtml(participant.name)}</h3><p class="metric-note">No metrics yet — re-run metrics.</p></div>`;
     }
-    const rows = SESSION_METRICS.map(([label, get, unit]) => {
-      const value = get(derived);
-      const shown = value === null || value === undefined ? '—' : `${value}${unit}`;
-      return `<div class="stat-row"><span>${label}</span><b>${shown}</b></div>`;
+    const history = getPreviousGrammarTrail(analysis.date, participant.name);
+    const rows = SESSION_METRICS.map((metric) => {
+      const value = metric.get(derived);
+      const shown = Number.isFinite(value) ? `${formatNumber(value)}${metric.unit}` : '—';
+      const context = Number.isFinite(value) ? renderMetricContext(metric, value, history) : 'Not available';
+      return `
+        <div class="stat-row" title="${escapeHtml(metric.description)}">
+          <span class="stat-label">${escapeHtml(metric.label)}<small>${escapeHtml(metric.description)}</small></span>
+          <span class="stat-value"><b>${shown}</b><small>${escapeHtml(context)}</small></span>
+        </div>
+      `;
     }).join('');
     return `<div class="stat-card"><h3>${escapeHtml(participant.name)}</h3>${rows}</div>`;
   }).join('');
@@ -1095,72 +1367,98 @@ function renderSessionTranscript(analysis) {
   }
   state.pinnedTranscriptAnnotationId = '';
   const transcript = analysis.transcript || '';
-  const items = analysis.llm?.annotation_items || analysis.annotation_items || [];
+  const allItems = analysis.llm?.annotation_items || analysis.annotation_items || [];
+  const annotationByName = buildAnnotationMap(transcript, allItems, analysis.speaker_map || {});
+  const items = state.selectedParticipant === 'both'
+    ? allItems
+    : (annotationByName[state.selectedParticipant] || []);
   const annotationIds = new Map(items.map((item, index) => [item, `transcript-annotation-${index + 1}`]));
+  const itemNumbers = new Map(items.map((item, index) => [item, index + 1]));
+  const selectedLabel = state.selectedParticipant === 'both' ? 'both participants' : state.selectedParticipant;
+  if (transcriptLinkingHint) {
+    transcriptLinkingHint.textContent = `Showing issues for ${selectedLabel}. Select a correction to find the matching phrase in context.`;
+  }
   if (sessionTranscriptNote) {
     const meta = analysis.llm?.annotations_meta;
     if (meta && meta.total_chunks !== undefined) {
-      sessionTranscriptNote.textContent = `Annotated ${meta.chunks_processed}/${meta.total_chunks} chunks.`;
+      sessionTranscriptNote.textContent = `${items.length} issues shown · annotated ${meta.chunks_processed}/${meta.total_chunks} chunks.`;
     } else {
       sessionTranscriptNote.textContent = items.length
-        ? 'Annotated transcript generated.'
+        ? `${items.length} issues shown.`
         : 'No annotations yet — run annotations to highlight errors.';
     }
   }
 
   const lines = transcript.split('\n');
   let offset = 0;
-  sessionTranscriptRows.innerHTML = '';
+  const annotatedLines = [];
   lines.forEach((line) => {
     const lineStart = offset;
     const lineEnd = offset + line.length;
     offset += line.length + 1;
     const lineItems = items
       .filter((item) => item.start < lineEnd && item.end > lineStart)
-      .map((item, index) => ({
+      .map((item) => ({
         ...item,
         _transcriptAnnotationId: annotationIds.get(item),
-        _transcriptAnnotationNumber: items.indexOf(item) + 1,
+        _transcriptAnnotationNumber: itemNumbers.get(item),
       }));
-
-    const row = document.createElement('div');
-    row.className = 'transcript-row' + (lineItems.length ? '' : ' row-empty');
-
-    const annotatedCell = document.createElement('div');
-    annotatedCell.className = 'transcript-cell transcript-text';
-    annotatedCell.innerHTML = line ? buildAnnotatedLine(line, lineItems, lineStart) : '&nbsp;';
-
-    const issuesCell = document.createElement('div');
-    issuesCell.className = 'transcript-cell transcript-issues';
-    if (!lineItems.length) {
-      issuesCell.innerHTML = '&nbsp;';
-    } else {
-      const list = document.createElement('ul');
-      list.className = 'issue-list compact';
-      lineItems.forEach((item) => {
-        const li = document.createElement('li');
-        const annotationId = item._transcriptAnnotationId || '';
-        const annotationNumber = item._transcriptAnnotationNumber || '';
-        li.className = 'issue-item';
-        li.tabIndex = 0;
-        li.dataset.transcriptAnnotationId = annotationId;
-        li.setAttribute('aria-controls', `${annotationId}-text`);
-        li.setAttribute('aria-label', `Issue ${annotationNumber}: ${item.text || item.explanation || 'grammar issue'}`);
-        const explanation = item.explanation ? item.explanation : '—';
-        const correction = item.correction ? ` (${item.correction})` : '';
-        li.innerHTML = `
-          <div class="issue-reference"><span class="issue-number">${escapeHtml(annotationNumber)}</span><q>${escapeHtml(item.text || 'Marked phrase')}</q></div>
-          <div class="issue-why">${escapeHtml(explanation)}${escapeHtml(correction)}</div>
-        `;
-        list.appendChild(li);
-      });
-      issuesCell.appendChild(list);
-    }
-
-    row.appendChild(annotatedCell);
-    row.appendChild(issuesCell);
-    sessionTranscriptRows.appendChild(row);
+    const speakerMatch = line.match(/^\s*([^:]+):/);
+    const speakerLabel = speakerMatch?.[1]?.trim() || '';
+    const speakerName = analysis.speaker_map?.[speakerLabel] || speakerLabel;
+    const isContext = state.selectedParticipant !== 'both'
+      && speakerName
+      && speakerName !== state.selectedParticipant;
+    annotatedLines.push(`
+      <div class="transcript-document-line${isContext ? ' is-context' : ''}">
+        ${line ? buildAnnotatedLine(line, lineItems, lineStart) : '&nbsp;'}
+      </div>
+    `);
   });
+
+  const issuesHtml = items.length
+    ? items.map((item) => {
+      const annotationId = annotationIds.get(item) || '';
+      const annotationNumber = itemNumbers.get(item) || '';
+      const original = item.text || 'Marked phrase';
+      const correction = item.correction || 'No suggested rewrite';
+      const explanation = item.explanation || 'No explanation stored.';
+      const categoryCode = item.category_code || CATEGORY_LABEL_TO_CODE[item.category] || item.category || '';
+      const categoryLabel = CATEGORY_CODE_TO_LABEL[categoryCode] || item.category || '';
+      return `
+        <li class="issue-item" tabindex="0" data-transcript-annotation-id="${escapeHtml(annotationId)}"
+          aria-controls="${escapeHtml(annotationId)}-text" aria-label="Issue ${annotationNumber}: ${escapeHtml(original)}">
+          <div class="issue-reference">
+            <span class="issue-number">${escapeHtml(annotationNumber)}</span>
+            ${categoryLabel ? `<span class="issue-category">${escapeHtml(categoryLabel)}</span>` : ''}
+          </div>
+          <div class="issue-rewrite">
+            <div class="issue-version is-error"><small>You said</small><span>${escapeHtml(original)}</span></div>
+            <span class="issue-arrow" aria-hidden="true">→</span>
+            <div class="issue-version is-fix"><small>Try</small><span>${escapeHtml(correction)}</span></div>
+          </div>
+          <p class="issue-explanation">${escapeHtml(explanation)}</p>
+        </li>
+      `;
+    }).join('')
+    : '<li class="transcript-empty-state">No issues for this participant in the stored annotations.</li>';
+
+  sessionTranscriptRows.innerHTML = `
+    <section class="transcript-pane" aria-label="Annotated transcript">
+      <div class="transcript-pane-heading">
+        <div><p>Transcript</p><h3>Phrase in context</h3></div>
+        <span>Other speaker remains visible for context</span>
+      </div>
+      <div class="transcript-pane-body transcript-document">${annotatedLines.join('')}</div>
+    </section>
+    <section class="transcript-pane" aria-label="Corrections">
+      <div class="transcript-pane-heading">
+        <div><p>Review</p><h3>${items.length} ${items.length === 1 ? 'correction' : 'corrections'}</h3></div>
+        <span>Click to pin the matching phrase</span>
+      </div>
+      <div class="transcript-pane-body transcript-issue-scroll"><ol class="issue-list compact">${issuesHtml}</ol></div>
+    </section>
+  `;
 }
 
 function transcriptAnnotationIdFromTarget(target) {
@@ -1177,7 +1475,9 @@ function setActiveTranscriptAnnotation(annotationId, options = {}) {
   matches.forEach((element) => element.classList.toggle('is-active', Boolean(annotationId)));
   if (options.scroll && matches.length) {
     const mark = [...matches].find((element) => element.classList.contains('grammar-error'));
+    const issue = [...matches].find((element) => element.classList.contains('issue-item'));
     mark?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    issue?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 }
 
@@ -1235,6 +1535,58 @@ function attachTranscriptInteractions() {
     state.pinnedTranscriptAnnotationId = annotationId;
     setActiveTranscriptAnnotation(annotationId, { scroll: true });
   });
+}
+
+function readParticipantPreference() {
+  try {
+    return String(window.localStorage.getItem(PARTICIPANT_PREFERENCE_KEY) || '').trim();
+  } catch (error) {
+    return '';
+  }
+}
+
+function writeParticipantPreference(value) {
+  try {
+    window.localStorage.setItem(PARTICIPANT_PREFERENCE_KEY, value);
+  } catch (error) {}
+}
+
+function ensureSelectedParticipant(analysis) {
+  const participants = sortParticipants(analysis?.participants || []);
+  const names = participants.map((participant) => participant.name);
+  if (state.selectedParticipant === 'both' || names.includes(state.selectedParticipant)) {
+    return;
+  }
+  const saved = readParticipantPreference();
+  state.selectedParticipant = saved === 'both' || names.includes(saved)
+    ? saved
+    : (names[0] || 'both');
+}
+
+function selectedParticipantsFor(analysis) {
+  const participants = sortParticipants(analysis?.participants || []);
+  ensureSelectedParticipant(analysis);
+  if (state.selectedParticipant === 'both') {
+    return participants;
+  }
+  return participants.filter((participant) => participant.name === state.selectedParticipant);
+}
+
+function renderParticipantSwitch(analysis) {
+  if (!participantSwitch) {
+    return;
+  }
+  const participants = sortParticipants(analysis?.participants || []);
+  ensureSelectedParticipant(analysis);
+  const options = participants.map((participant) => participant.name).concat('both');
+  participantSwitch.innerHTML = options.map((value) => {
+    const label = value === 'both' ? 'Both' : value;
+    const selected = state.selectedParticipant === value;
+    return `
+      <button class="participant-switch-button${selected ? ' is-active' : ''}" type="button"
+        data-participant-view="${escapeHtml(value)}" aria-pressed="${selected}">${escapeHtml(label)}</button>
+    `;
+  }).join('');
 }
 
 function setSessionStatus(message) {
@@ -1343,9 +1695,34 @@ async function handleSelection() {
   }
   highlightsRoot.innerHTML = '<p class="metric-note">Loading session…</p>';
   const bundle = await loadContextBundle(date);
+  state.currentBundle = bundle;
+  renderParticipantSwitch(bundle.currentAnalysis);
   renderHighlights(bundle);
   renderSessionStats(bundle.currentAnalysis);
   renderSessionTranscript(bundle.currentAnalysis);
+}
+
+function attachParticipantSwitch() {
+  if (!participantSwitch) {
+    return;
+  }
+  participantSwitch.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-participant-view]');
+    if (!button || !state.currentBundle) {
+      return;
+    }
+    const next = button.dataset.participantView || '';
+    if (!next || next === state.selectedParticipant) {
+      return;
+    }
+    state.selectedParticipant = next;
+    writeParticipantPreference(next);
+    const analysis = state.currentBundle.currentAnalysis;
+    renderParticipantSwitch(analysis);
+    renderHighlights(state.currentBundle);
+    renderSessionStats(analysis);
+    renderSessionTranscript(analysis);
+  });
 }
 
 async function runFocusAction(payload, confirmText) {
@@ -1420,6 +1797,7 @@ async function init() {
     renderDropdown();
     sessionSelect.value = state.history.sessions[state.history.sessions.length - 1].date;
     sessionSelect.addEventListener('change', handleSelection);
+    attachParticipantSwitch();
     attachHighlightsInteractions();
     attachTranscriptInteractions();
     attachSessionActions();

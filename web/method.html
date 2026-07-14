@@ -76,15 +76,16 @@
       </div>
 
       <div class="mt-section">
-        <h2>Reading an evidence card</h2>
-        <p class="mt-sub">Example: "Wrong Word — 9 cases · 26% of errors · 1.03/100w · Seen in 3 of last 3 comparable sessions · density 1.34 → 1.58 → 0.88 → 1.03".</p>
+        <h2>Reading your personal session review</h2>
+        <p class="mt-sub">Session compares each participant only with their own last three comparable sessions.</p>
         <div class="mt-card">
-          <p><span class="mt-term">9 cases</span> — you made 9 marked errors of this category in this session.</p>
-          <p><span class="mt-term">26% of errors</span> — the share among all your marked errors that session.</p>
-          <p><span class="mt-term">1.03/100w</span> — density: <span class="mt-formula">errors ÷ your English words × 100</span>. This is the main number. It is fair to compare between a short call and a long one, because it is "errors per 100 words", not a raw count.</p>
-          <p><span class="mt-term">Seen in 3 of last 3 comparable sessions</span> — the category keeps coming back. A session is <i>comparable</i> when you spoke at least 120 English words in it; the category counts as "seen" when its density there was at least 0.3/100w.</p>
-          <p><span class="mt-term">density 1.34 → 1.58 → 0.88 → 1.03</span> — the density in the three previous sessions, then in this one. Falling numbers = the pattern is closing.</p>
-          <p><span class="mt-term">Card order</span> — categories that keep repeating come first, then the most frequent ones. Nothing else affects the order.</p>
+          <p><span class="mt-term">Your recent average</span> — the average error density from your last three sessions with at least 120 English words and completed annotations. A partner's results never affect this comparison.</p>
+          <p><span class="mt-term">Cases</span> — how many marked examples of a category were found in this session.</p>
+          <p><span class="mt-term">Rate</span> — <span class="mt-formula">errors ÷ your English words × 100</span>. This is the fair comparison between calls of different lengths.</p>
+          <p><span class="mt-term">Share</span> — the category's share among all your mapped errors in this session.</p>
+          <p><span class="mt-term">Vs your usual</span> — the absolute difference from your own recent average. Small changes within 10% (or 0.15/100w) are shown as "about usual" instead of being treated as progress or regression.</p>
+          <p><span class="mt-term">Top three priorities</span> — categories with the largest current rate rise when they are also above your recent average or recurring. An active focus gets a small tie-breaker. These three categories become the compact practice plan.</p>
+          <p class="mt-note">A session below 120 English words remains available for transcript review, but it is not scored against your history.</p>
         </div>
       </div>
 
@@ -100,7 +101,6 @@
               <tr><td><b>Speaking share</b></td><td>Your part of all words in the call, in percent. Around 50% means a balanced conversation.</td></tr>
               <tr><td><b>Error density</b></td><td>All your marked errors per 100 English words. Example: 34 errors in 877 words → <span class="mt-formula">34 ÷ 877 × 100 = 3.88</span>.</td></tr>
               <tr><td><b>Fillers</b></td><td>um, uh, you know, I mean, kind of… per 100 words. Lower = cleaner speech.</td></tr>
-              <tr><td><b>Russian fallback</b></td><td>Percent of your words said in Russian — switching to Russian when the English word did not come.</td></tr>
               <tr><td><b>Lexical diversity</b></td><td>MATTR, from 0 to 1: how varied your vocabulary is. Higher = you repeat the same words less.</td></tr>
             </tbody>
           </table>
@@ -112,7 +112,7 @@
         <p class="mt-sub">The whole point of the tool: pick a weakness, work on it, close it.</p>
         <div class="mt-card">
           <ol class="mt-steps">
-            <li>On the Session page, press <b>Add to focus</b> on a card worth working on (up to 3 at a time). The card's density on that day becomes the <b>baseline</b>.</li>
+            <li>On the Session page, open a practice priority and press <b>Add to focus</b> (up to 3 at a time). The category's density on that day becomes the <b>baseline</b>.</li>
             <li>Speak on the next calls with that pattern in mind.</li>
             <li>The <b>Focus of the week</b> block compares the baseline with the session you are viewing: "0.86 → 0.46/100w (−47%)". A drop of 40% or more, with at least 120 English words spoken, shows <b>✓ ready to close</b>.</li>
             <li>Press <b>Close</b> — the focus moves to <b>Closed focuses</b> on the Progress page. That list is the victory log.</li>
@@ -124,7 +124,7 @@
       <div class="mt-section">
         <h2>How much to trust the numbers</h2>
         <div class="mt-card">
-          <p><b>Exact:</b> who said what, word counts, speaking share, fillers, Russian fallback, vocabulary variety — these are computed mechanically and are fully reproducible.</p>
+          <p><b>Exact:</b> who said what, word counts, speaking share, fillers and vocabulary variety — these are computed mechanically and are fully reproducible.</p>
           <p><b>Approximate:</b> error marks come from AI, so two runs on the same transcript can differ by a few findings. Single errors mean little; repeated categories and multi-session trends are what matters.</p>
           <p><b>Low sample:</b> sessions with under 120 English words are shown but not used for comparisons, and Progress draws them as hollow points.</p>
           <p class="mt-note">Sessions annotated before July 2026 used an older, noisier extraction. "Re-run annotations" on a session refreshes it with the current one.</p>

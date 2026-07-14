@@ -16,7 +16,7 @@
     <main class="highlights-page">
       <header class="page-heading">
         <h1>Session</h1>
-        <p class="subtitle">Everything for one call: error evidence by category, the annotated transcript, and this session's numbers. <a href="method.html">How the numbers work</a></p>
+        <p class="subtitle">See what changed for you, choose the next practice target, and review each correction in context. <a href="method.html">How the numbers work</a></p>
       </header>
       <section class="controls controls-highlights">
         <div class="controls-select">
@@ -31,23 +31,28 @@
         <p class="helper" id="session-status"></p>
       </section>
 
-      <section id="highlights-root" class="highlight-grid"></section>
-
-      <section class="session-block">
-        <h2 class="session-block-title">This session's numbers</h2>
-        <div id="session-stats" class="session-stats"></div>
+      <section class="session-view-controls" aria-label="Session participant view">
+        <div>
+          <p class="session-view-label">View this session for</p>
+          <p class="session-view-helper">Each person is compared only with their own recent sessions.</p>
+        </div>
+        <div id="session-participant-switch" class="participant-switch" role="group" aria-label="Choose participant"></div>
       </section>
 
+      <section id="highlights-root" class="highlight-grid"></section>
+
+      <details class="session-block session-stats-details">
+        <summary>
+          <span>More session stats</span>
+          <small>Sample size, conversation balance, pace, fillers and vocabulary.</small>
+        </summary>
+        <div id="session-stats" class="session-stats"></div>
+      </details>
+
       <section class="session-block transcript">
-        <h2 class="session-block-title">Annotated transcript</h2>
-        <p class="transcript-linking-hint">Hover or select an issue to find its phrase. Matching numbers keep several notes easy to scan.</p>
-        <div class="transcript-rows">
-          <div class="transcript-row transcript-header">
-            <div class="transcript-cell"><h3>Annotated</h3></div>
-            <div class="transcript-cell"><h3>Issues</h3></div>
-          </div>
-          <div id="session-transcript-rows"></div>
-        </div>
+        <h2 class="session-block-title">Review the transcript</h2>
+        <p class="transcript-linking-hint" id="transcript-linking-hint">Select an issue to find the matching phrase in context.</p>
+        <div id="session-transcript-rows" class="transcript-review"></div>
         <p class="helper" id="session-transcript-note"></p>
       </section>
     </main>
