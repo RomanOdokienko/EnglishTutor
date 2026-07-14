@@ -56,6 +56,16 @@ def ensure_data_root_seeded() -> None:
             _copy_missing(src, DATA_ROOT / name)
 
 
+def clean_env(name: str, default: str = "") -> str:
+    """Read an env var trimmed of stray whitespace.
+
+    A dashboard-set value like "gpt-5-mini " (trailing space) would otherwise
+    reach the API verbatim and 404 as an unknown model.
+    """
+    value = (os.getenv(name) or "").strip()
+    return value or default
+
+
 OPENAI_ENDPOINT = "https://api.openai.com/v1/responses"
 DEFAULT_OPENAI_MODEL = "gpt-4o-mini"
 DEFAULT_ANNOTATION_MODEL = "gpt-4o"
@@ -1809,9 +1819,9 @@ def annotate_session(
     blocks = parse_transcript_blocks(transcript_text)
     analysis["chunks"] = build_chunks(blocks, transcript_text)
 
-    api_key = os.getenv("OPENAI_API_KEY", "")
-    model = openai_model or os.getenv("OPENAI_MODEL") or DEFAULT_OPENAI_MODEL
-    annotation_model = os.getenv("OPENAI_ANNOTATION_MODEL") or DEFAULT_ANNOTATION_MODEL
+    api_key = clean_env("OPENAI_API_KEY")
+    model = (openai_model or "").strip() or clean_env("OPENAI_MODEL", DEFAULT_OPENAI_MODEL)
+    annotation_model = clean_env("OPENAI_ANNOTATION_MODEL", DEFAULT_ANNOTATION_MODEL)
     analysis.setdefault("llm", {"status": "skipped", "model": model})
     analysis["llm"]["annotations_model"] = annotation_model
 
@@ -2003,9 +2013,9 @@ def analyze_session(
         build_practical_recommendations(analysis, transcript_text)
         return analysis
 
-    api_key = os.getenv("OPENAI_API_KEY", "")
-    model = openai_model or os.getenv("OPENAI_MODEL") or DEFAULT_OPENAI_MODEL
-    annotation_model = os.getenv("OPENAI_ANNOTATION_MODEL") or DEFAULT_ANNOTATION_MODEL
+    api_key = clean_env("OPENAI_API_KEY")
+    model = (openai_model or "").strip() or clean_env("OPENAI_MODEL", DEFAULT_OPENAI_MODEL)
+    annotation_model = clean_env("OPENAI_ANNOTATION_MODEL", DEFAULT_ANNOTATION_MODEL)
     if not api_key:
         if existing_analysis:
             merge_existing_llm(analysis, existing_analysis)

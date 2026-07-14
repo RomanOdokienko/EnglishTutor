@@ -48,6 +48,7 @@ from cli import (
     build_all,
     call_openai_highlight_exercise,
     call_openai_probe,
+    clean_env,
     ensure_data_root_seeded,
     load_json,
     reanalyze_derived_all,
@@ -162,8 +163,8 @@ def create_session_files(
 
 
 def openai_config() -> tuple[bool, str | None]:
-    api_key = os.getenv("OPENAI_API_KEY", "")
-    model = os.getenv("OPENAI_MODEL")
+    api_key = clean_env("OPENAI_API_KEY")
+    model = clean_env("OPENAI_MODEL") or None
     return bool(api_key), model
 
 
@@ -486,7 +487,7 @@ class UploadHandler(SimpleHTTPRequestHandler):
                 self.send_plain_response(400, "Missing exercise context.")
                 return
 
-            model = os.getenv("OPENAI_EXERCISE_MODEL") or os.getenv("OPENAI_MODEL") or "gpt-4o-mini"
+            model = clean_env("OPENAI_EXERCISE_MODEL") or clean_env("OPENAI_MODEL") or "gpt-4o-mini"
             exercise, error = call_openai_highlight_exercise(
                 api_key=api_key,
                 model=model,
