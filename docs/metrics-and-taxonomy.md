@@ -78,8 +78,9 @@ their per-category splits may show a small step relative to newer sessions.
 
 - Compare values only when metrics and taxonomy versions match.
 - Display the version near multi-session progress data.
-- Mark small samples as low confidence in the UI; the current UI uses fewer
-  than 30 English words as the low-sample threshold.
+- Exclude small samples from progress lines and chart scales; the current UI
+  requires at least 120 English words per participant. Keep excluded sessions
+  visible in the audit table and explain why they do not affect the trend.
 - Recalculate the whole archive after a version bump before drawing a new
   trendline.
 - Preserve original transcript and annotations so a result can be reproduced or

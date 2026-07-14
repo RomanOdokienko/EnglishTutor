@@ -7,40 +7,73 @@
     <link rel="stylesheet" href="styles.css" />
     <style>
       .pg-wrap { max-width: 1240px; margin: 0 auto; }
-      .pg-toolbar { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; margin: 6px 0 22px; }
+      .pg-toolbar { display: flex; align-items: center; margin: 2px 0 20px; }
       .pg-legend { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
-      .pg-leg-item { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #334155; }
-      .pg-swatch { width: 14px; height: 14px; border-radius: 4px; }
-      .pg-actions { display: flex; gap: 10px; align-items: center; }
-      .pg-version { font-size: 12px; color: #94a3b8; }
-      .pg-section { margin: 30px 0; }
-      .pg-section > h2 { font-size: 18px; margin: 0 0 4px; }
-      .pg-section > .pg-sub { margin: 0 0 16px; color: #64748b; font-size: 14px; }
-      .pg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
-      .pg-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 16px 10px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05); }
-      .pg-card.pg-hero { grid-column: 1 / -1; }
-      .pg-card h3 { font-size: 14px; margin: 0 0 2px; color: #0f172a; }
-      .pg-hint { font-size: 12px; color: #94a3b8; margin: 0 0 8px; display: flex; align-items: center; gap: 6px; }
-      .pg-hint .arrow { font-weight: 700; }
-      .pg-good { color: #10b981; }
-      .pg-card svg { width: 100%; height: auto; display: block; overflow: visible; }
-      .pg-tooltip { position: fixed; z-index: 30; pointer-events: none; background: #0f172a; color: #f8fafc; font-size: 12px; line-height: 1.5; padding: 8px 10px; border-radius: 8px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.28); opacity: 0; transition: opacity .08s; max-width: 220px; }
-      .pg-tooltip b { font-weight: 600; }
-      .pg-tt-row { display: flex; align-items: center; gap: 6px; }
-      .pg-tt-dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
-      .pg-empty { padding: 40px 20px; text-align: center; color: #64748b; }
-      .pg-note { font-size: 12px; color: #94a3b8; margin-top: 8px; }
-      .pg-table-wrap { overflow-x: auto; margin-top: 10px; }
-      table.pg-table { border-collapse: collapse; font-size: 13px; width: 100%; }
-      table.pg-table th, table.pg-table td { border: 1px solid #e2e8f0; padding: 6px 9px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+      .pg-leg-item { display: inline-flex; align-items: center; gap: 8px; color: #334155; font-size: 14px; font-weight: 650; }
+      .pg-swatch { width: 12px; height: 12px; border-radius: 4px; flex: 0 0 auto; }
+      .pg-section { margin: 30px 0 38px; }
+      .pg-section > h2 { margin: 0 0 5px; font-size: 20px; letter-spacing: -0.01em; }
+      .pg-section > .pg-sub { max-width: 760px; margin: 0 0 17px; color: #64748b; font-size: 14px; line-height: 1.5; }
+      .pg-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+      .pg-grid-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .pg-card { min-width: 0; padding: 17px 18px 12px; border: 1px solid #dce4ee; border-radius: 15px; background: #fff; box-shadow: 0 5px 14px rgba(15, 23, 42, 0.045); }
+      .pg-card.pg-hero { padding: 18px 20px 12px; }
+      .pg-card-head { display: flex; align-items: center; gap: 8px; min-height: 24px; }
+      .pg-card h3 { margin: 0; color: #0f172a; font-size: 15px; }
+      .pg-hint { min-height: 20px; margin: 3px 0 7px; color: #64748b; font-size: 12px; line-height: 1.45; }
+      .pg-card svg { display: block; width: 100%; height: auto; overflow: visible; }
+      .pg-info { position: relative; }
+      .pg-info > summary { display: grid; width: 19px; height: 19px; place-items: center; border: 1px solid #cbd5e1; border-radius: 50%; color: #64748b; font-size: 11px; font-weight: 800; cursor: pointer; list-style: none; }
+      .pg-info > summary::-webkit-details-marker { display: none; }
+      .pg-info > div { position: absolute; z-index: 20; top: 26px; left: -10px; width: 270px; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 10px; background: #fff; box-shadow: 0 10px 25px rgba(15, 23, 42, .14); color: #475569; font-size: 12px; font-weight: 500; line-height: 1.5; }
+      .pg-summary-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0 0 16px; }
+      .pg-summary-card { display: grid; gap: 7px; padding: 14px 16px; border: 1px solid #dbe5ef; border-radius: 13px; background: rgba(255, 255, 255, .72); }
+      .pg-summary-card > span { color: #64748b; font-size: 12px; }
+      .pg-summary-name { display: flex; align-items: center; gap: 8px; color: #334155; font-size: 13px; font-weight: 750; }
+      .pg-summary-values { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .pg-summary-values strong { font-size: 21px; font-variant-numeric: tabular-nums; }
+      .pg-summary-values strong span { color: #94a3b8; font-weight: 500; }
+      .pg-trend-status { padding: 4px 8px; border-radius: 999px; font-size: 11px; font-weight: 750; white-space: nowrap; }
+      .pg-trend-status.is-improving { background: #dcfce7; color: #166534; }
+      .pg-trend-status.is-attention { background: #ffedd5; color: #9a3412; }
+      .pg-trend-status.is-steady { background: #e2e8f0; color: #475569; }
+      .pg-exclusion { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; margin-top: 12px; padding: 12px 14px; border: 1px solid #fde68a; border-radius: 11px; background: #fffbeb; color: #713f12; font-size: 12px; line-height: 1.5; }
+      .pg-exclusion small { grid-column: 2; color: #92400e; }
+      .pg-tooltip { position: fixed; z-index: 30; max-width: 245px; padding: 9px 11px; border-radius: 9px; background: #0f172a; box-shadow: 0 7px 20px rgba(15, 23, 42, .28); color: #f8fafc; font-size: 12px; line-height: 1.55; opacity: 0; pointer-events: none; transition: opacity .08s; }
+      .pg-tooltip > b { display: block; margin-bottom: 3px; }
+      .pg-tt-row { display: flex; align-items: flex-start; gap: 7px; }
+      .pg-tt-dot { width: 8px; height: 8px; margin-top: 5px; border-radius: 50%; flex: 0 0 auto; }
+      .pg-more, .pg-diagnostics { margin: 20px 0; border: 1px solid #dbe5ef; border-radius: 14px; background: rgba(255, 255, 255, .72); }
+      .pg-more > summary, .pg-diagnostics > summary { padding: 16px 18px; color: #0f172a; cursor: pointer; }
+      .pg-more > summary span { display: inline-grid; gap: 3px; margin-left: 4px; }
+      .pg-more > summary small { color: #64748b; font-weight: 500; }
+      .pg-more-body { padding: 0 18px 4px; border-top: 1px solid #e2e8f0; }
+      .pg-more-body .pg-section:first-child { margin-top: 24px; }
+      .pg-diagnostics-body { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 4px 18px 16px; }
+      .pg-diagnostics-body > div { display: grid; gap: 3px; }
+      .pg-diagnostics-body span { color: #64748b; font-size: 12px; }
+      .pg-table-wrap { overflow-x: auto; margin: 0 18px 18px; }
+      table.pg-table { width: calc(100% - 1px); border-collapse: collapse; font-size: 13px; }
+      table.pg-table th, table.pg-table td { padding: 7px 9px; border: 1px solid #e2e8f0; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
       table.pg-table th:first-child, table.pg-table td:first-child { text-align: left; }
-      table.pg-table thead th { background: #f8fafc; }
-      details.pg-table-box { margin-top: 10px; }
-      details.pg-table-box > summary { cursor: pointer; font-size: 13px; color: #0284c7; }
+      table.pg-table thead th, .pg-table-speaker { background: #f8fafc; }
+      .pg-table-speaker { font-weight: 700; }
+      table.pg-table td.is-excluded { background: #fffbeb; color: #92400e; }
+      details.pg-table-box { margin-top: 2px; }
+      details.pg-table-box > summary { margin: 0 18px 14px; color: #0369a1; cursor: pointer; font-size: 13px; font-weight: 650; }
+      .pg-empty { padding: 40px 20px; color: #64748b; text-align: center; }
       .pg-victories { display: grid; gap: 8px; }
-      .pg-victory { display: flex; align-items: baseline; gap: 8px; padding: 10px 14px; border-radius: 12px; background: #f0fdf4; border: 1px solid rgba(34, 197, 94, 0.35); font-size: 14px; color: #1e293b; }
-      .pg-victory-mark { color: #16a34a; font-weight: 700; }
+      .pg-victory { display: flex; align-items: baseline; gap: 8px; padding: 10px 14px; border: 1px solid rgba(34, 197, 94, .35); border-radius: 12px; background: #f0fdf4; color: #1e293b; font-size: 14px; }
+      .pg-victory-mark { color: #16a34a; font-weight: 800; }
       .pg-victory-dates { color: #64748b; font-size: 12px; }
+      @media (max-width: 760px) {
+        .pg-grid-two, .pg-summary-grid { grid-template-columns: 1fr; }
+        .pg-card.pg-hero { padding-inline: 14px; }
+        .pg-exclusion { grid-template-columns: 1fr; }
+        .pg-exclusion small { grid-column: 1; }
+        .pg-diagnostics-body { align-items: flex-start; flex-direction: column; }
+        .pg-info > div { right: -10px; left: auto; width: min(270px, calc(100vw - 56px)); }
+      }
     </style>
   </head>
   <body data-nav="progress">
@@ -53,22 +86,16 @@
     <main class="pg-wrap">
       <header class="page-heading">
         <h1>Progress</h1>
-        <p class="subtitle">Reliable, reproducible metrics per speaker over time. Grammar is split by category so you can see which patterns are actually closing.</p>
+        <p class="subtitle">See whether grammar is improving, what to practise now, and the speaking habits worth tracking.</p>
       </header>
-
       <div class="pg-toolbar">
-        <div class="pg-legend" id="pg-legend"></div>
-        <div class="pg-actions">
-          <span class="pg-version" id="pg-version"></span>
-          <button class="ghost" id="pg-reanalyze" type="button">Re-analyze all</button>
-        </div>
+        <div class="pg-legend" id="pg-legend" aria-label="Speakers"></div>
       </div>
-
       <div id="pg-root"></div>
-      <div class="pg-tooltip" id="pg-tooltip"></div>
+      <div class="pg-tooltip" id="pg-tooltip" role="tooltip"></div>
     </main>
     <script>
-      window.ENGLISH_TUTOR_API_BASE_URL = "https://englishtutor-production-ab18.up.railway.app";
+      window.ENGLISH_TUTOR_API_BASE_URL = "";
     </script>
     <script src="common.js"></script>
     <script src="progress.js"></script>

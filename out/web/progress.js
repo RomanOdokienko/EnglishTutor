@@ -1,292 +1,469 @@
 (function () {
   'use strict';
 
-  // ---- API base (same behavior as app.js) ----
   function normalizeApiBase(raw) {
-    const v = String(raw || '').trim();
-    return v ? v.replace(/\/+$/, '') : '';
+    var value = String(raw || '').trim();
+    return value ? value.replace(/\/+$/, '') : '';
   }
+
   function apiBase() {
-    const params = new URLSearchParams(window.location.search);
-    const q = normalizeApiBase(params.get('api_base'));
-    if (q) { try { localStorage.setItem('ENGLISH_TUTOR_API_BASE_URL', q); } catch (e) {} return q; }
-    const inline = normalizeApiBase(window.ENGLISH_TUTOR_API_BASE_URL);
-    if (inline) return inline;
-    try { return normalizeApiBase(localStorage.getItem('ENGLISH_TUTOR_API_BASE_URL')); } catch (e) { return ''; }
+    var params = new URLSearchParams(window.location.search);
+    var queryBase = normalizeApiBase(params.get('api_base'));
+    if (queryBase) {
+      try { localStorage.setItem('ENGLISH_TUTOR_API_BASE_URL', queryBase); } catch (error) {}
+      return queryBase;
+    }
+    var inlineBase = normalizeApiBase(window.ENGLISH_TUTOR_API_BASE_URL);
+    if (inlineBase) return inlineBase;
+    try { return normalizeApiBase(localStorage.getItem('ENGLISH_TUTOR_API_BASE_URL')); } catch (error) { return ''; }
   }
+
   function apiUrl(path) {
     if (/^https?:\/\//i.test(path)) return path;
-    const base = apiBase();
+    var base = apiBase();
     if (!base) return path;
     return base + (path.startsWith('/') ? path : '/' + path);
   }
 
-  // ---- Config ----
-  var PALETTE = ['#0ea5e9', '#f97316', '#10b981', '#a855f7']; // speaker 1, 2, ...
-  var LOW_SAMPLE = 120; // english words below this = low-confidence point
+  var PALETTE = ['#0ea5e9', '#f97316', '#10b981', '#a855f7'];
+  var LOW_SAMPLE = 120;
   var CATEGORIES = [
-    ['ARTICLE', 'Articles'], ['TENSE', 'Verb Tense'], ['VERB', 'Verb Form'],
-    ['PREP', 'Prepositions'], ['ORDER', 'Word Order'], ['WORD', 'Wrong Word'],
-    ['COLLOC', 'Collocation'],
+    { code: 'ARTICLE', label: 'Articles' },
+    { code: 'TENSE', label: 'Verb tense' },
+    { code: 'VERB', label: 'Verb form' },
+    { code: 'PREP', label: 'Prepositions' },
+    { code: 'ORDER', label: 'Word order' },
+    { code: 'WORD', label: 'Wrong word' },
+    { code: 'COLLOC', label: 'Collocation' },
   ];
-  var FLUENCY = [
-    { key: 'avg_words_per_turn', label: 'Words per turn', better: 'up' },
-    { key: 'filler_per_100w', label: 'Fillers / 100 words', better: 'down' },
-    { key: 'l1_fallback_pct', label: 'Russian fallback %', better: 'down' },
-    { key: 'lexical_diversity_mattr', label: 'Lexical diversity (MATTR)', better: 'up' },
+  var SECONDARY_METRICS = [
+    {
+      key: 'avg_words_per_turn',
+      label: 'Words per turn',
+      description: 'Average length of a speaking turn. This is descriptive, not a score.',
+      help: 'Longer is not automatically better: the topic, role and conversation style strongly affect turn length.',
+      decimals: 1,
+    },
+    {
+      key: 'lexical_diversity_mattr',
+      label: 'Lexical diversity (MATTR)',
+      description: 'Vocabulary variety adjusted for transcript length.',
+      help: 'MATTR averages type-token ratio over a 50-word moving window. It is useful for context, but small changes are hard to interpret.',
+      decimals: 2,
+    },
   ];
-
   var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  function shortDate(d) {
-    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || '');
-    if (!m) return d || '';
-    return parseInt(m[3], 10) + ' ' + MONTHS[parseInt(m[2], 10) - 1];
-  }
-  function niceMax(v) {
-    if (!(v > 0)) return 1;
-    var p = Math.pow(10, Math.floor(Math.log10(v)));
-    var n = v / p;
-    var m = n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10;
-    return m * p;
-  }
-  var SVGNS = 'http://www.w3.org/2000/svg';
-  function el(tag, attrs) {
-    var node = document.createElementNS(SVGNS, tag);
-    for (var k in attrs) node.setAttribute(k, attrs[k]);
-    return node;
-  }
-
   var state = { history: null, speakers: [], focus: { focuses: [] } };
   var tooltip = document.getElementById('pg-tooltip');
 
-  function speakerColor(name) {
-    var i = state.speakers.indexOf(name);
-    return PALETTE[(i < 0 ? 0 : i) % PALETTE.length];
+  function escapeHtml(value) {
+    return String(value === null || value === undefined ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
   }
 
-  // Build [{name,color,values:[{v,low}|null]}] for a metric extractor.
-  function buildSeries(extract) {
+  function shortDate(date) {
+    var match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date || '');
+    if (!match) return date || '';
+    return parseInt(match[3], 10) + ' ' + MONTHS[parseInt(match[2], 10) - 1];
+  }
+
+  function formatValue(value, decimals) {
+    if (value === null || value === undefined || !isFinite(value)) return '—';
+    return Number(value).toFixed(decimals === undefined ? 1 : decimals);
+  }
+
+  function niceMax(value) {
+    if (!(value > 0)) return 1;
+    var power = Math.pow(10, Math.floor(Math.log10(value)));
+    var normalized = value / power;
+    var rounded = normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 2.5 ? 2.5 : normalized <= 5 ? 5 : 10;
+    return rounded * power;
+  }
+
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  function svgElement(tag, attrs) {
+    var node = document.createElementNS(SVGNS, tag);
+    Object.keys(attrs || {}).forEach(function (key) { node.setAttribute(key, attrs[key]); });
+    return node;
+  }
+
+  function speakerColor(name) {
+    var index = state.speakers.indexOf(name);
+    return PALETTE[(index < 0 ? 0 : index) % PALETTE.length];
+  }
+
+  function exclusionReason(session, words, requiresAnnotations) {
+    if (words < LOW_SAMPLE) return 'Only ' + words + ' English words';
+    var status = String((session.analysis_version || {}).annotations_status || '').toLowerCase();
+    if (requiresAnnotations && status && status !== 'ok') return 'Annotations ' + status;
+    return '';
+  }
+
+  function buildSeries(extract, options) {
+    options = options || {};
     var sessions = state.history.sessions;
     return state.speakers.map(function (name) {
-      var values = sessions.map(function (s) {
-        var p = (s.participants || []).find(function (x) { return x.name === name; });
-        if (!p || !p.derived) return null;
-        var v = extract(p.derived);
-        if (v === null || v === undefined || isNaN(v)) return null;
-        var words = (p.derived.metrics || {}).english_word_count || 0;
-        return { v: v, low: words < LOW_SAMPLE };
+      var values = sessions.map(function (session) {
+        var participant = (session.participants || []).find(function (item) { return item.name === name; });
+        if (!participant || !participant.derived) return null;
+        var rawValue = extract(participant.derived);
+        if (rawValue === null || rawValue === undefined || rawValue === '') return null;
+        var value = Number(rawValue);
+        if (!Number.isFinite(value)) return null;
+        var words = Number((participant.derived.metrics || {}).english_word_count || 0);
+        var reason = exclusionReason(session, words, !!options.requiresAnnotations);
+        return { v: value, words: words, excluded: !!reason, reason: reason };
       });
       return { name: name, color: speakerColor(name), values: values };
     });
   }
 
-  // ---- Chart renderer (SVG line chart with hover) ----
-  function makeChart(series, dates, opts) {
-    opts = opts || {};
-    var compact = !!opts.compact;
-    var W = 720, H = compact ? 150 : 240;
-    var pad = compact ? { t: 12, r: 14, b: 24, l: 30 } : { t: 16, r: 74, b: 26, l: 34 };
-    var plotW = W - pad.l - pad.r, plotH = H - pad.t - pad.b;
-
-    var all = [];
-    series.forEach(function (s) { s.values.forEach(function (pt) { if (pt) all.push(pt.v); }); });
-    var max = niceMax(all.length ? Math.max.apply(null, all) : 1);
-    var n = dates.length;
-    function xAt(i) { return pad.l + (n > 1 ? (i / (n - 1)) * plotW : plotW / 2); }
-    function yAt(v) { return pad.t + (1 - v / (max || 1)) * plotH; }
-
-    var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img' });
-
-    // gridlines + y ticks (0, mid, max)
-    [0, max / 2, max].forEach(function (t) {
-      var y = yAt(t);
-      svg.appendChild(el('line', { x1: pad.l, y1: y, x2: W - pad.r, y2: y, stroke: '#eef2f7', 'stroke-width': 1 }));
-      var lbl = el('text', { x: pad.l - 6, y: y + 3.5, 'text-anchor': 'end', 'font-size': 10, fill: '#94a3b8' });
-      lbl.textContent = (max <= 5 ? t.toFixed(t % 1 ? 1 : 0) : Math.round(t));
-      svg.appendChild(lbl);
-    });
-
-    // x labels (first & last always; middle only on hero)
-    dates.forEach(function (d, i) {
-      if (compact && i !== 0 && i !== n - 1) return;
-      var t = el('text', { x: xAt(i), y: H - 8, 'text-anchor': i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle', 'font-size': 10, fill: '#94a3b8' });
-      t.textContent = shortDate(d);
-      svg.appendChild(t);
-    });
-
-    // series polylines + points
-    series.forEach(function (s) {
-      var segPts = [];
-      var d = '';
-      s.values.forEach(function (pt, i) {
-        if (!pt) { return; }
-        var x = xAt(i), y = yAt(pt.v);
-        d += (d ? ' L' : 'M') + x + ' ' + y;
-        segPts.push({ x: x, y: y, pt: pt });
+  function validPoints(series) {
+    var points = [];
+    series.forEach(function (speaker) {
+      speaker.values.forEach(function (point) {
+        if (point && !point.excluded) points.push(point);
       });
-      if (d) svg.appendChild(el('path', { d: d, fill: 'none', stroke: s.color, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
-      segPts.forEach(function (sp) {
-        svg.appendChild(el('circle', {
-          cx: sp.x, cy: sp.y, r: 4,
-          fill: sp.pt.low ? '#ffffff' : s.color,
-          stroke: s.color, 'stroke-width': 2,
+    });
+    return points;
+  }
+
+  function hasMeasuredValues(series) {
+    return validPoints(series).some(function (point) { return point.v > 0; });
+  }
+
+  function makeChart(series, dates, options) {
+    options = options || {};
+    var compact = !!options.compact;
+    var decimals = options.decimals === undefined ? 1 : options.decimals;
+    var width = 720;
+    var height = compact ? 196 : 286;
+    var pad = compact ? { t: 16, r: 20, b: 30, l: 38 } : { t: 20, r: 82, b: 32, l: 42 };
+    var plotWidth = width - pad.l - pad.r;
+    var plotHeight = height - pad.t - pad.b;
+    var points = validPoints(series);
+    var rawMax = points.length ? Math.max.apply(null, points.map(function (point) { return point.v; })) : 1;
+    var max = niceMax(rawMax * 1.12);
+    var count = dates.length;
+
+    function xAt(index) { return pad.l + (count > 1 ? (index / (count - 1)) * plotWidth : plotWidth / 2); }
+    function yAt(value) { return pad.t + (1 - value / max) * plotHeight; }
+
+    var svg = svgElement('svg', {
+      viewBox: '0 0 ' + width + ' ' + height,
+      role: 'img',
+      'aria-label': options.ariaLabel || 'Progress chart',
+    });
+
+    [0, max / 2, max].forEach(function (tick) {
+      var y = yAt(tick);
+      svg.appendChild(svgElement('line', { x1: pad.l, y1: y, x2: width - pad.r, y2: y, stroke: '#e8eef5', 'stroke-width': 1 }));
+      var label = svgElement('text', { x: pad.l - 8, y: y + 4, 'text-anchor': 'end', 'font-size': 11, fill: '#8492aa' });
+      label.textContent = formatValue(tick, decimals);
+      svg.appendChild(label);
+    });
+
+    dates.forEach(function (date, index) {
+      if (compact && index !== 0 && index !== count - 1) return;
+      var label = svgElement('text', {
+        x: xAt(index),
+        y: height - 8,
+        'text-anchor': index === 0 ? 'start' : index === count - 1 ? 'end' : 'middle',
+        'font-size': 11,
+        fill: '#8492aa',
+      });
+      label.textContent = shortDate(date);
+      svg.appendChild(label);
+    });
+
+    series.forEach(function (speaker) {
+      var path = '';
+      var segmentOpen = false;
+      var renderedPoints = [];
+      speaker.values.forEach(function (point, index) {
+        if (!point || point.excluded) {
+          segmentOpen = false;
+          return;
+        }
+        var x = xAt(index);
+        var y = yAt(point.v);
+        path += (segmentOpen ? ' L' : ' M') + x + ' ' + y;
+        segmentOpen = true;
+        renderedPoints.push({ x: x, y: y, point: point });
+      });
+      if (path) {
+        svg.appendChild(svgElement('path', {
+          d: path,
+          fill: 'none',
+          stroke: speaker.color,
+          'stroke-width': compact ? 2.25 : 2.75,
+          'stroke-linejoin': 'round',
+          'stroke-linecap': 'round',
+        }));
+      }
+      renderedPoints.forEach(function (rendered) {
+        svg.appendChild(svgElement('circle', {
+          cx: rendered.x,
+          cy: rendered.y,
+          r: compact ? 4 : 4.5,
+          fill: speaker.color,
+          stroke: '#ffffff',
+          'stroke-width': 1.5,
         }));
       });
-      // direct end-label on hero charts
-      if (!compact && segPts.length) {
-        var last = segPts[segPts.length - 1];
-        var t = el('text', { x: last.x + 8, y: last.y + 3.5, 'font-size': 11, 'font-weight': 600, fill: s.color });
-        t.textContent = s.name;
-        svg.appendChild(t);
+      if (!compact && renderedPoints.length) {
+        var last = renderedPoints[renderedPoints.length - 1];
+        var endLabel = svgElement('text', { x: last.x + 9, y: last.y + 4, 'font-size': 12, 'font-weight': 700, fill: speaker.color });
+        endLabel.textContent = speaker.name;
+        svg.appendChild(endLabel);
       }
     });
 
-    // hover overlay
-    var crosshair = el('line', { x1: 0, y1: pad.t, x2: 0, y2: H - pad.b, stroke: '#cbd5e1', 'stroke-width': 1, 'stroke-dasharray': '3 3', opacity: 0 });
+    var crosshair = svgElement('line', {
+      x1: 0,
+      y1: pad.t,
+      x2: 0,
+      y2: height - pad.b,
+      stroke: '#94a3b8',
+      'stroke-width': 1,
+      'stroke-dasharray': '3 3',
+      opacity: 0,
+    });
     svg.appendChild(crosshair);
-    var overlay = el('rect', { x: pad.l, y: pad.t, width: plotW, height: plotH, fill: 'transparent', style: 'cursor:crosshair' });
+    var overlay = svgElement('rect', {
+      x: pad.l,
+      y: pad.t,
+      width: plotWidth,
+      height: plotHeight,
+      fill: 'transparent',
+      style: 'cursor:crosshair',
+    });
     svg.appendChild(overlay);
 
-    function onMove(evt) {
+    overlay.addEventListener('mousemove', function (event) {
       var rect = svg.getBoundingClientRect();
-      var relX = (evt.clientX - rect.left) / rect.width * W;
-      var idx = Math.max(0, Math.min(n - 1, Math.round((relX - pad.l) / (plotW / (n > 1 ? n - 1 : 1)))));
-      crosshair.setAttribute('x1', xAt(idx)); crosshair.setAttribute('x2', xAt(idx)); crosshair.setAttribute('opacity', 1);
-      var rows = series.map(function (s) {
-        var pt = s.values[idx];
-        var val = pt ? (Math.round(pt.v * 100) / 100) : '—';
-        return '<div class="pg-tt-row"><span class="pg-tt-dot" style="background:' + s.color + '"></span>' + s.name + ': <b>' + val + '</b>' + (pt && pt.low ? ' <span style="opacity:.6">(low sample)</span>' : '') + '</div>';
+      var relativeX = (event.clientX - rect.left) / rect.width * width;
+      var divisor = plotWidth / (count > 1 ? count - 1 : 1);
+      var index = Math.max(0, Math.min(count - 1, Math.round((relativeX - pad.l) / divisor)));
+      crosshair.setAttribute('x1', xAt(index));
+      crosshair.setAttribute('x2', xAt(index));
+      crosshair.setAttribute('opacity', 1);
+      var rows = series.map(function (speaker) {
+        var point = speaker.values[index];
+        var content = 'No data';
+        if (point && point.excluded) content = 'Excluded · ' + escapeHtml(point.reason.toLowerCase());
+        if (point && !point.excluded) content = '<b>' + formatValue(point.v, decimals) + '</b> · ' + point.words.toLocaleString('en-US') + ' words';
+        return '<div class="pg-tt-row"><span class="pg-tt-dot" style="background:' + speaker.color + '"></span><span>'
+          + escapeHtml(speaker.name) + ': ' + content + '</span></div>';
       }).join('');
-      tooltip.innerHTML = '<b>' + shortDate(dates[idx]) + '</b>' + rows;
+      tooltip.innerHTML = '<b>' + escapeHtml(shortDate(dates[index])) + '</b>' + rows;
       tooltip.style.opacity = 1;
-      tooltip.style.left = (evt.clientX + 14) + 'px';
-      tooltip.style.top = (evt.clientY + 14) + 'px';
-    }
-    overlay.addEventListener('mousemove', onMove);
-    overlay.addEventListener('mouseleave', function () { crosshair.setAttribute('opacity', 0); tooltip.style.opacity = 0; });
+      tooltip.style.left = Math.min(event.clientX + 14, window.innerWidth - 250) + 'px';
+      tooltip.style.top = Math.min(event.clientY + 14, window.innerHeight - 120) + 'px';
+    });
+    overlay.addEventListener('mouseleave', function () {
+      crosshair.setAttribute('opacity', 0);
+      tooltip.style.opacity = 0;
+    });
     return svg;
   }
 
-  function card(title, hint, hintDir, svg, hero) {
-    var c = document.createElement('div');
-    c.className = 'pg-card' + (hero ? ' pg-hero' : '');
-    var h = document.createElement('h3'); h.textContent = title; c.appendChild(h);
-    if (hint) {
-      var p = document.createElement('p'); p.className = 'pg-hint';
-      var arrow = hintDir === 'up' ? '↑' : hintDir === 'down' ? '↓' : '';
-      p.innerHTML = (arrow ? '<span class="arrow pg-good">' + arrow + '</span>' : '') + '<span>' + hint + '</span>';
-      c.appendChild(p);
-    }
-    c.appendChild(svg);
-    return c;
+  function metricHelp(text) {
+    var details = document.createElement('details');
+    details.className = 'pg-info';
+    var summary = document.createElement('summary');
+    summary.setAttribute('aria-label', 'How this metric works');
+    summary.textContent = '?';
+    details.appendChild(summary);
+    var body = document.createElement('div');
+    body.textContent = text;
+    details.appendChild(body);
+    return details;
   }
 
-  function section(title, sub) {
-    var s = document.createElement('div'); s.className = 'pg-section';
-    var h = document.createElement('h2'); h.textContent = title; s.appendChild(h);
-    if (sub) { var p = document.createElement('p'); p.className = 'pg-sub'; p.textContent = sub; s.appendChild(p); }
-    return s;
+  function card(config) {
+    var container = document.createElement('article');
+    container.className = 'pg-card' + (config.hero ? ' pg-hero' : '');
+    var header = document.createElement('div');
+    header.className = 'pg-card-head';
+    var title = document.createElement('h3');
+    title.textContent = config.title;
+    header.appendChild(title);
+    if (config.help) header.appendChild(metricHelp(config.help));
+    container.appendChild(header);
+    if (config.description) {
+      var description = document.createElement('p');
+      description.className = 'pg-hint';
+      description.textContent = config.description;
+      container.appendChild(description);
+    }
+    container.appendChild(config.chart);
+    return container;
   }
 
-  function render() {
-    var root = document.getElementById('pg-root');
-    root.innerHTML = '';
-    var sessions = (state.history && state.history.sessions) || [];
-    if (!sessions.length) { root.innerHTML = '<p class="pg-empty">No sessions yet. Record or upload one to see progress.</p>'; return; }
-    var dates = sessions.map(function (s) { return s.date; });
-
-    // legend
-    var legend = document.getElementById('pg-legend');
-    legend.innerHTML = state.speakers.map(function (name) {
-      return '<span class="pg-leg-item"><span class="pg-swatch" style="background:' + speakerColor(name) + '"></span>' + name + '</span>';
-    }).join('');
-
-    // version note
-    var last = sessions[sessions.length - 1];
-    var ver = (last && last.analysis_version) || {};
-    document.getElementById('pg-version').textContent = ver.metrics
-      ? 'metrics v' + ver.metrics + ' · taxonomy v' + ver.taxonomy + (ver.annotation_model ? ' · ' + ver.annotation_model : '')
-      : '';
-
-    // 1) Grammar accuracy (hero)
-    var s1 = section('Grammar accuracy', 'Errors per 100 words spoken. Lower is better. Hollow points = short session (low confidence).');
-    var g1 = document.createElement('div'); g1.className = 'pg-grid';
-    g1.appendChild(card('Overall error density', 'lower is better', 'down',
-      makeChart(buildSeries(function (d) { return (d.grammar || {}).error_density_per_100w; }), dates, {}), true));
-    s1.appendChild(g1);
-    root.appendChild(s1);
-
-    // 2) By category (small multiples)
-    var s2 = section('By grammar category', 'Which specific patterns are closing. Each mini-chart is errors per 100 words for that category.');
-    var g2 = document.createElement('div'); g2.className = 'pg-grid';
-    CATEGORIES.forEach(function (pair) {
-      var code = pair[0], label = pair[1];
-      var series = buildSeries(function (d) {
-        var by = (d.grammar || {}).by_category_density || {};
-        return by[code];
-      });
-      g2.appendChild(card(label, 'lower is better', 'down', makeChart(series, dates, { compact: true })));
-    });
-    s2.appendChild(g2);
-    root.appendChild(s2);
-
-    // 3) Fluency & delivery (deterministic)
-    var s3 = section('Fluency & delivery', 'Reproducible, computed from the transcript with no AI — the most trustworthy signals.');
-    var g3 = document.createElement('div'); g3.className = 'pg-grid';
-    FLUENCY.forEach(function (f) {
-      var series = buildSeries(function (d) { return (d.metrics || {})[f.key]; });
-      var hint = f.better === 'up' ? 'higher is better' : 'lower is better';
-      g3.appendChild(card(f.label, hint, f.better, makeChart(series, dates, { compact: true })));
-    });
-    s3.appendChild(g3);
-    root.appendChild(s3);
-
-    // 4) Closed focuses (victories from data/focus.json)
-    var closed = (state.focus.focuses || []).filter(function (f) { return f.status === 'closed'; });
-    if (closed.length) {
-      var s4 = section('Closed focuses', 'Focus errors that were set on a session, worked on, and closed.');
-      var list = document.createElement('div'); list.className = 'pg-victories';
-      var labels = {};
-      CATEGORIES.forEach(function (pair) { labels[pair[0]] = pair[1]; });
-      closed.sort(function (a, b) { return String(b.closed_date || '').localeCompare(String(a.closed_date || '')); });
-      closed.forEach(function (f) {
-        var row = document.createElement('div'); row.className = 'pg-victory';
-        row.innerHTML = '<span class="pg-victory-mark">✓</span><b>' + (labels[f.category_code] || f.category_code) + '</b>'
-          + ' — ' + f.participant
-          + ' <span class="pg-victory-dates">set ' + shortDate(f.set_date) + ' → closed ' + shortDate(f.closed_date) + '</span>';
-        list.appendChild(row);
-      });
-      s4.appendChild(list);
-      root.appendChild(s4);
+  function section(title, subtitle) {
+    var container = document.createElement('section');
+    container.className = 'pg-section';
+    var heading = document.createElement('h2');
+    heading.textContent = title;
+    container.appendChild(heading);
+    if (subtitle) {
+      var description = document.createElement('p');
+      description.className = 'pg-sub';
+      description.textContent = subtitle;
+      container.appendChild(description);
     }
+    return container;
+  }
 
-    // 5) Data table (accessibility + contrast relief)
-    root.appendChild(buildTable(sessions));
+  function overallSeries() {
+    return buildSeries(function (derived) {
+      return (derived.grammar || {}).error_density_per_100w;
+    }, { requiresAnnotations: true });
+  }
+
+  function categorySeries(code) {
+    return buildSeries(function (derived) {
+      return ((derived.grammar || {}).by_category_density || {})[code];
+    }, { requiresAnnotations: true });
+  }
+
+  function trendSummary(series) {
+    var grid = document.createElement('div');
+    grid.className = 'pg-summary-grid';
+    series.forEach(function (speaker) {
+      var comparable = speaker.values.map(function (point, index) {
+        return point && !point.excluded ? { point: point, index: index } : null;
+      }).filter(Boolean);
+      var item = document.createElement('article');
+      item.className = 'pg-summary-card';
+      var name = document.createElement('div');
+      name.className = 'pg-summary-name';
+      name.innerHTML = '<span class="pg-swatch" style="background:' + speaker.color + '"></span>' + escapeHtml(speaker.name);
+      item.appendChild(name);
+      if (comparable.length < 2) {
+        item.innerHTML += '<strong>Not enough comparable sessions</strong><span>Two sessions with ' + LOW_SAMPLE + '+ English words are needed.</span>';
+      } else {
+        var first = comparable[0];
+        var last = comparable[comparable.length - 1];
+        var delta = last.point.v - first.point.v;
+        var status = delta <= -0.1 ? 'Improving' : delta >= 0.1 ? 'Needs attention' : 'Steady';
+        var statusClass = delta <= -0.1 ? 'is-improving' : delta >= 0.1 ? 'is-attention' : 'is-steady';
+        var values = document.createElement('div');
+        values.className = 'pg-summary-values';
+        values.innerHTML = '<strong>' + formatValue(first.point.v, 1) + ' <span>→</span> ' + formatValue(last.point.v, 1) + '</strong>'
+          + '<span class="pg-trend-status ' + statusClass + '">' + status + '</span>';
+        item.appendChild(values);
+        var context = document.createElement('span');
+        context.textContent = 'errors / 100 words · ' + comparable.length + ' comparable sessions';
+        item.appendChild(context);
+      }
+      grid.appendChild(item);
+    });
+    return grid;
+  }
+
+  function exclusionNotice(series, dates) {
+    var rows = [];
+    dates.forEach(function (date, index) {
+      var excluded = series.map(function (speaker) {
+        var point = speaker.values[index];
+        return point && point.excluded ? speaker.name + ' — ' + point.reason.toLowerCase() : '';
+      }).filter(Boolean);
+      if (excluded.length) rows.push('<b>' + escapeHtml(shortDate(date)) + '</b>: ' + excluded.map(escapeHtml).join('; '));
+    });
+    if (!rows.length) return null;
+    var note = document.createElement('aside');
+    note.className = 'pg-exclusion';
+    note.innerHTML = '<strong>Not included in the trend</strong><span>' + rows.join('<br>') + '.</span>'
+      + '<small>Minimum: ' + LOW_SAMPLE + ' English words and completed annotations. The session remains available on the Session page.</small>';
+    return note;
+  }
+
+  function selectedFocusCodes() {
+    var active = (state.focus.focuses || []).filter(function (focus) { return focus.status === 'active'; });
+    var activeCodes = [];
+    active.forEach(function (focus) {
+      var code = String(focus.category_code || '').toUpperCase();
+      if (code && activeCodes.indexOf(code) < 0) activeCodes.push(code);
+    });
+    if (activeCodes.length) return { codes: activeCodes, fallback: false };
+
+    var ranked = CATEGORIES.map(function (category) {
+      var values = validPoints(categorySeries(category.code));
+      var average = values.length ? values.reduce(function (sum, point) { return sum + point.v; }, 0) / values.length : 0;
+      return { code: category.code, average: average };
+    }).filter(function (item) { return item.average > 0; });
+    ranked.sort(function (left, right) { return right.average - left.average; });
+    return { codes: ranked.slice(0, 2).map(function (item) { return item.code; }), fallback: true };
+  }
+
+  function categoryCard(code, dates) {
+    var category = CATEGORIES.find(function (item) { return item.code === code; });
+    var series = categorySeries(code);
+    return card({
+      title: category ? category.label : code,
+      description: 'Errors per 100 English words. Lower is better.',
+      help: 'Counts only annotations assigned to this grammar category. Sessions with fewer than ' + LOW_SAMPLE + ' English words or incomplete annotations do not affect the line.',
+      chart: makeChart(series, dates, { compact: true, decimals: 1, ariaLabel: (category ? category.label : code) + ' trend' }),
+    });
+  }
+
+  function buildClosedFocuses() {
+    var closed = (state.focus.focuses || []).filter(function (focus) { return focus.status === 'closed'; });
+    if (!closed.length) return null;
+    var categoryLabels = {};
+    CATEGORIES.forEach(function (category) { categoryLabels[category.code] = category.label; });
+    var completed = section('Closed focuses', 'A compact record of patterns that were deliberately practised and closed.');
+    var list = document.createElement('div');
+    list.className = 'pg-victories';
+    closed.sort(function (left, right) { return String(right.closed_date || '').localeCompare(String(left.closed_date || '')); });
+    closed.forEach(function (focus) {
+      var row = document.createElement('div');
+      row.className = 'pg-victory';
+      row.innerHTML = '<span class="pg-victory-mark">✓</span><b>' + escapeHtml(categoryLabels[focus.category_code] || focus.category_code) + '</b>'
+        + ' — ' + escapeHtml(focus.participant)
+        + ' <span class="pg-victory-dates">set ' + escapeHtml(shortDate(focus.set_date)) + ' → closed ' + escapeHtml(shortDate(focus.closed_date)) + '</span>';
+      list.appendChild(row);
+    });
+    completed.appendChild(list);
+    return completed;
   }
 
   function buildTable(sessions) {
-    var box = document.createElement('details'); box.className = 'pg-table-box';
-    var sum = document.createElement('summary'); sum.textContent = 'Show data table'; box.appendChild(sum);
-    var wrap = document.createElement('div'); wrap.className = 'pg-table-wrap';
+    var box = document.createElement('details');
+    box.className = 'pg-table-box';
+    var summary = document.createElement('summary');
+    summary.textContent = 'Raw data table';
+    box.appendChild(summary);
+    var wrap = document.createElement('div');
+    wrap.className = 'pg-table-wrap';
     var rows = [];
-    rows.push('<tr><th>Speaker / date</th>' + sessions.map(function (s) { return '<th>' + shortDate(s.date) + '</th>'; }).join('') + '</tr>');
+    rows.push('<tr><th>Speaker / date</th>' + sessions.map(function (session) { return '<th>' + escapeHtml(shortDate(session.date)) + '</th>'; }).join('') + '</tr>');
     var metrics = [
-      ['Error density /100w', function (d) { return (d.grammar || {}).error_density_per_100w; }],
-      ['Words / turn', function (d) { return (d.metrics || {}).avg_words_per_turn; }],
-      ['Fillers /100w', function (d) { return (d.metrics || {}).filler_per_100w; }],
-      ['Russian %', function (d) { return (d.metrics || {}).l1_fallback_pct; }],
-      ['MATTR', function (d) { return (d.metrics || {}).lexical_diversity_mattr; }],
+      ['English words', function (derived) { return (derived.metrics || {}).english_word_count; }, 0],
+      ['Grammar errors /100w', function (derived) { return (derived.grammar || {}).error_density_per_100w; }, 1],
+      ['Fillers /100w', function (derived) { return (derived.metrics || {}).filler_per_100w; }, 1],
+      ['Words / turn', function (derived) { return (derived.metrics || {}).avg_words_per_turn; }, 1],
+      ['MATTR', function (derived) { return (derived.metrics || {}).lexical_diversity_mattr; }, 2],
     ];
     state.speakers.forEach(function (name) {
-      rows.push('<tr><td colspan="' + (sessions.length + 1) + '" style="background:#f8fafc;font-weight:600">' + name + '</td></tr>');
-      metrics.forEach(function (m) {
-        var cells = sessions.map(function (s) {
-          var p = (s.participants || []).find(function (x) { return x.name === name; });
-          var d = p && p.derived;
-          var v = d ? m[1](d) : null;
-          return '<td>' + (v === null || v === undefined ? '—' : v) + '</td>';
+      rows.push('<tr><td colspan="' + (sessions.length + 1) + '" class="pg-table-speaker">' + escapeHtml(name) + '</td></tr>');
+      metrics.forEach(function (metric) {
+        var cells = sessions.map(function (session) {
+          var participant = (session.participants || []).find(function (item) { return item.name === name; });
+          var derived = participant && participant.derived;
+          var rawValue = derived ? metric[1](derived) : null;
+          var value = rawValue === null || rawValue === undefined || rawValue === '' ? null : Number(rawValue);
+          var words = derived ? Number((derived.metrics || {}).english_word_count || 0) : 0;
+          var excludedClass = words && words < LOW_SAMPLE ? ' class="is-excluded" title="Excluded from trends: short session"' : '';
+          return '<td' + excludedClass + '>' + (Number.isFinite(value) ? formatValue(value, metric[2]) : '—') + '</td>';
         }).join('');
-        rows.push('<tr><td>' + m[0] + '</td>' + cells + '</tr>');
+        rows.push('<tr><td>' + escapeHtml(metric[0]) + '</td>' + cells + '</tr>');
       });
     });
     wrap.innerHTML = '<table class="pg-table"><thead>' + rows[0] + '</thead><tbody>' + rows.slice(1).join('') + '</tbody></table>';
@@ -294,50 +471,188 @@
     return box;
   }
 
+  function versionText(sessions) {
+    var last = sessions[sessions.length - 1] || {};
+    var version = last.analysis_version || {};
+    if (!version.metrics) return 'Version information unavailable';
+    return 'metrics v' + version.metrics + ' · taxonomy v' + version.taxonomy + (version.annotation_model ? ' · ' + version.annotation_model : '');
+  }
+
+  function buildDiagnostics(sessions) {
+    var details = document.createElement('details');
+    details.className = 'pg-diagnostics';
+    var summary = document.createElement('summary');
+    summary.textContent = 'Data & diagnostics';
+    details.appendChild(summary);
+    var body = document.createElement('div');
+    body.className = 'pg-diagnostics-body';
+    var copy = document.createElement('div');
+    copy.innerHTML = '<strong>Analysis version</strong><span>' + escapeHtml(versionText(sessions)) + '</span>';
+    body.appendChild(copy);
+    var button = document.createElement('button');
+    button.className = 'ghost';
+    button.id = 'pg-reanalyze';
+    button.type = 'button';
+    button.textContent = 'Re-analyze all';
+    body.appendChild(button);
+    details.appendChild(body);
+    details.appendChild(buildTable(sessions));
+    return details;
+  }
+
+  function render() {
+    var root = document.getElementById('pg-root');
+    root.innerHTML = '';
+    var sessions = (state.history && state.history.sessions) || [];
+    if (!sessions.length) {
+      root.innerHTML = '<p class="pg-empty">No sessions yet. Record or upload one to see progress.</p>';
+      return;
+    }
+    var dates = sessions.map(function (session) { return session.date; });
+    var legend = document.getElementById('pg-legend');
+    legend.innerHTML = state.speakers.map(function (name) {
+      return '<span class="pg-leg-item"><span class="pg-swatch" style="background:' + speakerColor(name) + '"></span>' + escapeHtml(name) + '</span>';
+    }).join('');
+
+    var grammarSeries = overallSeries();
+    var overview = section('Grammar trend', 'The main signal: comparable grammar errors per 100 English words. Lower is better.');
+    overview.appendChild(trendSummary(grammarSeries));
+    var overviewGrid = document.createElement('div');
+    overviewGrid.className = 'pg-grid';
+    overviewGrid.appendChild(card({
+      title: 'Overall error density',
+      description: 'Grammar annotations per 100 English words. Lower is better.',
+      help: 'This rate makes sessions of different lengths comparable. Only sessions with at least ' + LOW_SAMPLE + ' English words and completed annotations affect the trend.',
+      chart: makeChart(grammarSeries, dates, { decimals: 1, ariaLabel: 'Overall grammar error density trend' }),
+      hero: true,
+    }));
+    overview.appendChild(overviewGrid);
+    var excluded = exclusionNotice(grammarSeries, dates);
+    if (excluded) overview.appendChild(excluded);
+    root.appendChild(overview);
+
+    var focusSelection = selectedFocusCodes();
+    if (focusSelection.codes.length) {
+      var focusSubtitle = focusSelection.fallback
+        ? 'No active focus is set, so these are the two most persistent grammar categories across comparable sessions.'
+        : 'Only categories currently marked as active focuses are shown here.';
+      var focusSection = section('Current focus', focusSubtitle);
+      var focusGrid = document.createElement('div');
+      focusGrid.className = 'pg-grid pg-grid-two';
+      focusSelection.codes.forEach(function (code) { focusGrid.appendChild(categoryCard(code, dates)); });
+      focusSection.appendChild(focusGrid);
+      root.appendChild(focusSection);
+    }
+
+    var habits = section('Speaking habits', 'A transcript-based signal that is easy to interpret and useful to track.');
+    var habitsGrid = document.createElement('div');
+    habitsGrid.className = 'pg-grid pg-grid-two';
+    var fillerSeries = buildSeries(function (derived) { return (derived.metrics || {}).filler_per_100w; });
+    habitsGrid.appendChild(card({
+      title: 'Fillers / 100 words',
+      description: 'Recognised fillers per 100 English words. Lower is usually better.',
+      help: 'Counts um, uh, er, erm, hmm, like, you know, I mean, kind of and sort of. Very short sessions are excluded from the line.',
+      chart: makeChart(fillerSeries, dates, { compact: true, decimals: 1, ariaLabel: 'Filler words trend' }),
+    }));
+    habits.appendChild(habitsGrid);
+    root.appendChild(habits);
+
+    var closedSection = buildClosedFocuses();
+    if (closedSection) root.appendChild(closedSection);
+
+    var more = document.createElement('details');
+    more.className = 'pg-more';
+    var moreSummary = document.createElement('summary');
+    moreSummary.innerHTML = '<span><strong>More metrics</strong><small>Other grammar categories, turn length and vocabulary variety</small></span>';
+    more.appendChild(moreSummary);
+    var moreBody = document.createElement('div');
+    moreBody.className = 'pg-more-body';
+
+    var otherCategories = CATEGORIES.filter(function (category) {
+      return focusSelection.codes.indexOf(category.code) < 0 && hasMeasuredValues(categorySeries(category.code));
+    });
+    if (otherCategories.length) {
+      var otherSection = section('Other grammar categories', 'Available for diagnosis, but kept out of the main view to reduce noise.');
+      var otherGrid = document.createElement('div');
+      otherGrid.className = 'pg-grid pg-grid-two';
+      otherCategories.forEach(function (category) { otherGrid.appendChild(categoryCard(category.code, dates)); });
+      otherSection.appendChild(otherGrid);
+      moreBody.appendChild(otherSection);
+    }
+
+    var secondarySection = section('Context metrics', 'Useful supporting context, not scores and not direct targets.');
+    var secondaryGrid = document.createElement('div');
+    secondaryGrid.className = 'pg-grid pg-grid-two';
+    SECONDARY_METRICS.forEach(function (metric) {
+      var series = buildSeries(function (derived) { return (derived.metrics || {})[metric.key]; });
+      secondaryGrid.appendChild(card({
+        title: metric.label,
+        description: metric.description,
+        help: metric.help + ' Sessions below ' + LOW_SAMPLE + ' English words are excluded from the line.',
+        chart: makeChart(series, dates, { compact: true, decimals: metric.decimals, ariaLabel: metric.label + ' trend' }),
+      }));
+    });
+    secondarySection.appendChild(secondaryGrid);
+    moreBody.appendChild(secondarySection);
+    more.appendChild(moreBody);
+    root.appendChild(more);
+
+    root.appendChild(buildDiagnostics(sessions));
+    attachReanalyze();
+  }
+
   function collectSpeakers(sessions) {
     var seen = [];
-    sessions.forEach(function (s) {
-      (s.participants || []).forEach(function (p) { if (p.name && seen.indexOf(p.name) < 0) seen.push(p.name); });
+    sessions.forEach(function (session) {
+      (session.participants || []).forEach(function (participant) {
+        if (participant.name && seen.indexOf(participant.name) < 0) seen.push(participant.name);
+      });
     });
     return seen;
   }
 
   async function load() {
-    var res = await fetch(apiUrl('/history.json'), { cache: 'no-store' });
-    if (!res.ok) throw new Error('Unable to load history.json');
-    state.history = await res.json();
-    state.history.sessions = (state.history.sessions || []).slice().sort(function (a, b) { return (a.date || '').localeCompare(b.date || ''); });
+    var response = await fetch(apiUrl('/history.json'), { cache: 'no-store' });
+    if (!response.ok) throw new Error('Unable to load history.json');
+    state.history = await response.json();
+    state.history.sessions = (state.history.sessions || []).slice().sort(function (left, right) {
+      return (left.date || '').localeCompare(right.date || '');
+    });
     state.speakers = collectSpeakers(state.history.sessions);
     try {
-      var focusRes = await fetch(apiUrl('/api/focus'), { cache: 'no-store' });
-      state.focus = focusRes.ok ? await focusRes.json() : { focuses: [] };
-    } catch (e) {
+      var focusResponse = await fetch(apiUrl('/api/focus'), { cache: 'no-store' });
+      state.focus = focusResponse.ok ? await focusResponse.json() : { focuses: [] };
+    } catch (error) {
       state.focus = { focuses: [] };
     }
   }
 
   function attachReanalyze() {
-    var btn = document.getElementById('pg-reanalyze');
-    btn.addEventListener('click', async function () {
-      btn.disabled = true; var old = btn.textContent; btn.textContent = 'Re-analyzing…';
+    var button = document.getElementById('pg-reanalyze');
+    if (!button) return;
+    button.addEventListener('click', async function () {
+      button.disabled = true;
+      button.textContent = 'Re-analyzing…';
       try {
-        var res = await fetch(apiUrl('/api/reanalyze'), { method: 'POST' });
-        if (!res.ok) throw new Error(await res.text());
-        await load(); render();
-        btn.textContent = 'Done ✓';
-        setTimeout(function () { btn.textContent = old; btn.disabled = false; }, 1500);
-      } catch (e) {
-        btn.textContent = 'Failed'; btn.disabled = false;
-        console.error(e);
+        var response = await fetch(apiUrl('/api/reanalyze'), { method: 'POST' });
+        if (!response.ok) throw new Error(await response.text());
+        await load();
+        render();
+      } catch (error) {
+        button.textContent = 'Failed — try again';
+        button.disabled = false;
+        console.error(error);
       }
     });
   }
 
   (async function () {
-    attachReanalyze();
-    try { await load(); render(); }
-    catch (e) {
-      document.getElementById('pg-root').innerHTML = '<p class="pg-empty">Could not load progress data: ' + (e && e.message ? e.message : e) + '</p>';
+    try {
+      await load();
+      render();
+    } catch (error) {
+      document.getElementById('pg-root').innerHTML = '<p class="pg-empty">Could not load progress data: '
+        + escapeHtml(error && error.message ? error.message : error) + '</p>';
     }
   })();
 })();
