@@ -2381,6 +2381,170 @@ def update_history(out_dir: Path, analysis: dict) -> None:
     write_json(history_path, history)
 
 
+def _briefing_participant(session: dict, participant_name: str) -> dict | None:
+    for participant in session.get("participants", []):
+        if participant.get("name") == participant_name:
+            return participant
+    return None
+
+
+def _briefing_annotation_available(session: dict) -> bool:
+    return (session.get("analysis_version") or {}).get("annotations_status") == "ok"
+
+
+def _briefing_metric_trend(
+    sessions: list[dict], participant_name: str, path: tuple[str, ...], higher_is_better: bool,
+) -> dict | None:
+    values: list[dict] = []
+    for session in sessions:
+        participant = _briefing_participant(session, participant_name)
+        derived = (participant or {}).get("derived") or {}
+        current: object = derived
+        for key in path:
+            current = current.get(key) if isinstance(current, dict) else None
+        if isinstance(current, (int, float)):
+            values.append({"date": session.get("date"), "value": current})
+    if not values:
+        return None
+    recent = values[-3:]
+    first, last = recent[0]["value"], recent[-1]["value"]
+    delta = round(last - first, 2)
+    if len(recent) == 1 or delta == 0:
+        direction = "steady"
+    elif (delta > 0) == higher_is_better:
+        direction = "improving"
+    else:
+        direction = "worsening"
+    return {"values": recent, "current": last, "delta": delta, "direction": direction}
+
+
+def build_briefing(out_dir: Path) -> dict:
+    """Build the deterministic pre-call briefing consumed by the Home page.
+
+    The briefing is deliberately assembled from stored history, focus decisions
+    and annotation evidence. It makes no LLM call and remains reproducible.
+    """
+    history = load_json(out_dir / "history.json", {"sessions": []})
+    sessions = sorted(history.get("sessions", []), key=lambda item: item.get("date", ""))
+    focus_data = load_json(DATA_DIR / "focus.json", {"focuses": []})
+    participant_names: list[str] = []
+    for session in sessions:
+        for participant in session.get("participants", []):
+            name = participant.get("name")
+            if name and name not in participant_names:
+                participant_names.append(name)
+
+    analyses: dict[str, dict] = {}
+    for session in sessions:
+        date = session.get("date")
+        if date:
+            analyses[date] = load_json(out_dir / "sessions" / date / "analysis.json", {})
+
+    people: list[dict] = []
+    active_focuses = [item for item in focus_data.get("focuses", []) if item.get("status") == "active"]
+    for name in participant_names:
+        comparable = [
+            session for session in sessions
+            if _briefing_annotation_available(session)
+            and ((_briefing_participant(session, name) or {}).get("derived", {}).get("metrics", {}).get("english_word_count", 0) >= 120)
+        ]
+        recent_comparable = comparable[-3:]
+        category_rows: list[dict] = []
+        for code, title in CATEGORY_LABELS.items():
+            densities = []
+            for session in recent_comparable:
+                grammar = ((_briefing_participant(session, name) or {}).get("derived", {}).get("grammar", {}))
+                density_value = (grammar.get("by_category_density") or {}).get(code)
+                if isinstance(density_value, (int, float)):
+                    densities.append(density_value)
+            if densities:
+                category_rows.append({
+                    "code": code,
+                    "title": title,
+                    "average_density": round(sum(densities) / len(densities), 2),
+                    "seen_sessions": sum(1 for value in densities if value >= 0.3),
+                    "sessions_considered": len(densities),
+                })
+        category_rows.sort(key=lambda item: (-item["average_density"], -item["seen_sessions"], item["title"]))
+
+        focus_rows: list[dict] = []
+        for focus in active_focuses:
+            if focus.get("participant") != name:
+                continue
+            code = focus.get("category_code") or ""
+            baseline_session = next((item for item in sessions if item.get("date") == focus.get("set_date")), None)
+            baseline_participant = _briefing_participant(baseline_session or {}, name) or {}
+            baseline = ((baseline_participant.get("derived") or {}).get("grammar") or {}).get("by_category_density", {}).get(code)
+            newer = [item for item in comparable if item.get("date", "") > str(focus.get("set_date") or "")]
+            latest = newer[-1] if newer else None
+            latest_participant = _briefing_participant(latest or {}, name) or {}
+            current = ((latest_participant.get("derived") or {}).get("grammar") or {}).get("by_category_density", {}).get(code)
+            change_pct = None
+            if isinstance(baseline, (int, float)) and baseline > 0 and isinstance(current, (int, float)):
+                change_pct = round((current - baseline) / baseline * 100)
+            focus_rows.append({
+                "id": focus.get("id"),
+                "code": code,
+                "title": CATEGORY_LABELS.get(code, code),
+                "set_date": focus.get("set_date"),
+                "baseline_density": baseline,
+                "latest_density": current,
+                "latest_date": (latest or {}).get("date"),
+                "change_pct": change_pct,
+                "ready_to_close": bool(change_pct is not None and change_pct <= -40),
+            })
+
+        examples: list[dict] = []
+        seen_examples: set[tuple[str, str]] = set()
+        for session in reversed(sessions):
+            if not _briefing_annotation_available(session):
+                continue
+            analysis = analyses.get(session.get("date", ""), {})
+            items = (analysis.get("llm") or {}).get("annotation_items") or []
+            by_name = map_annotation_items_to_speakers(items, analysis.get("transcript", ""), analysis.get("speaker_map", {}) or {})
+            for item in by_name.get(name, []):
+                error = str(item.get("text") or "").strip()
+                correction = str(item.get("correction") or "").strip()
+                key = (error.lower(), correction.lower())
+                if not error or not correction or key in seen_examples:
+                    continue
+                seen_examples.add(key)
+                code = (item.get("category") or infer_category_code(item) or "").upper()
+                examples.append({
+                    "date": session.get("date"),
+                    "code": code,
+                    "category_title": CATEGORY_LABELS.get(code, "Grammar issue"),
+                    "error": error,
+                    "correction": correction,
+                })
+                if len(examples) >= 4:
+                    break
+            if len(examples) >= 4:
+                break
+
+        metric_sessions = [
+            item for item in sessions
+            if ((_briefing_participant(item, name) or {}).get("derived", {}).get("metrics", {}).get("english_word_count", 0) >= 120)
+        ]
+        grammar_sessions = [item for item in metric_sessions if _briefing_annotation_available(item)]
+        trends = [
+            {"key": "error_density", "label": "Error density", "unit": "/100w", "trend": _briefing_metric_trend(grammar_sessions, name, ("grammar", "error_density_per_100w"), False)},
+            {"key": "russian_fallback", "label": "Russian fallback", "unit": "%", "trend": _briefing_metric_trend(metric_sessions, name, ("metrics", "l1_fallback_pct"), False)},
+            {"key": "lexical_diversity", "label": "Lexical diversity", "unit": "", "trend": _briefing_metric_trend(metric_sessions, name, ("metrics", "lexical_diversity_mattr"), True)},
+        ]
+        people.append({
+            "name": name,
+            "active_focuses": focus_rows,
+            "top_categories": category_rows[:3],
+            "examples": examples,
+            "trends": [item for item in trends if item["trend"]],
+        })
+
+    briefing = {"version": 1, "participants": people}
+    write_json(out_dir / "briefing.json", briefing)
+    return briefing
+
+
 def build_all(
     sessions_dir: Path,
     out_dir: Path,
@@ -2415,6 +2579,7 @@ def write_web_assets(out_dir: Path) -> None:
     web_dir = out_dir / "web"
     web_dir.mkdir(parents=True, exist_ok=True)
     api_base = json.dumps((os.getenv("ENGLISH_TUTOR_API_BASE_URL") or "").strip().rstrip("/"))
+    build_briefing(out_dir)
 
     # Frontend sources live as real files under web/; copy them to out/web,
     # injecting the API base URL into HTML templates on the way.
@@ -2429,6 +2594,9 @@ def write_web_assets(out_dir: Path) -> None:
     history_path = out_dir / "history.json"
     if history_path.exists():
         (web_dir / "history.json").write_text(history_path.read_text(encoding="utf-8"), encoding="utf-8")
+    briefing_path = out_dir / "briefing.json"
+    if briefing_path.exists():
+        (web_dir / "briefing.json").write_text(briefing_path.read_text(encoding="utf-8"), encoding="utf-8")
     sessions_src = out_dir / "sessions"
     sessions_dst = web_dir / "sessions"
     if sessions_src.exists():

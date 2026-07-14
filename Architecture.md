@@ -48,7 +48,7 @@ on the backend.
 | Browser frontend | Record audio, upload transcripts, show session insights and progress, invoke API actions | Browser-local configured API base and optional UI cache |
 | Static frontend artifact | Publish the generated pages and session views | out/web; copied from web/ and enriched with the API base |
 | Python backend | Validate requests, create/delete sessions, invoke analysis, rebuild artifacts and expose static data locally | Accesses all repository data; has provider credentials through environment variables |
-| Analysis pipeline | Parse transcripts, call optional LLM steps, derive canonical metrics, build history | out/sessions/<date>/analysis.json and out/history.json |
+| Analysis pipeline | Parse transcripts, call optional LLM steps, derive canonical metrics, build history and the pre-call briefing | out/sessions/<date>/analysis.json, out/history.json and out/briefing.json |
 | Session archive | Preserve source material for reproducibility | sessions/<date>/meta.json, transcript.txt and optional audio.<ext> |
 | OpenAI | Optional model analysis, annotations and practice exercises | No project data at rest in this repository; receives request payloads |
 | AssemblyAI | Audio transcription for recorded sessions | Receives raw audio |

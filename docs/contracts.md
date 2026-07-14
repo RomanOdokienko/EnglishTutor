@@ -66,6 +66,16 @@ fluency_score, llm_fluency_score, grammar_error_count, llm_error_rate and
 chunked_error_rate. Progress features must read derived rather than those legacy
 values.
 
+### This-week briefing
+
+Path: `out/briefing.json` (also copied to `out/web/briefing.json`). It is a
+deterministic read model rebuilt after session analysis, derived reanalysis and
+focus updates. For every known participant it contains active focuses with the
+baseline/latest comparable density, three recurring category candidates,
+recent annotated examples and short metric trends. The browser treats it as a
+convenience briefing; Session analysis and history remain the canonical source
+for detailed evidence.
+
 ## HTTP contract
 
 All endpoints are served by the Python backend. GET history and per-session

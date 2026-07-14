@@ -46,6 +46,7 @@ from cli import (
     analyze_session,
     annotate_session,
     build_all,
+    build_briefing,
     call_openai_highlight_exercise,
     call_openai_probe,
     clean_env,
@@ -414,6 +415,7 @@ class UploadHandler(SimpleHTTPRequestHandler):
             return
 
         save_focus_data(data)
+        build_briefing(OUT_DIR)
         self.send_json_response(data)
 
     def do_POST(self) -> None:

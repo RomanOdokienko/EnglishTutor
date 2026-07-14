@@ -55,6 +55,7 @@
 
   // ---- Navigation (the ONE place nav is defined) ----
   var NAV = [
+    { key: 'home',     label: 'This week', href: 'home.html' },
     { key: 'session',  label: 'Session',  href: 'highlights.html' },
     { key: 'progress', label: 'Progress', href: 'progress.html' },
     { key: 'method',   label: 'How it works', href: 'method.html' },

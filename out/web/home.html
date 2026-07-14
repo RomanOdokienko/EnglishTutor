@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>This week</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="page-home" data-nav="home">
+    <main class="home-page">
+      <header class="home-header">
+        <div>
+          <p class="home-eyebrow">Before your next call</p>
+          <h1>This week</h1>
+          <p class="subtitle">A short, evidence-based briefing: keep active focuses in mind, then speak.</p>
+        </div>
+        <nav id="app-nav" class="app-nav"></nav>
+      </header>
+      <section id="briefing-root" class="briefing-grid" aria-live="polite">
+        <p class="metric-note">Loading this week’s briefing…</p>
+      </section>
+    </main>
+    <script>
+      window.ENGLISH_TUTOR_API_BASE_URL = "https://englishtutor-production-ab18.up.railway.app";
+    </script>
+    <script src="common.js"></script>
+    <script src="home.js"></script>
+  </body>
+</html>

@@ -25,6 +25,7 @@ python server.py
 
 Then open:
 
+- http://127.0.0.1:8000/web/home.html — this-week briefing
 - http://127.0.0.1:8000/web/highlights.html — session insights
 - http://127.0.0.1:8000/web/progress.html — canonical progress charts
 - http://127.0.0.1:8000/web/upload.html — transcript upload
@@ -39,6 +40,7 @@ Then open:
 | web/ | Editable frontend source |
 | out/sessions/<date>/analysis.json | Generated per-session analysis |
 | out/history.json | Generated cross-session index |
+| out/briefing.json | Generated pre-call briefing by participant |
 | out/web/ | Generated static artifact published by Vercel |
 
 The project commits session inputs, analyses and generated artifacts. Edit only

@@ -26,6 +26,72 @@ main {
   position: relative;
 }
 
+/* ---- This week briefing ---- */
+.page-home {
+  background:
+    radial-gradient(circle at top right, rgba(34, 197, 94, 0.13), transparent 31%),
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.11), transparent 29%),
+    #f8fafc;
+}
+
+.home-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+}
+
+.home-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 22px;
+  margin-bottom: 22px;
+  padding: 24px 26px;
+  border: 1px solid rgba(191, 219, 254, 0.7);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.07);
+}
+
+.home-header h1 { margin: 0; }
+.home-header .subtitle { margin: 6px 0 0; }
+.home-eyebrow { margin: 0 0 6px; color: #0369a1; font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+
+.briefing-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.briefing-person { padding: 22px; border: 1px solid #dbeafe; border-radius: 18px; background: rgba(255, 255, 255, 0.94); box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05); }
+.briefing-person > h2 { margin: 0 0 18px; font-size: 24px; }
+.briefing-person section { margin-top: 18px; }
+.briefing-person h3 { margin: 0 0 8px; color: #475569; font-size: 12px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; }
+.briefing-empty { margin: 0; color: #64748b; font-size: 13px; line-height: 1.5; }
+
+.briefing-focus { padding: 11px 12px; border: 1px solid #bae6fd; border-left: 3px solid #0ea5e9; border-radius: 10px; background: #f0f9ff; }
+.briefing-focus + .briefing-focus { margin-top: 8px; }
+.briefing-focus-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.briefing-focus p { margin: 4px 0 0; color: #475569; font-size: 13px; }
+.briefing-ready { padding: 3px 7px; border-radius: 999px; background: #dcfce7; color: #166534; font-size: 11px; font-weight: 750; white-space: nowrap; }
+
+.briefing-category { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid #e2e8f0; }
+.briefing-category:last-child { border-bottom: 0; }
+.briefing-category div { display: grid; gap: 2px; }
+.briefing-category span { color: #64748b; font-size: 12px; }
+.briefing-category strong { color: #0369a1; font-variant-numeric: tabular-nums; }
+.briefing-category small { color: #64748b; font-size: 11px; font-weight: 600; }
+
+.briefing-example { padding: 9px 0; border-bottom: 1px solid #e2e8f0; }
+.briefing-example:last-child { border-bottom: 0; }
+.briefing-example-category { color: #64748b; font-size: 11px; font-weight: 700; }
+.briefing-example p { margin: 3px 0 0; color: #334155; font-size: 13px; line-height: 1.45; }
+.briefing-example p span { margin: 0 5px; color: #0f766e; font-weight: 800; }
+
+.briefing-trend { display: grid; gap: 2px; padding: 8px 10px; border-radius: 9px; background: #f8fafc; color: #475569; font-size: 12px; }
+.briefing-trend + .briefing-trend { margin-top: 6px; }
+.briefing-trend b { color: #334155; }
+.briefing-trend-arrow { margin-right: 5px; font-weight: 900; }
+.briefing-trend-improving .briefing-trend-arrow { color: #15803d; }
+.briefing-trend-worsening .briefing-trend-arrow { color: #b45309; }
+.briefing-session-link { display: inline-block; margin-top: 20px; color: #0369a1; font-size: 13px; font-weight: 750; text-decoration: none; }
+.briefing-session-link:hover { text-decoration: underline; }
+
 .highlights-page header {
   position: relative;
   margin-bottom: 20px;
@@ -1272,6 +1338,10 @@ mark.grammar-error:focus-visible {
 }
 
 @media (max-width: 720px) {
+  .home-page { padding: 18px 14px 32px; }
+  .home-header { align-items: flex-start; flex-direction: column; padding: 20px; }
+  .briefing-grid { grid-template-columns: 1fr; }
+
   .highlight-item {
     grid-template-columns: 1fr;
   }
