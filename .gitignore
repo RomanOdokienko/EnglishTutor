@@ -1,0 +1,8 @@
+# Python bytecode cache
+__pycache__/
+*.pyc
+
+# Secrets — never commit. The token doc holds the live OpenAI/AssemblyAI keys.
+*.docx
+.env
+.env.*
