@@ -56,6 +56,36 @@ def ensure_data_root_seeded() -> None:
             _copy_missing(src, DATA_ROOT / name)
 
 
+def _load_env_file() -> None:
+    """Populate os.environ from a local .env, if present.
+
+    .gitignore has always excluded .env, but nothing ever read one: keys reach
+    the app only through real environment variables, so a .env sat there doing
+    nothing. Railway keeps setting its own env vars, which win — this only fills
+    in what is not already set, and is for local runs.
+
+    Deliberately dependency-free: the whole project talks to APIs over urllib
+    and has no requirements file to add python-dotenv to.
+    """
+    env_path = ROOT_DIR / ".env"
+    try:
+        raw = env_path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return
+    for line in raw.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key = key.strip()
+        value = value.strip().strip("'\"")
+        if key and key not in os.environ:
+            os.environ[key] = value
+
+
+_load_env_file()
+
+
 def clean_env(name: str, default: str = "") -> str:
     """Read an env var trimmed of stray whitespace.
 
@@ -394,6 +424,10 @@ def normalize_annotations(text: str, errors: list[dict]) -> list[dict]:
                 "correction": item.get("correction", ""),
                 "explanation": item.get("explanation", ""),
                 "category": category,
+                # Carried, not dropped: is_countable_annotation gates on these,
+                # and this dict is rebuilt field-by-field rather than copied.
+                "confidence": item.get("confidence", ""),
+                "is_stylistic": bool(item.get("is_stylistic", False)),
             }
         )
 
@@ -1840,6 +1874,8 @@ def build_chunk_annotations(
                     "correction": item.get("correction", ""),
                     "explanation": item.get("explanation", ""),
                     "category": item.get("category", ""),
+                    "confidence": item.get("confidence", ""),
+                    "is_stylistic": bool(item.get("is_stylistic", False)),
                 }
             )
 
