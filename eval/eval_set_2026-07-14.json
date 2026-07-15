@@ -1,0 +1,1300 @@
+{
+ "session": "2026-07-14",
+ "transcript_file": "transcript_2026-07-14.txt",
+ "transcript_sha256": "1fbc8d4bbc207aaf0174bb08ffcb7a5bf410443f43514f7e83669fc4d04451ae",
+ "baseline": {
+  "model": "gpt-5-mini",
+  "reasoning_effort": "low",
+  "items": 128,
+  "source": "sessions/2026-07-14/analysis.json llm.annotation_items"
+ },
+ "labeled_by": "manual adjudication by Claude, single pass, 2026-07-15. ~5 items are judgement calls.",
+ "label_meaning": {
+  "REAL": "настоящая ошибка: носитель бы поправил, воспроизводимая, не оговорка",
+  "FP": "не ошибка: стилистика, прескриптивизм, или модель сама пишет что ошибки нет",
+  "ART": "артефакт: самоисправление, false start, повтор, омофон ASR, L1-вставка",
+  "ASR": "вероятно ошибка распознавания, а не говорящего"
+ },
+ "items": [
+  {
+   "id": "R01",
+   "speaker": "Roman",
+   "start": 155,
+   "end": 184,
+   "text": "for any occasion could happen",
+   "category": "ORDER",
+   "correction": "in case any occasion happens",
+   "label": "REAL"
+  },
+  {
+   "id": "R02",
+   "speaker": "Roman",
+   "start": 189,
+   "end": 227,
+   "text": "I just would like to share you my pain",
+   "category": "PREP",
+   "correction": "I would like to share my pain with you",
+   "label": "REAL"
+  },
+  {
+   "id": "R03",
+   "speaker": "Roman",
+   "start": 229,
+   "end": 269,
+   "text": "because I just mind blown from my disk C",
+   "category": "VERB",
+   "correction": "because I'm just mind-blown by my disk C / because my disk C just blew my mind",
+   "label": "REAL"
+  },
+  {
+   "id": "R04",
+   "speaker": "Roman",
+   "start": 271,
+   "end": 314,
+   "text": "which is full, fed up from Codex and Claude",
+   "category": "PREP",
+   "correction": "which is full, fed up with Codex and Claude",
+   "label": "REAL"
+  },
+  {
+   "id": "R05",
+   "speaker": "Roman",
+   "start": 316,
+   "end": 345,
+   "text": "It eats free space every time",
+   "category": "COLLOC",
+   "correction": "It eats up free space all the time",
+   "label": "FP"
+  },
+  {
+   "id": "R06",
+   "speaker": "Roman",
+   "start": 362,
+   "end": 413,
+   "text": "and I'm not understand what I should done correctly",
+   "category": "VERB",
+   "correction": "and I don't understand what I should do correctly",
+   "label": "REAL"
+  },
+  {
+   "id": "R07",
+   "speaker": "Roman",
+   "start": 415,
+   "end": 448,
+   "text": "I found that this apps and codecs",
+   "category": "ARTICLE",
+   "correction": "I found that these apps and codecs",
+   "label": "REAL"
+  },
+  {
+   "id": "R08",
+   "speaker": "Roman",
+   "start": 450,
+   "end": 487,
+   "text": "and Claude has the not resolved issue",
+   "category": "ORDER",
+   "correction": "and Claude has an unresolved issue / has not resolved the issue",
+   "label": "REAL"
+  },
+  {
+   "id": "R09",
+   "speaker": "Roman",
+   "start": 488,
+   "end": 552,
+   "text": "when they downloaded updates and keep it on disk where they work",
+   "category": "TENSE",
+   "correction": "when they download updates and keep them on the disk where they run",
+   "label": "REAL"
+  },
+  {
+   "id": "R10",
+   "speaker": "Roman",
+   "start": 553,
+   "end": 579,
+   "text": "and don't delete it at all",
+   "category": "VERB",
+   "correction": "and don't delete them at all",
+   "label": "REAL"
+  },
+  {
+   "id": "R11",
+   "speaker": "Roman",
+   "start": 581,
+   "end": 616,
+   "text": "We download it, so it's okay for us",
+   "category": "VERB",
+   "correction": "We download them, so it's okay for us / We downloaded them, so it's okay with us",
+   "label": "REAL"
+  },
+  {
+   "id": "R12",
+   "speaker": "Roman",
+   "start": 628,
+   "end": 654,
+   "text": "So currently try to fix it",
+   "category": "VERB",
+   "correction": "So I'm currently trying to fix it / So currently we're trying to fix it",
+   "label": "REAL"
+  },
+  {
+   "id": "R13",
+   "speaker": "Roman",
+   "start": 659,
+   "end": 724,
+   "text": "I can suggest a couple of exercises for us for speaking and so on",
+   "category": "ORDER",
+   "correction": "I can suggest a couple of speaking exercises for us",
+   "label": "FP"
+  },
+  {
+   "id": "R14",
+   "speaker": "Roman",
+   "start": 849,
+   "end": 924,
+   "text": "Just usual question, for instance, what was the best part of your day today",
+   "category": "ARTICLE",
+   "correction": "Just a usual question, for instance: what was the best part of your day today?",
+   "label": "REAL"
+  },
+  {
+   "id": "R15",
+   "speaker": "Roman",
+   "start": 2388,
+   "end": 2422,
+   "text": "I'm just not understand it clearly",
+   "category": "VERB",
+   "correction": "I just don't understand it clearly",
+   "label": "REAL"
+  },
+  {
+   "id": "R16",
+   "speaker": "Roman",
+   "start": 2858,
+   "end": 2888,
+   "text": "which one from these two parts",
+   "category": "PREP",
+   "correction": "which of these two parts",
+   "label": "REAL"
+  },
+  {
+   "id": "R17",
+   "speaker": "Roman",
+   "start": 2954,
+   "end": 2979,
+   "text": "that other people need it",
+   "category": "WORD",
+   "correction": "that other people need",
+   "label": "REAL"
+  },
+  {
+   "id": "R18",
+   "speaker": "Roman",
+   "start": 3018,
+   "end": 3046,
+   "text": "you sold your product people",
+   "category": "PREP",
+   "correction": "you sold your product to people",
+   "label": "REAL"
+  },
+  {
+   "id": "R19",
+   "speaker": "Roman",
+   "start": 3107,
+   "end": 3120,
+   "text": "warm auditory",
+   "category": "WORD",
+   "correction": "warm audience",
+   "label": "REAL"
+  },
+  {
+   "id": "R20",
+   "speaker": "Roman",
+   "start": 3318,
+   "end": 3349,
+   "text": "make the product against people",
+   "category": "PREP",
+   "correction": "make the product for people",
+   "label": "REAL"
+  },
+  {
+   "id": "R21",
+   "speaker": "Roman",
+   "start": 3363,
+   "end": 3380,
+   "text": "just unusual work",
+   "category": "WORD",
+   "correction": "unusual work",
+   "label": "FP"
+  },
+  {
+   "id": "R22",
+   "speaker": "Roman",
+   "start": 3839,
+   "end": 3856,
+   "text": "my psycho gave me",
+   "category": "WORD",
+   "correction": "my psychologist gave me",
+   "label": "REAL"
+  },
+  {
+   "id": "R23",
+   "speaker": "Roman",
+   "start": 3900,
+   "end": 3921,
+   "text": "it's sky is the limit",
+   "category": "ORDER",
+   "correction": "the sky is the limit",
+   "label": "ART"
+  },
+  {
+   "id": "R24",
+   "speaker": "Roman",
+   "start": 3948,
+   "end": 3968,
+   "text": "such kind of moments",
+   "category": "COLLOC",
+   "correction": "such moments / this kind of moment",
+   "label": "REAL"
+  },
+  {
+   "id": "R25",
+   "speaker": "Roman",
+   "start": 3979,
+   "end": 4004,
+   "text": "for me it like a platform",
+   "category": "VERB",
+   "correction": "for me it is like a platform",
+   "label": "REAL"
+  },
+  {
+   "id": "R26",
+   "speaker": "Roman",
+   "start": 4028,
+   "end": 4050,
+   "text": "skyrocket on like this",
+   "category": "PREP",
+   "correction": "skyrocket from it / skyrocket like this",
+   "label": "REAL"
+  },
+  {
+   "id": "R27",
+   "speaker": "Roman",
+   "start": 4085,
+   "end": 4094,
+   "text": "in moment",
+   "category": "ARTICLE",
+   "correction": "in the moment",
+   "label": "REAL"
+  },
+  {
+   "id": "R28",
+   "speaker": "Roman",
+   "start": 5286,
+   "end": 5308,
+   "text": "In which part you mean",
+   "category": "ORDER",
+   "correction": "Which part do you mean",
+   "label": "REAL"
+  },
+  {
+   "id": "R29",
+   "speaker": "Roman",
+   "start": 5573,
+   "end": 5601,
+   "text": "definitely scheme of selling",
+   "category": "ARTICLE",
+   "correction": "definitely the scheme of selling",
+   "label": "REAL"
+  },
+  {
+   "id": "R30",
+   "speaker": "Roman",
+   "start": 5613,
+   "end": 5635,
+   "text": "So just upselling part",
+   "category": "ARTICLE",
+   "correction": "So just the upselling part",
+   "label": "REAL"
+  },
+  {
+   "id": "R31",
+   "speaker": "Roman",
+   "start": 5637,
+   "end": 5657,
+   "text": "Yeah, upselling part",
+   "category": "ARTICLE",
+   "correction": "Yeah, the upselling part",
+   "label": "ART"
+  },
+  {
+   "id": "R32",
+   "speaker": "Roman",
+   "start": 5986,
+   "end": 6007,
+   "text": "check it from my site",
+   "category": "WORD",
+   "correction": "check it from my side",
+   "label": "ART"
+  },
+  {
+   "id": "R33",
+   "speaker": "Roman",
+   "start": 6046,
+   "end": 6071,
+   "text": "defending absurd position",
+   "category": "ARTICLE",
+   "correction": "defending an absurd position",
+   "label": "REAL"
+  },
+  {
+   "id": "R34",
+   "speaker": "Roman",
+   "start": 6110,
+   "end": 6140,
+   "text": "you shouldn't be agree with it",
+   "category": "VERB",
+   "correction": "you shouldn't agree with it",
+   "label": "REAL"
+  },
+  {
+   "id": "R35",
+   "speaker": "Roman",
+   "start": 6165,
+   "end": 6186,
+   "text": "but you can shouldn't",
+   "category": "VERB",
+   "correction": "but you shouldn't",
+   "label": "ART"
+  },
+  {
+   "id": "R36",
+   "speaker": "Roman",
+   "start": 6193,
+   "end": 6208,
+   "text": "suggest to take",
+   "category": "VERB",
+   "correction": "suggest taking",
+   "label": "REAL"
+  },
+  {
+   "id": "R37",
+   "speaker": "Roman",
+   "start": 6355,
+   "end": 6384,
+   "text": "defend where you agree or not",
+   "category": "ORDER",
+   "correction": "defend whether you agree or not",
+   "label": "REAL"
+  },
+  {
+   "id": "R38",
+   "speaker": "Roman",
+   "start": 6455,
+   "end": 6506,
+   "text": "I choose, uh, that I agree with, uh, this statement",
+   "category": "ORDER",
+   "correction": "I choose the statement that I agree with",
+   "label": "REAL"
+  },
+  {
+   "id": "R39",
+   "speaker": "Roman",
+   "start": 6659,
+   "end": 6677,
+   "text": "You are not agree?",
+   "category": "VERB",
+   "correction": "You do not agree? / You aren't in agreement?",
+   "label": "REAL"
+  },
+  {
+   "id": "R40",
+   "speaker": "Roman",
+   "start": 6858,
+   "end": 6900,
+   "text": "skills that already, that you already have",
+   "category": "WORD",
+   "correction": "skills that you already have",
+   "label": "ART"
+  },
+  {
+   "id": "R41",
+   "speaker": "Roman",
+   "start": 7027,
+   "end": 7042,
+   "text": "from other side",
+   "category": "ARTICLE",
+   "correction": "from the other side",
+   "label": "REAL"
+  },
+  {
+   "id": "R42",
+   "speaker": "Roman",
+   "start": 7064,
+   "end": 7085,
+   "text": "Frontier models looks",
+   "category": "VERB",
+   "correction": "Frontier models look",
+   "label": "REAL"
+  },
+  {
+   "id": "R43",
+   "speaker": "Roman",
+   "start": 7091,
+   "end": 7106,
+   "text": "your cooperator",
+   "category": "COLLOC",
+   "correction": "your collaborator / your cooperator (uncommon) -> your collaborator",
+   "label": "REAL"
+  },
+  {
+   "id": "R44",
+   "speaker": "Roman",
+   "start": 7119,
+   "end": 7146,
+   "text": "it even more smart than you",
+   "category": "VERB",
+   "correction": "they are even smarter than you",
+   "label": "REAL"
+  },
+  {
+   "id": "R45",
+   "speaker": "Roman",
+   "start": 7167,
+   "end": 7180,
+   "text": "match with AI",
+   "category": "COLLOC",
+   "correction": "collaborate with AI / work with AI",
+   "label": "REAL"
+  },
+  {
+   "id": "R46",
+   "speaker": "Roman",
+   "start": 7185,
+   "end": 7209,
+   "text": "force your current ideas",
+   "category": "WORD",
+   "correction": "challenge your current ideas / push your current ideas",
+   "label": "REAL"
+  },
+  {
+   "id": "R47",
+   "speaker": "Roman",
+   "start": 7219,
+   "end": 7251,
+   "text": "ask them something you even know",
+   "category": "PREP",
+   "correction": "ask them about something you already know",
+   "label": "FP"
+  },
+  {
+   "id": "R48",
+   "speaker": "Roman",
+   "start": 7377,
+   "end": 7409,
+   "text": "be newcomer much more frequently",
+   "category": "ARTICLE",
+   "correction": "be a newcomer much more frequently",
+   "label": "REAL"
+  },
+  {
+   "id": "R49",
+   "speaker": "Roman",
+   "start": 7447,
+   "end": 7479,
+   "text": "try yourself in different fields",
+   "category": "COLLOC",
+   "correction": "try yourself out in different fields / try different fields",
+   "label": "REAL"
+  },
+  {
+   "id": "R50",
+   "speaker": "Roman",
+   "start": 10237,
+   "end": 10254,
+   "text": "on your interview",
+   "category": "PREP",
+   "correction": "in your interview / during your interview",
+   "label": "REAL"
+  },
+  {
+   "id": "R51",
+   "speaker": "Roman",
+   "start": 10409,
+   "end": 10426,
+   "text": "how it looks like",
+   "category": "ORDER",
+   "correction": "what it looks like / how it looks",
+   "label": "REAL"
+  },
+  {
+   "id": "R52",
+   "speaker": "Roman",
+   "start": 10451,
+   "end": 10481,
+   "text": "Designer created something new",
+   "category": "ARTICLE",
+   "correction": "A designer creates something new",
+   "label": "REAL"
+  },
+  {
+   "id": "R53",
+   "speaker": "Roman",
+   "start": 10611,
+   "end": 10622,
+   "text": "human deals",
+   "category": "WORD",
+   "correction": "human interactions / human endeavors",
+   "label": "REAL"
+  },
+  {
+   "id": "R54",
+   "speaker": "Roman",
+   "start": 10858,
+   "end": 10881,
+   "text": "and after I will answer",
+   "category": "ORDER",
+   "correction": "and then I will answer",
+   "label": "REAL"
+  },
+  {
+   "id": "R55",
+   "speaker": "Roman",
+   "start": 10887,
+   "end": 10930,
+   "text": "do you think AI, uh, make you more creative",
+   "category": "VERB",
+   "correction": "do you think AI makes you more creative",
+   "label": "REAL"
+  },
+  {
+   "id": "R56",
+   "speaker": "Roman",
+   "start": 11552,
+   "end": 11586,
+   "text": "you asked the same question for me",
+   "category": "PREP",
+   "correction": "you asked the same question to me",
+   "label": "REAL"
+  },
+  {
+   "id": "R57",
+   "speaker": "Roman",
+   "start": 11690,
+   "end": 11727,
+   "text": "I didn't have a chance to make before",
+   "category": "TENSE",
+   "correction": "I hadn't had a chance to make before / I haven't had a chance to make before",
+   "label": "FP"
+  },
+  {
+   "id": "R58",
+   "speaker": "Roman",
+   "start": 11865,
+   "end": 11912,
+   "text": "Creativity for me, it's when you, uh, you flirt",
+   "category": "WORD",
+   "correction": "Creativity for me is when you experiment/play/try new things",
+   "label": "ART"
+  },
+  {
+   "id": "R59",
+   "speaker": "Roman",
+   "start": 11914,
+   "end": 11929,
+   "text": "You're oblootok",
+   "category": "WORD",
+   "correction": "(unclear — replace 'oblootok' with intended English word)",
+   "label": "ART"
+  },
+  {
+   "id": "R60",
+   "speaker": "Roman",
+   "start": 11952,
+   "end": 11985,
+   "text": "when person can make usual things",
+   "category": "ARTICLE",
+   "correction": "when a person can make usual things",
+   "label": "REAL"
+  },
+  {
+   "id": "R61",
+   "speaker": "Roman",
+   "start": 12000,
+   "end": 12015,
+   "text": "routine for him",
+   "category": "WORD",
+   "correction": "routine for them / routine for oneself",
+   "label": "FP"
+  },
+  {
+   "id": "R62",
+   "speaker": "Roman",
+   "start": 12025,
+   "end": 12043,
+   "text": "Or more unique way",
+   "category": "ARTICLE",
+   "correction": "Or in a more unique way",
+   "label": "REAL"
+  },
+  {
+   "id": "R63",
+   "speaker": "Roman",
+   "start": 12468,
+   "end": 12513,
+   "text": "my app's much more simpler and understandable",
+   "category": "WORD",
+   "correction": "my app is much simpler and more understandable",
+   "label": "REAL"
+  },
+  {
+   "id": "R64",
+   "speaker": "Roman",
+   "start": 12548,
+   "end": 12561,
+   "text": "LLM analyzing",
+   "category": "WORD",
+   "correction": "LLM analysis / analysis of the LLM",
+   "label": "REAL"
+  },
+  {
+   "id": "R65",
+   "speaker": "Roman",
+   "start": 12613,
+   "end": 12643,
+   "text": "in spite of length of our call",
+   "category": "ARTICLE",
+   "correction": "in spite of the length of our call",
+   "label": "REAL"
+  },
+  {
+   "id": "R66",
+   "speaker": "Roman",
+   "start": 12696,
+   "end": 12725,
+   "text": "we have already 30 minutes 29",
+   "category": "ORDER",
+   "correction": "we've already been on for 29/30 minutes / we already have 29 or 30 minutes",
+   "label": "ART"
+  },
+  {
+   "id": "R67",
+   "speaker": "Roman",
+   "start": 12869,
+   "end": 12892,
+   "text": "a transcriber in iPhone",
+   "category": "WORD",
+   "correction": "a transcriber on my iPhone",
+   "label": "REAL"
+  },
+  {
+   "id": "A01",
+   "speaker": "Andrey",
+   "start": 756,
+   "end": 793,
+   "text": "You can suggest, I will evaluate them",
+   "category": "ORDER",
+   "correction": "You can suggest them, and I will evaluate them / You can suggest ideas; I will evaluate them",
+   "label": "FP"
+  },
+  {
+   "id": "A02",
+   "speaker": "Andrey",
+   "start": 937,
+   "end": 961,
+   "text": "Day was a really big day",
+   "category": "ARTICLE",
+   "correction": "Today was a really big day / The day was a really big day",
+   "label": "ASR"
+  },
+  {
+   "id": "A03",
+   "speaker": "Andrey",
+   "start": 962,
+   "end": 1000,
+   "text": "because I will explain it like a story",
+   "category": "TENSE",
+   "correction": "because I'll explain it as a story / because I'm going to explain it like a story",
+   "label": "FP"
+  },
+  {
+   "id": "A04",
+   "speaker": "Andrey",
+   "start": 1059,
+   "end": 1112,
+   "text": "So we, me and my brother, started to build AI product",
+   "category": "ORDER",
+   "correction": "So we—my brother and I—started to build an AI product",
+   "label": "REAL"
+  },
+  {
+   "id": "A05",
+   "speaker": "Andrey",
+   "start": 1114,
+   "end": 1168,
+   "text": "The main idea is preparing designers for the interview",
+   "category": "VERB",
+   "correction": "The main idea is to prepare designers for interviews / for the interview process",
+   "label": "FP"
+  },
+  {
+   "id": "A06",
+   "speaker": "Andrey",
+   "start": 1258,
+   "end": 1308,
+   "text": "And most of, most of candidates, most of designers",
+   "category": "ORDER",
+   "correction": "And most candidates, most designers",
+   "label": "REAL"
+  },
+  {
+   "id": "A07",
+   "speaker": "Andrey",
+   "start": 1309,
+   "end": 1373,
+   "text": "can find fast answers without any preparation before the meeting",
+   "category": "COLLOC",
+   "correction": "can find quick answers without any preparation before the meeting",
+   "label": "FP"
+  },
+  {
+   "id": "A08",
+   "speaker": "Andrey",
+   "start": 1379,
+   "end": 1442,
+   "text": "we wanted to build something for help, some, something for help",
+   "category": "PREP",
+   "correction": "we wanted to build something to help them / something that helps",
+   "label": "REAL"
+  },
+  {
+   "id": "A09",
+   "speaker": "Andrey",
+   "start": 1504,
+   "end": 1544,
+   "text": "we got some feedback from early adopters",
+   "category": "WORD",
+   "correction": "we received some feedback from early adopters",
+   "label": "FP"
+  },
+  {
+   "id": "A10",
+   "speaker": "Andrey",
+   "start": 1564,
+   "end": 1608,
+   "text": "we improved quality, the quality of feedback",
+   "category": "ARTICLE",
+   "correction": "we improved the quality of feedback",
+   "label": "ART"
+  },
+  {
+   "id": "A11",
+   "speaker": "Andrey",
+   "start": 1673,
+   "end": 1733,
+   "text": "tested— we tested our product one more time on 8 more people",
+   "category": "PREP",
+   "correction": "we tested our product one more time on eight more people / we tested our product one more time with eight more people",
+   "label": "FP"
+  },
+  {
+   "id": "A12",
+   "speaker": "Andrey",
+   "start": 1798,
+   "end": 1834,
+   "text": "I tried to upsell the full interview",
+   "category": "COLLOC",
+   "correction": "I tried to upsell the full interview package / I tried to upsell the full interview service",
+   "label": "FP"
+  },
+  {
+   "id": "A13",
+   "speaker": "Andrey",
+   "start": 1876,
+   "end": 1900,
+   "text": "3 upsells, uh, for today",
+   "category": "WORD",
+   "correction": "three upsells today / three upsells for today",
+   "label": "FP"
+  },
+  {
+   "id": "A14",
+   "speaker": "Andrey",
+   "start": 1938,
+   "end": 2002,
+   "text": "because most of people can only do tasks and grind on their work",
+   "category": "PREP",
+   "correction": "because most people can only do tasks and grind at their work / grind on their jobs",
+   "label": "REAL"
+  },
+  {
+   "id": "A15",
+   "speaker": "Andrey",
+   "start": 2008,
+   "end": 2038,
+   "text": "we build something in internet",
+   "category": "PREP",
+   "correction": "we built something on the internet / we built something online",
+   "label": "REAL"
+  },
+  {
+   "id": "A16",
+   "speaker": "Andrey",
+   "start": 2187,
+   "end": 2235,
+   "text": "I had, I have, I had warm audience in my channel",
+   "category": "ARTICLE",
+   "correction": "I had / I have a warm audience on my channel",
+   "label": "REAL"
+  },
+  {
+   "id": "A17",
+   "speaker": "Andrey",
+   "start": 2241,
+   "end": 2321,
+   "text": "now I sold something because people need product, not because it's warm audience",
+   "category": "ARTICLE",
+   "correction": "now I sold something because people need the product, not because it was a warm audience / not just because it was a warm audience",
+   "label": "REAL"
+  },
+  {
+   "id": "A18",
+   "speaker": "Andrey",
+   "start": 2514,
+   "end": 2620,
+   "text": "And second, usual people, usual, uh, workers, uh, just can do tasks on their work and cry about their work",
+   "category": "ORDER",
+   "correction": "And secondly, ordinary workers can just do tasks at their work and complain about it",
+   "label": "REAL"
+  },
+  {
+   "id": "A19",
+   "speaker": "Andrey",
+   "start": 2688,
+   "end": 2737,
+   "text": "Because if you want to make career in any company",
+   "category": "ARTICLE",
+   "correction": "Because if you want to make a career at any company / make a career in any company",
+   "label": "REAL"
+  },
+  {
+   "id": "A20",
+   "speaker": "Andrey",
+   "start": 3190,
+   "end": 3219,
+   "text": "I understood question correct",
+   "category": "ARTICLE",
+   "correction": "I understood the question correctly",
+   "label": "REAL"
+  },
+  {
+   "id": "A21",
+   "speaker": "Andrey",
+   "start": 3463,
+   "end": 3475,
+   "text": "from company",
+   "category": "ARTICLE",
+   "correction": "from a company",
+   "label": "REAL"
+  },
+  {
+   "id": "A22",
+   "speaker": "Andrey",
+   "start": 3494,
+   "end": 3504,
+   "text": "not office",
+   "category": "WORD",
+   "correction": "not office workers",
+   "label": "ART"
+  },
+  {
+   "id": "A23",
+   "speaker": "Andrey",
+   "start": 3618,
+   "end": 3630,
+   "text": "without name",
+   "category": "ARTICLE",
+   "correction": "without a name",
+   "label": "REAL"
+  },
+  {
+   "id": "A24",
+   "speaker": "Andrey",
+   "start": 4190,
+   "end": 4199,
+   "text": "in my way",
+   "category": "COLLOC",
+   "correction": "in my own way",
+   "label": "FP"
+  },
+  {
+   "id": "A25",
+   "speaker": "Andrey",
+   "start": 4283,
+   "end": 4290,
+   "text": "in past",
+   "category": "ARTICLE",
+   "correction": "in the past",
+   "label": "REAL"
+  },
+  {
+   "id": "A26",
+   "speaker": "Andrey",
+   "start": 4439,
+   "end": 4465,
+   "text": "with designer who wants to",
+   "category": "ARTICLE",
+   "correction": "with a designer who wants to",
+   "label": "REAL"
+  },
+  {
+   "id": "A27",
+   "speaker": "Andrey",
+   "start": 4467,
+   "end": 4490,
+   "text": "who want to be prepared",
+   "category": "VERB",
+   "correction": "who wants to be prepared",
+   "label": "ART"
+  },
+  {
+   "id": "A28",
+   "speaker": "Andrey",
+   "start": 4563,
+   "end": 4589,
+   "text": "just common usability test",
+   "category": "ARTICLE",
+   "correction": "just a common usability test",
+   "label": "REAL"
+  },
+  {
+   "id": "A29",
+   "speaker": "Andrey",
+   "start": 4955,
+   "end": 4980,
+   "text": "important part of product",
+   "category": "ARTICLE",
+   "correction": "an important part of the product",
+   "label": "REAL"
+  },
+  {
+   "id": "A30",
+   "speaker": "Andrey",
+   "start": 5185,
+   "end": 5211,
+   "text": "convince the opposite side",
+   "category": "COLLOC",
+   "correction": "convince the other side / convince the opposing side",
+   "label": "REAL"
+  },
+  {
+   "id": "A31",
+   "speaker": "Andrey",
+   "start": 5424,
+   "end": 5437,
+   "text": "in new domain",
+   "category": "ARTICLE",
+   "correction": "in a new domain",
+   "label": "REAL"
+  },
+  {
+   "id": "A32",
+   "speaker": "Andrey",
+   "start": 5530,
+   "end": 5551,
+   "text": "about digital product",
+   "category": "ARTICLE",
+   "correction": "about digital products (or about a digital product)",
+   "label": "REAL"
+  },
+  {
+   "id": "A33",
+   "speaker": "Andrey",
+   "start": 5685,
+   "end": 5710,
+   "text": "be deeper in your product",
+   "category": "COLLOC",
+   "correction": "be more involved in your product",
+   "label": "REAL"
+  },
+  {
+   "id": "A34",
+   "speaker": "Andrey",
+   "start": 5790,
+   "end": 5802,
+   "text": "only my part",
+   "category": "COLLOC",
+   "correction": "only my responsibility",
+   "label": "FP"
+  },
+  {
+   "id": "A35",
+   "speaker": "Andrey",
+   "start": 5897,
+   "end": 5907,
+   "text": "or clearly",
+   "category": "WORD",
+   "correction": "more clearly",
+   "label": "REAL"
+  },
+  {
+   "id": "A36",
+   "speaker": "Andrey",
+   "start": 6633,
+   "end": 6646,
+   "text": "I'm not agree",
+   "category": "VERB",
+   "correction": "I don't agree",
+   "label": "REAL"
+  },
+  {
+   "id": "A37",
+   "speaker": "Andrey",
+   "start": 7577,
+   "end": 7601,
+   "text": "So I'm not agree with it",
+   "category": "VERB",
+   "correction": "So I do not agree with it / I'm not in agreement with it",
+   "label": "REAL"
+  },
+  {
+   "id": "A38",
+   "speaker": "Andrey",
+   "start": 7695,
+   "end": 7762,
+   "text": "creativity can't grow with it, can't grow with AI, can grow with AI",
+   "category": "ORDER",
+   "correction": "creativity can't grow with AI (or) creativity can grow with AI",
+   "label": "ART"
+  },
+  {
+   "id": "A39",
+   "speaker": "Andrey",
+   "start": 7820,
+   "end": 7838,
+   "text": "more lazy and lazy",
+   "category": "WORD",
+   "correction": "lazier and lazier / increasingly lazy",
+   "label": "REAL"
+  },
+  {
+   "id": "A40",
+   "speaker": "Andrey",
+   "start": 7847,
+   "end": 7883,
+   "text": "last year you do your common routine",
+   "category": "TENSE",
+   "correction": "last year you did your common routine",
+   "label": "REAL"
+  },
+  {
+   "id": "A41",
+   "speaker": "Andrey",
+   "start": 8307,
+   "end": 8330,
+   "text": "delegate solution to AI",
+   "category": "ARTICLE",
+   "correction": "delegate the solution to AI / delegate solutions to AI",
+   "label": "REAL"
+  },
+  {
+   "id": "A42",
+   "speaker": "Andrey",
+   "start": 8383,
+   "end": 8400,
+   "text": "creative industry",
+   "category": "ARTICLE",
+   "correction": "the creative industry / creative industries",
+   "label": "REAL"
+  },
+  {
+   "id": "A43",
+   "speaker": "Andrey",
+   "start": 8524,
+   "end": 8553,
+   "text": "create new way of interaction",
+   "category": "ARTICLE",
+   "correction": "create a new way of interaction / create new ways of interaction",
+   "label": "REAL"
+  },
+  {
+   "id": "A44",
+   "speaker": "Andrey",
+   "start": 8587,
+   "end": 8630,
+   "text": "Every time new project needs new references",
+   "category": "ARTICLE",
+   "correction": "Every time a new project needs new references",
+   "label": "REAL"
+  },
+  {
+   "id": "A45",
+   "speaker": "Andrey",
+   "start": 8680,
+   "end": 8729,
+   "text": "every time before, you have to find new solutions",
+   "category": "ORDER",
+   "correction": "before that, you have to find new solutions / previously, you had to find new solutions",
+   "label": "FP"
+  },
+  {
+   "id": "A46",
+   "speaker": "Andrey",
+   "start": 8788,
+   "end": 8820,
+   "text": "generate new conceptions context",
+   "category": "WORD",
+   "correction": "generate new concepts or contexts",
+   "label": "ART"
+  },
+  {
+   "id": "A47",
+   "speaker": "Andrey",
+   "start": 8975,
+   "end": 8996,
+   "text": "in the whole internet",
+   "category": "PREP",
+   "correction": "on the whole internet / across the internet",
+   "label": "REAL"
+  },
+  {
+   "id": "A48",
+   "speaker": "Andrey",
+   "start": 9056,
+   "end": 9087,
+   "text": "Before, designers want to build",
+   "category": "TENSE",
+   "correction": "Before, designers wanted to build / Previously, designers wanted to build",
+   "label": "REAL"
+  },
+  {
+   "id": "A49",
+   "speaker": "Andrey",
+   "start": 9252,
+   "end": 9269,
+   "text": "someone use Kilda",
+   "category": "VERB",
+   "correction": "someone uses Kilda",
+   "label": "REAL"
+  },
+  {
+   "id": "A50",
+   "speaker": "Andrey",
+   "start": 9376,
+   "end": 9403,
+   "text": "most of designers are using",
+   "category": "ARTICLE",
+   "correction": "most designers are using / most of the designers are using",
+   "label": "REAL"
+  },
+  {
+   "id": "A51",
+   "speaker": "Andrey",
+   "start": 9445,
+   "end": 9474,
+   "text": "these pages looks too similar",
+   "category": "VERB",
+   "correction": "these pages look too similar",
+   "label": "REAL"
+  },
+  {
+   "id": "A52",
+   "speaker": "Andrey",
+   "start": 9738,
+   "end": 9762,
+   "text": "an another one portfolio",
+   "category": "ARTICLE",
+   "correction": "another portfolio",
+   "label": "REAL"
+  },
+  {
+   "id": "A53",
+   "speaker": "Andrey",
+   "start": 10089,
+   "end": 10099,
+   "text": "replied me",
+   "category": "PREP",
+   "correction": "replied to me",
+   "label": "REAL"
+  },
+  {
+   "id": "A54",
+   "speaker": "Andrey",
+   "start": 10662,
+   "end": 10679,
+   "text": "people's creative",
+   "category": "VERB",
+   "correction": "people are creative / people's creativity",
+   "label": "ART"
+  },
+  {
+   "id": "A55",
+   "speaker": "Andrey",
+   "start": 10755,
+   "end": 10771,
+   "text": "non-typical ways",
+   "category": "COLLOC",
+   "correction": "unconventional ways / nonstandard ways",
+   "label": "FP"
+  },
+  {
+   "id": "A56",
+   "speaker": "Andrey",
+   "start": 10956,
+   "end": 10995,
+   "text": "Personally, you, um, I think it depends",
+   "category": "WORD",
+   "correction": "Personally, I think it depends",
+   "label": "ART"
+  },
+  {
+   "id": "A57",
+   "speaker": "Andrey",
+   "start": 11043,
+   "end": 11086,
+   "text": "AI couldn't suggest you a new business idea",
+   "category": "PREP",
+   "correction": "AI couldn't suggest a new business idea to you",
+   "label": "REAL"
+  },
+  {
+   "id": "A58",
+   "speaker": "Andrey",
+   "start": 11105,
+   "end": 11155,
+   "text": "AI can suggest you can suggest you different ideas",
+   "category": "WORD",
+   "correction": "AI can suggest different ideas to you",
+   "label": "ART"
+  },
+  {
+   "id": "A59",
+   "speaker": "Andrey",
+   "start": 11176,
+   "end": 11228,
+   "text": "if you didn't try to do something by yourself before",
+   "category": "TENSE",
+   "correction": "if you haven't tried to do something by yourself before",
+   "label": "FP"
+  },
+  {
+   "id": "A60",
+   "speaker": "Andrey",
+   "start": 11265,
+   "end": 11293,
+   "text": "your position, where you are",
+   "category": "ORDER",
+   "correction": "your position, where you are (or simply 'where you are') -> better: 'your position' or 'where you are'",
+   "label": "FP"
+  },
+  {
+   "id": "A61",
+   "speaker": "Andrey",
+   "start": 11336,
+   "end": 11383,
+   "text": "see a lot of examples and saw a lot of examples",
+   "category": "VERB",
+   "correction": "see a lot of examples and saw -> 'see a lot of examples and have seen a lot of examples' or keep tense consistent",
+   "label": "ART"
+  }
+ ]
+}

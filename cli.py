@@ -852,6 +852,42 @@ def has_disfluency_pattern(text: str) -> bool:
     return False
 
 
+def is_countable_annotation(item: dict) -> bool:
+    """Whether a finding may move a number the user sees.
+
+    Single gate for every count. build_annotation_metrics used to apply these
+    checks while finalize_derived_metrics — which feeds the Progress charts —
+    counted every item unconditionally, so the two disagreed silently whenever
+    a filter fired.
+
+    Items from before the confidence field existed have no `confidence` key and
+    stay countable: dropping them would rewrite history without re-running it.
+    That leaves a seam between old and new sessions; re-annotating the archive
+    is the fix, not a default here.
+
+    Deliberately says nothing about the category. Roughly 39% of the gpt-4o-era
+    items carry an empty category (they predate the enum) and infer_category_code
+    cannot place them, but "we could not label it" is not "it was not an error" —
+    gating on a category here would silently delete a third of the archive.
+    Such items count toward the total and land in no per-category bucket.
+    """
+    text = (item.get("text") or "").strip()
+    correction = (item.get("correction") or "").strip()
+    if not text or not correction:
+        return False
+    word_count = len(tokenize_words(text))
+    if word_count < 2 or word_count > 24:
+        return False
+    if has_disfluency_pattern(text) or is_filler_text(text):
+        return False
+    if not has_meaningful_correction(text, correction):
+        return False
+    if item.get("is_stylistic") is True:
+        return False
+    confidence = (item.get("confidence") or "").strip().lower()
+    return not (confidence and confidence != "high")
+
+
 def is_clean_example_pair(text: str, correction: str) -> bool:
     if not has_meaningful_correction(text, correction):
         return False
@@ -911,21 +947,15 @@ def build_annotation_metrics(analysis: dict, transcript_text: str) -> None:
             continue
         items = by_name.get(name, [])
         counts: dict[str, int] = {}
+        total_errors = 0
         for item in items:
-            text = (item.get("text") or "").strip()
-            correction = (item.get("correction") or "").strip()
-            if not text or not correction:
+            if not is_countable_annotation(item):
                 continue
-            word_count = len(tokenize_words(text))
-            if word_count < 2 or word_count > 24:
-                continue
-            if has_disfluency_pattern(text) or is_filler_text(text):
-                continue
-            if not has_meaningful_correction(text, correction):
-                continue
-            code = (item.get("category") or "").strip().upper()
-            if not code:
-                code = infer_category_code(item)
+            # Counted whether or not it can be placed in a bucket, so this total
+            # matches finalize_derived_metrics. Summing the buckets instead is
+            # what made the two counters disagree on every gpt-4o session.
+            total_errors += 1
+            code = (item.get("category") or "").strip().upper() or infer_category_code(item)
             if not code:
                 continue
             counts[code] = counts.get(code, 0) + 1
@@ -934,7 +964,6 @@ def build_annotation_metrics(analysis: dict, transcript_text: str) -> None:
             {"code": code, "title": CATEGORY_LABELS.get(code, code), "count": count}
             for code, count in sorted(counts.items(), key=lambda it: it[1], reverse=True)
         ]
-        total_errors = sum(item["count"] for item in error_types)
         word_count = participant.get("metrics", {}).get("word_count", 0)
         rate = round((total_errors / word_count) * 100, 2) if word_count else 0.0
         participant.setdefault("llm", {})
@@ -1303,10 +1332,17 @@ def call_openai_chunk_annotations(
     if not api_key:
         return None, "Missing API key"
 
+    # "Be exhaustive" used to sit here next to "ignore stylistic improvements".
+    # Under that conflict exhaustiveness won: on the 2026-07-14 session 38 of 128
+    # findings were not errors, and the model said so in its own explanation
+    # ("No clear grammatical error", "kept for thoroughness"). It had no way to
+    # express doubt, so it expressed it in prose and shipped the item anyway.
+    # Precision is now stated as the goal and `confidence` is the outlet.
     system_prompt = (
-        "You are an English tutor annotating a transcript of spoken English. "
-        "Identify clear grammatical errors. "
-        "Be exhaustive: include every clear grammar error you see. "
+        "You are an English tutor annotating a transcript of a live spoken English "
+        "practice call between two Russian-speaking learners. "
+        "Report only errors you would actually correct in a lesson. "
+        "Precision matters far more than coverage: when in doubt, leave it out. "
         "Ignore fillers, hesitations, false starts, punctuation, capitalization, "
         "and purely stylistic improvements."
     )
@@ -1319,11 +1355,29 @@ def call_openai_chunk_annotations(
         "Return JSON with a list of grammar errors found in the transcript chunk. "
         "For each error the text field must quote the erroneous phrase EXACTLY as it appears in the chunk: "
         "copy it verbatim, 2-12 words, never multi-sentence, at least 4 characters; include surrounding words if needed. "
-        "Include correction, a short explanation, and a category.\n"
+        "Include correction, a short explanation, a category, a confidence and an is_stylistic flag.\n"
         f"{ANNOTATION_TAXONOMY_PROMPT}\n"
-        "Exclude transcription artifacts and disfluencies: repeated starts (e.g., 'I. I'), fillers, and discourse markers like 'I mean'/'you know', "
-        "unless there is a clear grammar-rule violation. "
-        "Do not limit the number of errors.\n\n"
+        # Each rule below targets a class of false positive measured on the
+        # 2026-07-14 session; eval/eval_set_2026-07-14.json holds the examples.
+        "This is speech, not writing. Apply these rules:\n"
+        "- SELF-REPAIR: speakers restart and correct themselves mid-sentence "
+        "('we improved quality, the quality of feedback'; 'who wants to, who want to be prepared'). "
+        "Judge only the speaker's final version. A successful self-correction is not an error, and a "
+        "discarded false start is not an error.\n"
+        "- REPETITION: a phrase repeated verbatim is one utterance, not two errors. Report it once.\n"
+        "- THE TRANSCRIPT IS MACHINE-GENERATED. Punctuation, capitalization, sentence boundaries and number "
+        "formatting ('3 upsells', 'on 8 more people') come from the transcriber, not the speaker: never report them. "
+        "Unfamiliar proper nouns, non-English words and words that make no sense in context are usually "
+        "mis-transcriptions: skip them rather than correct them.\n"
+        "- SPOKEN REGISTER IS NOT AN ERROR. Do not report informal but correct usage ('we got some feedback'), "
+        "'me and my brother', simple past where a textbook would prefer present perfect, or a word choice that is "
+        "merely less natural than an alternative. Report a word choice only when the word is genuinely wrong.\n"
+        "- Exclude fillers and discourse markers like 'I mean'/'you know' unless a grammar rule is broken.\n"
+        "Set confidence: high = a clear rule violation any teacher would correct; medium = probably wrong but "
+        "arguable; low = a judgement call. Set is_stylistic true when the phrase is already grammatical and you "
+        "would simply phrase it differently. Be honest with both fields rather than generous.\n"
+        "Report only what you are confident about. Returning an empty list for this chunk is a valid and "
+        "expected answer when it contains no clear errors.\n\n"
         f"Chunk text:\n{chunk_text}"
     )
     schema = {
@@ -1343,8 +1397,12 @@ def call_openai_chunk_annotations(
                             "type": "string",
                             "enum": ["TENSE", "VERB", "ARTICLE", "PREP", "ORDER", "WORD", "COLLOC"],
                         },
+                        # The outlet for doubt. Without it the model reported
+                        # every hunch and hedged in the explanation text instead.
+                        "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
+                        "is_stylistic": {"type": "boolean"},
                     },
-                    "required": ["text", "correction", "explanation", "category"],
+                    "required": ["text", "correction", "explanation", "category", "confidence", "is_stylistic"],
                 },
             }
         },
@@ -1370,13 +1428,18 @@ def call_openai_chunk_annotations(
         },
         # Dense chunks can carry 20+ errors with explanations, and for gpt-5
         # models reasoning tokens draw from the same budget; a tight cap
-        # truncates the JSON mid-string and loses the whole chunk.
-        "max_output_tokens": 8000,
+        # truncates the JSON mid-string and loses the whole chunk. Raised from
+        # 8000 alongside the effort bump below, which spends more of the budget
+        # on reasoning before a single answer token is emitted.
+        "max_output_tokens": 16000,
     }
     if model.startswith("gpt-5"):
-        # gpt-5-mini rejects temperature; keep reasoning effort low so the
-        # budget stays with the answer.
-        payload["reasoning"] = {"effort": "low"}
+        # gpt-5-mini rejects temperature, so effort is the only knob. It was
+        # pinned to "low" to keep budget with the answer, but deciding whether a
+        # phrase is an error at all IS the reasoning here, and "low" is where
+        # the 0-26 findings-per-chunk spread was measured. Env-overridable so a
+        # level can be A/B'd against eval/run_eval.py without editing code.
+        payload["reasoning"] = {"effort": clean_env("OPENAI_ANNOTATION_EFFORT", "medium")}
 
     request = urllib.request.Request(
         OPENAI_ENDPOINT,
@@ -2293,6 +2356,8 @@ def finalize_derived_metrics(analysis: dict) -> None:
         cat_counts = {code: 0 for code in CATEGORY_LABELS}
         total_errors = 0
         for item in by_name.get(name, []):
+            if not is_countable_annotation(item):
+                continue
             code = (item.get("category") or infer_category_code(item) or "").upper()
             total_errors += 1
             if code in cat_counts:
@@ -2333,6 +2398,14 @@ def reanalyze_derived_all(out_dir: Path) -> int:
             analysis = load_json(analysis_path, {})
             if not analysis:
                 continue
+            # write_analysis only refreshes derived.grammar (the Progress
+            # charts). Without these two the Session page keeps serving the
+            # annotation_grammar computed by whatever rules were in force when
+            # the session was first analysed, so the two counters stay out of
+            # step on stored data. Both are deterministic — no LLM, no cost.
+            transcript_text = analysis.get("transcript", "") or ""
+            build_annotation_metrics(analysis, transcript_text)
+            build_practical_recommendations(analysis, transcript_text)
             write_analysis(out_dir, analysis)   # finalize_derived_metrics runs here
             update_history(out_dir, analysis)
             count += 1
