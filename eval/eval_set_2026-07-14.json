@@ -8,7 +8,7 @@
   "items": 128,
   "source": "sessions/2026-07-14/analysis.json llm.annotation_items"
  },
- "labeled_by": "manual adjudication by Claude, single pass, 2026-07-15. ~5 items are judgement calls.",
+ "labeled_by": "manual adjudication by Claude, single pass, 2026-07-15. ~5 items are judgement calls. Extended 2026-07-16 with 11 findings the new prompt surfaced that the baseline missed (10 REAL, 1 FP).",
  "label_meaning": {
   "REAL": "настоящая ошибка: носитель бы поправил, воспроизводимая, не оговорка",
   "FP": "не ошибка: стилистика, прескриптивизм, или модель сама пишет что ошибки нет",
@@ -1295,6 +1295,127 @@
    "category": "VERB",
    "correction": "see a lot of examples and saw -> 'see a lot of examples and have seen a lot of examples' or keep tense consistent",
    "label": "ART"
+  },
+  {
+   "id": "N01",
+   "speaker": "Andrey",
+   "start": 1473,
+   "end": 1494,
+   "text": "built early prototype",
+   "category": "ARTICLE",
+   "correction": "built an early prototype",
+   "label": "REAL",
+   "found_by": "gpt-5-mini/medium new prompt, 2026-07-16; missed by the gpt-5-mini/low baseline"
+  },
+  {
+   "id": "N02",
+   "speaker": "Andrey",
+   "start": 1782,
+   "end": 1797,
+   "text": "on this meeting",
+   "category": "PREP",
+   "correction": "in this meeting",
+   "label": "REAL",
+   "found_by": "gpt-5-mini/medium new prompt, 2026-07-16; missed by the gpt-5-mini/low baseline"
+  },
+  {
+   "id": "N03",
+   "speaker": "Andrey",
+   "start": 2120,
+   "end": 2152,
+   "text": "before we already built AI Guide",
+   "category": "TENSE",
+   "correction": "before, we had already built AI Guide",
+   "label": "REAL",
+   "found_by": "gpt-5-mini/medium new prompt, 2026-07-16; missed by the gpt-5-mini/low baseline"
+  },
+  {
+   "id": "N04",
+   "speaker": "Andrey",
+   "start": 2658,
+   "end": 2686,
+   "text": "we a bit different from them",
+   "category": "VERB",
+   "correction": "we are a bit different from them",
+   "label": "REAL",
+   "found_by": "gpt-5-mini/medium new prompt, 2026-07-16; missed by the gpt-5-mini/low baseline"
+  },
+  {
+   "id": "N05",
+   "speaker": "Roman",
+   "start": 6017,
+   "end": 6033,
+   "text": "So next exercise",
+   "category": "ARTICLE",
+   "correction": "So the next exercise",
+   "label": "FP",
+   "found_by": "gpt-5-mini/medium new prompt, 2026-07-16; missed by the gpt-5-mini/low baseline"
+  },
+  {
+   "id": "N06",
+   "speaker": "Roman",
+   "start": 6209,
+   "end": 6232,
+   "text": "just simple simple take",
+   "category": "ARTICLE",
+   "correction": "just a simple take",
+   "label": "REAL",
+   "found_by": "gpt-5-mini/medium new prompt, 2026-07-16; missed by the gpt-5-mini/low baseline"
+  },
+  {
+   "id": "N07",
+   "speaker": "Andrey",
+   "start": 9298,
+   "end": 9312,
+   "text": "different soft",
+   "category": "WORD",
+   "correction": "different software",
+   "label": "REAL",
+   "found_by": "gpt-5-mini/medium new prompt, 2026-07-16; missed by the gpt-5-mini/low baseline"
+  },
+  {
+   "id": "N08",
+   "speaker": "Roman",
+   "start": 11633,
+   "end": 11648,
+   "text": "in coding field",
+   "category": "ARTICLE",
+   "correction": "in the coding field",
+   "label": "REAL",
+   "found_by": "gpt-5-mini/medium new prompt, 2026-07-16; missed by the gpt-5-mini/low baseline"
+  },
+  {
+   "id": "N09",
+   "speaker": "Roman",
+   "start": 12196,
+   "end": 12225,
+   "text": "I didn't have second question",
+   "category": "ARTICLE",
+   "correction": "I didn't have a second question",
+   "label": "REAL",
+   "found_by": "gpt-5-mini/medium new prompt, 2026-07-16; missed by the gpt-5-mini/low baseline"
+  },
+  {
+   "id": "N10",
+   "speaker": "Roman",
+   "start": 12236,
+   "end": 12258,
+   "text": "I suggest to stop here",
+   "category": "VERB",
+   "correction": "I suggest we stop here",
+   "label": "REAL",
+   "found_by": "gpt-5-mini/medium new prompt, 2026-07-16; missed by the gpt-5-mini/low baseline"
+  },
+  {
+   "id": "N11",
+   "speaker": "Roman",
+   "start": 12522,
+   "end": 12542,
+   "text": "I change all metrics",
+   "category": "TENSE",
+   "correction": "I changed all metrics",
+   "label": "REAL",
+   "found_by": "gpt-5-mini/medium new prompt, 2026-07-16; missed by the gpt-5-mini/low baseline"
   }
  ]
 }

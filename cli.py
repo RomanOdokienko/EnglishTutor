@@ -918,8 +918,13 @@ def is_countable_annotation(item: dict) -> bool:
         return False
     if item.get("is_stylistic") is True:
         return False
+    # Only "low" is excluded, not everything below "high". Measured on the
+    # 2026-07-14 rerun: the medium bucket was 13 real errors out of 17 judged
+    # (76% — better than the old prompt managed overall), and the items the
+    # model marked medium were precisely the arguable ones. Gating at high-only
+    # bought 2 points of precision for 14 points of recall.
     confidence = (item.get("confidence") or "").strip().lower()
-    return not (confidence and confidence != "high")
+    return confidence != "low"
 
 
 def is_clean_example_pair(text: str, correction: str) -> bool:
