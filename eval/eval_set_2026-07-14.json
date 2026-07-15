@@ -8,7 +8,7 @@
   "items": 128,
   "source": "sessions/2026-07-14/analysis.json llm.annotation_items"
  },
- "labeled_by": "manual adjudication by Claude, single pass, 2026-07-15. ~5 items are judgement calls. Extended 2026-07-16 with 11 findings the new prompt surfaced that the baseline missed (10 REAL, 1 FP).",
+ "labeled_by": "manual adjudication by Claude, single pass, 2026-07-15. ~5 items are judgement calls. Extended 2026-07-16 with 11 findings the new prompt surfaced that the baseline missed (10 REAL, 1 FP). Extended 2026-07-16 (2): +16 from the 2-pass even-chunk run (12 REAL incl. atomic splits of fused spans, 1 FP, 3 ART).",
  "label_meaning": {
   "REAL": "настоящая ошибка: носитель бы поправил, воспроизводимая, не оговорка",
   "FP": "не ошибка: стилистика, прескриптивизм, или модель сама пишет что ошибки нет",
@@ -1416,6 +1416,182 @@
    "correction": "I changed all metrics",
    "label": "REAL",
    "found_by": "gpt-5-mini/medium new prompt, 2026-07-16; missed by the gpt-5-mini/low baseline"
+  },
+  {
+   "id": "N12",
+   "speaker": "Roman",
+   "start": 385,
+   "end": 413,
+   "text": "what I should done correctly",
+   "category": "VERB",
+   "correction": "what I should do correctly",
+   "label": "REAL",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
+  },
+  {
+   "id": "N13",
+   "speaker": "Andrey",
+   "start": 1014,
+   "end": 1035,
+   "text": "in Star Framework way",
+   "category": "ARTICLE",
+   "correction": "in a Star Framework way",
+   "label": "REAL",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
+  },
+  {
+   "id": "N14",
+   "speaker": "Andrey",
+   "start": 1102,
+   "end": 1112,
+   "text": "AI product",
+   "category": "ARTICLE",
+   "correction": "an AI product",
+   "label": "REAL",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
+  },
+  {
+   "id": "N15",
+   "speaker": "Andrey",
+   "start": 1291,
+   "end": 1308,
+   "text": "most of designers",
+   "category": "PREP",
+   "correction": "most designers",
+   "label": "REAL",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
+  },
+  {
+   "id": "N16",
+   "speaker": "Andrey",
+   "start": 1983,
+   "end": 2002,
+   "text": "grind on their work",
+   "category": "COLLOC",
+   "correction": "grind away at their work",
+   "label": "REAL",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
+  },
+  {
+   "id": "N17",
+   "speaker": "Andrey",
+   "start": 2303,
+   "end": 2321,
+   "text": "it's warm audience",
+   "category": "ARTICLE",
+   "correction": "it's a warm audience",
+   "label": "REAL",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
+  },
+  {
+   "id": "N18",
+   "speaker": "Roman",
+   "start": 2470,
+   "end": 2486,
+   "text": "who does task on",
+   "category": "VERB",
+   "correction": "who do tasks at work",
+   "label": "REAL",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
+  },
+  {
+   "id": "N19",
+   "speaker": "Roman",
+   "start": 3051,
+   "end": 3086,
+   "text": "are not previously interested in it",
+   "category": "TENSE",
+   "correction": "were not previously interested in it",
+   "label": "REAL",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
+  },
+  {
+   "id": "N20",
+   "speaker": "Andrey",
+   "start": 3632,
+   "end": 3649,
+   "text": "without something",
+   "category": "WORD",
+   "correction": "without anything",
+   "label": "ART",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
+  },
+  {
+   "id": "N21",
+   "speaker": "Roman",
+   "start": 3674,
+   "end": 3729,
+   "text": "the best part, uh, that you created it and you sold it?",
+   "category": "VERB",
+   "correction": "the best part is that you created it and sold it?",
+   "label": "REAL",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
+  },
+  {
+   "id": "N22",
+   "speaker": "Andrey",
+   "start": 4924,
+   "end": 4944,
+   "text": "a bit manual selling",
+   "category": "PREP",
+   "correction": "a bit of manual selling",
+   "label": "REAL",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
+  },
+  {
+   "id": "N23",
+   "speaker": "Andrey",
+   "start": 8256,
+   "end": 8291,
+   "text": "for you it's not necessary to think",
+   "category": "ORDER",
+   "correction": "it's not necessary for you to think",
+   "label": "FP",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
+  },
+  {
+   "id": "N24",
+   "speaker": "Andrey",
+   "start": 8831,
+   "end": 8861,
+   "text": "create generic design solution",
+   "category": "WORD",
+   "correction": "create generic design solutions",
+   "label": "REAL",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
+  },
+  {
+   "id": "N25",
+   "speaker": "Andrey",
+   "start": 10171,
+   "end": 10200,
+   "text": "and but not positive feedback",
+   "category": "ORDER",
+   "correction": "but not positive feedback",
+   "label": "ART",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
+  },
+  {
+   "id": "N26",
+   "speaker": "Andrey",
+   "start": 11160,
+   "end": 11175,
+   "text": "the pet project",
+   "category": "ARTICLE",
+   "correction": "a pet project",
+   "label": "REAL",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
+  },
+  {
+   "id": "N27",
+   "speaker": "Roman",
+   "start": 12069,
+   "end": 12080,
+   "text": "not emotion",
+   "category": "WORD",
+   "correction": "not emotions",
+   "label": "ART",
+   "found_by": "union2/even-chunks 2026-07-16; several are atomic splits of fused baseline spans"
   }
  ]
 }

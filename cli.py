@@ -2,6 +2,7 @@
 #!/usr/bin/env python3
 import argparse
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 import json
 import os
 import re
@@ -100,7 +101,15 @@ OPENAI_ENDPOINT = "https://api.openai.com/v1/responses"
 DEFAULT_OPENAI_MODEL = "gpt-4o-mini"
 DEFAULT_ANNOTATION_MODEL = "gpt-4o"
 ANNOTATION_MAX_CHUNKS = 0
-ANNOTATION_BLOCKS_PER_CHUNK = 6
+# Chunking used to cut on turn count alone (6 turns), which produced chunks of
+# 143..2924 chars on the 2026-07-14 session. The long ones are where extraction
+# gets unreliable — the documented 0-26 findings-per-chunk spread was measured
+# on one of them, and on gpt-5 models a long chunk's reasoning also competes
+# with the answer for the same token budget. A char budget keeps extraction
+# pressure per call roughly constant; the turn cap stays as a guard against
+# chunks made of many one-word turns.
+ANNOTATION_BLOCKS_PER_CHUNK = 12
+ANNOTATION_CHUNK_MAX_CHARS = 1200
 
 
 @dataclass
@@ -183,6 +192,7 @@ def build_chunks(
     blocks: list[dict],
     transcript_text: str,
     max_blocks: int = ANNOTATION_BLOCKS_PER_CHUNK,
+    max_chars: int = ANNOTATION_CHUNK_MAX_CHARS,
 ) -> list[dict]:
     if not blocks:
         return []
@@ -207,7 +217,11 @@ def build_chunks(
         current = []
 
     for block in blocks:
-        if current and len(current) >= max_blocks:
+        block_chars = block["range"]["end"] - block["range"]["start"]
+        current_chars = (current[-1]["range"]["end"] - current[0]["range"]["start"]) if current else 0
+        # Never split inside a turn: a single block longer than max_chars
+        # becomes its own oversized chunk rather than being cut mid-sentence.
+        if current and (len(current) >= max_blocks or current_chars + block_chars > max_chars):
             flush()
         current.append(block)
 
@@ -1520,6 +1534,71 @@ def call_openai_chunk_annotations(
     return locate_annotation_spans(chunk_text, parsed.get("errors", [])), None
 
 
+def span_overlap_ratio(a: dict, b: dict) -> float:
+    """Overlap between two start/end spans as a share of the shorter one."""
+    overlap = min(a["end"], b["end"]) - max(a["start"], b["start"])
+    if overlap <= 0:
+        return 0.0
+    shorter = min(a["end"] - a["start"], b["end"] - b["start"])
+    return overlap / shorter if shorter else 0.0
+
+
+def annotate_chunk(
+    chunk_text: str,
+    api_key: str,
+    model: str,
+    passes: int | None = None,
+) -> tuple[list[dict], str | None, dict]:
+    """Annotate one chunk with N independent passes and union the findings.
+
+    A single pass is precise but incomplete, and which errors it finds varies
+    between identical runs (measured on 2026-07-14: recall 82% vs 74% on the
+    same config). Unioning two passes traded 2 points of precision for that
+    variance: 84%/89% against every single run's 86%/82±8%. Extraction is the
+    unstable half of the task, so sampling it twice is what stabilizes the
+    density series, not asking one pass to try harder.
+
+    Passes run concurrently, so wall time stays roughly that of one pass.
+    Duplicates are dropped by >=50% span overlap, first pass wins ties (its
+    wording is as good as the second's, and determinism beats cleverness in a
+    tiebreak). Returns (normalized_items, error, meta); error is set only when
+    every pass failed — one dead pass degrades to single-pass behavior rather
+    than failing the chunk.
+    """
+    if passes is None:
+        try:
+            passes = int(clean_env("OPENAI_ANNOTATION_PASSES", "2"))
+        except ValueError:
+            passes = 2
+    passes = max(1, min(passes, 4))
+
+    if passes == 1:
+        located, error = call_openai_chunk_annotations(chunk_text, api_key, model)
+        meta = {"passes_requested": 1, "passes_ok": 0 if error else 1}
+        return normalize_annotations(chunk_text, located or []), error, meta
+
+    with ThreadPoolExecutor(max_workers=passes) as pool:
+        futures = [
+            pool.submit(call_openai_chunk_annotations, chunk_text, api_key, model)
+            for _ in range(passes)
+        ]
+        results = [future.result() for future in futures]
+
+    succeeded = [located or [] for located, error in results if not error]
+    errors = [error for _, error in results if error]
+    meta = {"passes_requested": passes, "passes_ok": len(succeeded)}
+    if not succeeded:
+        return [], "; ".join(errors[:2]), meta
+
+    union: list[dict] = list(succeeded[0])
+    for extra in succeeded[1:]:
+        for item in extra:
+            if not any(span_overlap_ratio(item, kept) >= 0.5 for kept in union):
+                union.append(item)
+    meta["raw_counts"] = [len(located or []) for located, error in results if not error]
+    return normalize_annotations(chunk_text, union), None, meta
+
+
 def count_words_in_chunk(chunk_text: str) -> int:
     words: list[str] = []
     for raw_line in chunk_text.splitlines():
@@ -1734,8 +1813,14 @@ def call_annotation_chunk_with_fallback(
     chunk_text: str,
     api_key: str,
     annotation_model: str,
-) -> tuple[list[dict] | None, str | None, str, dict]:
-    errors, error = call_openai_chunk_annotations(chunk_text, api_key, annotation_model)
+) -> tuple[list[dict], str | None, str, dict, dict]:
+    """annotate_chunk plus the gpt-5 -> gpt-4o rescue. Returns normalized items.
+
+    With multi-pass annotation an error already means every pass failed, so the
+    fallback only fires when gpt-5 is systematically unusable for this chunk,
+    not on a single flaky response.
+    """
+    normalized, error, chunk_meta = annotate_chunk(chunk_text, api_key, annotation_model)
     no_fallback = os.getenv("OPENAI_ANNOTATION_NO_FALLBACK") in ("1", "true", "yes")
     if (
         not no_fallback
@@ -1744,13 +1829,13 @@ def call_annotation_chunk_with_fallback(
         and annotation_model.startswith("gpt-5")
     ):
         fallback_model = "gpt-4o"
-        errors, error = call_openai_chunk_annotations(chunk_text, api_key, fallback_model)
-        return errors, error, fallback_model, {
+        normalized, error, chunk_meta = annotate_chunk(chunk_text, api_key, fallback_model)
+        return normalized, error, fallback_model, {
             "fallback_from": annotation_model,
             "fallback_to": fallback_model,
             "fallback_reason": "Unusable response from gpt-5",
-        }
-    return errors, error, annotation_model, {}
+        }, chunk_meta
+    return normalized, error, annotation_model, {}, chunk_meta
 
 
 def merge_existing_llm(analysis: dict, existing: dict) -> None:
@@ -1848,18 +1933,25 @@ def build_chunk_annotations(
     total_chunks = len(chunks)
 
     last_error = None
+    per_chunk: list[dict] = []
     for chunk in ordered_chunks:
         chunk_text = chunk.get("text", "")
-        errors, error = call_openai_chunk_annotations(chunk_text, api_key, model)
+        normalized, error, chunk_meta = annotate_chunk(chunk_text, api_key, model)
         if error:
+            # error means every pass failed for this chunk; a partly failed
+            # chunk (one pass ok) comes back as a normal result.
             last_error = error
             meta = {
                 "chunks_processed": len(annotated_parts),
                 "total_chunks": total_chunks,
                 "processed_chars": processed_chars,
+                "per_chunk": per_chunk,
             }
             return None, all_errors, error, meta
-        normalized = normalize_annotations(chunk_text, errors or [])
+        # Findings-per-chunk is where instability shows first (the measured
+        # 0-26 spread); keeping it per session makes drift visible in prod
+        # without rerunning experiments.
+        per_chunk.append({"index": chunk.get("index"), "chars": len(chunk_text), "findings": len(normalized), **chunk_meta})
         chunk_html = build_annotated_html(chunk_text, normalized)
 
         start = chunk["range"]["start"]
@@ -1891,6 +1983,7 @@ def build_chunk_annotations(
         "chunks_processed": len(ordered_chunks),
         "total_chunks": total_chunks,
         "processed_chars": processed_chars,
+        "per_chunk": per_chunk,
     }
     meta["attempted_model"] = model
     if last_error:
@@ -1954,12 +2047,13 @@ def annotate_session(
 
     fallback_info: dict = {}
     model_used = annotation_model
+    per_chunk_stats: list[dict] = list(existing_meta.get("per_chunk") or [])[:start_index] if resume else []
 
     for index, chunk in enumerate(ordered_chunks):
         if index < start_index:
             continue
         chunk_text = chunk.get("text", "")
-        errors, error, model_used, fallback_meta = call_annotation_chunk_with_fallback(
+        normalized, error, model_used, fallback_meta, chunk_meta = call_annotation_chunk_with_fallback(
             chunk_text, api_key, annotation_model
         )
         if fallback_meta:
@@ -1978,12 +2072,12 @@ def annotate_session(
                 "total_chunks": total_chunks,
                 "processed_chars": processed_chars,
                 "attempted_model": annotation_model,
+                "per_chunk": per_chunk_stats,
                 **fallback_info,
             }
             write_analysis(out_dir, analysis)
             return analysis
 
-        normalized = normalize_annotations(chunk_text, errors or [])
         for item in normalized:
             all_errors.append(
                 {
@@ -1993,9 +2087,17 @@ def annotate_session(
                     "correction": item.get("correction", ""),
                     "explanation": item.get("explanation", ""),
                     "category": item.get("category", ""),
+                    # The third place this dict gets rebuilt field-by-field;
+                    # dropping these here would silently disable the confidence
+                    # gate for every session annotated through the rebuild path.
+                    "confidence": item.get("confidence", ""),
+                    "is_stylistic": bool(item.get("is_stylistic", False)),
                 }
             )
         processed_chars += len(chunk_text)
+        per_chunk_stats.append(
+            {"index": index, "chars": len(chunk_text), "findings": len(normalized), **chunk_meta}
+        )
 
         analysis["llm"]["annotations_status"] = "in_progress"
         analysis["llm"]["annotations_attempted_model"] = annotation_model
@@ -2009,6 +2111,7 @@ def annotate_session(
             "total_chunks": total_chunks,
             "processed_chars": processed_chars,
             "attempted_model": annotation_model,
+            "per_chunk": per_chunk_stats,
             **fallback_info,
         }
         write_analysis(out_dir, analysis)
@@ -2023,6 +2126,7 @@ def annotate_session(
         "total_chunks": total_chunks,
         "processed_chars": processed_chars,
         "attempted_model": annotation_model,
+        "per_chunk": per_chunk_stats,
         **fallback_info,
     }
     analysis["llm"].pop("annotations_error", None)

@@ -38,7 +38,8 @@ def main() -> int:
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--model", default=cli.clean_env("OPENAI_ANNOTATION_MODEL", "gpt-5-mini"))
     parser.add_argument("--effort", default=None, help="gpt-5 reasoning effort: low|medium|high")
-    parser.add_argument("--deadline", type=float, default=420.0, help="seconds for the whole run")
+    parser.add_argument("--passes", type=int, default=2, help="independent passes unioned per chunk")
+    parser.add_argument("--deadline", type=float, default=480.0, help="seconds for the whole run")
     args = parser.parse_args()
 
     api_key = cli.clean_env("OPENAI_API_KEY")
@@ -55,7 +56,12 @@ def main() -> int:
     blocks = cli.parse_transcript_blocks(transcript)
     chunks = cli.build_chunks(blocks, transcript)
     effort = args.effort or cli.clean_env("OPENAI_ANNOTATION_EFFORT", "medium")
-    print(f"model={args.model} effort={effort} chunks={len(chunks)} deadline={args.deadline:.0f}s", flush=True)
+    sizes = [c["range"]["end"] - c["range"]["start"] for c in chunks]
+    print(
+        f"model={args.model} effort={effort} passes={args.passes}"
+        f" chunks={len(chunks)} ({min(sizes)}-{max(sizes)} chars) deadline={args.deadline:.0f}s",
+        flush=True,
+    )
 
     started = time.monotonic()
     items: list[dict] = []
@@ -72,22 +78,23 @@ def main() -> int:
         chunk_text = chunk["text"]
         offset = chunk["range"]["start"]
         call_started = time.monotonic()
-        errors, error = cli.call_openai_chunk_annotations(chunk_text, api_key, args.model)
+        # The production path: N concurrent passes unioned, then normalized.
+        normalized, error, chunk_meta = cli.annotate_chunk(chunk_text, api_key, args.model, args.passes)
         took = time.monotonic() - call_started
 
         if error:
-            # One bad chunk should not throw away the eight good ones.
+            # One bad chunk should not throw away the rest.
             print(f"  chunk {chunk['index']}: ERROR after {took:.0f}s: {error[:120]}", flush=True)
             processed += 1
             continue
 
-        normalized = cli.normalize_annotations(chunk_text, errors or [])
         for item in normalized:
             items.append({**item, "start": item["start"] + offset, "end": item["end"] + offset})
         processed += 1
         kept = sum(1 for i in normalized if cli.is_countable_annotation(i))
+        raw = "+".join(str(n) for n in chunk_meta.get("raw_counts", []))
         print(
-            f"  chunk {chunk['index']}: {len(errors or [])} raw -> {len(normalized)} normalized"
+            f"  chunk {chunk['index']}: passes {raw} raw -> {len(normalized)} union"
             f" -> {kept} countable  ({took:.0f}s, {len(chunk_text)} chars)",
             flush=True,
         )
@@ -97,6 +104,7 @@ def main() -> int:
         "meta": {
             "model": args.model,
             "reasoning_effort": effort,
+            "passes": args.passes,
             "chunks_processed": processed,
             "total_chunks": len(chunks),
             "elapsed_sec": round(time.monotonic() - started, 1),
