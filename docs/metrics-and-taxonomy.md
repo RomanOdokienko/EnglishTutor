@@ -53,8 +53,8 @@ Grammar values live at participants[].derived.grammar.
 
 For each participant:
 
-- error_count is the number of attributed annotation items in a recognised
-  category.
+- error_count is the number of **countable** attributed annotation items (see
+  the counting gate below), whether or not they carry a recognised category.
 - error_density_per_100w is error_count / english_word_count × 100.
 - by_category_count contains every v1 category with its count.
 - by_category_density contains every v1 category count /
@@ -62,9 +62,33 @@ For each participant:
 
 An annotation item first uses its assigned category. If absent, the pipeline
 may infer a category from its explanation, correction and text. Uncategorised
-items are not added to a named category density. A session without annotations
-is not evidence of zero grammatical errors; it has no reliable annotation-based
-grammar measurement.
+items still count toward error_count but are added to no named category
+density — "we could not label it" is not "it was not an error". A session
+without annotations is not evidence of zero grammatical errors; it has no
+reliable annotation-based grammar measurement.
+
+### Counting gate (`is_countable_annotation`)
+
+Both the Session-page counter and the derived-metrics counter pass every item
+through one function, so the two numbers cannot diverge (they once did, by up
+to 69% on stored data). An item counts unless it is any of: empty text or
+correction; span under 2 or over 24 words; a disfluency/filler; a correction
+equal to the text; `is_stylistic: true`; or `confidence: "low"`. Items with
+`confidence` of high or medium count. Legacy items predating the confidence
+field have no such key and still count — excluding them would rewrite history
+without re-running it.
+
+### Annotation extraction (affects reproducibility, not the taxonomy)
+
+Findings are produced by `annotate_chunk`: two independent model passes per
+chunk, unioned by span overlap, over char-budgeted chunks
+(`ANNOTATION_CHUNK_MAX_CHARS`). Extraction — *finding* the errors — is the
+unstable half of the task; a single pass finds a different subset each run, so
+the union stabilises the density series. Judgment of a found phrase is
+comparatively stable. The taxonomy is unchanged by this, so the version stays 1,
+but a re-extraction changes which errors are found and must recompute the whole
+archive for comparability. Measure any prompt/effort/pass change against
+`eval/` before making it the default (see docs/quality.md).
 
 Classification source note (July 2026): the annotation call enforces the v1
 category enum through the response JSON schema and the prompt spells out the

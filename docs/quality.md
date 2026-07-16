@@ -21,17 +21,30 @@ to add during the refactor.
 
 ## LLM evaluation
 
-LLM output is not deterministic. Maintain a small redacted evaluation set with:
+LLM output is not deterministic, so annotation changes are measured, not
+eyeballed. The harness lives in `eval/` (see `eval/README.md`):
 
-- expected speaker attribution;
-- acceptable annotation examples and categories;
-- known false positives to avoid;
-- an expected empty or skipped-annotation case;
-- provider failure and fallback scenarios.
+- `eval_set_2026-07-14.json` — one session's findings hand-labeled REAL / FP /
+  ART / ASR, grown as new configs surfaced findings earlier runs had missed.
+- `run_eval.py` — scores a candidate run against the set by span overlap
+  (rewording a finding does not break the match) and refuses to score findings
+  nobody has labeled.
+- `run_annotations.py` — annotates a transcript through the production path into
+  a candidate file, writing only where told (never `out/sessions`).
 
-Evaluate model or prompt changes before making them the default annotation
-configuration. Record model name and annotation status in analysis_version so a
-result can be interpreted after a model change.
+Read the numbers with their bias in mind: **precision is trustworthy**
+(every item was judged on its merits); **recall is optimistic**, because the set
+is built from model output, so whatever every config missed is absent by
+construction. A true recall figure needs an exhaustive hand-pass on a short
+segment (a recall probe), not yet done. Current prod config (gpt-5-mini, medium,
+2-pass union) scores ~84% precision / ~88% recall on this set.
+
+Still worth adding to the set over time: expected speaker attribution, an
+expected empty/skipped-annotation case, and provider failure/fallback scenarios.
+
+Evaluate model or prompt changes against `eval/` before making them the default
+annotation configuration. Record model name and annotation status in
+analysis_version so a result can be interpreted after a model change.
 
 ## Release gate
 

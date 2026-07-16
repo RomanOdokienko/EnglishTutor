@@ -6,6 +6,7 @@ versioned derived metrics.
 
 | Document | Purpose |
 | --- | --- |
+| ../CLAUDE.md | Fast orientation for a fresh session: repo map, the pipeline, and the load-bearing implementation gotchas |
 | ../Architecture.md | System context, components, runtime flows and deployment topology |
 | migration/legacy-to-derived-v1.md | Cutover plan, compatibility and exit criteria |
 | metrics-and-taxonomy.md | Canonical metric definitions, categories and versioning rules |

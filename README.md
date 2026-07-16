@@ -63,11 +63,18 @@ Useful overrides:
 ~~~powershell
 $env:OPENAI_MODEL="gpt-4o-mini"
 $env:OPENAI_ANNOTATION_MODEL="gpt-5-mini"
+$env:OPENAI_ANNOTATION_EFFORT="medium"   # low|medium|high — effort buys recall
+$env:OPENAI_ANNOTATION_PASSES="2"        # passes unioned per chunk — buys recall + stability
 $env:OPENAI_ANNOTATION_RESUME="1"
 $env:OPENAI_ANNOTATION_NO_FALLBACK="1"
 $env:OPENAI_CHUNK_METRICS="1"
 $env:OPENAI_CHUNK_METRICS_RESUME="1"
 ~~~
+
+Instead of exporting variables each time, you can put them in a `.env` file in
+the repository root (git-ignored); `cli.py` loads it and never overrides a real
+environment variable. Annotation quality is measured with the harness in
+`eval/` — evaluate any prompt/model/effort change there before shipping it.
 
 Run a CLI build with model analysis:
 

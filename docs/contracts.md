@@ -46,6 +46,13 @@ analysis or annotations have not run.
 | llm | Status, model metadata, annotations and optional LLM summaries |
 | analysis_version | metrics, taxonomy, annotation model and annotation status |
 
+Each item in `llm.annotation_items` has: `start`, `end` (transcript offsets),
+`text`, `correction`, `explanation`, `category` (a v1 code or empty), and —
+since July 2026 — `confidence` (high/medium/low) and `is_stylistic` (bool). The
+last two drive the counting gate (see docs/metrics-and-taxonomy.md); items from
+before they existed omit them and are still counted. `llm.annotations_meta`
+carries `per_chunk` (findings and pass count per chunk) for drift visibility.
+
 The canonical participant fields are:
 
 | Path | Status | Meaning |

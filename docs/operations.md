@@ -25,7 +25,9 @@ uncommitted data that has not been reviewed.
 | --- | --- | --- |
 | OPENAI_API_KEY | Backend and CLI | Enables model analysis, annotations and exercises |
 | OPENAI_MODEL | Backend and CLI | Overrides general analysis model |
-| OPENAI_ANNOTATION_MODEL | Backend and CLI | Overrides annotation model |
+| OPENAI_ANNOTATION_MODEL | Backend and CLI | Overrides annotation model (default gpt-5-mini) |
+| OPENAI_ANNOTATION_EFFORT | Backend and CLI | gpt-5 reasoning effort for annotation: low/medium/high (default medium). Effort buys recall; low is where the 0–26 findings-per-chunk spread was measured |
+| OPENAI_ANNOTATION_PASSES | Backend and CLI | Independent annotation passes unioned per chunk (default 2). Stabilises recall against run-to-run variance |
 | OPENAI_EXERCISE_MODEL | Backend | Overrides exercise model |
 | OPENAI_TEST_MODEL | Backend | Model for diagnostic probe |
 | OPENAI_ANNOTATION_RESUME | Backend and CLI | Resumes saved annotation chunks |
@@ -39,8 +41,10 @@ uncommitted data that has not been reviewed.
 | ENGLISH_TUTOR_DATA_ROOT | Backend and CLI | Moves mutable data (sessions/, data/, out/) to a mounted volume; unset means repository paths |
 | HOST and PORT | Backend | Bind settings for local or hosted server |
 
-Never commit the values of credential variables. A local environment file may be
-used only if it is ignored by Git.
+Never commit the values of credential variables. `cli.py` reads a `.env` file in
+the repository root at import time (dependency-free; only fills variables not
+already set, so Railway's dashboard values still win). `.env` is git-ignored —
+put local keys there for local runs and eval.
 
 ## Production topology (Railway backend + Vercel frontend)
 
@@ -95,6 +99,7 @@ long — the access token task (plan 1.3) covers this.
 | --- | --- |
 | Derived formula or taxonomy changed | Increment version, run reanalysis, rebuild out/web and commit results |
 | Annotation process stops | Re-run annotation; saved chunks resume by default |
+| Re-annotating a session on prod | `rebuild-annotations` is a long synchronous LLM job (~6–9 min/session). Fire the POST once, then poll read-only GET on `sessions/<date>/analysis.json`; never put the POST in a poll loop. Done when `annotations_meta.per_chunk` is present and `chunks_processed == total_chunks`. Do sessions one at a time — `update_history` writes one shared file |
 | Metrics are stale | Run the derived reanalysis endpoint or CLI command |
 | Static site has old data | Rebuild out/web, commit/publish the artifact, then invalidate any hosting cache |
 | Accidental session deletion | Restore sessions/<date> and its analysis from Git, rebuild history and out/web |
