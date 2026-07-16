@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import hmac
 import json
 import os
 import re
@@ -150,10 +151,18 @@ def create_session_files(
     duration: int,
     participants: list[dict] | None = None,
     speaker_map: dict | None = None,
+    timings: dict | None = None,
 ) -> Path:
     session_dir = SESSIONS_DIR / date
     session_dir.mkdir(parents=True, exist_ok=True)
     (session_dir / "transcript.txt").write_text(transcript_text, encoding="utf-8")
+    if timings:
+        # Word-level timings from the transcriber (see docs/contracts.md).
+        # Source data for fluency metrics; only recorded sessions have it —
+        # text uploads legitimately never get this file.
+        (session_dir / "timings.json").write_text(
+            json.dumps(timings, indent=2, ensure_ascii=False), encoding="utf-8"
+        )
     meta = {
         "date": date,
         "topic": topic,
@@ -331,6 +340,7 @@ class UploadHandler(SimpleHTTPRequestHandler):
             duration,
             participants=participants,
             speaker_map=speaker_map,
+            timings=result.get("timings"),
         )
 
         # Publish the transcript and deterministic metrics immediately. Model
@@ -462,8 +472,93 @@ class UploadHandler(SimpleHTTPRequestHandler):
         build_briefing(OUT_DIR)
         self.send_json_response(data)
 
+    def handle_import_session(self) -> None:
+        """Accept a locally computed session bundle and store it as-is.
+
+        The cheap counterpart of /api/rebuild-annotations: annotations are
+        produced and measured locally (eval harness), then delivered as files,
+        so production pays neither OpenAI nor an hour of synchronous rebuild.
+        The endpoint writes files, so it never runs unauthenticated: it is
+        disabled until ENGLISH_TUTOR_TOKEN is configured, and every request
+        must present that token (X-ET-Token header or ?token=).
+        """
+        expected_token = clean_env("ENGLISH_TUTOR_TOKEN")
+        if not expected_token:
+            self.send_plain_response(503, "Import disabled: ENGLISH_TUTOR_TOKEN is not configured.")
+            return
+        params = parse_qs(urlparse(self.path).query)
+        supplied = (self.headers.get("X-ET-Token") or (params.get("token") or [""])[0] or "").strip()
+        if not hmac.compare_digest(supplied, expected_token):
+            self.send_plain_response(401, "Invalid or missing token.")
+            return
+
+        try:
+            body_length = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            body_length = 0
+        if body_length <= 0 or body_length > 50_000_000:
+            self.send_plain_response(400, "JSON body required (max 50 MB).")
+            return
+        try:
+            bundle = json.loads(self.rfile.read(body_length).decode("utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError) as error:
+            self.send_plain_response(400, f"Invalid JSON: {error}")
+            return
+
+        analysis = bundle.get("analysis")
+        if not isinstance(analysis, dict):
+            self.send_plain_response(400, "Bundle must contain an 'analysis' object.")
+            return
+        date = str(analysis.get("date") or "").strip()
+        if not is_valid_session_date(date):
+            self.send_plain_response(400, f"Invalid analysis date: {date!r}")
+            return
+        session_files = bundle.get("session_files") or {}
+        # Only the documented session source files are writable — nothing else,
+        # so a valid token still cannot write outside sessions/<date>/.
+        writable = {"meta.json", "transcript.txt", "timings.json"}
+        unknown = sorted(set(session_files) - writable)
+        if unknown:
+            self.send_plain_response(400, f"Unknown session files: {', '.join(unknown)}")
+            return
+
+        try:
+            with ANALYSIS_LOCK:
+                session_dir = SESSIONS_DIR / date
+                session_dir.mkdir(parents=True, exist_ok=True)
+                for name, content in session_files.items():
+                    target = session_dir / name
+                    if name.endswith(".json"):
+                        target.write_text(json.dumps(content, indent=2, ensure_ascii=False), encoding="utf-8")
+                    else:
+                        target.write_text(str(content), encoding="utf-8")
+                # write_analysis runs finalize_derived_metrics, which re-reads a
+                # timings.json written above; history and web assets follow.
+                write_analysis(OUT_DIR, analysis)
+                update_history(OUT_DIR, analysis)
+                write_web_assets(OUT_DIR)
+        except Exception as error:
+            self.send_plain_response(500, f"Import failed: {error}")
+            return
+
+        items = (analysis.get("llm") or {}).get("annotation_items") or []
+        payload = json.dumps({
+            "imported": date,
+            "session_files": sorted(session_files),
+            "findings": len(items),
+        }).encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(payload)))
+        self.end_headers()
+        self.wfile.write(payload)
+
     def do_POST(self) -> None:
         request_path = urlparse(self.path).path
+
+        if request_path == "/api/import-session":
+            self.handle_import_session()
+            return
 
         if request_path == "/api/focus":
             self.handle_focus()

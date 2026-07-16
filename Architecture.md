@@ -49,7 +49,7 @@ on the backend.
 | Static frontend artifact | Publish the generated pages and session views | out/web; copied from web/ and enriched with the API base |
 | Python backend | Validate requests, create/delete sessions, invoke analysis, rebuild artifacts and expose static data locally | Accesses all repository data; has provider credentials through environment variables |
 | Analysis pipeline | Parse transcripts, call optional LLM steps, derive canonical metrics, build history and the pre-call briefing | out/sessions/<date>/analysis.json, out/history.json and out/briefing.json |
-| Session archive | Preserve source material for reproducibility | sessions/<date>/meta.json, transcript.txt and optional audio.<ext> |
+| Session archive | Preserve source material for reproducibility | sessions/<date>/meta.json, transcript.txt, optional audio.<ext> and optional timings.json (word timings from transcription, ADR-0006) |
 | OpenAI | Optional model analysis, annotations and practice exercises | No project data at rest in this repository; receives request payloads |
 | AssemblyAI | Audio transcription for recorded sessions | Receives raw audio |
 
@@ -84,7 +84,8 @@ and publishes session analyses for static reading.
 1. The browser records audio and sends bytes to the backend.
 2. The backend saves audio.<ext> in the dated session folder.
 3. The backend requests multichannel transcription from AssemblyAI, creates the
-   transcript and then follows the text-upload analysis flow.
+   transcript, persists word-level timings as timings.json (the source for the
+   timing-based fluency metrics) and then follows the text-upload analysis flow.
 
 ### Metrics migration and historical comparison
 

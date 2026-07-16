@@ -5,22 +5,23 @@
     {
       "name": "Andrey",
       "focus": {
-        "kind": "suggested",
+        "kind": "active",
+        "id": "andrey-word-2026-01-19",
         "code": "WORD",
         "title": "Wrong Word",
-        "average_density": 0.63,
-        "dates": [
-          "2026-01-26",
-          "2026-02-02",
-          "2026-02-09"
-        ]
+        "set_date": "2026-01-19",
+        "baseline_density": 0.61,
+        "latest_density": 0.97,
+        "latest_date": "2026-02-09",
+        "change_pct": 59,
+        "ready_to_close": false
       },
       "additional_focus_count": 0,
       "patterns": [
         {
-          "code": "WORD",
-          "title": "Wrong Word",
-          "average_density": 0.63,
+          "code": "ARTICLE",
+          "title": "Articles",
+          "average_density": 1.51,
           "seen_sessions": 3,
           "sessions_considered": 3,
           "dates": [
@@ -30,9 +31,9 @@
           ]
         },
         {
-          "code": "ARTICLE",
-          "title": "Articles",
-          "average_density": 0.61,
+          "code": "WORD",
+          "title": "Wrong Word",
+          "average_density": 1.15,
           "seen_sessions": 3,
           "sessions_considered": 3,
           "dates": [
@@ -47,38 +48,38 @@
           "date": "2026-02-09",
           "code": "WORD",
           "category_title": "Wrong Word",
-          "error": "seniors to design head.",
-          "correction": "senior to head of design."
+          "error": "some sense from them.",
+          "correction": "the meaning of what they said"
         },
         {
           "date": "2026-02-09",
           "code": "ARTICLE",
           "category_title": "Articles",
-          "error": "give it the full.",
-          "correction": "give it full context."
+          "error": "They were from design industry or almost design industry.",
+          "correction": "They were from the design industry, or almost from it."
         }
       ],
       "recent_direction": {
         "points": [
           {
             "date": "2026-01-26",
-            "value": 3.43
+            "value": 5.75
           },
           {
             "date": "2026-02-02",
-            "value": 3.54
+            "value": 5.41
           },
           {
             "date": "2026-02-09",
-            "value": 3.14
+            "value": 5.68
           }
         ],
         "comparison": {
-          "current": 3.14,
-          "reference_average": 3.57,
-          "delta": -0.43,
-          "threshold": 0.36,
-          "status": "improving"
+          "current": 5.68,
+          "reference_average": 5.51,
+          "delta": 0.17,
+          "threshold": 0.55,
+          "status": "steady"
         },
         "reference_dates": [
           "2026-01-19",
@@ -91,9 +92,9 @@
       "name": "Roman",
       "focus": {
         "kind": "suggested",
-        "code": "WORD",
-        "title": "Wrong Word",
-        "average_density": 1.16,
+        "code": "ORDER",
+        "title": "Word Order",
+        "average_density": 1.51,
         "dates": [
           "2026-01-26",
           "2026-02-02",
@@ -103,9 +104,9 @@
       "additional_focus_count": 0,
       "patterns": [
         {
-          "code": "WORD",
-          "title": "Wrong Word",
-          "average_density": 1.16,
+          "code": "ORDER",
+          "title": "Word Order",
+          "average_density": 1.51,
           "seen_sessions": 3,
           "sessions_considered": 3,
           "dates": [
@@ -115,9 +116,9 @@
           ]
         },
         {
-          "code": "VERB",
-          "title": "Verb Form",
-          "average_density": 0.71,
+          "code": "ARTICLE",
+          "title": "Articles",
+          "average_density": 1.23,
           "seen_sessions": 3,
           "sessions_considered": 3,
           "dates": [
@@ -130,39 +131,39 @@
       "examples": [
         {
           "date": "2026-02-09",
-          "code": "WORD",
-          "category_title": "Wrong Word",
-          "error": "I would like to hear your experience with your group of designers who are going to improve their English in your group.",
-          "correction": "I would like to hear about your experience with your group of designers who are going to improve their English."
+          "code": "ORDER",
+          "category_title": "Word Order",
+          "error": "from your last paragraph from beginning",
+          "correction": "from the beginning of your last paragraph"
         },
         {
           "date": "2026-02-09",
-          "code": "VERB",
-          "category_title": "Verb Form",
-          "error": "I mean I. I didn't Hear any part of your answer for my question.",
-          "correction": "I mean, I didn't hear any part of your answer to my question."
+          "code": "ARTICLE",
+          "category_title": "Articles",
+          "error": "I don't have brother at all.",
+          "correction": "I don't have a brother at all."
         }
       ],
       "recent_direction": {
         "points": [
           {
             "date": "2026-01-26",
-            "value": 5.95
+            "value": 7.66
           },
           {
             "date": "2026-02-02",
-            "value": 4.76
+            "value": 6.53
           },
           {
             "date": "2026-02-09",
-            "value": 3.88
+            "value": 5.7
           }
         ],
         "comparison": {
-          "current": 3.88,
-          "reference_average": 4.84,
-          "delta": -0.96,
-          "threshold": 0.48,
+          "current": 5.7,
+          "reference_average": 6.64,
+          "delta": -0.94,
+          "threshold": 0.66,
           "status": "improving"
         },
         "reference_dates": [

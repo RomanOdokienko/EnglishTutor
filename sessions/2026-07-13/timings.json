@@ -1,0 +1,469 @@
+{
+  "version": 1,
+  "source": "assemblyai",
+  "transcript_id": "16370049-6f84-43db-ab9a-9da6bf1a63fc",
+  "audio_duration_sec": 49,
+  "utterances": [
+    {
+      "speaker_label": "Speaker B",
+      "channel": "2",
+      "start_ms": 5684,
+      "end_ms": 18104,
+      "words": [
+        {
+          "text": "Привет!",
+          "start_ms": 5684,
+          "end_ms": 5924
+        },
+        {
+          "text": "Знаете,",
+          "start_ms": 6004,
+          "end_ms": 6224
+        },
+        {
+          "text": "что",
+          "start_ms": 6324,
+          "end_ms": 6384
+        },
+        {
+          "text": "меня",
+          "start_ms": 6384,
+          "end_ms": 6564
+        },
+        {
+          "text": "убивает?",
+          "start_ms": 6564,
+          "end_ms": 6924
+        },
+        {
+          "text": "Все",
+          "start_ms": 7264,
+          "end_ms": 7544
+        },
+        {
+          "text": "нойсты",
+          "start_ms": 7544,
+          "end_ms": 7944
+        },
+        {
+          "text": "с",
+          "start_ms": 7944,
+          "end_ms": 8044
+        },
+        {
+          "text": "размерами",
+          "start_ms": 8044,
+          "end_ms": 8444
+        },
+        {
+          "text": "модели.",
+          "start_ms": 8444,
+          "end_ms": 8724
+        },
+        {
+          "text": "Ооо,",
+          "start_ms": 9064,
+          "end_ms": 9404
+        },
+        {
+          "text": "у",
+          "start_ms": 9464,
+          "end_ms": 9604
+        },
+        {
+          "text": "GPT",
+          "start_ms": 9604,
+          "end_ms": 9984
+        },
+        {
+          "text": "триллион",
+          "start_ms": 9984,
+          "end_ms": 10624
+        },
+        {
+          "text": "параметров,",
+          "start_ms": 10624,
+          "end_ms": 11144
+        },
+        {
+          "text": "а",
+          "start_ms": 11504,
+          "end_ms": 11644
+        },
+        {
+          "text": "Клод",
+          "start_ms": 11644,
+          "end_ms": 11864
+        },
+        {
+          "text": "теперь",
+          "start_ms": 11864,
+          "end_ms": 12244
+        },
+        {
+          "text": "200",
+          "start_ms": 12244,
+          "end_ms": 12844
+        },
+        {
+          "text": "тысяч",
+          "start_ms": 12844,
+          "end_ms": 13124
+        },
+        {
+          "text": "токенов",
+          "start_ms": 13124,
+          "end_ms": 13484
+        },
+        {
+          "text": "может",
+          "start_ms": 13484,
+          "end_ms": 13644
+        },
+        {
+          "text": "держать",
+          "start_ms": 13644,
+          "end_ms": 13824
+        },
+        {
+          "text": "в",
+          "start_ms": 13824,
+          "end_ms": 13904
+        },
+        {
+          "text": "контексте.",
+          "start_ms": 13904,
+          "end_ms": 14224
+        },
+        {
+          "text": "Классно,",
+          "start_ms": 14544,
+          "end_ms": 14824
+        },
+        {
+          "text": "конечно,",
+          "start_ms": 14884,
+          "end_ms": 15024
+        },
+        {
+          "text": "но",
+          "start_ms": 15184,
+          "end_ms": 15264
+        },
+        {
+          "text": "знаете",
+          "start_ms": 15264,
+          "end_ms": 15444
+        },
+        {
+          "text": "что?",
+          "start_ms": 15444,
+          "end_ms": 15604
+        },
+        {
+          "text": "Это",
+          "start_ms": 15784,
+          "end_ms": 15964
+        },
+        {
+          "text": "как",
+          "start_ms": 15964,
+          "end_ms": 16104
+        },
+        {
+          "text": "покупать",
+          "start_ms": 16104,
+          "end_ms": 16344
+        },
+        {
+          "text": "Феррари",
+          "start_ms": 16344,
+          "end_ms": 16644
+        },
+        {
+          "text": "и",
+          "start_ms": 16644,
+          "end_ms": 16944
+        },
+        {
+          "text": "ездить",
+          "start_ms": 16944,
+          "end_ms": 17124
+        },
+        {
+          "text": "только",
+          "start_ms": 17124,
+          "end_ms": 17284
+        },
+        {
+          "text": "на",
+          "start_ms": 17284,
+          "end_ms": 17624
+        },
+        {
+          "text": "первой",
+          "start_ms": 17624,
+          "end_ms": 17884
+        },
+        {
+          "text": "передаче.",
+          "start_ms": 17884,
+          "end_ms": 18104
+        }
+      ]
+    },
+    {
+      "speaker_label": "Speaker A",
+      "channel": "1",
+      "start_ms": 18121,
+      "end_ms": 45301,
+      "words": [
+        {
+          "text": "Что",
+          "start_ms": 18121,
+          "end_ms": 18341
+        },
+        {
+          "text": "это?",
+          "start_ms": 18341,
+          "end_ms": 18501
+        },
+        {
+          "text": "Кто",
+          "start_ms": 18921,
+          "end_ms": 19381
+        },
+        {
+          "text": "45-летний",
+          "start_ms": 19381,
+          "end_ms": 20481
+        },
+        {
+          "text": "умер?",
+          "start_ms": 20481,
+          "end_ms": 20761
+        },
+        {
+          "text": "Чуиха",
+          "start_ms": 22761,
+          "end_ms": 24401
+        },
+        {
+          "text": "сработала.",
+          "start_ms": 24401,
+          "end_ms": 25101
+        },
+        {
+          "text": "Она",
+          "start_ms": 27061,
+          "end_ms": 27461
+        },
+        {
+          "text": "работала",
+          "start_ms": 27461,
+          "end_ms": 28001
+        },
+        {
+          "text": "в",
+          "start_ms": 28001,
+          "end_ms": 28101
+        },
+        {
+          "text": "параллельном",
+          "start_ms": 28101,
+          "end_ms": 28521
+        },
+        {
+          "text": "отделе.",
+          "start_ms": 28521,
+          "end_ms": 29001
+        },
+        {
+          "text": "Зачем",
+          "start_ms": 30321,
+          "end_ms": 31241
+        },
+        {
+          "text": "ты",
+          "start_ms": 31241,
+          "end_ms": 31381
+        },
+        {
+          "text": "это",
+          "start_ms": 31381,
+          "end_ms": 31561
+        },
+        {
+          "text": "пишешь?",
+          "start_ms": 31561,
+          "end_ms": 31961
+        },
+        {
+          "text": "Ну,",
+          "start_ms": 32261,
+          "end_ms": 34301
+        },
+        {
+          "text": "потому",
+          "start_ms": 34481,
+          "end_ms": 34701
+        },
+        {
+          "text": "что",
+          "start_ms": 34701,
+          "end_ms": 34901
+        },
+        {
+          "text": "вот",
+          "start_ms": 34901,
+          "end_ms": 35061
+        },
+        {
+          "text": "про",
+          "start_ms": 35061,
+          "end_ms": 35201
+        },
+        {
+          "text": "фарик",
+          "start_ms": 35201,
+          "end_ms": 35481
+        },
+        {
+          "text": "мы",
+          "start_ms": 35481,
+          "end_ms": 35621
+        },
+        {
+          "text": "вчера",
+          "start_ms": 35621,
+          "end_ms": 35781
+        },
+        {
+          "text": "поговорили,",
+          "start_ms": 35781,
+          "end_ms": 36381
+        },
+        {
+          "text": "про",
+          "start_ms": 36421,
+          "end_ms": 36541
+        },
+        {
+          "text": "фар",
+          "start_ms": 36541,
+          "end_ms": 36781
+        },
+        {
+          "text": "говорили,",
+          "start_ms": 36781,
+          "end_ms": 37181
+        },
+        {
+          "text": "и",
+          "start_ms": 37341,
+          "end_ms": 37451
+        },
+        {
+          "text": "мне",
+          "start_ms": 37451,
+          "end_ms": 37561
+        },
+        {
+          "text": "это...",
+          "start_ms": 37561,
+          "end_ms": 38581
+        },
+        {
+          "text": "Апчук",
+          "start_ms": 38581,
+          "end_ms": 39121
+        },
+        {
+          "text": "написала.",
+          "start_ms": 39121,
+          "end_ms": 40641
+        },
+        {
+          "text": "Примерно",
+          "start_ms": 41461,
+          "end_ms": 41961
+        },
+        {
+          "text": "ровно",
+          "start_ms": 41961,
+          "end_ms": 42181
+        },
+        {
+          "text": "в",
+          "start_ms": 42181,
+          "end_ms": 42281
+        },
+        {
+          "text": "тот",
+          "start_ms": 42281,
+          "end_ms": 42361
+        },
+        {
+          "text": "момент,",
+          "start_ms": 42361,
+          "end_ms": 42541
+        },
+        {
+          "text": "когда",
+          "start_ms": 42661,
+          "end_ms": 42701
+        },
+        {
+          "text": "мы",
+          "start_ms": 42701,
+          "end_ms": 42741
+        },
+        {
+          "text": "разговаривали.",
+          "start_ms": 42741,
+          "end_ms": 43361
+        },
+        {
+          "text": "Она",
+          "start_ms": 43561,
+          "end_ms": 43641
+        },
+        {
+          "text": "в",
+          "start_ms": 43641,
+          "end_ms": 43801
+        },
+        {
+          "text": "интернете",
+          "start_ms": 43801,
+          "end_ms": 44081
+        },
+        {
+          "text": "работала,",
+          "start_ms": 44081,
+          "end_ms": 44481
+        },
+        {
+          "text": "я",
+          "start_ms": 44521,
+          "end_ms": 44621
+        },
+        {
+          "text": "потом",
+          "start_ms": 44621,
+          "end_ms": 44741
+        },
+        {
+          "text": "пришел,",
+          "start_ms": 44741,
+          "end_ms": 45041
+        },
+        {
+          "text": "увидел.",
+          "start_ms": 45081,
+          "end_ms": 45301
+        }
+      ]
+    }
+  ]
+}

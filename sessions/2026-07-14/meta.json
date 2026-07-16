@@ -1,0 +1,23 @@
+{
+  "date": "2026-07-14",
+  "topic": "Uploaded session",
+  "participants": [
+    {
+      "name": "Roman",
+      "role": "student"
+    },
+    {
+      "name": "Andrey",
+      "role": "partner"
+    }
+  ],
+  "duration_minutes": 29,
+  "speaker_map": {
+    "Speaker A": "Roman",
+    "Speaker B": "Andrey"
+  },
+  "speaker_labels": [
+    "Speaker A",
+    "Speaker B"
+  ]
+}

@@ -1,3 +1,27 @@
 {
-  "focuses": []
+  "focuses": [
+    {
+      "id": "andrey-word-2026-01-19",
+      "participant": "Andrey",
+      "category_code": "WORD",
+      "note": "",
+      "examples": [
+        {
+          "error": "I have some empty",
+          "correction": "I have some empty topics"
+        },
+        {
+          "error": "goals for it",
+          "correction": "goals for this"
+        },
+        {
+          "error": "speak more fluent",
+          "correction": "speak more fluently"
+        }
+      ],
+      "status": "active",
+      "set_date": "2026-01-19",
+      "closed_date": null
+    }
+  ]
 }

@@ -165,12 +165,61 @@ def utterances_to_transcript(transcript: dict) -> tuple[str, list[str]]:
     return "\n".join(lines), channels_seen
 
 
+def build_utterance_timings(transcript: dict) -> dict | None:
+    """Extract a slim, durable timing payload from a raw AssemblyAI response.
+
+    This is the source data for the timing-based fluency metrics (speech rate,
+    pauses, run length — see docs/metrics-and-taxonomy.md). The raw response is
+    a debug artifact; this payload is the documented contract, so the pipeline
+    never has to parse the full provider response again. Word text is kept so a
+    timing entry can be audited against transcript.txt.
+
+    Returns None when the response carries no word-level timings (then there is
+    honestly nothing to measure — callers must treat timing metrics as absent,
+    not zero).
+    """
+    utterances_out: list[dict] = []
+    for utterance in transcript.get("utterances") or []:
+        channel = _channel_of(utterance)
+        words_out = [
+            {
+                "text": str(word.get("text") or ""),
+                "start_ms": int(word["start"]),
+                "end_ms": int(word["end"]),
+            }
+            for word in utterance.get("words") or []
+            if isinstance(word.get("start"), (int, float)) and isinstance(word.get("end"), (int, float))
+        ]
+        if not words_out:
+            continue
+        if not isinstance(utterance.get("start"), (int, float)) or not isinstance(utterance.get("end"), (int, float)):
+            continue
+        utterances_out.append({
+            "speaker_label": CHANNEL_TO_LABEL.get(channel, f"Speaker {channel or '?'}"),
+            "channel": channel,
+            "start_ms": int(utterance["start"]),
+            "end_ms": int(utterance["end"]),
+            "words": words_out,
+        })
+    if not utterances_out:
+        return None
+    return {
+        "version": 1,
+        "source": "assemblyai",
+        "transcript_id": transcript.get("id"),
+        "audio_duration_sec": transcript.get("audio_duration"),
+        "utterances": utterances_out,
+    }
+
+
 def transcribe_audio_file(api_key: str, file_path: str, language_code: str = "",
                           poll_interval: float = 3.0,
                           max_wait: float = 900.0) -> tuple[dict | None, str | None]:
     """Full flow: upload -> queue -> poll -> convert.
 
-    Returns ({transcript, channels, audio_channels, id}, None) or (None, error).
+    Returns ({transcript, channels, audio_channels, id, timings}, None) or
+    (None, error). `timings` is the slim word-timing payload for timings.json,
+    or None when the provider returned no word-level timings.
     """
     upload_url, error = upload_audio(api_key, file_path)
     if error:
@@ -210,4 +259,5 @@ def transcribe_audio_file(api_key: str, file_path: str, language_code: str = "",
         "channels": channels,
         "audio_channels": result.get("audio_channels"),
         "id": transcript_id,
+        "timings": build_utterance_timings(result),
     }, None

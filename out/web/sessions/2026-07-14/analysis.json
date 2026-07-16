@@ -1,0 +1,1399 @@
+{
+  "date": "2026-07-14",
+  "session": {
+    "topic": "Uploaded session",
+    "duration_minutes": 29
+  },
+  "participants": [
+    {
+      "name": "Roman",
+      "role": "student",
+      "metrics": {
+        "word_count": 975,
+        "turn_count": 26,
+        "avg_words_per_turn": 37.5,
+        "unique_word_count": 310,
+        "lexical_diversity": 0.32
+      },
+      "fluency": {
+        "score": 10.0,
+        "level": "C1"
+      },
+      "llm": {
+        "fluency": {
+          "score": 6.5,
+          "level": "Intermediate"
+        },
+        "grammar": {
+          "error_count": 8,
+          "top_errors": [
+            {
+              "title": "Subject-Verb Agreement",
+              "count": 3
+            },
+            {
+              "title": "Incorrect Verb Tense",
+              "count": 2
+            },
+            {
+              "title": "Missing Articles",
+              "count": 2
+            }
+          ],
+          "top_recommendations": [
+            "Practice subject-verb agreement in sentences.",
+            "Review verb tenses and their correct usage.",
+            "Focus on using articles (a, an, the) appropriately."
+          ],
+          "error_rate_per_100_words": 0.82
+        },
+        "chunked_grammar": {
+          "name": "Speaker A",
+          "total_words": 975,
+          "total_errors": 41,
+          "error_rate_per_100_words": 4.21,
+          "error_types": [
+            {
+              "title": "Verb Form",
+              "count": 15
+            },
+            {
+              "title": "Wrong Word",
+              "count": 9
+            },
+            {
+              "title": "Word Order",
+              "count": 8
+            },
+            {
+              "title": "Articles",
+              "count": 4
+            },
+            {
+              "title": "Verb Tense",
+              "count": 2
+            },
+            {
+              "title": "Pronoun Usage",
+              "count": 2
+            },
+            {
+              "title": "Pronoun Error",
+              "count": 1
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Verb Form",
+              "count": 15
+            },
+            {
+              "title": "Wrong Word",
+              "count": 9
+            },
+            {
+              "title": "Word Order",
+              "count": 8
+            },
+            {
+              "title": "Articles",
+              "count": 4
+            },
+            {
+              "title": "Verb Tense",
+              "count": 2
+            }
+          ]
+        },
+        "annotation_grammar": {
+          "total_errors": 14,
+          "error_rate_per_100_words": 1.44,
+          "error_types": [
+            {
+              "code": "PREP",
+              "title": "Prepositions",
+              "count": 4
+            },
+            {
+              "code": "VERB",
+              "title": "Verb Form",
+              "count": 4
+            },
+            {
+              "code": "ARTICLE",
+              "title": "Articles",
+              "count": 2
+            },
+            {
+              "code": "ORDER",
+              "title": "Word Order",
+              "count": 1
+            },
+            {
+              "code": "COLLOC",
+              "title": "Collocation",
+              "count": 1
+            },
+            {
+              "code": "WORD",
+              "title": "Wrong Word",
+              "count": 1
+            },
+            {
+              "code": "TENSE",
+              "title": "Verb Tense",
+              "count": 1
+            }
+          ]
+        },
+        "practical_recommendations": [
+          {
+            "title": "Prepositions",
+            "guidance": "Choose the correct preposition for common phrases and verbs.",
+            "why": "4 cases (29% of all grammar issues). This changes meaning in key phrases and verb patterns.",
+            "examples": [
+              {
+                "error": "share you my pain",
+                "correction": "share my pain with you"
+              },
+              {
+                "error": "from my disk C",
+                "correction": "by my C drive"
+              }
+            ]
+          },
+          {
+            "title": "Verb Form",
+            "guidance": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "why": "4 cases (29% of all grammar issues). This makes grammar sound inconsistent and less natural.",
+            "examples": [
+              {
+                "error": "I just mind blown",
+                "correction": "I'm just mind-blown"
+              },
+              {
+                "error": "I'm not understand",
+                "correction": "I don't understand"
+              }
+            ]
+          },
+          {
+            "title": "Articles",
+            "guidance": "Use a/an/the (or zero article) correctly before nouns.",
+            "why": "2 cases (14% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
+            "examples": [
+              {
+                "error": "Just usual question",
+                "correction": "Just a usual question"
+              },
+              {
+                "error": "the not resolved issue",
+                "correction": "an unresolved issue"
+              }
+            ]
+          }
+        ],
+        "top3_insights": [
+          {
+            "code": "PREP",
+            "title": "Prepositions",
+            "count": 4,
+            "why": "4 cases (29% of all grammar issues). This changes meaning in key phrases and verb patterns.",
+            "focus": "Choose the correct preposition for common phrases and verbs.",
+            "examples": [
+              {
+                "error": "share you my pain",
+                "correction": "share my pain with you"
+              },
+              {
+                "error": "from my disk C",
+                "correction": "by my C drive"
+              }
+            ]
+          },
+          {
+            "code": "VERB",
+            "title": "Verb Form",
+            "count": 4,
+            "why": "4 cases (29% of all grammar issues). This makes grammar sound inconsistent and less natural.",
+            "focus": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
+            "examples": [
+              {
+                "error": "I just mind blown",
+                "correction": "I'm just mind-blown"
+              },
+              {
+                "error": "I'm not understand",
+                "correction": "I don't understand"
+              }
+            ]
+          },
+          {
+            "code": "ARTICLE",
+            "title": "Articles",
+            "count": 2,
+            "why": "2 cases (14% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
+            "focus": "Use a/an/the (or zero article) correctly before nouns.",
+            "examples": [
+              {
+                "error": "Just usual question",
+                "correction": "Just a usual question"
+              },
+              {
+                "error": "the not resolved issue",
+                "correction": "an unresolved issue"
+              }
+            ]
+          }
+        ]
+      },
+      "derived": {
+        "metrics": {
+          "word_count": 975,
+          "english_word_count": 975,
+          "russian_word_count": 0,
+          "turn_count": 26,
+          "avg_words_per_turn": 37.5,
+          "speaking_share_pct": 42.6,
+          "l1_fallback_pct": 0.0,
+          "filler_per_100w": 3.08,
+          "question_pct": 42.3,
+          "lexical_diversity_mattr": 0.749
+        },
+        "grammar": {
+          "error_count": 14,
+          "error_density_per_100w": 1.44,
+          "by_category_count": {
+            "TENSE": 1,
+            "VERB": 4,
+            "ARTICLE": 2,
+            "PREP": 4,
+            "ORDER": 1,
+            "WORD": 1,
+            "COLLOC": 1
+          },
+          "by_category_density": {
+            "TENSE": 0.1,
+            "VERB": 0.41,
+            "ARTICLE": 0.21,
+            "PREP": 0.41,
+            "ORDER": 0.1,
+            "WORD": 0.1,
+            "COLLOC": 0.1
+          }
+        }
+      }
+    },
+    {
+      "name": "Andrey",
+      "role": "partner",
+      "metrics": {
+        "word_count": 1314,
+        "turn_count": 25,
+        "avg_words_per_turn": 52.56,
+        "unique_word_count": 334,
+        "lexical_diversity": 0.25
+      },
+      "fluency": {
+        "score": 10.0,
+        "level": "C1"
+      },
+      "llm": {
+        "fluency": {
+          "score": 7.0,
+          "level": "Upper Intermediate"
+        },
+        "grammar": {
+          "error_count": 6,
+          "top_errors": [
+            {
+              "title": "Incorrect Verb Tense",
+              "count": 3
+            },
+            {
+              "title": "Word Order Issues",
+              "count": 2
+            },
+            {
+              "title": "Missing Prepositions",
+              "count": 1
+            }
+          ],
+          "top_recommendations": [
+            "Review the correct forms of past and present tenses.",
+            "Practice sentence structure and word order in complex sentences.",
+            "Ensure prepositions are used correctly in context."
+          ],
+          "error_rate_per_100_words": 0.46
+        },
+        "chunked_grammar": {
+          "name": "Speaker B",
+          "total_words": 1314,
+          "total_errors": 40,
+          "error_rate_per_100_words": 3.04,
+          "error_types": [
+            {
+              "title": "Word Order",
+              "count": 11
+            },
+            {
+              "title": "Verb Form",
+              "count": 9
+            },
+            {
+              "title": "Wrong Word",
+              "count": 7
+            },
+            {
+              "title": "Verb Tense",
+              "count": 5
+            },
+            {
+              "title": "Articles",
+              "count": 4
+            },
+            {
+              "title": "Pronoun Usage",
+              "count": 2
+            },
+            {
+              "title": "Pronoun Error",
+              "count": 1
+            },
+            {
+              "title": "Pronoun Errors",
+              "count": 1
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Word Order",
+              "count": 11
+            },
+            {
+              "title": "Verb Form",
+              "count": 9
+            },
+            {
+              "title": "Wrong Word",
+              "count": 7
+            },
+            {
+              "title": "Verb Tense",
+              "count": 5
+            },
+            {
+              "title": "Articles",
+              "count": 4
+            }
+          ]
+        },
+        "annotation_grammar": {
+          "total_errors": 0,
+          "error_rate_per_100_words": 0.0,
+          "error_types": []
+        },
+        "practical_recommendations": [
+          {
+            "title": "Articles",
+            "guidance": "Use a/an/the (or zero article) correctly before nouns.",
+            "why": "22 cases (33% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
+            "examples": [
+              {
+                "error": "in Star Framework way",
+                "correction": "in the STAR Framework (way)"
+              },
+              {
+                "error": "built early prototype",
+                "correction": "built an early prototype"
+              }
+            ]
+          },
+          {
+            "title": "Prepositions",
+            "guidance": "Choose the correct preposition for common phrases and verbs.",
+            "why": "13 cases (19% of all grammar issues). This changes meaning in key phrases and verb patterns.",
+            "examples": [
+              {
+                "error": "something for help",
+                "correction": "something to help them"
+              },
+              {
+                "error": "on 8 more people",
+                "correction": "with 8 more people"
+              }
+            ]
+          },
+          {
+            "title": "Wrong Word",
+            "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "why": "9 cases (13% of all grammar issues). This lowers precision and can sound unnatural.",
+            "examples": [
+              {
+                "error": "Day was a really big day",
+                "correction": "Today was a really big day"
+              },
+              {
+                "error": "most of designers",
+                "correction": "most designers"
+              }
+            ]
+          }
+        ],
+        "top3_insights": [
+          {
+            "code": "ARTICLE",
+            "title": "Articles",
+            "count": 22,
+            "why": "22 cases (33% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
+            "focus": "Use a/an/the (or zero article) correctly before nouns.",
+            "examples": [
+              {
+                "error": "in Star Framework way",
+                "correction": "in the STAR Framework (way)"
+              },
+              {
+                "error": "built early prototype",
+                "correction": "built an early prototype"
+              }
+            ]
+          },
+          {
+            "code": "PREP",
+            "title": "Prepositions",
+            "count": 13,
+            "why": "13 cases (19% of all grammar issues). This changes meaning in key phrases and verb patterns.",
+            "focus": "Choose the correct preposition for common phrases and verbs.",
+            "examples": [
+              {
+                "error": "something for help",
+                "correction": "something to help them"
+              },
+              {
+                "error": "on 8 more people",
+                "correction": "with 8 more people"
+              }
+            ]
+          },
+          {
+            "code": "WORD",
+            "title": "Wrong Word",
+            "count": 9,
+            "why": "9 cases (13% of all grammar issues). This lowers precision and can sound unnatural.",
+            "focus": "Pick the most precise word and avoid awkward or redundant phrasing.",
+            "examples": [
+              {
+                "error": "Day was a really big day",
+                "correction": "Today was a really big day"
+              },
+              {
+                "error": "most of designers",
+                "correction": "most designers"
+              }
+            ]
+          }
+        ]
+      },
+      "derived": {
+        "metrics": {
+          "word_count": 1314,
+          "english_word_count": 1314,
+          "russian_word_count": 0,
+          "turn_count": 25,
+          "avg_words_per_turn": 52.56,
+          "speaking_share_pct": 57.4,
+          "l1_fallback_pct": 0.0,
+          "filler_per_100w": 2.28,
+          "question_pct": 24.0,
+          "lexical_diversity_mattr": 0.713
+        },
+        "grammar": {
+          "error_count": 0,
+          "error_density_per_100w": 0.0,
+          "by_category_count": {
+            "TENSE": 0,
+            "VERB": 0,
+            "ARTICLE": 0,
+            "PREP": 0,
+            "ORDER": 0,
+            "WORD": 0,
+            "COLLOC": 0
+          },
+          "by_category_density": {
+            "TENSE": 0.0,
+            "VERB": 0.0,
+            "ARTICLE": 0.0,
+            "PREP": 0.0,
+            "ORDER": 0.0,
+            "WORD": 0.0,
+            "COLLOC": 0.0
+          }
+        }
+      }
+    }
+  ],
+  "transcript": "Speaker A: Okay, I started recording our meeting from our service in English Tutor, which is located in Warsaw, and I also started recording from my phone for any occasion could happen. So I just would like to share you my pain, because I just mind blown from my disk C, which is full, fed up from Codex and Claude. It eats free space every time, and I hate it, and I'm not understand what I should done correctly. I found that this apps and codecs, and Claude has the not resolved issue when they downloaded updates and keep it on disk where they work and don't delete it at all. We download it, so it's okay for us. Go ahead. So currently try to fix it. So I can suggest a couple of exercises for us for speaking and so on, if you don't mind.\nSpeaker B: You can suggest, I will evaluate them. I will score.\nSpeaker A: Okay, 5 minutes for warm-up. Just usual question, for instance, what was the best part of your day today?\nSpeaker B: Day was a really big day because I will explain it like a story, uh, in, uh, in Star Framework way, using Star Framework. So we, me and my brother, started to build AI product. The main idea is preparing designers for the interview. Context: people feel a bit nervous before the interview, and sometimes they get scared. And most of, most of candidates, most of designers can find fast answers without any preparation before the meeting. And we wanted to build something for help, some, something for help. For them, I think. So we, we built early prototype and then we got some feedback from early adopters. Then we improved, we improved quality, the quality of feedback. We also improved user experience, improved user interface, and tested— we tested our product one more time on 8 more people, 7 more people. We got some feedback again, but on this meeting I tried to upsell the full interview. And the best part of the result is, uh, 3 upsells, uh, for today. I think it's the best part of today because most of people can only do tasks and grind on their work, but we build something in internet and people paid for our product. I think that's a big step for us because, yeah, before we already built AI Guide, but we sold this product because I had, I have, I had warm audience in my channel, and now I sold something because people need product, not because it's warm audience. So that's it.\nSpeaker A: Okay, could you please repeat the part? I'm just not understand it clearly. When you say, when you said about people who, who does task on, on their work.\nSpeaker B: And second, usual people, usual, uh, workers, uh, just can do tasks on their work and cry about their work. But I think now we can say that we, we a bit different from them. Because if you want to make career in any company, we can tell the story about our own product and we built something that people want to buy. Uh-huh.\nSpeaker A: So, and which one from these two parts, when you, as I understand, realized that you can make a product that other people need it, the first part, and second part that you sold your product people who are not previously interested in it, they were not your warm auditory and you sold it, you sold your product.\nSpeaker B: I'm not sure that I understood question correct.\nSpeaker A: Okay, I will rephrase. Fuck. If I understand correctly, you said that you are glad to make the product against people who works on just unusual work. Yep.\nSpeaker B: The main idea of this phrase was we are not common workers from, from company, like not— we are not office, just office NPC. I think that's, that's the main idea. We can build something by by ourselves without any help, without name, without something.\nSpeaker A: So you mean the best part, uh, that you created it and you sold it?\nSpeaker B: Yeah.\nSpeaker A: Okay, uh, regarding me, my best part was creating an image with two cars because my psycho gave me, oh, so it's a beautiful start, so further it's sky is the limit, like this. I always like such kind of moments when you, for me it like a platform from which one you can skyrocket on like this. So just it's about world feeling in moment.\nSpeaker B: I think it could be really useful and interesting for you to try to sell something in my way, using my way. For example, now it's a bit manual selling because I set it— set up in past— set up in past. How to pronounce? How to say?\nSpeaker A: Set, set, set, set up.\nSpeaker B: Okay, so before I set up the meeting with any designer, with designer who wants to, who want to be prepared. So I set up the meeting and then it looks like, it looked, looked like just common usability test, and then I tried to upsell something and to just try to sell. I forgot the word when you want to— you want someone to believe that he needs, he really needs this product.\nSpeaker A: I understand the word, the word, uh, convince.\nSpeaker B: So I wanted— so it's really important to convince people to buy your product. So it's a bit, a bit manual selling, and it's important part of product. So I think one day you, you need to try it because you have to explain the idea of your product. You don't have any screens, you don't have any scripts, you don't have anything yet, but you, you have to convince the opposite side.\nSpeaker A: Uh, okay, firstly you said that it can be interesting for me. In which part you mean?\nSpeaker B: Um, just because it's a new experience. Maybe not new, but I think it's, it's new for you in your, uh, in new domain, uh, because I think you already felt it when you sold cars, but it's a bit different, it's about digital product.\nSpeaker A: You mean definitely scheme of selling like this? So just upselling part? Yeah, upselling part.\nSpeaker B: If you want to be deeper in your product, you know how— you have to know how to sell it because now the selling part is only my part.\nSpeaker A: Okay.\nSpeaker B: And if you want to understand it, understand your clients better or clearly, you have to sell something.\nSpeaker A: Okay, I hope we will have a chance to check it from my site as well. So next exercise, it's about defending absurd position. Maybe not absurd, but any take where you shouldn't be agree with it. You can agree with it, but you can shouldn't. So I suggest to take just simple simple take. For instance, something about AI. AI will make people more creative, for instance. And you can choose, would you like to defend where you agree or not?\nSpeaker B: I think never mind. You, you can choose.\nSpeaker A: Okay, I choose, uh, that I agree with, uh, this statement. So you are—\nSpeaker B: this— could you repeat the statement?\nSpeaker A: Uh, AI will make people more creative.\nSpeaker B: So I'm not agree.\nSpeaker A: You are not agree? Yeah.\nSpeaker B: Okay, let's start.\nSpeaker A: So let's start from my position. I think AI can make people more creative if you understand how it works and how it can improve your skills that already, that you already have. I think AI helps, yeah, helps you to expand your mindset, especially frontier models in 2026, and you can see the same thing from other side. So currently I feel Frontier models looks like your cooperator and usually it even more smart than you. So you can You can match with AI and force your current ideas. You can ask them something you even know. And as we know, usually newcomers have the most interesting ideas because they are newcomers. And with AI, you can, you can be newcomer much more frequently, and you can try to, try to, you can try yourself in different fields.\nSpeaker B: That's it.\nSpeaker A: I think yes.\nSpeaker B: Um, did you mean, uh, come like sperm? So I'm not agree with it. I think AI can make, make people more stupid because people become lazy. And creativity is— creativity can't grow with it, can't grow with AI, can grow with AI because When you use AI day by day, sometimes you become more lazy and lazy. If, if last year you do your common routine or common work every day, day by day, sometimes when you find something special in your work, you try to solve some special problem in your work, you try to solve it by yourself. But when you use AI, um, you just understand that you can replace yourself with AI on this task, and Next time when you, when you face with, with uncommon thing in your work, uncommon problem, for you it's not necessary to think. You just will delegate solution to AI. And I think it's a problem. It's a big problem for creative industry because designers every time should create something new. They— that's like a challenge for them. Sometimes people have to create new way of interaction or new animation or new concept. Every time new project needs new references. Yeah, one day you will find your own style, but every time before, you have to find new solutions. And with AI, you will, you will stop. You just use AI to generate new conceptions context, you will create generic design solution. You will create something typical using common UX libraries, and I think Now you can see the result of using AI in the whole internet, because now there are a lot of generic design portfolios. Before, designers want to build something great for themselves. They want to build a unique portfolio to just to divide yourself from, from others. Um, just designers wanted to be individual, and someone use Kilda, someone use different, uh, different soft to build their portfolio— Workflow, Framer, and so on. But now most of designers are using Claude just to build their web page, and these pages looks too similar, too similar. And designers are okay with it because it's fast and not creative. That's my take.\nSpeaker A: Okay, and just one clarification: how far is your real position from your take?\nSpeaker B: I think not too close and not too far, because just today I saw an another one portfolio in Design Chat. And for me it was a bit strange because I just saw in HeroBlock typical generic Claude, Claude ways to design, just captions, small captions with a lot of space between letters, small points, unique, unique cursor., and, uh, common layout. And I, I got, okay, is it Claude? And designers answered me, replied, replied me that yeah, that's Claude. And I gave him not, not negative, non-toxic, and but not positive feedback.\nSpeaker A: Ah, okay, you mean, uh, on your interview? Today?\nSpeaker B: Uh, no, no, in, uh, design chat. Okay.\nSpeaker A: By the way, what is creativity for you? I understand, uh, regarding, uh, design, uh, how it looks like, it's about creativity. Designer created something new, it's about his creativity. But overall, what is creativity, uh, for you worldwide, for instance, or over the different types of human deals.\nSpeaker B: I think creativity for me— people's creative when they're— they try— they're trying to find non-typical solutions using non-typical ways. Um, yeah.\nSpeaker A: And for you, uh, can I please ask you much, much more question, and after I will answer. Uh, do you think AI, uh, make you more creative? Than before?\nSpeaker B: Personally, you, um, I think it depends, uh, because in different domains, it depends. AI couldn't suggest you a new business idea, right? Yeah, but AI can suggest you can suggest you different ideas for the pet project if you didn't try to do something by yourself before. So I think it depends on your, uh, your position, where you are. If you try to build your own product and see a lot of examples and saw a lot of examples, AI can suggest a new idea because it will be generic. But if you didn't try to do something, every idea will be new and creative for you.\nSpeaker A: Uh, so, okay, and you asked the same question for me. I would say yes. I think that AI, especially in coding field, helps me to make different things which I didn't have a chance to make before.\nSpeaker B: And, uh, and for me, stop here. My first question was about creativity. So what is creativity for you?\nSpeaker A: Ah, sorry. Creativity for me, it's when you, uh, you flirt. You're oblootok. Creativity for me is when person can make usual things, usual I mean routine for him, faster. Or more unique way in terms of, in terms of not emotion, how I would say, actions, not actions, impressions. It's about creativity for me. And on your second question, I, I didn't have second question. Okay, so I suggest to stop here. I would like to check whether my app will be successful in recording our meeting, and we can— and after that we can try again. And by the way, I would like to have your feedback because currently I feel that my app's much more simpler and understandable. And I, I change all metrics from LLM analyzing to strict and solid metrics which will be the same in spite of length of our call, and it will be traceable call by call. By the way, we have already 30 minutes 29.\nSpeaker B: Okay, okay.\nSpeaker A: So please stop. I will stop and transcribe.\nSpeaker B: Fuck!\nSpeaker A: I failed to fetch. Hopefully I have a transcriber in iPhone.",
+  "speaker_map": {
+    "Speaker A": "Roman",
+    "Speaker B": "Andrey"
+  },
+  "chunks": [
+    {
+      "index": 0,
+      "block_indices": [
+        0,
+        1,
+        2
+      ],
+      "text": "Speaker A: Okay, I started recording our meeting from our service in English Tutor, which is located in Warsaw, and I also started recording from my phone for any occasion could happen. So I just would like to share you my pain, because I just mind blown from my disk C, which is full, fed up from Codex and Claude. It eats free space every time, and I hate it, and I'm not understand what I should done correctly. I found that this apps and codecs, and Claude has the not resolved issue when they downloaded updates and keep it on disk where they work and don't delete it at all. We download it, so it's okay for us. Go ahead. So currently try to fix it. So I can suggest a couple of exercises for us for speaking and so on, if you don't mind.\nSpeaker B: You can suggest, I will evaluate them. I will score.\nSpeaker A: Okay, 5 minutes for warm-up. Just usual question, for instance, what was the best part of your day today?\n",
+      "range": {
+        "start": 0,
+        "end": 926
+      }
+    },
+    {
+      "index": 1,
+      "block_indices": [
+        3
+      ],
+      "text": "Speaker B: Day was a really big day because I will explain it like a story, uh, in, uh, in Star Framework way, using Star Framework. So we, me and my brother, started to build AI product. The main idea is preparing designers for the interview. Context: people feel a bit nervous before the interview, and sometimes they get scared. And most of, most of candidates, most of designers can find fast answers without any preparation before the meeting. And we wanted to build something for help, some, something for help. For them, I think. So we, we built early prototype and then we got some feedback from early adopters. Then we improved, we improved quality, the quality of feedback. We also improved user experience, improved user interface, and tested— we tested our product one more time on 8 more people, 7 more people. We got some feedback again, but on this meeting I tried to upsell the full interview. And the best part of the result is, uh, 3 upsells, uh, for today. I think it's the best part of today because most of people can only do tasks and grind on their work, but we build something in internet and people paid for our product. I think that's a big step for us because, yeah, before we already built AI Guide, but we sold this product because I had, I have, I had warm audience in my channel, and now I sold something because people need product, not because it's warm audience. So that's it.\n",
+      "range": {
+        "start": 926,
+        "end": 2337
+      }
+    },
+    {
+      "index": 2,
+      "block_indices": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "text": "Speaker A: Okay, could you please repeat the part? I'm just not understand it clearly. When you say, when you said about people who, who does task on, on their work.\nSpeaker B: And second, usual people, usual, uh, workers, uh, just can do tasks on their work and cry about their work. But I think now we can say that we, we a bit different from them. Because if you want to make career in any company, we can tell the story about our own product and we built something that people want to buy. Uh-huh.\nSpeaker A: So, and which one from these two parts, when you, as I understand, realized that you can make a product that other people need it, the first part, and second part that you sold your product people who are not previously interested in it, they were not your warm auditory and you sold it, you sold your product.\nSpeaker B: I'm not sure that I understood question correct.\nSpeaker A: Okay, I will rephrase. Fuck. If I understand correctly, you said that you are glad to make the product against people who works on just unusual work. Yep.\n",
+      "range": {
+        "start": 2337,
+        "end": 3387
+      }
+    },
+    {
+      "index": 3,
+      "block_indices": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "text": "Speaker B: The main idea of this phrase was we are not common workers from, from company, like not— we are not office, just office NPC. I think that's, that's the main idea. We can build something by by ourselves without any help, without name, without something.\nSpeaker A: So you mean the best part, uh, that you created it and you sold it?\nSpeaker B: Yeah.\nSpeaker A: Okay, uh, regarding me, my best part was creating an image with two cars because my psycho gave me, oh, so it's a beautiful start, so further it's sky is the limit, like this. I always like such kind of moments when you, for me it like a platform from which one you can skyrocket on like this. So just it's about world feeling in moment.\nSpeaker B: I think it could be really useful and interesting for you to try to sell something in my way, using my way. For example, now it's a bit manual selling because I set it— set up in past— set up in past. How to pronounce? How to say?\nSpeaker A: Set, set, set, set up.\n",
+      "range": {
+        "start": 3387,
+        "end": 4372
+      }
+    },
+    {
+      "index": 4,
+      "block_indices": [
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "text": "Speaker B: Okay, so before I set up the meeting with any designer, with designer who wants to, who want to be prepared. So I set up the meeting and then it looks like, it looked, looked like just common usability test, and then I tried to upsell something and to just try to sell. I forgot the word when you want to— you want someone to believe that he needs, he really needs this product.\nSpeaker A: I understand the word, the word, uh, convince.\nSpeaker B: So I wanted— so it's really important to convince people to buy your product. So it's a bit, a bit manual selling, and it's important part of product. So I think one day you, you need to try it because you have to explain the idea of your product. You don't have any screens, you don't have any scripts, you don't have anything yet, but you, you have to convince the opposite side.\nSpeaker A: Uh, okay, firstly you said that it can be interesting for me. In which part you mean?\nSpeaker B: Um, just because it's a new experience. Maybe not new, but I think it's, it's new for you in your, uh, in new domain, uh, because I think you already felt it when you sold cars, but it's a bit different, it's about digital product.\n",
+      "range": {
+        "start": 4372,
+        "end": 5553
+      }
+    },
+    {
+      "index": 5,
+      "block_indices": [
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "text": "Speaker A: You mean definitely scheme of selling like this? So just upselling part? Yeah, upselling part.\nSpeaker B: If you want to be deeper in your product, you know how— you have to know how to sell it because now the selling part is only my part.\nSpeaker A: Okay.\nSpeaker B: And if you want to understand it, understand your clients better or clearly, you have to sell something.\nSpeaker A: Okay, I hope we will have a chance to check it from my site as well. So next exercise, it's about defending absurd position. Maybe not absurd, but any take where you shouldn't be agree with it. You can agree with it, but you can shouldn't. So I suggest to take just simple simple take. For instance, something about AI. AI will make people more creative, for instance. And you can choose, would you like to defend where you agree or not?\nSpeaker B: I think never mind. You, you can choose.\nSpeaker A: Okay, I choose, uh, that I agree with, uh, this statement. So you are—\nSpeaker B: this— could you repeat the statement?\nSpeaker A: Uh, AI will make people more creative.\nSpeaker B: So I'm not agree.\nSpeaker A: You are not agree? Yeah.\nSpeaker B: Okay, let's start.\n",
+      "range": {
+        "start": 5553,
+        "end": 6714
+      }
+    },
+    {
+      "index": 6,
+      "block_indices": [
+        32,
+        33,
+        34
+      ],
+      "text": "Speaker A: So let's start from my position. I think AI can make people more creative if you understand how it works and how it can improve your skills that already, that you already have. I think AI helps, yeah, helps you to expand your mindset, especially frontier models in 2026, and you can see the same thing from other side. So currently I feel Frontier models looks like your cooperator and usually it even more smart than you. So you can You can match with AI and force your current ideas. You can ask them something you even know. And as we know, usually newcomers have the most interesting ideas because they are newcomers. And with AI, you can, you can be newcomer much more frequently, and you can try to, try to, you can try yourself in different fields.\nSpeaker B: That's it.\nSpeaker A: I think yes.\n",
+      "range": {
+        "start": 6714,
+        "end": 7527
+      }
+    },
+    {
+      "index": 7,
+      "block_indices": [
+        35
+      ],
+      "text": "Speaker B: Um, did you mean, uh, come like sperm? So I'm not agree with it. I think AI can make, make people more stupid because people become lazy. And creativity is— creativity can't grow with it, can't grow with AI, can grow with AI because When you use AI day by day, sometimes you become more lazy and lazy. If, if last year you do your common routine or common work every day, day by day, sometimes when you find something special in your work, you try to solve some special problem in your work, you try to solve it by yourself. But when you use AI, um, you just understand that you can replace yourself with AI on this task, and Next time when you, when you face with, with uncommon thing in your work, uncommon problem, for you it's not necessary to think. You just will delegate solution to AI. And I think it's a problem. It's a big problem for creative industry because designers every time should create something new. They— that's like a challenge for them. Sometimes people have to create new way of interaction or new animation or new concept. Every time new project needs new references. Yeah, one day you will find your own style, but every time before, you have to find new solutions. And with AI, you will, you will stop. You just use AI to generate new conceptions context, you will create generic design solution. You will create something typical using common UX libraries, and I think Now you can see the result of using AI in the whole internet, because now there are a lot of generic design portfolios. Before, designers want to build something great for themselves. They want to build a unique portfolio to just to divide yourself from, from others. Um, just designers wanted to be individual, and someone use Kilda, someone use different, uh, different soft to build their portfolio— Workflow, Framer, and so on. But now most of designers are using Claude just to build their web page, and these pages looks too similar, too similar. And designers are okay with it because it's fast and not creative. That's my take.\n",
+      "range": {
+        "start": 7527,
+        "end": 9572
+      }
+    },
+    {
+      "index": 8,
+      "block_indices": [
+        36,
+        37,
+        38,
+        39,
+        40
+      ],
+      "text": "Speaker A: Okay, and just one clarification: how far is your real position from your take?\nSpeaker B: I think not too close and not too far, because just today I saw an another one portfolio in Design Chat. And for me it was a bit strange because I just saw in HeroBlock typical generic Claude, Claude ways to design, just captions, small captions with a lot of space between letters, small points, unique, unique cursor., and, uh, common layout. And I, I got, okay, is it Claude? And designers answered me, replied, replied me that yeah, that's Claude. And I gave him not, not negative, non-toxic, and but not positive feedback.\nSpeaker A: Ah, okay, you mean, uh, on your interview? Today?\nSpeaker B: Uh, no, no, in, uh, design chat. Okay.\nSpeaker A: By the way, what is creativity for you? I understand, uh, regarding, uh, design, uh, how it looks like, it's about creativity. Designer created something new, it's about his creativity. But overall, what is creativity, uh, for you worldwide, for instance, or over the different types of human deals.\n",
+      "range": {
+        "start": 9572,
+        "end": 10624
+      }
+    },
+    {
+      "index": 9,
+      "block_indices": [
+        41,
+        42,
+        43,
+        44
+      ],
+      "text": "Speaker B: I think creativity for me— people's creative when they're— they try— they're trying to find non-typical solutions using non-typical ways. Um, yeah.\nSpeaker A: And for you, uh, can I please ask you much, much more question, and after I will answer. Uh, do you think AI, uh, make you more creative? Than before?\nSpeaker B: Personally, you, um, I think it depends, uh, because in different domains, it depends. AI couldn't suggest you a new business idea, right? Yeah, but AI can suggest you can suggest you different ideas for the pet project if you didn't try to do something by yourself before. So I think it depends on your, uh, your position, where you are. If you try to build your own product and see a lot of examples and saw a lot of examples, AI can suggest a new idea because it will be generic. But if you didn't try to do something, every idea will be new and creative for you.\nSpeaker A: Uh, so, okay, and you asked the same question for me. I would say yes. I think that AI, especially in coding field, helps me to make different things which I didn't have a chance to make before.\n",
+      "range": {
+        "start": 10624,
+        "end": 11729
+      }
+    },
+    {
+      "index": 10,
+      "block_indices": [
+        45,
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "text": "Speaker B: And, uh, and for me, stop here. My first question was about creativity. So what is creativity for you?\nSpeaker A: Ah, sorry. Creativity for me, it's when you, uh, you flirt. You're oblootok. Creativity for me is when person can make usual things, usual I mean routine for him, faster. Or more unique way in terms of, in terms of not emotion, how I would say, actions, not actions, impressions. It's about creativity for me. And on your second question, I, I didn't have second question. Okay, so I suggest to stop here. I would like to check whether my app will be successful in recording our meeting, and we can— and after that we can try again. And by the way, I would like to have your feedback because currently I feel that my app's much more simpler and understandable. And I, I change all metrics from LLM analyzing to strict and solid metrics which will be the same in spite of length of our call, and it will be traceable call by call. By the way, we have already 30 minutes 29.\nSpeaker B: Okay, okay.\nSpeaker A: So please stop. I will stop and transcribe.\nSpeaker B: Fuck!\nSpeaker A: I failed to fetch. Hopefully I have a transcriber in iPhone.",
+      "range": {
+        "start": 11729,
+        "end": 12893
+      }
+    }
+  ],
+  "llm": {
+    "status": "ok",
+    "model": "gpt-4o-mini",
+    "annotations_model": "gpt-5-mini",
+    "annotations_status": "in_progress",
+    "annotated_transcript_html": "Speaker A: Okay, I started recording our meeting from our service in English Tutor, which is located in Warsaw, and I also started recording from my phone <mark class=\"grammar-error\" title=\"ORDER: Correct: in case something happens | Incorrect word order and construction. Use 'in case' + clause to express a precaution (in case something happens).\">for any occasion could happen</mark>. So I just would like to <mark class=\"grammar-error\" title=\"PREP: Correct: share my pain with you | Missing preposition and wrong word order for the verb 'share' — the person shared with must follow 'with'.\">share you my pain</mark>, because <mark class=\"grammar-error\" title=\"VERB: Correct: I'm just mind-blown | Missing auxiliary and incorrect verb form; use 'I'm' + past participle/adjective ('mind-blown').\">I just mind blown</mark> <mark class=\"grammar-error\" title=\"PREP: Correct: by my C drive | Wrong preposition for cause/agent here — use 'by' (and 'C drive' is the usual phrasing).\">from my disk C</mark>, which is full, <mark class=\"grammar-error\" title=\"PREP: Correct: fed up with Codex and Claude | Wrong preposition after 'fed up' — the correct preposition is 'with'.\">fed up from Codex and Claude</mark>. It <mark class=\"grammar-error\" title=\"COLLOC: Correct: uses up free space | Unnatural collocation; English speakers say 'use up free space' or 'eat up free space'.\">eats free space</mark> every time, and I hate it, and <mark class=\"grammar-error\" title=\"VERB: Correct: I don't understand | Incorrect auxiliary and verb form for present simple negation; use 'do' + base verb.\">I'm not understand</mark> <mark class=\"grammar-error\" title=\"VERB: Correct: what I should do correctly | After modal 'should' use the base form of the verb ('do'), not the past participle 'done'.\">what I should done correctly</mark>. I found that <mark class=\"grammar-error\" title=\"WORD: Correct: these apps | Demonstrative must agree in number with the noun: use 'these' with the plural 'apps'.\">this apps</mark> and codecs, and Claude has <mark class=\"grammar-error\" title=\"ARTICLE: Correct: an unresolved issue | Awkward article and adjective order; natural phrasing is 'an unresolved issue'.\">the not resolved issue</mark> when <mark class=\"grammar-error\" title=\"TENSE: Correct: they download updates and keep them on the disk | Tense/aspect mismatch and pronoun number: use present simple for habitual behavior and 'them' to refer to 'updates'.\">they downloaded updates and keep it on disk</mark> where they work and don't delete it at all. We download it, so it's okay for us. Go ahead. <mark class=\"grammar-error\" title=\"VERB: Correct: I'm currently trying to fix it | Missing subject and correct progressive form for an ongoing action; use 'I'm ... trying'.\">So currently try to fix it</mark>. So I can suggest a couple of exercises <mark class=\"grammar-error\" title=\"PREP: Correct: for us to practice speaking | Incorrect prepositional structure. Use an infinitive phrase ('for us to...') to express purpose (practice speaking).\">for us for speaking</mark> and so on, if you don't mind.\nSpeaker B: You can suggest, I will evaluate them. I will score.\nSpeaker A: Okay, 5 minutes for warm-up. <mark class=\"grammar-error\" title=\"ARTICLE: Correct: Just a usual question | Missing article before singular count noun; say 'a usual question' or better 'a quick question'.\">Just usual question</mark>, for instance, what was the best part of your day today?\nSpeaker B: Day was a really big day because I will explain it like a story, uh, in, uh, in Star Framework way, using Star Framework. So we, me and my brother, started to build AI product. The main idea is preparing designers for the interview. Context: people feel a bit nervous before the interview, and sometimes they get scared. And most of, most of candidates, most of designers can find fast answers without any preparation before the meeting. And we wanted to build something for help, some, something for help. For them, I think. So we, we built early prototype and then we got some feedback from early adopters. Then we improved, we improved quality, the quality of feedback. We also improved user experience, improved user interface, and tested— we tested our product one more time on 8 more people, 7 more people. We got some feedback again, but on this meeting I tried to upsell the full interview. And the best part of the result is, uh, 3 upsells, uh, for today. I think it's the best part of today because most of people can only do tasks and grind on their work, but we build something in internet and people paid for our product. I think that's a big step for us because, yeah, before we already built AI Guide, but we sold this product because I had, I have, I had warm audience in my channel, and now I sold something because people need product, not because it's warm audience. So that's it.\nSpeaker A: Okay, could you please repeat the part? I'm just not understand it clearly. When you say, when you said about people who, who does task on, on their work.\nSpeaker B: And second, usual people, usual, uh, workers, uh, just can do tasks on their work and cry about their work. But I think now we can say that we, we a bit different from them. Because if you want to make career in any company, we can tell the story about our own product and we built something that people want to buy. Uh-huh.\nSpeaker A: So, and which one from these two parts, when you, as I understand, realized that you can make a product that other people need it, the first part, and second part that you sold your product people who are not previously interested in it, they were not your warm auditory and you sold it, you sold your product.\nSpeaker B: I'm not sure that I understood question correct.\nSpeaker A: Okay, I will rephrase. Fuck. If I understand correctly, you said that you are glad to make the product against people who works on just unusual work. Yep.\nSpeaker B: The main idea of this phrase was we are not common workers from, from company, like not— we are not office, just office NPC. I think that's, that's the main idea. We can build something by by ourselves without any help, without name, without something.\nSpeaker A: So you mean the best part, uh, that you created it and you sold it?\nSpeaker B: Yeah.\nSpeaker A: Okay, uh, regarding me, my best part was creating an image with two cars because my psycho gave me, oh, so it's a beautiful start, so further it's sky is the limit, like this. I always like such kind of moments when you, for me it like a platform from which one you can skyrocket on like this. So just it's about world feeling in moment.\nSpeaker B: I think it could be really useful and interesting for you to try to sell something in my way, using my way. For example, now it's a bit manual selling because I set it— set up in past— set up in past. How to pronounce? How to say?\nSpeaker A: Set, set, set, set up.\nSpeaker B: Okay, so before I set up the meeting with any designer, with designer who wants to, who want to be prepared. So I set up the meeting and then it looks like, it looked, looked like just common usability test, and then I tried to upsell something and to just try to sell. I forgot the word when you want to— you want someone to believe that he needs, he really needs this product.\nSpeaker A: I understand the word, the word, uh, convince.\nSpeaker B: So I wanted— so it's really important to convince people to buy your product. So it's a bit, a bit manual selling, and it's important part of product. So I think one day you, you need to try it because you have to explain the idea of your product. You don't have any screens, you don't have any scripts, you don't have anything yet, but you, you have to convince the opposite side.\nSpeaker A: Uh, okay, firstly you said that it can be interesting for me. In which part you mean?\nSpeaker B: Um, just because it's a new experience. Maybe not new, but I think it's, it's new for you in your, uh, in new domain, uh, because I think you already felt it when you sold cars, but it's a bit different, it's about digital product.\nSpeaker A: You mean definitely scheme of selling like this? So just upselling part? Yeah, upselling part.\nSpeaker B: If you want to be deeper in your product, you know how— you have to know how to sell it because now the selling part is only my part.\nSpeaker A: Okay.\nSpeaker B: And if you want to understand it, understand your clients better or clearly, you have to sell something.\nSpeaker A: Okay, I hope we will have a chance to check it from my site as well. So next exercise, it's about defending absurd position. Maybe not absurd, but any take where you shouldn't be agree with it. You can agree with it, but you can shouldn't. So I suggest to take just simple simple take. For instance, something about AI. AI will make people more creative, for instance. And you can choose, would you like to defend where you agree or not?\nSpeaker B: I think never mind. You, you can choose.\nSpeaker A: Okay, I choose, uh, that I agree with, uh, this statement. So you are—\nSpeaker B: this— could you repeat the statement?\nSpeaker A: Uh, AI will make people more creative.\nSpeaker B: So I'm not agree.\nSpeaker A: You are not agree? Yeah.\nSpeaker B: Okay, let's start.\nSpeaker A: So let's start from my position. I think AI can make people more creative if you understand how it works and how it can improve your skills that already, that you already have. I think AI helps, yeah, helps you to expand your mindset, especially frontier models in 2026, and you can see the same thing from other side. So currently I feel Frontier models looks like your cooperator and usually it even more smart than you. So you can You can match with AI and force your current ideas. You can ask them something you even know. And as we know, usually newcomers have the most interesting ideas because they are newcomers. And with AI, you can, you can be newcomer much more frequently, and you can try to, try to, you can try yourself in different fields.\nSpeaker B: That's it.\nSpeaker A: I think yes.\nSpeaker B: Um, did you mean, uh, come like sperm? So I'm not agree with it. I think AI can make, make people more stupid because people become lazy. And creativity is— creativity can't grow with it, can't grow with AI, can grow with AI because When you use AI day by day, sometimes you become more lazy and lazy. If, if last year you do your common routine or common work every day, day by day, sometimes when you find something special in your work, you try to solve some special problem in your work, you try to solve it by yourself. But when you use AI, um, you just understand that you can replace yourself with AI on this task, and Next time when you, when you face with, with uncommon thing in your work, uncommon problem, for you it's not necessary to think. You just will delegate solution to AI. And I think it's a problem. It's a big problem for creative industry because designers every time should create something new. They— that's like a challenge for them. Sometimes people have to create new way of interaction or new animation or new concept. Every time new project needs new references. Yeah, one day you will find your own style, but every time before, you have to find new solutions. And with AI, you will, you will stop. You just use AI to generate new conceptions context, you will create generic design solution. You will create something typical using common UX libraries, and I think Now you can see the result of using AI in the whole internet, because now there are a lot of generic design portfolios. Before, designers want to build something great for themselves. They want to build a unique portfolio to just to divide yourself from, from others. Um, just designers wanted to be individual, and someone use Kilda, someone use different, uh, different soft to build their portfolio— Workflow, Framer, and so on. But now most of designers are using Claude just to build their web page, and these pages looks too similar, too similar. And designers are okay with it because it's fast and not creative. That's my take.\nSpeaker A: Okay, and just one clarification: how far is your real position from your take?\nSpeaker B: I think not too close and not too far, because just today I saw an another one portfolio in Design Chat. And for me it was a bit strange because I just saw in HeroBlock typical generic Claude, Claude ways to design, just captions, small captions with a lot of space between letters, small points, unique, unique cursor., and, uh, common layout. And I, I got, okay, is it Claude? And designers answered me, replied, replied me that yeah, that's Claude. And I gave him not, not negative, non-toxic, and but not positive feedback.\nSpeaker A: Ah, okay, you mean, uh, on your interview? Today?\nSpeaker B: Uh, no, no, in, uh, design chat. Okay.\nSpeaker A: By the way, what is creativity for you? I understand, uh, regarding, uh, design, uh, how it looks like, it's about creativity. Designer created something new, it's about his creativity. But overall, what is creativity, uh, for you worldwide, for instance, or over the different types of human deals.\nSpeaker B: I think creativity for me— people's creative when they're— they try— they're trying to find non-typical solutions using non-typical ways. Um, yeah.\nSpeaker A: And for you, uh, can I please ask you much, much more question, and after I will answer. Uh, do you think AI, uh, make you more creative? Than before?\nSpeaker B: Personally, you, um, I think it depends, uh, because in different domains, it depends. AI couldn't suggest you a new business idea, right? Yeah, but AI can suggest you can suggest you different ideas for the pet project if you didn't try to do something by yourself before. So I think it depends on your, uh, your position, where you are. If you try to build your own product and see a lot of examples and saw a lot of examples, AI can suggest a new idea because it will be generic. But if you didn't try to do something, every idea will be new and creative for you.\nSpeaker A: Uh, so, okay, and you asked the same question for me. I would say yes. I think that AI, especially in coding field, helps me to make different things which I didn't have a chance to make before.\nSpeaker B: And, uh, and for me, stop here. My first question was about creativity. So what is creativity for you?\nSpeaker A: Ah, sorry. Creativity for me, it's when you, uh, you flirt. You're oblootok. Creativity for me is when person can make usual things, usual I mean routine for him, faster. Or more unique way in terms of, in terms of not emotion, how I would say, actions, not actions, impressions. It's about creativity for me. And on your second question, I, I didn't have second question. Okay, so I suggest to stop here. I would like to check whether my app will be successful in recording our meeting, and we can— and after that we can try again. And by the way, I would like to have your feedback because currently I feel that my app's much more simpler and understandable. And I, I change all metrics from LLM analyzing to strict and solid metrics which will be the same in spite of length of our call, and it will be traceable call by call. By the way, we have already 30 minutes 29.\nSpeaker B: Okay, okay.\nSpeaker A: So please stop. I will stop and transcribe.\nSpeaker B: Fuck!\nSpeaker A: I failed to fetch. Hopefully I have a transcriber in iPhone.",
+    "chunked_metrics": {
+      "status": "ok",
+      "per_chunk": [
+        {
+          "index": 0,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 192,
+              "error_count": 6,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 2
+                },
+                {
+                  "title": "Articles",
+                  "count": 2
+                },
+                {
+                  "title": "Verb Tense",
+                  "count": 1
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 327,
+              "error_count": 7,
+              "error_types": [
+                {
+                  "title": "Verb Tense",
+                  "count": 4
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 101,
+              "error_count": 4,
+              "error_types": [
+                {
+                  "title": "Pronoun Error",
+                  "count": 1
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 54,
+              "error_count": 2,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                },
+                {
+                  "title": "Articles",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 79,
+              "error_count": 6,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 3
+                },
+                {
+                  "title": "Word Order",
+                  "count": 2
+                },
+                {
+                  "title": "Articles",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 195,
+              "error_count": 7,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 3
+                },
+                {
+                  "title": "Word Order",
+                  "count": 3
+                },
+                {
+                  "title": "Pronoun Error",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 33,
+              "error_count": 2,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 92,
+              "error_count": 5,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 2
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 1
+                },
+                {
+                  "title": "Articles",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 103,
+              "error_count": 5,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 3
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 18,
+              "error_count": 1,
+              "error_types": [
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 146,
+              "error_count": 9,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 3
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 3
+                },
+                {
+                  "title": "Pronoun Usage",
+                  "count": 2
+                },
+                {
+                  "title": "Articles",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 370,
+              "error_count": 9,
+              "error_types": [
+                {
+                  "title": "Verb Form",
+                  "count": 3
+                },
+                {
+                  "title": "Word Order",
+                  "count": 3
+                },
+                {
+                  "title": "Pronoun Usage",
+                  "count": 2
+                },
+                {
+                  "title": "Verb Tense",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 72,
+              "error_count": 0,
+              "error_types": []
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 127,
+              "error_count": 6,
+              "error_types": [
+                {
+                  "title": "Articles",
+                  "count": 2
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                },
+                {
+                  "title": "Pronoun Errors",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 230,
+              "error_count": 7,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 3
+                },
+                {
+                  "title": "Verb Form",
+                  "count": 2
+                },
+                {
+                  "title": "Word Order",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 130,
+              "error_count": 3,
+              "error_types": [
+                {
+                  "title": "Wrong Word",
+                  "count": 2
+                },
+                {
+                  "title": "Word Order",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "speakers": [
+            {
+              "name": "Speaker A",
+              "word_count": 19,
+              "error_count": 2,
+              "error_types": [
+                {
+                  "title": "Verb Tense",
+                  "count": 1
+                },
+                {
+                  "title": "Wrong Word",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "name": "Speaker B",
+              "word_count": 1,
+              "error_count": 0,
+              "error_types": []
+            },
+            {
+              "name": "Speaker C",
+              "word_count": 0,
+              "error_count": 0,
+              "error_types": []
+            }
+          ]
+        }
+      ],
+      "per_speaker": [
+        {
+          "name": "Speaker A",
+          "total_words": 975,
+          "total_errors": 41,
+          "error_rate_per_100_words": 4.21,
+          "error_types": [
+            {
+              "title": "Verb Form",
+              "count": 15
+            },
+            {
+              "title": "Wrong Word",
+              "count": 9
+            },
+            {
+              "title": "Word Order",
+              "count": 8
+            },
+            {
+              "title": "Articles",
+              "count": 4
+            },
+            {
+              "title": "Verb Tense",
+              "count": 2
+            },
+            {
+              "title": "Pronoun Usage",
+              "count": 2
+            },
+            {
+              "title": "Pronoun Error",
+              "count": 1
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Verb Form",
+              "count": 15
+            },
+            {
+              "title": "Wrong Word",
+              "count": 9
+            },
+            {
+              "title": "Word Order",
+              "count": 8
+            },
+            {
+              "title": "Articles",
+              "count": 4
+            },
+            {
+              "title": "Verb Tense",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "name": "Speaker B",
+          "total_words": 1314,
+          "total_errors": 40,
+          "error_rate_per_100_words": 3.04,
+          "error_types": [
+            {
+              "title": "Word Order",
+              "count": 11
+            },
+            {
+              "title": "Verb Form",
+              "count": 9
+            },
+            {
+              "title": "Wrong Word",
+              "count": 7
+            },
+            {
+              "title": "Verb Tense",
+              "count": 5
+            },
+            {
+              "title": "Articles",
+              "count": 4
+            },
+            {
+              "title": "Pronoun Usage",
+              "count": 2
+            },
+            {
+              "title": "Pronoun Error",
+              "count": 1
+            },
+            {
+              "title": "Pronoun Errors",
+              "count": 1
+            }
+          ],
+          "top_error_types": [
+            {
+              "title": "Word Order",
+              "count": 11
+            },
+            {
+              "title": "Verb Form",
+              "count": 9
+            },
+            {
+              "title": "Wrong Word",
+              "count": 7
+            },
+            {
+              "title": "Verb Tense",
+              "count": 5
+            },
+            {
+              "title": "Articles",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "name": "Speaker C",
+          "total_words": 0,
+          "total_errors": 0,
+          "error_rate_per_100_words": 0.0,
+          "error_types": [],
+          "top_error_types": []
+        }
+      ],
+      "meta": {
+        "chunks_processed": 9,
+        "total_chunks": 9
+      }
+    },
+    "annotations_attempted_model": "gpt-5-mini",
+    "annotations_updated_at": "2026-07-16 05:42",
+    "annotation_items": [
+      {
+        "start": 155,
+        "end": 184,
+        "text": "for any occasion could happen",
+        "correction": "in case something happens",
+        "explanation": "Incorrect word order and construction. Use 'in case' + clause to express a precaution (in case something happens).",
+        "category": "ORDER",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 210,
+        "end": 227,
+        "text": "share you my pain",
+        "correction": "share my pain with you",
+        "explanation": "Missing preposition and wrong word order for the verb 'share' — the person shared with must follow 'with'.",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 237,
+        "end": 254,
+        "text": "I just mind blown",
+        "correction": "I'm just mind-blown",
+        "explanation": "Missing auxiliary and incorrect verb form; use 'I'm' + past participle/adjective ('mind-blown').",
+        "category": "VERB",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 255,
+        "end": 269,
+        "text": "from my disk C",
+        "correction": "by my C drive",
+        "explanation": "Wrong preposition for cause/agent here — use 'by' (and 'C drive' is the usual phrasing).",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 286,
+        "end": 314,
+        "text": "fed up from Codex and Claude",
+        "correction": "fed up with Codex and Claude",
+        "explanation": "Wrong preposition after 'fed up' — the correct preposition is 'with'.",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 319,
+        "end": 334,
+        "text": "eats free space",
+        "correction": "uses up free space",
+        "explanation": "Unnatural collocation; English speakers say 'use up free space' or 'eat up free space'.",
+        "category": "COLLOC",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 366,
+        "end": 384,
+        "text": "I'm not understand",
+        "correction": "I don't understand",
+        "explanation": "Incorrect auxiliary and verb form for present simple negation; use 'do' + base verb.",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 385,
+        "end": 413,
+        "text": "what I should done correctly",
+        "correction": "what I should do correctly",
+        "explanation": "After modal 'should' use the base form of the verb ('do'), not the past participle 'done'.",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 428,
+        "end": 437,
+        "text": "this apps",
+        "correction": "these apps",
+        "explanation": "Demonstrative must agree in number with the noun: use 'these' with the plural 'apps'.",
+        "category": "WORD",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 465,
+        "end": 487,
+        "text": "the not resolved issue",
+        "correction": "an unresolved issue",
+        "explanation": "Awkward article and adjective order; natural phrasing is 'an unresolved issue'.",
+        "category": "ARTICLE",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 493,
+        "end": 536,
+        "text": "they downloaded updates and keep it on disk",
+        "correction": "they download updates and keep them on the disk",
+        "explanation": "Tense/aspect mismatch and pronoun number: use present simple for habitual behavior and 'them' to refer to 'updates'.",
+        "category": "TENSE",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 628,
+        "end": 654,
+        "text": "So currently try to fix it",
+        "correction": "I'm currently trying to fix it",
+        "explanation": "Missing subject and correct progressive form for an ongoing action; use 'I'm ... trying'.",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 695,
+        "end": 714,
+        "text": "for us for speaking",
+        "correction": "for us to practice speaking",
+        "explanation": "Incorrect prepositional structure. Use an infinitive phrase ('for us to...') to express purpose (practice speaking).",
+        "category": "PREP",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 849,
+        "end": 868,
+        "text": "Just usual question",
+        "correction": "Just a usual question",
+        "explanation": "Missing article before singular count noun; say 'a usual question' or better 'a quick question'.",
+        "category": "ARTICLE",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "minor"
+      }
+    ],
+    "annotations_meta": {
+      "chunks_processed": 1,
+      "total_chunks": 11,
+      "processed_chars": 926,
+      "attempted_model": "gpt-5-mini",
+      "per_chunk": [
+        {
+          "index": 0,
+          "chars": 926,
+          "findings": 14,
+          "passes_requested": 2,
+          "passes_ok": 2,
+          "raw_counts": [
+            11,
+            13
+          ]
+        }
+      ]
+    }
+  },
+  "analysis_version": {
+    "metrics": 1,
+    "taxonomy": 1,
+    "annotation_model": "gpt-5-mini",
+    "annotations_status": "in_progress"
+  }
+}

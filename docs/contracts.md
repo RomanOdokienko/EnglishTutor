@@ -23,6 +23,7 @@ Path: sessions/<YYYY-MM-DD>/
 | meta.json | date, topic, participants, duration_minutes | speaker_map and speaker_labels are present when mapping is supplied |
 | transcript.txt | Speaker-labelled conversational turns | Original retained source text |
 | audio.<ext> | Optional raw recorded audio | Temporary during transcription; retained on provider failure and removed after a successful transcript |
+| timings.json | Optional word-level timings: version, source, transcript_id, audio_duration_sec, utterances[] with speaker_label, channel, start_ms/end_ms and words[] {text, start_ms, end_ms} | Written on transcription from audio (ADR-0006); source data for timing metrics. Text uploads never have it. `cli.py --backfill-timings` creates it from a stored raw provider response |
 
 Date must be a real YYYY-MM-DD date. A participant has name and role. Speaker
 mapping maps a transcript label to a participant name.
@@ -33,7 +34,11 @@ Path: out/sessions/<YYYY-MM-DD>/analysis.json
 
 Top-level fields are date, session, participants, transcript, speaker_map,
 chunks, llm and analysis_version. Some LLM fields are optional when model
-analysis or annotations have not run.
+analysis or annotations have not run. Sessions with word timings additionally
+carry `timing` (version, pause_threshold_ms, source, audio_duration_sec and
+per-label raw sums), refreshed from `sessions/<date>/timings.json` on every
+derived recompute; the final timing metrics land in
+`participants[].derived.metrics` (see docs/metrics-and-taxonomy.md).
 
 | Field | Meaning |
 | --- | --- |
@@ -52,6 +57,12 @@ since July 2026 — `confidence` (high/medium/low) and `is_stylistic` (bool). Th
 last two drive the counting gate (see docs/metrics-and-taxonomy.md); items from
 before they existed omit them and are still counted. `llm.annotations_meta`
 carries `per_chunk` (findings and pass count per chunk) for drift visibility.
+Items also carry `severity` (blocking/noticeable/minor by communication
+impact, ADR-0007), on by default since 2026-07-16
+(`OPENAI_ANNOTATION_SEVERITY=0` is the kill switch). An empty severity means
+"annotated before the rollout / not rated", not "minor". Severity never
+affects the counting gate; consumers treat levels ordinally. The finding dict
+is assembled only by `build_finding` in cli.py.
 
 The canonical participant fields are:
 
@@ -87,6 +98,17 @@ annotation examples and one recent grammar direction record per participant.
 Russian fallback and lexical diversity are intentionally absent from this
 briefing. The browser treats it as a convenience read model; Session analysis
 and history comparison v1 remain the canonical source for detailed evidence.
+
+### Import bundle (POST /api/import-session)
+
+Delivers locally computed session artifacts to a server without re-running any
+model there (the model cost is paid once, locally, measured against eval/).
+Requires ENGLISH_TUTOR_TOKEN on the server and the same value in the
+`X-ET-Token` header (or `?token=`); disabled (503) when unconfigured. Body:
+`{"analysis": <full analysis.json>, "session_files": {"meta.json"?, "transcript.txt"?, "timings.json"?}}`.
+Only those three source files are writable. The server re-runs
+`finalize_derived_metrics`, updates history and rebuilds web assets itself.
+`push_to_prod.py` is the client.
 
 ## HTTP contract
 

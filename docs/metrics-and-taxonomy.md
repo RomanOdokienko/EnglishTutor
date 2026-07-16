@@ -37,6 +37,36 @@ Recognised fillers in v1 are um, uh, er, erm, hmm, like, you know, i mean,
 kind of and sort of. Metrics are descriptive signals and must not be presented
 as a CEFR or examination-grade assessment.
 
+## Timing metrics (additive, optional — ADR-0006)
+
+Present only for sessions transcribed from audio, where
+`sessions/<date>/timings.json` holds word-level timings. They live in the same
+`participants[].derived.metrics` object; **an absent key means "not measured",
+never zero** — text uploads legitimately never get them, and comparisons may
+only use sessions where the key exists on both sides. They are deterministic
+(no LLM) and are refreshed from the timing source on every
+`--recompute-derived`. Adding them did NOT bump the metrics version: the v1
+text metrics are computed exactly as before (additive-metrics policy,
+ADR-0006).
+
+| Metric | Formula or definition | Interpretation |
+| --- | --- | --- |
+| timed_word_count | Words with timestamps attributed to the speaker | Denominator basis; counts all languages |
+| speaking_time_sec | Σ (utterance end − start) for the speaker | Own speech time incl. internal pauses |
+| speech_rate_wpm | timed words / speaking minutes | Overall delivery speed |
+| articulation_rate_wpm | timed words / (speaking − pause) minutes | Speed while actually talking |
+| pauses_per_min | hesitation pauses / speaking minutes | Hesitation frequency |
+| mean_pause_sec | pause time / pause count | Hesitation depth; 0.0 when no pauses |
+| mean_length_of_run_words | timed words / run count | Fluent stretch between hesitations |
+
+Rules v1 (constants `TIMING_VERSION = 1`, `PAUSE_THRESHOLD_MS = 500` in
+cli.py): a hesitation pause is a gap ≥ 500 ms between consecutive words inside
+one utterance; silence between utterances is not counted (the partner usually
+speaks there). A run is a maximal word sequence without such a pause; an
+utterance boundary always ends a run. The per-session `analysis["timing"]`
+block records the version, threshold and per-label raw sums so any number can
+be audited.
+
 ## Grammar taxonomy v1
 
 Grammar values live at participants[].derived.grammar.
@@ -66,6 +96,16 @@ items still count toward error_count but are added to no named category
 density — "we could not label it" is not "it was not an error". A session
 without annotations is not evidence of zero grammatical errors; it has no
 reliable annotation-based grammar measurement.
+
+### Severity (per-finding attribute, ADR-0007)
+
+Since 2026-07-16 every new finding carries `severity`
+(blocking/noticeable/minor), judged by the model per instance by impact on the
+listener, independent of confidence. It does **not** affect the counting gate
+below and required no version bump: counts and densities mean exactly what
+they meant. Empty severity = annotated before the rollout ("not rated", never
+"minor"). Consumers treat levels ordinally: "the grossest errors of a session"
+= items of the highest level present.
 
 ### Counting gate (`is_countable_annotation`)
 

@@ -39,6 +39,8 @@ uncommitted data that has not been reviewed.
 | ENGLISH_TUTOR_API_BASE_URL | Static build and browser | Public backend base injected into pages |
 | ENGLISH_TUTOR_CORS_ORIGIN | Backend | Allowed static frontend origin |
 | ENGLISH_TUTOR_DATA_ROOT | Backend and CLI | Moves mutable data (sessions/, data/, out/) to a mounted volume; unset means repository paths |
+| ENGLISH_TUTOR_TOKEN | Backend and push_to_prod.py | Shared secret for POST /api/import-session; the endpoint answers 503 until this is set. Same value on the server and in the local .env |
+| OPENAI_ANNOTATION_SEVERITY | Backend and CLI | Kill switch for the severity field (ADR-0007): set 0 to drop it from the annotation schema; default on |
 | HOST and PORT | Backend | Bind settings for local or hosted server |
 
 Never commit the values of credential variables. `cli.py` reads a `.env` file in

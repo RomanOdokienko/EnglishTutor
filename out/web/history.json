@@ -6,7 +6,7 @@
       "analysis_version": {
         "metrics": 1,
         "taxonomy": 1,
-        "annotation_model": "gpt-4o",
+        "annotation_model": "gpt-5-mini",
         "annotations_status": "ok"
       },
       "participants": [
@@ -27,32 +27,32 @@
               "lexical_diversity_mattr": 0.696
             },
             "grammar": {
-              "error_count": 49,
-              "error_density_per_100w": 3.75,
+              "error_count": 70,
+              "error_density_per_100w": 5.36,
               "by_category_count": {
                 "TENSE": 5,
                 "VERB": 8,
-                "ARTICLE": 5,
-                "PREP": 1,
-                "ORDER": 4,
-                "WORD": 13,
-                "COLLOC": 0
+                "ARTICLE": 21,
+                "PREP": 9,
+                "ORDER": 11,
+                "WORD": 8,
+                "COLLOC": 8
               },
               "by_category_density": {
                 "TENSE": 0.38,
                 "VERB": 0.61,
-                "ARTICLE": 0.38,
-                "PREP": 0.08,
-                "ORDER": 0.31,
-                "WORD": 1.0,
-                "COLLOC": 0.0
+                "ARTICLE": 1.61,
+                "PREP": 0.69,
+                "ORDER": 0.84,
+                "WORD": 0.61,
+                "COLLOC": 0.61
               }
             }
           },
           "fluency_score": 10.0,
           "llm_fluency_score": 6.0,
           "grammar_error_count": 12,
-          "llm_error_rate": 2.61,
+          "llm_error_rate": 5.36,
           "chunked_error_rate": 4.87,
           "comparison": {
             "version": 1,
@@ -62,7 +62,7 @@
             "reference_dates": [],
             "overall_reference_points": [],
             "overall": {
-              "current": 3.75,
+              "current": 5.36,
               "reference_average": null,
               "delta": null,
               "threshold": null,
@@ -84,35 +84,35 @@
                 "status": "no_baseline"
               },
               "ARTICLE": {
-                "current": 0.38,
+                "current": 1.61,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
                 "status": "no_baseline"
               },
               "PREP": {
-                "current": 0.08,
+                "current": 0.69,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
                 "status": "no_baseline"
               },
               "ORDER": {
-                "current": 0.31,
+                "current": 0.84,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
                 "status": "no_baseline"
               },
               "WORD": {
-                "current": 1.0,
+                "current": 0.61,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
                 "status": "no_baseline"
               },
               "COLLOC": {
-                "current": 0.0,
+                "current": 0.61,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
@@ -138,32 +138,32 @@
               "lexical_diversity_mattr": 0.74
             },
             "grammar": {
-              "error_count": 57,
-              "error_density_per_100w": 3.81,
+              "error_count": 86,
+              "error_density_per_100w": 5.74,
               "by_category_count": {
-                "TENSE": 6,
-                "VERB": 5,
-                "ARTICLE": 5,
-                "PREP": 1,
-                "ORDER": 1,
-                "WORD": 15,
-                "COLLOC": 0
+                "TENSE": 4,
+                "VERB": 16,
+                "ARTICLE": 12,
+                "PREP": 9,
+                "ORDER": 19,
+                "WORD": 17,
+                "COLLOC": 9
               },
               "by_category_density": {
-                "TENSE": 0.4,
-                "VERB": 0.33,
-                "ARTICLE": 0.33,
-                "PREP": 0.07,
-                "ORDER": 0.07,
-                "WORD": 1.0,
-                "COLLOC": 0.0
+                "TENSE": 0.27,
+                "VERB": 1.07,
+                "ARTICLE": 0.8,
+                "PREP": 0.6,
+                "ORDER": 1.27,
+                "WORD": 1.14,
+                "COLLOC": 0.6
               }
             }
           },
           "fluency_score": 10.0,
           "llm_fluency_score": 7.0,
           "grammar_error_count": 8,
-          "llm_error_rate": 2.07,
+          "llm_error_rate": 5.74,
           "chunked_error_rate": 2.77,
           "comparison": {
             "version": 1,
@@ -173,7 +173,7 @@
             "reference_dates": [],
             "overall_reference_points": [],
             "overall": {
-              "current": 3.81,
+              "current": 5.74,
               "reference_average": null,
               "delta": null,
               "threshold": null,
@@ -181,49 +181,49 @@
             },
             "categories": {
               "TENSE": {
-                "current": 0.4,
+                "current": 0.27,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
                 "status": "no_baseline"
               },
               "VERB": {
-                "current": 0.33,
+                "current": 1.07,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
                 "status": "no_baseline"
               },
               "ARTICLE": {
-                "current": 0.33,
+                "current": 0.8,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
                 "status": "no_baseline"
               },
               "PREP": {
-                "current": 0.07,
+                "current": 0.6,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
                 "status": "no_baseline"
               },
               "ORDER": {
-                "current": 0.07,
+                "current": 1.27,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
                 "status": "no_baseline"
               },
               "WORD": {
-                "current": 1.0,
+                "current": 1.14,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
                 "status": "no_baseline"
               },
               "COLLOC": {
-                "current": 0.0,
+                "current": 0.6,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
@@ -240,7 +240,7 @@
       "analysis_version": {
         "metrics": 1,
         "taxonomy": 1,
-        "annotation_model": "gpt-4o",
+        "annotation_model": "gpt-5-mini",
         "annotations_status": "ok"
       },
       "participants": [
@@ -261,32 +261,32 @@
               "lexical_diversity_mattr": 0.756
             },
             "grammar": {
-              "error_count": 83,
-              "error_density_per_100w": 5.95,
+              "error_count": 107,
+              "error_density_per_100w": 7.66,
               "by_category_count": {
-                "TENSE": 5,
-                "VERB": 12,
-                "ARTICLE": 12,
-                "PREP": 4,
-                "ORDER": 10,
-                "WORD": 22,
-                "COLLOC": 0
+                "TENSE": 3,
+                "VERB": 21,
+                "ARTICLE": 19,
+                "PREP": 14,
+                "ORDER": 23,
+                "WORD": 18,
+                "COLLOC": 9
               },
               "by_category_density": {
-                "TENSE": 0.36,
-                "VERB": 0.86,
-                "ARTICLE": 0.86,
-                "PREP": 0.29,
-                "ORDER": 0.72,
-                "WORD": 1.58,
-                "COLLOC": 0.0
+                "TENSE": 0.21,
+                "VERB": 1.5,
+                "ARTICLE": 1.36,
+                "PREP": 1.0,
+                "ORDER": 1.65,
+                "WORD": 1.29,
+                "COLLOC": 0.64
               }
             }
           },
           "fluency_score": 10.0,
           "llm_fluency_score": 6.5,
           "grammar_error_count": 15,
-          "llm_error_rate": 4.01,
+          "llm_error_rate": 7.66,
           "chunked_error_rate": 5.01,
           "comparison": {
             "version": 1,
@@ -299,63 +299,63 @@
             "overall_reference_points": [
               {
                 "date": "2026-01-19",
-                "value": 3.81
+                "value": 5.74
               }
             ],
             "overall": {
-              "current": 5.95,
-              "reference_average": 3.81,
-              "delta": 2.14,
-              "threshold": 0.38,
+              "current": 7.66,
+              "reference_average": 5.74,
+              "delta": 1.92,
+              "threshold": 0.57,
               "status": "needs_attention"
             },
             "categories": {
               "TENSE": {
-                "current": 0.36,
-                "reference_average": 0.4,
-                "delta": -0.04,
+                "current": 0.21,
+                "reference_average": 0.27,
+                "delta": -0.06,
                 "threshold": 0.15,
                 "status": "steady"
               },
               "VERB": {
-                "current": 0.86,
-                "reference_average": 0.33,
-                "delta": 0.53,
+                "current": 1.5,
+                "reference_average": 1.07,
+                "delta": 0.43,
                 "threshold": 0.15,
                 "status": "needs_attention"
               },
               "ARTICLE": {
-                "current": 0.86,
-                "reference_average": 0.33,
-                "delta": 0.53,
+                "current": 1.36,
+                "reference_average": 0.8,
+                "delta": 0.56,
                 "threshold": 0.15,
                 "status": "needs_attention"
               },
               "PREP": {
-                "current": 0.29,
-                "reference_average": 0.07,
-                "delta": 0.22,
+                "current": 1.0,
+                "reference_average": 0.6,
+                "delta": 0.4,
                 "threshold": 0.15,
                 "status": "needs_attention"
               },
               "ORDER": {
-                "current": 0.72,
-                "reference_average": 0.07,
-                "delta": 0.65,
+                "current": 1.65,
+                "reference_average": 1.27,
+                "delta": 0.38,
                 "threshold": 0.15,
                 "status": "needs_attention"
               },
               "WORD": {
-                "current": 1.58,
-                "reference_average": 1.0,
-                "delta": 0.58,
+                "current": 1.29,
+                "reference_average": 1.14,
+                "delta": 0.15,
                 "threshold": 0.15,
                 "status": "needs_attention"
               },
               "COLLOC": {
-                "current": 0.0,
-                "reference_average": 0.0,
-                "delta": 0.0,
+                "current": 0.64,
+                "reference_average": 0.6,
+                "delta": 0.04,
                 "threshold": 0.15,
                 "status": "steady"
               }
@@ -379,32 +379,32 @@
               "lexical_diversity_mattr": 0.713
             },
             "grammar": {
-              "error_count": 34,
-              "error_density_per_100w": 3.43,
+              "error_count": 57,
+              "error_density_per_100w": 5.75,
               "by_category_count": {
-                "TENSE": 0,
-                "VERB": 6,
-                "ARTICLE": 6,
-                "PREP": 2,
-                "ORDER": 3,
-                "WORD": 5,
-                "COLLOC": 0
+                "TENSE": 1,
+                "VERB": 5,
+                "ARTICLE": 14,
+                "PREP": 8,
+                "ORDER": 7,
+                "WORD": 12,
+                "COLLOC": 10
               },
               "by_category_density": {
-                "TENSE": 0.0,
-                "VERB": 0.6,
-                "ARTICLE": 0.6,
-                "PREP": 0.2,
-                "ORDER": 0.3,
-                "WORD": 0.5,
-                "COLLOC": 0.0
+                "TENSE": 0.1,
+                "VERB": 0.5,
+                "ARTICLE": 1.41,
+                "PREP": 0.81,
+                "ORDER": 0.71,
+                "WORD": 1.21,
+                "COLLOC": 1.01
               }
             }
           },
           "fluency_score": 10.0,
           "llm_fluency_score": 7.0,
           "grammar_error_count": 10,
-          "llm_error_rate": 1.92,
+          "llm_error_rate": 5.75,
           "chunked_error_rate": 2.92,
           "comparison": {
             "version": 1,
@@ -417,65 +417,65 @@
             "overall_reference_points": [
               {
                 "date": "2026-01-19",
-                "value": 3.75
+                "value": 5.36
               }
             ],
             "overall": {
-              "current": 3.43,
-              "reference_average": 3.75,
-              "delta": -0.32,
-              "threshold": 0.38,
+              "current": 5.75,
+              "reference_average": 5.36,
+              "delta": 0.39,
+              "threshold": 0.54,
               "status": "steady"
             },
             "categories": {
               "TENSE": {
-                "current": 0.0,
+                "current": 0.1,
                 "reference_average": 0.38,
-                "delta": -0.38,
+                "delta": -0.28,
                 "threshold": 0.15,
                 "status": "improving"
               },
               "VERB": {
-                "current": 0.6,
+                "current": 0.5,
                 "reference_average": 0.61,
-                "delta": -0.01,
+                "delta": -0.11,
                 "threshold": 0.15,
                 "status": "steady"
               },
               "ARTICLE": {
-                "current": 0.6,
-                "reference_average": 0.38,
-                "delta": 0.22,
-                "threshold": 0.15,
-                "status": "needs_attention"
+                "current": 1.41,
+                "reference_average": 1.61,
+                "delta": -0.2,
+                "threshold": 0.16,
+                "status": "improving"
               },
               "PREP": {
-                "current": 0.2,
-                "reference_average": 0.08,
+                "current": 0.81,
+                "reference_average": 0.69,
                 "delta": 0.12,
                 "threshold": 0.15,
                 "status": "steady"
               },
               "ORDER": {
-                "current": 0.3,
-                "reference_average": 0.31,
-                "delta": -0.01,
+                "current": 0.71,
+                "reference_average": 0.84,
+                "delta": -0.13,
                 "threshold": 0.15,
                 "status": "steady"
               },
               "WORD": {
-                "current": 0.5,
-                "reference_average": 1.0,
-                "delta": -0.5,
+                "current": 1.21,
+                "reference_average": 0.61,
+                "delta": 0.6,
                 "threshold": 0.15,
-                "status": "improving"
+                "status": "needs_attention"
               },
               "COLLOC": {
-                "current": 0.0,
-                "reference_average": 0.0,
-                "delta": 0.0,
+                "current": 1.01,
+                "reference_average": 0.61,
+                "delta": 0.4,
                 "threshold": 0.15,
-                "status": "steady"
+                "status": "needs_attention"
               }
             }
           }
@@ -488,7 +488,7 @@
       "analysis_version": {
         "metrics": 1,
         "taxonomy": 1,
-        "annotation_model": "gpt-4o",
+        "annotation_model": "gpt-5-mini",
         "annotations_status": "ok"
       },
       "participants": [
@@ -509,32 +509,32 @@
               "lexical_diversity_mattr": 0.77
             },
             "grammar": {
-              "error_count": 81,
-              "error_density_per_100w": 4.76,
+              "error_count": 111,
+              "error_density_per_100w": 6.53,
               "by_category_count": {
-                "TENSE": 7,
-                "VERB": 10,
-                "ARTICLE": 6,
-                "PREP": 8,
-                "ORDER": 6,
-                "WORD": 15,
-                "COLLOC": 0
+                "TENSE": 9,
+                "VERB": 18,
+                "ARTICLE": 24,
+                "PREP": 12,
+                "ORDER": 18,
+                "WORD": 20,
+                "COLLOC": 10
               },
               "by_category_density": {
-                "TENSE": 0.41,
-                "VERB": 0.59,
-                "ARTICLE": 0.35,
-                "PREP": 0.47,
-                "ORDER": 0.35,
-                "WORD": 0.88,
-                "COLLOC": 0.0
+                "TENSE": 0.53,
+                "VERB": 1.06,
+                "ARTICLE": 1.41,
+                "PREP": 0.71,
+                "ORDER": 1.06,
+                "WORD": 1.18,
+                "COLLOC": 0.59
               }
             }
           },
           "fluency_score": 10.0,
           "llm_fluency_score": 7.0,
           "grammar_error_count": 12,
-          "llm_error_rate": 2.82,
+          "llm_error_rate": 6.53,
           "chunked_error_rate": 4.17,
           "comparison": {
             "version": 1,
@@ -548,67 +548,67 @@
             "overall_reference_points": [
               {
                 "date": "2026-01-19",
-                "value": 3.81
+                "value": 5.74
               },
               {
                 "date": "2026-01-26",
-                "value": 5.95
+                "value": 7.66
               }
             ],
             "overall": {
-              "current": 4.76,
-              "reference_average": 4.88,
-              "delta": -0.12,
-              "threshold": 0.49,
+              "current": 6.53,
+              "reference_average": 6.7,
+              "delta": -0.17,
+              "threshold": 0.67,
               "status": "steady"
             },
             "categories": {
               "TENSE": {
-                "current": 0.41,
-                "reference_average": 0.38,
-                "delta": 0.03,
-                "threshold": 0.15,
-                "status": "steady"
-              },
-              "VERB": {
-                "current": 0.59,
-                "reference_average": 0.59,
-                "delta": -0.01,
-                "threshold": 0.15,
-                "status": "steady"
-              },
-              "ARTICLE": {
-                "current": 0.35,
-                "reference_average": 0.59,
-                "delta": -0.24,
-                "threshold": 0.15,
-                "status": "improving"
-              },
-              "PREP": {
-                "current": 0.47,
-                "reference_average": 0.18,
+                "current": 0.53,
+                "reference_average": 0.24,
                 "delta": 0.29,
                 "threshold": 0.15,
                 "status": "needs_attention"
               },
-              "ORDER": {
-                "current": 0.35,
-                "reference_average": 0.4,
-                "delta": -0.05,
-                "threshold": 0.15,
-                "status": "steady"
-              },
-              "WORD": {
-                "current": 0.88,
+              "VERB": {
+                "current": 1.06,
                 "reference_average": 1.29,
-                "delta": -0.41,
+                "delta": -0.23,
                 "threshold": 0.15,
                 "status": "improving"
               },
+              "ARTICLE": {
+                "current": 1.41,
+                "reference_average": 1.08,
+                "delta": 0.33,
+                "threshold": 0.15,
+                "status": "needs_attention"
+              },
+              "PREP": {
+                "current": 0.71,
+                "reference_average": 0.8,
+                "delta": -0.09,
+                "threshold": 0.15,
+                "status": "steady"
+              },
+              "ORDER": {
+                "current": 1.06,
+                "reference_average": 1.46,
+                "delta": -0.4,
+                "threshold": 0.15,
+                "status": "improving"
+              },
+              "WORD": {
+                "current": 1.18,
+                "reference_average": 1.21,
+                "delta": -0.03,
+                "threshold": 0.15,
+                "status": "steady"
+              },
               "COLLOC": {
-                "current": 0.0,
-                "reference_average": 0.0,
-                "delta": 0.0,
+                "current": 0.59,
+                "reference_average": 0.62,
+                "delta": -0.03,
                 "threshold": 0.15,
                 "status": "steady"
               }
@@ -632,32 +632,32 @@
               "lexical_diversity_mattr": 0.732
             },
             "grammar": {
-              "error_count": 36,
-              "error_density_per_100w": 3.54,
+              "error_count": 55,
+              "error_density_per_100w": 5.41,
               "by_category_count": {
                 "TENSE": 1,
-                "VERB": 5,
-                "ARTICLE": 8,
-                "PREP": 2,
-                "ORDER": 5,
-                "WORD": 5,
-                "COLLOC": 0
+                "VERB": 6,
+                "ARTICLE": 18,
+                "PREP": 4,
+                "ORDER": 11,
+                "WORD": 13,
+                "COLLOC": 2
               },
               "by_category_density": {
                 "TENSE": 0.1,
-                "VERB": 0.49,
-                "ARTICLE": 0.79,
-                "PREP": 0.2,
-                "ORDER": 0.49,
-                "WORD": 0.49,
-                "COLLOC": 0.0
+                "VERB": 0.59,
+                "ARTICLE": 1.77,
+                "PREP": 0.39,
+                "ORDER": 1.08,
+                "WORD": 1.28,
+                "COLLOC": 0.2
               }
             }
           },
           "fluency_score": 10.0,
           "llm_fluency_score": 7.5,
           "grammar_error_count": 8,
-          "llm_error_rate": 2.26,
+          "llm_error_rate": 5.41,
           "chunked_error_rate": 3.34,
           "comparison": {
             "version": 1,
@@ -671,69 +671,69 @@
             "overall_reference_points": [
               {
                 "date": "2026-01-19",
-                "value": 3.75
+                "value": 5.36
               },
               {
                 "date": "2026-01-26",
-                "value": 3.43
+                "value": 5.75
               }
             ],
             "overall": {
-              "current": 3.54,
-              "reference_average": 3.59,
-              "delta": -0.05,
-              "threshold": 0.36,
+              "current": 5.41,
+              "reference_average": 5.55,
+              "delta": -0.14,
+              "threshold": 0.56,
               "status": "steady"
             },
             "categories": {
               "TENSE": {
                 "current": 0.1,
-                "reference_average": 0.19,
-                "delta": -0.09,
+                "reference_average": 0.24,
+                "delta": -0.14,
                 "threshold": 0.15,
                 "status": "steady"
               },
               "VERB": {
-                "current": 0.49,
-                "reference_average": 0.6,
-                "delta": -0.11,
+                "current": 0.59,
+                "reference_average": 0.55,
+                "delta": 0.04,
                 "threshold": 0.15,
                 "status": "steady"
               },
               "ARTICLE": {
-                "current": 0.79,
-                "reference_average": 0.49,
-                "delta": 0.3,
+                "current": 1.77,
+                "reference_average": 1.51,
+                "delta": 0.26,
                 "threshold": 0.15,
                 "status": "needs_attention"
               },
               "PREP": {
-                "current": 0.2,
-                "reference_average": 0.14,
-                "delta": 0.06,
+                "current": 0.39,
+                "reference_average": 0.75,
+                "delta": -0.36,
                 "threshold": 0.15,
-                "status": "steady"
+                "status": "improving"
               },
               "ORDER": {
-                "current": 0.49,
-                "reference_average": 0.3,
-                "delta": 0.18,
+                "current": 1.08,
+                "reference_average": 0.77,
+                "delta": 0.31,
                 "threshold": 0.15,
                 "status": "needs_attention"
               },
               "WORD": {
-                "current": 0.49,
-                "reference_average": 0.75,
-                "delta": -0.26,
+                "current": 1.28,
+                "reference_average": 0.91,
+                "delta": 0.37,
                 "threshold": 0.15,
-                "status": "improving"
+                "status": "needs_attention"
               },
               "COLLOC": {
-                "current": 0.0,
-                "reference_average": 0.0,
-                "delta": 0.0,
+                "current": 0.2,
+                "reference_average": 0.81,
+                "delta": -0.61,
                 "threshold": 0.15,
-                "status": "steady"
+                "status": "improving"
               }
             }
           }
@@ -746,7 +746,7 @@
       "analysis_version": {
         "metrics": 1,
         "taxonomy": 1,
-        "annotation_model": "gpt-4o",
+        "annotation_model": "gpt-5-mini",
         "annotations_status": "ok"
       },
       "participants": [
@@ -767,32 +767,32 @@
               "lexical_diversity_mattr": 0.771
             },
             "grammar": {
-              "error_count": 34,
-              "error_density_per_100w": 3.88,
+              "error_count": 50,
+              "error_density_per_100w": 5.7,
               "by_category_count": {
-                "TENSE": 2,
-                "VERB": 6,
-                "ARTICLE": 4,
-                "PREP": 6,
-                "ORDER": 1,
-                "WORD": 9,
-                "COLLOC": 1
+                "TENSE": 3,
+                "VERB": 4,
+                "ARTICLE": 8,
+                "PREP": 10,
+                "ORDER": 16,
+                "WORD": 5,
+                "COLLOC": 4
               },
               "by_category_density": {
-                "TENSE": 0.23,
-                "VERB": 0.68,
-                "ARTICLE": 0.46,
-                "PREP": 0.68,
-                "ORDER": 0.11,
-                "WORD": 1.03,
-                "COLLOC": 0.11
+                "TENSE": 0.34,
+                "VERB": 0.46,
+                "ARTICLE": 0.91,
+                "PREP": 1.14,
+                "ORDER": 1.82,
+                "WORD": 0.57,
+                "COLLOC": 0.46
               }
             }
           },
           "fluency_score": 10.0,
           "llm_fluency_score": 7.0,
           "grammar_error_count": 5,
-          "llm_error_rate": 3.08,
+          "llm_error_rate": 5.7,
           "chunked_error_rate": 4.33,
           "comparison": {
             "version": 1,
@@ -807,71 +807,71 @@
             "overall_reference_points": [
               {
                 "date": "2026-01-19",
-                "value": 3.81
+                "value": 5.74
               },
               {
                 "date": "2026-01-26",
-                "value": 5.95
+                "value": 7.66
               },
               {
                 "date": "2026-02-02",
-                "value": 4.76
+                "value": 6.53
               }
             ],
             "overall": {
-              "current": 3.88,
-              "reference_average": 4.84,
-              "delta": -0.96,
-              "threshold": 0.48,
+              "current": 5.7,
+              "reference_average": 6.64,
+              "delta": -0.94,
+              "threshold": 0.66,
               "status": "improving"
             },
             "categories": {
               "TENSE": {
-                "current": 0.23,
-                "reference_average": 0.39,
-                "delta": -0.16,
+                "current": 0.34,
+                "reference_average": 0.34,
+                "delta": 0.0,
+                "threshold": 0.15,
+                "status": "steady"
+              },
+              "VERB": {
+                "current": 0.46,
+                "reference_average": 1.21,
+                "delta": -0.75,
                 "threshold": 0.15,
                 "status": "improving"
               },
-              "VERB": {
-                "current": 0.68,
-                "reference_average": 0.59,
-                "delta": 0.09,
-                "threshold": 0.15,
-                "status": "steady"
-              },
               "ARTICLE": {
-                "current": 0.46,
-                "reference_average": 0.51,
-                "delta": -0.05,
+                "current": 0.91,
+                "reference_average": 1.19,
+                "delta": -0.28,
                 "threshold": 0.15,
-                "status": "steady"
+                "status": "improving"
               },
               "PREP": {
-                "current": 0.68,
-                "reference_average": 0.28,
-                "delta": 0.4,
+                "current": 1.14,
+                "reference_average": 0.77,
+                "delta": 0.37,
                 "threshold": 0.15,
                 "status": "needs_attention"
               },
               "ORDER": {
-                "current": 0.11,
-                "reference_average": 0.38,
-                "delta": -0.27,
+                "current": 1.82,
+                "reference_average": 1.33,
+                "delta": 0.49,
+                "threshold": 0.15,
+                "status": "needs_attention"
+              },
+              "WORD": {
+                "current": 0.57,
+                "reference_average": 1.2,
+                "delta": -0.63,
                 "threshold": 0.15,
                 "status": "improving"
               },
-              "WORD": {
-                "current": 1.03,
-                "reference_average": 1.15,
-                "delta": -0.12,
-                "threshold": 0.15,
-                "status": "steady"
-              },
               "COLLOC": {
-                "current": 0.11,
-                "reference_average": 0.0,
-                "delta": 0.11,
+                "current": 0.46,
+                "reference_average": 0.61,
+                "delta": -0.15,
                 "threshold": 0.15,
                 "status": "steady"
               }
@@ -895,32 +895,32 @@
               "lexical_diversity_mattr": 0.726
             },
             "grammar": {
-              "error_count": 42,
-              "error_density_per_100w": 3.14,
+              "error_count": 76,
+              "error_density_per_100w": 5.68,
               "by_category_count": {
                 "TENSE": 4,
-                "VERB": 3,
-                "ARTICLE": 6,
-                "PREP": 5,
-                "ORDER": 1,
-                "WORD": 12,
-                "COLLOC": 0
+                "VERB": 7,
+                "ARTICLE": 18,
+                "PREP": 12,
+                "ORDER": 15,
+                "WORD": 13,
+                "COLLOC": 7
               },
               "by_category_density": {
                 "TENSE": 0.3,
-                "VERB": 0.22,
-                "ARTICLE": 0.45,
-                "PREP": 0.37,
-                "ORDER": 0.07,
-                "WORD": 0.9,
-                "COLLOC": 0.0
+                "VERB": 0.52,
+                "ARTICLE": 1.34,
+                "PREP": 0.9,
+                "ORDER": 1.12,
+                "WORD": 0.97,
+                "COLLOC": 0.52
               }
             }
           },
           "fluency_score": 10.0,
           "llm_fluency_score": 6.0,
           "grammar_error_count": 8,
-          "llm_error_rate": 2.32,
+          "llm_error_rate": 5.68,
           "chunked_error_rate": 3.21,
           "comparison": {
             "version": 1,
@@ -935,71 +935,71 @@
             "overall_reference_points": [
               {
                 "date": "2026-01-19",
-                "value": 3.75
+                "value": 5.36
               },
               {
                 "date": "2026-01-26",
-                "value": 3.43
+                "value": 5.75
               },
               {
                 "date": "2026-02-02",
-                "value": 3.54
+                "value": 5.41
               }
             ],
             "overall": {
-              "current": 3.14,
-              "reference_average": 3.57,
-              "delta": -0.43,
-              "threshold": 0.36,
-              "status": "improving"
+              "current": 5.68,
+              "reference_average": 5.51,
+              "delta": 0.17,
+              "threshold": 0.55,
+              "status": "steady"
             },
             "categories": {
               "TENSE": {
                 "current": 0.3,
-                "reference_average": 0.16,
-                "delta": 0.14,
+                "reference_average": 0.19,
+                "delta": 0.11,
                 "threshold": 0.15,
                 "status": "steady"
               },
               "VERB": {
-                "current": 0.22,
+                "current": 0.52,
                 "reference_average": 0.57,
-                "delta": -0.35,
-                "threshold": 0.15,
-                "status": "improving"
-              },
-              "ARTICLE": {
-                "current": 0.45,
-                "reference_average": 0.59,
-                "delta": -0.14,
+                "delta": -0.05,
                 "threshold": 0.15,
                 "status": "steady"
               },
+              "ARTICLE": {
+                "current": 1.34,
+                "reference_average": 1.6,
+                "delta": -0.26,
+                "threshold": 0.16,
+                "status": "improving"
+              },
               "PREP": {
-                "current": 0.37,
-                "reference_average": 0.16,
-                "delta": 0.21,
+                "current": 0.9,
+                "reference_average": 0.63,
+                "delta": 0.27,
                 "threshold": 0.15,
                 "status": "needs_attention"
               },
               "ORDER": {
-                "current": 0.07,
-                "reference_average": 0.37,
-                "delta": -0.3,
-                "threshold": 0.15,
-                "status": "improving"
-              },
-              "WORD": {
-                "current": 0.9,
-                "reference_average": 0.66,
+                "current": 1.12,
+                "reference_average": 0.88,
                 "delta": 0.24,
                 "threshold": 0.15,
                 "status": "needs_attention"
               },
+              "WORD": {
+                "current": 0.97,
+                "reference_average": 1.03,
+                "delta": -0.06,
+                "threshold": 0.15,
+                "status": "steady"
+              },
               "COLLOC": {
-                "current": 0.0,
-                "reference_average": 0.0,
-                "delta": 0.0,
+                "current": 0.52,
+                "reference_average": 0.61,
+                "delta": -0.09,
                 "threshold": 0.15,
                 "status": "steady"
               }
@@ -1014,8 +1014,8 @@
       "analysis_version": {
         "metrics": 1,
         "taxonomy": 1,
-        "annotation_model": "gpt-4o",
-        "annotations_status": "skipped"
+        "annotation_model": "gpt-5-mini",
+        "annotations_status": "ok"
       },
       "participants": [
         {
@@ -1032,49 +1032,56 @@
               "l1_fallback_pct": 0.0,
               "filler_per_100w": 1.92,
               "question_pct": 66.7,
-              "lexical_diversity_mattr": 0.78
+              "lexical_diversity_mattr": 0.78,
+              "timed_word_count": 49,
+              "speaking_time_sec": 27.2,
+              "speech_rate_wpm": 108.2,
+              "pauses_per_min": 8.8,
+              "mean_pause_sec": 1.52,
+              "mean_length_of_run_words": 9.8,
+              "articulation_rate_wpm": 139.5
             },
             "grammar": {
-              "error_count": 0,
-              "error_density_per_100w": 0.0,
+              "error_count": 5,
+              "error_density_per_100w": 9.62,
               "by_category_count": {
                 "TENSE": 0,
                 "VERB": 0,
-                "ARTICLE": 0,
+                "ARTICLE": 1,
                 "PREP": 0,
-                "ORDER": 0,
-                "WORD": 0,
-                "COLLOC": 0
+                "ORDER": 2,
+                "WORD": 1,
+                "COLLOC": 1
               },
               "by_category_density": {
                 "TENSE": 0.0,
                 "VERB": 0.0,
-                "ARTICLE": 0.0,
+                "ARTICLE": 1.92,
                 "PREP": 0.0,
-                "ORDER": 0.0,
-                "WORD": 0.0,
-                "COLLOC": 0.0
+                "ORDER": 3.85,
+                "WORD": 1.92,
+                "COLLOC": 1.92
               }
             }
           },
           "fluency_score": 10.0,
           "llm_fluency_score": null,
           "grammar_error_count": null,
-          "llm_error_rate": null,
+          "llm_error_rate": 9.62,
           "chunked_error_rate": null,
           "comparison": {
             "version": 1,
-            "eligibility": "annotations_unavailable",
+            "eligibility": "short_sample",
             "current_date": "2026-07-13",
             "reference_count": 0,
             "reference_dates": [],
             "overall_reference_points": [],
             "overall": {
-              "current": 0.0,
+              "current": 9.62,
               "reference_average": null,
               "delta": null,
               "threshold": null,
-              "status": "annotations_unavailable"
+              "status": "short_sample"
             },
             "categories": {
               "TENSE": {
@@ -1082,49 +1089,49 @@
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
-                "status": "annotations_unavailable"
+                "status": "short_sample"
               },
               "VERB": {
                 "current": 0.0,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
-                "status": "annotations_unavailable"
+                "status": "short_sample"
               },
               "ARTICLE": {
-                "current": 0.0,
+                "current": 1.92,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
-                "status": "annotations_unavailable"
+                "status": "short_sample"
               },
               "PREP": {
                 "current": 0.0,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
-                "status": "annotations_unavailable"
+                "status": "short_sample"
               },
               "ORDER": {
-                "current": 0.0,
+                "current": 3.85,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
-                "status": "annotations_unavailable"
+                "status": "short_sample"
               },
               "WORD": {
-                "current": 0.0,
+                "current": 1.92,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
-                "status": "annotations_unavailable"
+                "status": "short_sample"
               },
               "COLLOC": {
-                "current": 0.0,
+                "current": 1.92,
                 "reference_average": null,
                 "delta": null,
                 "threshold": null,
-                "status": "annotations_unavailable"
+                "status": "short_sample"
               }
             }
           }
@@ -1143,7 +1150,248 @@
               "l1_fallback_pct": 0.0,
               "filler_per_100w": 0.0,
               "question_pct": 0.0,
-              "lexical_diversity_mattr": 0.837
+              "lexical_diversity_mattr": 0.837,
+              "timed_word_count": 40,
+              "speaking_time_sec": 12.4,
+              "speech_rate_wpm": 193.2,
+              "pauses_per_min": 0.0,
+              "mean_pause_sec": 0.0,
+              "mean_length_of_run_words": 40.0,
+              "articulation_rate_wpm": 193.2
+            },
+            "grammar": {
+              "error_count": 3,
+              "error_density_per_100w": 6.12,
+              "by_category_count": {
+                "TENSE": 0,
+                "VERB": 0,
+                "ARTICLE": 2,
+                "PREP": 0,
+                "ORDER": 0,
+                "WORD": 1,
+                "COLLOC": 0
+              },
+              "by_category_density": {
+                "TENSE": 0.0,
+                "VERB": 0.0,
+                "ARTICLE": 4.08,
+                "PREP": 0.0,
+                "ORDER": 0.0,
+                "WORD": 2.04,
+                "COLLOC": 0.0
+              }
+            }
+          },
+          "fluency_score": 10.0,
+          "llm_fluency_score": null,
+          "grammar_error_count": null,
+          "llm_error_rate": 6.12,
+          "chunked_error_rate": null,
+          "comparison": {
+            "version": 1,
+            "eligibility": "short_sample",
+            "current_date": "2026-07-13",
+            "reference_count": 0,
+            "reference_dates": [],
+            "overall_reference_points": [],
+            "overall": {
+              "current": 6.12,
+              "reference_average": null,
+              "delta": null,
+              "threshold": null,
+              "status": "short_sample"
+            },
+            "categories": {
+              "TENSE": {
+                "current": 0.0,
+                "reference_average": null,
+                "delta": null,
+                "threshold": null,
+                "status": "short_sample"
+              },
+              "VERB": {
+                "current": 0.0,
+                "reference_average": null,
+                "delta": null,
+                "threshold": null,
+                "status": "short_sample"
+              },
+              "ARTICLE": {
+                "current": 4.08,
+                "reference_average": null,
+                "delta": null,
+                "threshold": null,
+                "status": "short_sample"
+              },
+              "PREP": {
+                "current": 0.0,
+                "reference_average": null,
+                "delta": null,
+                "threshold": null,
+                "status": "short_sample"
+              },
+              "ORDER": {
+                "current": 0.0,
+                "reference_average": null,
+                "delta": null,
+                "threshold": null,
+                "status": "short_sample"
+              },
+              "WORD": {
+                "current": 2.04,
+                "reference_average": null,
+                "delta": null,
+                "threshold": null,
+                "status": "short_sample"
+              },
+              "COLLOC": {
+                "current": 0.0,
+                "reference_average": null,
+                "delta": null,
+                "threshold": null,
+                "status": "short_sample"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-07-14",
+      "topic": "Uploaded session",
+      "analysis_version": {
+        "metrics": 1,
+        "taxonomy": 1,
+        "annotation_model": "gpt-5-mini",
+        "annotations_status": "in_progress"
+      },
+      "participants": [
+        {
+          "name": "Roman",
+          "role": "student",
+          "derived": {
+            "metrics": {
+              "word_count": 975,
+              "english_word_count": 975,
+              "russian_word_count": 0,
+              "turn_count": 26,
+              "avg_words_per_turn": 37.5,
+              "speaking_share_pct": 42.6,
+              "l1_fallback_pct": 0.0,
+              "filler_per_100w": 3.08,
+              "question_pct": 42.3,
+              "lexical_diversity_mattr": 0.749
+            },
+            "grammar": {
+              "error_count": 14,
+              "error_density_per_100w": 1.44,
+              "by_category_count": {
+                "TENSE": 1,
+                "VERB": 4,
+                "ARTICLE": 2,
+                "PREP": 4,
+                "ORDER": 1,
+                "WORD": 1,
+                "COLLOC": 1
+              },
+              "by_category_density": {
+                "TENSE": 0.1,
+                "VERB": 0.41,
+                "ARTICLE": 0.21,
+                "PREP": 0.41,
+                "ORDER": 0.1,
+                "WORD": 0.1,
+                "COLLOC": 0.1
+              }
+            }
+          },
+          "fluency_score": 10.0,
+          "llm_fluency_score": 6.5,
+          "grammar_error_count": 8,
+          "llm_error_rate": 1.44,
+          "chunked_error_rate": 4.21,
+          "comparison": {
+            "version": 1,
+            "eligibility": "annotations_unavailable",
+            "current_date": "2026-07-14",
+            "reference_count": 0,
+            "reference_dates": [],
+            "overall_reference_points": [],
+            "overall": {
+              "current": 1.44,
+              "reference_average": null,
+              "delta": null,
+              "threshold": null,
+              "status": "annotations_unavailable"
+            },
+            "categories": {
+              "TENSE": {
+                "current": 0.1,
+                "reference_average": null,
+                "delta": null,
+                "threshold": null,
+                "status": "annotations_unavailable"
+              },
+              "VERB": {
+                "current": 0.41,
+                "reference_average": null,
+                "delta": null,
+                "threshold": null,
+                "status": "annotations_unavailable"
+              },
+              "ARTICLE": {
+                "current": 0.21,
+                "reference_average": null,
+                "delta": null,
+                "threshold": null,
+                "status": "annotations_unavailable"
+              },
+              "PREP": {
+                "current": 0.41,
+                "reference_average": null,
+                "delta": null,
+                "threshold": null,
+                "status": "annotations_unavailable"
+              },
+              "ORDER": {
+                "current": 0.1,
+                "reference_average": null,
+                "delta": null,
+                "threshold": null,
+                "status": "annotations_unavailable"
+              },
+              "WORD": {
+                "current": 0.1,
+                "reference_average": null,
+                "delta": null,
+                "threshold": null,
+                "status": "annotations_unavailable"
+              },
+              "COLLOC": {
+                "current": 0.1,
+                "reference_average": null,
+                "delta": null,
+                "threshold": null,
+                "status": "annotations_unavailable"
+              }
+            }
+          }
+        },
+        {
+          "name": "Andrey",
+          "role": "partner",
+          "derived": {
+            "metrics": {
+              "word_count": 1314,
+              "english_word_count": 1314,
+              "russian_word_count": 0,
+              "turn_count": 25,
+              "avg_words_per_turn": 52.56,
+              "speaking_share_pct": 57.4,
+              "l1_fallback_pct": 0.0,
+              "filler_per_100w": 2.28,
+              "question_pct": 24.0,
+              "lexical_diversity_mattr": 0.713
             },
             "grammar": {
               "error_count": 0,
@@ -1169,14 +1417,14 @@
             }
           },
           "fluency_score": 10.0,
-          "llm_fluency_score": null,
-          "grammar_error_count": null,
-          "llm_error_rate": null,
-          "chunked_error_rate": null,
+          "llm_fluency_score": 7.0,
+          "grammar_error_count": 6,
+          "llm_error_rate": 0.46,
+          "chunked_error_rate": 3.04,
           "comparison": {
             "version": 1,
             "eligibility": "annotations_unavailable",
-            "current_date": "2026-07-13",
+            "current_date": "2026-07-14",
             "reference_count": 0,
             "reference_dates": [],
             "overall_reference_points": [],

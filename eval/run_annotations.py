@@ -40,17 +40,26 @@ def main() -> int:
     parser.add_argument("--effort", default=None, help="gpt-5 reasoning effort: low|medium|high")
     parser.add_argument("--passes", type=int, default=2, help="independent passes unioned per chunk")
     parser.add_argument("--deadline", type=float, default=480.0, help="seconds for the whole run")
+    parser.add_argument(
+        "--severity",
+        action="store_true",
+        help="force the severity field on (blocking/noticeable/minor). Since 2026-07-16 it is on by default "
+        "in prod and here; the flag remains for explicitness, OPENAI_ANNOTATION_SEVERITY=0 disables",
+    )
     args = parser.parse_args()
 
     api_key = cli.clean_env("OPENAI_API_KEY")
     if not api_key:
         print("OPENAI_API_KEY is not set (env or .env). Nothing to run.", flush=True)
         return 2
-    if args.effort:
-        # call_openai_chunk_annotations reads this per request.
+    if args.effort or args.severity:
+        # call_openai_chunk_annotations reads these per request.
         import os
 
-        os.environ["OPENAI_ANNOTATION_EFFORT"] = args.effort
+        if args.effort:
+            os.environ["OPENAI_ANNOTATION_EFFORT"] = args.effort
+        if args.severity:
+            os.environ["OPENAI_ANNOTATION_SEVERITY"] = "1"
 
     transcript = args.transcript.read_text(encoding="utf-8")
     blocks = cli.parse_transcript_blocks(transcript)
@@ -105,6 +114,7 @@ def main() -> int:
             "model": args.model,
             "reasoning_effort": effort,
             "passes": args.passes,
+            "severity": bool(args.severity),
             "chunks_processed": processed,
             "total_chunks": len(chunks),
             "elapsed_sec": round(time.monotonic() - started, 1),

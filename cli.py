@@ -99,7 +99,11 @@ def clean_env(name: str, default: str = "") -> str:
 
 OPENAI_ENDPOINT = "https://api.openai.com/v1/responses"
 DEFAULT_OPENAI_MODEL = "gpt-4o-mini"
-DEFAULT_ANNOTATION_MODEL = "gpt-4o"
+# The measured, shipped config (eval/README.md): gpt-5-mini / medium / 2-pass.
+# This default used to be gpt-4o, so a local run without OPENAI_ANNOTATION_MODEL
+# silently rebuilt annotations with the wrong model — and model choice dominates
+# the progress series.
+DEFAULT_ANNOTATION_MODEL = "gpt-5-mini"
 ANNOTATION_MAX_CHUNKS = 0
 # Chunking used to cut on turn count alone (6 turns), which produced chunks of
 # 143..2924 chars on the 2026-07-14 session. The long ones are where extraction
@@ -373,6 +377,30 @@ def call_openai_probe(api_key: str, model: str) -> tuple[str | None, str | None]
     return output_text.strip(), None
 
 
+def build_finding(source: dict, start: int, end: int, **overrides) -> dict:
+    """THE single place an annotation finding dict is assembled.
+
+    Normalization, chunk annotation and the incremental rebuild path all used
+    to rebuild this dict field-by-field; a field missed in one of them (it
+    happened with confidence) silently vanished before reaching the counters
+    while the diff still looked correct. Adding a field now means: add it here,
+    in the model schema, and — only if it should gate counting — in
+    is_countable_annotation.
+    """
+    merged = {**source, **overrides}
+    return {
+        "start": start,
+        "end": end,
+        "text": merged.get("text", ""),
+        "correction": merged.get("correction", ""),
+        "explanation": merged.get("explanation", ""),
+        "category": merged.get("category", ""),
+        "confidence": merged.get("confidence", ""),
+        "is_stylistic": bool(merged.get("is_stylistic", False)),
+        "severity": merged.get("severity", ""),
+    }
+
+
 def normalize_annotations(text: str, errors: list[dict]) -> list[dict]:
     valid_categories = {"TENSE", "VERB", "ARTICLE", "PREP", "ORDER", "WORD", "COLLOC"}
     excluded_categories = {"ASR_LOW_CONF", "NOISE", "FILLER_NATIVE", "FRAGMENT"}
@@ -430,20 +458,7 @@ def normalize_annotations(text: str, errors: list[dict]) -> list[dict]:
             continue
         if is_non_evaluated_explanation(item.get("explanation", "")):
             continue
-        normalized.append(
-            {
-                "start": start,
-                "end": end,
-                "text": snippet,
-                "correction": item.get("correction", ""),
-                "explanation": item.get("explanation", ""),
-                "category": category,
-                # Carried, not dropped: is_countable_annotation gates on these,
-                # and this dict is rebuilt field-by-field rather than copied.
-                "confidence": item.get("confidence", ""),
-                "is_stylistic": bool(item.get("is_stylistic", False)),
-            }
-        )
+        normalized.append(build_finding(item, start, end, text=snippet, category=category))
 
     normalized.sort(key=lambda item: (item["start"], item["end"]))
     cleaned: list[dict] = []
@@ -1429,6 +1444,23 @@ def call_openai_chunk_annotations(
         "Set confidence: high = a clear rule violation any teacher would correct; medium = probably wrong but "
         "arguable; low = a judgement call. Set is_stylistic true when the phrase is already grammatical and you "
         "would simply phrase it differently. Be honest with both fields rather than generous.\n"
+    )
+    # Severity (ADR-0007): the model judges communication impact per finding.
+    # Default ON since 2026-07-16 — the pilot measured 82%/87% on the eval set
+    # (extraction unchanged) with sane level assignments. The env is a kill
+    # switch: set OPENAI_ANNOTATION_SEVERITY=0 to drop the field from the
+    # schema/prompt. Severity does NOT affect is_countable_annotation.
+    severity_enabled = clean_env("OPENAI_ANNOTATION_SEVERITY", "1").lower() not in ("0", "false", "no")
+    if severity_enabled:
+        user_prompt += (
+            "Set severity by impact on the listener, independent of confidence: "
+            "blocking = the meaning is distorted or a listener must strain to reconstruct it; "
+            "noticeable = a clear error the listener registers, but the meaning survives; "
+            "minor = a small slip most listeners would not even notice. "
+            "Judge the actual utterance in context, not the category: the same category can be "
+            "blocking in one sentence and minor in another.\n"
+        )
+    user_prompt += (
         "Report only what you are confident about. Returning an empty list for this chunk is a valid and "
         "expected answer when it contains no clear errors.\n\n"
         f"Chunk text:\n{chunk_text}"
@@ -1461,6 +1493,15 @@ def call_openai_chunk_annotations(
         },
         "required": ["errors"],
     }
+    if severity_enabled:
+        # strict json_schema demands every declared property in `required`,
+        # which is why severity is gated rather than declared-but-optional.
+        item_schema = schema["properties"]["errors"]["items"]
+        item_schema["properties"]["severity"] = {
+            "type": "string",
+            "enum": ["blocking", "noticeable", "minor"],
+        }
+        item_schema["required"].append("severity")
 
     # json_schema with the category enum is enforced by the API for gpt-5
     # models too (verified against /v1/responses with gpt-5-mini), so every
@@ -1963,18 +2004,7 @@ def build_chunk_annotations(
         processed_chars += len(chunk_text)
 
         for item in normalized:
-            all_errors.append(
-                {
-                    "start": item["start"] + start,
-                    "end": item["end"] + start,
-                    "text": item["text"],
-                    "correction": item.get("correction", ""),
-                    "explanation": item.get("explanation", ""),
-                    "category": item.get("category", ""),
-                    "confidence": item.get("confidence", ""),
-                    "is_stylistic": bool(item.get("is_stylistic", False)),
-                }
-            )
+            all_errors.append(build_finding(item, item["start"] + start, item["end"] + start))
 
     if last_end < len(transcript_text):
         annotated_parts.append(escape_html(transcript_text[last_end:]))
@@ -2080,19 +2110,7 @@ def annotate_session(
 
         for item in normalized:
             all_errors.append(
-                {
-                    "start": item["start"] + chunk["range"]["start"],
-                    "end": item["end"] + chunk["range"]["start"],
-                    "text": item["text"],
-                    "correction": item.get("correction", ""),
-                    "explanation": item.get("explanation", ""),
-                    "category": item.get("category", ""),
-                    # The third place this dict gets rebuilt field-by-field;
-                    # dropping these here would silently disable the confidence
-                    # gate for every session annotated through the rebuild path.
-                    "confidence": item.get("confidence", ""),
-                    "is_stylistic": bool(item.get("is_stylistic", False)),
-                }
+                build_finding(item, item["start"] + chunk["range"]["start"], item["end"] + chunk["range"]["start"])
             )
         processed_chars += len(chunk_text)
         per_chunk_stats.append(
@@ -2411,6 +2429,17 @@ COMPARISON_WINDOW = 3
 COMPARISON_MIN_WORDS = 120
 COMPARISON_ABSOLUTE_NOISE = 0.15
 
+# Timing-based fluency metrics (speech rate, pauses, run length) are ADDITIVE
+# and optional: they exist only for sessions transcribed from audio, where
+# sessions/<date>/timings.json holds word-level timings (ADR-0006). Their
+# absence means "not measured", never zero, and does not bump METRICS_VERSION —
+# the v1 text metrics are computed exactly as before.
+TIMING_VERSION = 1
+# A silence this long between two consecutive words inside one utterance counts
+# as a hesitation pause. v1 working hypothesis (like the ADR-0005 thresholds):
+# recalibrate against real recorded calls, not by taste.
+PAUSE_THRESHOLD_MS = 500
+
 LATIN_WORD_RE = re.compile(r"[A-Za-z']+")
 RU_WORD_RE = re.compile(r"[А-Яа-яЁё]+")
 FILLER_TERMS = ["um", "uh", "er", "erm", "hmm", "like", "you know", "i mean",
@@ -2471,6 +2500,103 @@ def compute_deterministic_metrics(mapped_turns: list[tuple[str, str]]) -> dict[s
     return out
 
 
+def load_session_timings(date: str) -> dict | None:
+    """Word timings for a session, present only when it was transcribed from audio."""
+    if not date:
+        return None
+    path = SESSIONS_DIR / date / "timings.json"
+    if not path.exists():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    if not isinstance(data, dict) or not data.get("utterances"):
+        return None
+    return data
+
+
+def compute_timing_aggregates(timings: dict, pause_threshold_ms: int = PAUSE_THRESHOLD_MS) -> dict[str, dict]:
+    """Per-speaker-label raw sums from word timings. Pure, deterministic.
+
+    A pause is a gap >= pause_threshold_ms between consecutive words INSIDE one
+    utterance. Silence between utterances is deliberately not counted: the other
+    speaker usually talks there, so it would measure turn-taking, not fluency.
+    A run is a maximal word sequence without such a pause; an utterance boundary
+    always ends a run.
+    """
+    agg: dict[str, dict] = {}
+    for utterance in timings.get("utterances") or []:
+        label = str(utterance.get("speaker_label") or "").strip()
+        words = utterance.get("words") or []
+        if not label or not words:
+            continue
+        bucket = agg.setdefault(label, {
+            "word_count": 0, "speaking_ms": 0,
+            "pause_count": 0, "pause_ms": 0, "run_count": 0,
+        })
+        bucket["word_count"] += len(words)
+        bucket["speaking_ms"] += max(0, int(utterance.get("end_ms") or 0) - int(utterance.get("start_ms") or 0))
+        bucket["run_count"] += 1
+        for prev, cur in zip(words, words[1:]):
+            gap = int(cur.get("start_ms") or 0) - int(prev.get("end_ms") or 0)
+            if gap >= pause_threshold_ms:
+                bucket["pause_count"] += 1
+                bucket["pause_ms"] += gap
+                bucket["run_count"] += 1
+    return agg
+
+
+def timing_metrics_from_aggregate(agg: dict) -> dict | None:
+    """Fold raw timing sums into the metrics attached to derived.metrics.
+
+    Returns None when nothing is measurable — absence means "not measured",
+    never zero, so text-only sessions cannot poison comparison averages.
+    Rates count every timed word (English and Russian): flow is language-
+    agnostic, and l1_fallback_pct already reports the language mix.
+    """
+    words = int(agg.get("word_count") or 0)
+    speaking_ms = int(agg.get("speaking_ms") or 0)
+    if words <= 0 or speaking_ms <= 0:
+        return None
+    pause_count = int(agg.get("pause_count") or 0)
+    pause_ms = min(int(agg.get("pause_ms") or 0), speaking_ms)
+    run_count = max(1, int(agg.get("run_count") or 0))
+    minutes = speaking_ms / 60000
+    metrics = {
+        "timed_word_count": words,
+        "speaking_time_sec": round(speaking_ms / 1000, 1),
+        "speech_rate_wpm": round(words / minutes, 1),
+        "pauses_per_min": round(pause_count / minutes, 1),
+        "mean_pause_sec": round(pause_ms / pause_count / 1000, 2) if pause_count else 0.0,
+        "mean_length_of_run_words": round(words / run_count, 1),
+    }
+    articulation_ms = speaking_ms - pause_ms
+    if articulation_ms > 0:
+        metrics["articulation_rate_wpm"] = round(words / (articulation_ms / 60000), 1)
+    return metrics
+
+
+def refresh_timing_block(analysis: dict) -> None:
+    """Refresh analysis["timing"] from sessions/<date>/timings.json when present.
+
+    Recorded sessions get fresh aggregates on every derived recompute, so a
+    PAUSE_THRESHOLD_MS/TIMING_VERSION change propagates with --recompute-derived.
+    When the source file is absent (text uploads, or an artifact copied without
+    session sources) an already-stored block is kept as-is, never deleted.
+    """
+    timings = load_session_timings(str(analysis.get("date") or ""))
+    if not timings:
+        return
+    analysis["timing"] = {
+        "version": TIMING_VERSION,
+        "pause_threshold_ms": PAUSE_THRESHOLD_MS,
+        "source": timings.get("source"),
+        "audio_duration_sec": timings.get("audio_duration_sec"),
+        "by_label": compute_timing_aggregates(timings),
+    }
+
+
 def finalize_derived_metrics(analysis: dict) -> None:
     """Attach Layer-A metrics + per-category grammar densities + analysis_version.
 
@@ -2493,9 +2619,21 @@ def finalize_derived_metrics(analysis: dict) -> None:
     items = (analysis.get("llm") or {}).get("annotation_items") or []
     by_name = map_annotation_items_to_speakers(items, transcript_text, speaker_map) if items else {}
 
+    # Timing-based fluency metrics ride along additively when word timings
+    # exist for this session (recorded calls only; see refresh_timing_block).
+    refresh_timing_block(analysis)
+    timing_by_name: dict[str, dict] = {}
+    for label, agg in (((analysis.get("timing") or {}).get("by_label")) or {}).items():
+        merged = timing_by_name.setdefault(speaker_map.get(label, label), {})
+        for key, value in (agg or {}).items():
+            merged[key] = merged.get(key, 0) + int(value or 0)
+
     for participant in analysis.get("participants", []):
         name = participant.get("name")
         metrics = det.get(name, {})
+        timing_metrics = timing_metrics_from_aggregate(timing_by_name.get(name) or {})
+        if timing_metrics:
+            metrics = {**metrics, **timing_metrics}
         words = metrics.get("english_word_count", 0) or 0
 
         cat_counts = {code: 0 for code in CATEGORY_LABELS}
@@ -2528,6 +2666,34 @@ def finalize_derived_metrics(analysis: dict) -> None:
         "annotation_model": llm.get("annotations_model") or llm.get("model"),
         "annotations_status": llm.get("annotations_status") or llm.get("status"),
     }
+
+
+def backfill_timings(sessions_dir: Path) -> int:
+    """Create sessions/<date>/timings.json from a stored raw AssemblyAI response.
+
+    Recorded sessions from before timing capture keep a debug
+    assemblyai_response.json next to the audio; this converts it to the slim
+    documented contract without any API call. Idempotent: an existing
+    timings.json is never overwritten.
+    """
+    from transcribe import build_utterance_timings  # stdlib-only, no import side effects
+
+    count = 0
+    if not sessions_dir.exists():
+        return 0
+    for session_dir in sorted(sessions_dir.iterdir()):
+        if not session_dir.is_dir():
+            continue
+        raw_path = session_dir / "assemblyai_response.json"
+        target = session_dir / "timings.json"
+        if target.exists() or not raw_path.exists():
+            continue
+        timings = build_utterance_timings(load_json(raw_path, {}))
+        if not timings:
+            continue
+        write_json(target, timings)
+        count += 1
+    return count
 
 
 def reanalyze_derived_all(out_dir: Path) -> int:
@@ -2992,11 +3158,20 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Recompute derived metrics for all stored sessions (no LLM) and rebuild history.",
     )
+    parser.add_argument(
+        "--backfill-timings",
+        action="store_true",
+        help="Create sessions/<date>/timings.json from stored assemblyai_response.json files (no API call).",
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
+    if args.backfill_timings:
+        count = backfill_timings(args.sessions)
+        print(f"Backfilled timings for {count} session(s). Run --recompute-derived to attach metrics.")
+        return
     if args.recompute_derived:
         count = reanalyze_derived_all(args.out)
         print(f"Recomputed derived metrics for {count} session(s).")
