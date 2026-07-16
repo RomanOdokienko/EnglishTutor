@@ -581,6 +581,17 @@
       chart: makeChart(grammarSeries, dates, { decimals: 1, ariaLabel: 'Overall grammar error density trend' }),
       hero: true,
     }));
+    var seriousSeries = buildSeries(function (derived) {
+      return (derived.grammar || {}).serious_error_density_per_100w;
+    }, { requiresAnnotations: true });
+    if (hasMeasuredValues(seriousSeries)) {
+      overviewGrid.appendChild(card({
+        title: 'Serious errors only',
+        description: 'Findings a listener clearly notices (noticeable) or that put the meaning at risk (blocking), per 100 English words.',
+        help: 'Severity is judged per finding by impact on the listener, independently of the category and of how frequent it is. Minor slips are excluded here, and so are findings stored before severity existed. Lower is better.',
+        chart: makeChart(seriousSeries, dates, { compact: true, decimals: 1, ariaLabel: 'Serious error density trend' }),
+      }));
+    }
     overview.appendChild(overviewGrid);
     var excluded = exclusionNotice(grammarSeries, dates);
     if (excluded) overview.appendChild(excluded);
@@ -611,6 +622,47 @@
     }));
     habits.appendChild(habitsGrid);
     root.appendChild(habits);
+
+    // Timing-based fluency (ADR-0006) exists only for recorded calls, so the
+    // whole section stays hidden until at least one recorded session has a
+    // measurable value — text uploads never produce these keys.
+    var fluencyDefs = [
+      {
+        key: 'speech_rate_wpm',
+        label: 'Speech rate',
+        description: 'Words per minute of your own speaking time in the recording.',
+        help: 'Measured from word timestamps in the recorded audio. Includes hesitation pauses inside your speech; higher usually reads as more fluent, but very fast speech is not a goal in itself.',
+        decimals: 0,
+      },
+      {
+        key: 'pauses_per_min',
+        label: 'Hesitation pauses / min',
+        description: 'Silences of 0.5s or longer inside your own utterances, per speaking minute.',
+        help: 'Pauses between speakers are not counted — only hesitations inside your own speech. Lower usually means smoother delivery.',
+        decimals: 1,
+      },
+    ];
+    var fluencySeriesByKey = fluencyDefs.map(function (metric) {
+      return {
+        metric: metric,
+        series: buildSeries(function (derived) { return (derived.metrics || {})[metric.key]; }),
+      };
+    }).filter(function (entry) { return hasMeasuredValues(entry.series); });
+    if (fluencySeriesByKey.length) {
+      var fluencySection = section('Fluency', 'Timing-based signals from recorded calls: how fast and how smoothly speech flows. Text uploads carry no timings and are not shown.');
+      var fluencyGrid = document.createElement('div');
+      fluencyGrid.className = 'pg-grid pg-grid-two';
+      fluencySeriesByKey.forEach(function (entry) {
+        fluencyGrid.appendChild(card({
+          title: entry.metric.label,
+          description: entry.metric.description,
+          help: entry.metric.help + ' Sessions below ' + LOW_SAMPLE + ' English words are excluded from the line.',
+          chart: makeChart(entry.series, dates, { compact: true, decimals: entry.metric.decimals, ariaLabel: entry.metric.label + ' trend' }),
+        }));
+      });
+      fluencySection.appendChild(fluencyGrid);
+      root.appendChild(fluencySection);
+    }
 
     var closedSection = buildClosedFocuses();
     if (closedSection) root.appendChild(closedSection);

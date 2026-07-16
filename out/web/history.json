@@ -46,7 +46,14 @@
                 "ORDER": 0.84,
                 "WORD": 0.61,
                 "COLLOC": 0.61
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 37,
+                "minor": 33,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 2.84
             }
           },
           "fluency_score": 10.0,
@@ -157,7 +164,14 @@
                 "ORDER": 1.27,
                 "WORD": 1.14,
                 "COLLOC": 0.6
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 57,
+                "minor": 29,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 3.81
             }
           },
           "fluency_score": 10.0,
@@ -280,7 +294,14 @@
                 "ORDER": 1.65,
                 "WORD": 1.29,
                 "COLLOC": 0.64
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 64,
+                "minor": 43,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 4.58
             }
           },
           "fluency_score": 10.0,
@@ -398,7 +419,14 @@
                 "ORDER": 0.71,
                 "WORD": 1.21,
                 "COLLOC": 1.01
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 28,
+                "minor": 29,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 2.82
             }
           },
           "fluency_score": 10.0,
@@ -528,7 +556,14 @@
                 "ORDER": 1.06,
                 "WORD": 1.18,
                 "COLLOC": 0.59
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 66,
+                "minor": 45,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 3.88
             }
           },
           "fluency_score": 10.0,
@@ -651,7 +686,14 @@
                 "ORDER": 1.08,
                 "WORD": 1.28,
                 "COLLOC": 0.2
-              }
+              },
+              "by_severity_count": {
+                "blocking": 1,
+                "noticeable": 20,
+                "minor": 34,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 2.06
             }
           },
           "fluency_score": 10.0,
@@ -786,7 +828,14 @@
                 "ORDER": 1.82,
                 "WORD": 0.57,
                 "COLLOC": 0.46
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 36,
+                "minor": 14,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 4.1
             }
           },
           "fluency_score": 10.0,
@@ -914,7 +963,14 @@
                 "ORDER": 1.12,
                 "WORD": 0.97,
                 "COLLOC": 0.52
-              }
+              },
+              "by_severity_count": {
+                "blocking": 1,
+                "noticeable": 48,
+                "minor": 27,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 3.66
             }
           },
           "fluency_score": 10.0,
@@ -1061,7 +1117,14 @@
                 "ORDER": 3.85,
                 "WORD": 1.92,
                 "COLLOC": 1.92
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 3,
+                "minor": 2,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 5.77
             }
           },
           "fluency_score": 10.0,
@@ -1179,7 +1242,14 @@
                 "ORDER": 0.0,
                 "WORD": 2.04,
                 "COLLOC": 0.0
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 3,
+                "minor": 0,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 6.12
             }
           },
           "fluency_score": 10.0,
@@ -1263,7 +1333,7 @@
         "metrics": 1,
         "taxonomy": 1,
         "annotation_model": "gpt-5-mini",
-        "annotations_status": "in_progress"
+        "annotations_status": "ok"
       },
       "participants": [
         {
@@ -1283,96 +1353,120 @@
               "lexical_diversity_mattr": 0.749
             },
             "grammar": {
-              "error_count": 14,
-              "error_density_per_100w": 1.44,
+              "error_count": 61,
+              "error_density_per_100w": 6.26,
               "by_category_count": {
                 "TENSE": 1,
-                "VERB": 4,
-                "ARTICLE": 2,
-                "PREP": 4,
-                "ORDER": 1,
-                "WORD": 1,
-                "COLLOC": 1
+                "VERB": 16,
+                "ARTICLE": 13,
+                "PREP": 11,
+                "ORDER": 6,
+                "WORD": 6,
+                "COLLOC": 8
               },
               "by_category_density": {
                 "TENSE": 0.1,
-                "VERB": 0.41,
-                "ARTICLE": 0.21,
-                "PREP": 0.41,
-                "ORDER": 0.1,
-                "WORD": 0.1,
-                "COLLOC": 0.1
-              }
+                "VERB": 1.64,
+                "ARTICLE": 1.33,
+                "PREP": 1.13,
+                "ORDER": 0.62,
+                "WORD": 0.62,
+                "COLLOC": 0.82
+              },
+              "by_severity_count": {
+                "blocking": 1,
+                "noticeable": 38,
+                "minor": 22,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 4.0
             }
           },
           "fluency_score": 10.0,
           "llm_fluency_score": 6.5,
           "grammar_error_count": 8,
-          "llm_error_rate": 1.44,
+          "llm_error_rate": 6.26,
           "chunked_error_rate": 4.21,
           "comparison": {
             "version": 1,
-            "eligibility": "annotations_unavailable",
+            "eligibility": "comparable",
             "current_date": "2026-07-14",
-            "reference_count": 0,
-            "reference_dates": [],
-            "overall_reference_points": [],
+            "reference_count": 3,
+            "reference_dates": [
+              "2026-01-26",
+              "2026-02-02",
+              "2026-02-09"
+            ],
+            "overall_reference_points": [
+              {
+                "date": "2026-01-26",
+                "value": 7.66
+              },
+              {
+                "date": "2026-02-02",
+                "value": 6.53
+              },
+              {
+                "date": "2026-02-09",
+                "value": 5.7
+              }
+            ],
             "overall": {
-              "current": 1.44,
-              "reference_average": null,
-              "delta": null,
-              "threshold": null,
-              "status": "annotations_unavailable"
+              "current": 6.26,
+              "reference_average": 6.63,
+              "delta": -0.37,
+              "threshold": 0.66,
+              "status": "steady"
             },
             "categories": {
               "TENSE": {
                 "current": 0.1,
-                "reference_average": null,
-                "delta": null,
-                "threshold": null,
-                "status": "annotations_unavailable"
+                "reference_average": 0.36,
+                "delta": -0.26,
+                "threshold": 0.15,
+                "status": "improving"
               },
               "VERB": {
-                "current": 0.41,
-                "reference_average": null,
-                "delta": null,
-                "threshold": null,
-                "status": "annotations_unavailable"
+                "current": 1.64,
+                "reference_average": 1.01,
+                "delta": 0.63,
+                "threshold": 0.15,
+                "status": "needs_attention"
               },
               "ARTICLE": {
-                "current": 0.21,
-                "reference_average": null,
-                "delta": null,
-                "threshold": null,
-                "status": "annotations_unavailable"
+                "current": 1.33,
+                "reference_average": 1.23,
+                "delta": 0.1,
+                "threshold": 0.15,
+                "status": "steady"
               },
               "PREP": {
-                "current": 0.41,
-                "reference_average": null,
-                "delta": null,
-                "threshold": null,
-                "status": "annotations_unavailable"
+                "current": 1.13,
+                "reference_average": 0.95,
+                "delta": 0.18,
+                "threshold": 0.15,
+                "status": "needs_attention"
               },
               "ORDER": {
-                "current": 0.1,
-                "reference_average": null,
-                "delta": null,
-                "threshold": null,
-                "status": "annotations_unavailable"
+                "current": 0.62,
+                "reference_average": 1.51,
+                "delta": -0.89,
+                "threshold": 0.15,
+                "status": "improving"
               },
               "WORD": {
-                "current": 0.1,
-                "reference_average": null,
-                "delta": null,
-                "threshold": null,
-                "status": "annotations_unavailable"
+                "current": 0.62,
+                "reference_average": 1.01,
+                "delta": -0.39,
+                "threshold": 0.15,
+                "status": "improving"
               },
               "COLLOC": {
-                "current": 0.1,
-                "reference_average": null,
-                "delta": null,
-                "threshold": null,
-                "status": "annotations_unavailable"
+                "current": 0.82,
+                "reference_average": 0.56,
+                "delta": 0.26,
+                "threshold": 0.15,
+                "status": "needs_attention"
               }
             }
           }
@@ -1394,96 +1488,120 @@
               "lexical_diversity_mattr": 0.713
             },
             "grammar": {
-              "error_count": 0,
-              "error_density_per_100w": 0.0,
+              "error_count": 63,
+              "error_density_per_100w": 4.79,
               "by_category_count": {
-                "TENSE": 0,
-                "VERB": 0,
-                "ARTICLE": 0,
-                "PREP": 0,
-                "ORDER": 0,
-                "WORD": 0,
-                "COLLOC": 0
+                "TENSE": 4,
+                "VERB": 7,
+                "ARTICLE": 25,
+                "PREP": 12,
+                "ORDER": 5,
+                "WORD": 8,
+                "COLLOC": 2
               },
               "by_category_density": {
-                "TENSE": 0.0,
-                "VERB": 0.0,
-                "ARTICLE": 0.0,
-                "PREP": 0.0,
-                "ORDER": 0.0,
-                "WORD": 0.0,
-                "COLLOC": 0.0
-              }
+                "TENSE": 0.3,
+                "VERB": 0.53,
+                "ARTICLE": 1.9,
+                "PREP": 0.91,
+                "ORDER": 0.38,
+                "WORD": 0.61,
+                "COLLOC": 0.15
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 41,
+                "minor": 22,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 3.12
             }
           },
           "fluency_score": 10.0,
           "llm_fluency_score": 7.0,
           "grammar_error_count": 6,
-          "llm_error_rate": 0.46,
+          "llm_error_rate": 4.79,
           "chunked_error_rate": 3.04,
           "comparison": {
             "version": 1,
-            "eligibility": "annotations_unavailable",
+            "eligibility": "comparable",
             "current_date": "2026-07-14",
-            "reference_count": 0,
-            "reference_dates": [],
-            "overall_reference_points": [],
+            "reference_count": 3,
+            "reference_dates": [
+              "2026-01-26",
+              "2026-02-02",
+              "2026-02-09"
+            ],
+            "overall_reference_points": [
+              {
+                "date": "2026-01-26",
+                "value": 5.75
+              },
+              {
+                "date": "2026-02-02",
+                "value": 5.41
+              },
+              {
+                "date": "2026-02-09",
+                "value": 5.68
+              }
+            ],
             "overall": {
-              "current": 0.0,
-              "reference_average": null,
-              "delta": null,
-              "threshold": null,
-              "status": "annotations_unavailable"
+              "current": 4.79,
+              "reference_average": 5.61,
+              "delta": -0.82,
+              "threshold": 0.56,
+              "status": "improving"
             },
             "categories": {
               "TENSE": {
-                "current": 0.0,
-                "reference_average": null,
-                "delta": null,
-                "threshold": null,
-                "status": "annotations_unavailable"
+                "current": 0.3,
+                "reference_average": 0.17,
+                "delta": 0.13,
+                "threshold": 0.15,
+                "status": "steady"
               },
               "VERB": {
-                "current": 0.0,
-                "reference_average": null,
-                "delta": null,
-                "threshold": null,
-                "status": "annotations_unavailable"
+                "current": 0.53,
+                "reference_average": 0.54,
+                "delta": -0.01,
+                "threshold": 0.15,
+                "status": "steady"
               },
               "ARTICLE": {
-                "current": 0.0,
-                "reference_average": null,
-                "delta": null,
-                "threshold": null,
-                "status": "annotations_unavailable"
+                "current": 1.9,
+                "reference_average": 1.51,
+                "delta": 0.39,
+                "threshold": 0.15,
+                "status": "needs_attention"
               },
               "PREP": {
-                "current": 0.0,
-                "reference_average": null,
-                "delta": null,
-                "threshold": null,
-                "status": "annotations_unavailable"
+                "current": 0.91,
+                "reference_average": 0.7,
+                "delta": 0.21,
+                "threshold": 0.15,
+                "status": "needs_attention"
               },
               "ORDER": {
-                "current": 0.0,
-                "reference_average": null,
-                "delta": null,
-                "threshold": null,
-                "status": "annotations_unavailable"
+                "current": 0.38,
+                "reference_average": 0.97,
+                "delta": -0.59,
+                "threshold": 0.15,
+                "status": "improving"
               },
               "WORD": {
-                "current": 0.0,
-                "reference_average": null,
-                "delta": null,
-                "threshold": null,
-                "status": "annotations_unavailable"
+                "current": 0.61,
+                "reference_average": 1.15,
+                "delta": -0.54,
+                "threshold": 0.15,
+                "status": "improving"
               },
               "COLLOC": {
-                "current": 0.0,
-                "reference_average": null,
-                "delta": null,
-                "threshold": null,
-                "status": "annotations_unavailable"
+                "current": 0.15,
+                "reference_average": 0.58,
+                "delta": -0.43,
+                "threshold": 0.15,
+                "status": "improving"
               }
             }
           }

@@ -46,7 +46,14 @@
                 "ORDER": 0.84,
                 "WORD": 0.61,
                 "COLLOC": 0.61
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 37,
+                "minor": 33,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 2.84
             }
           },
           "fluency_score": 10.0,
@@ -157,7 +164,14 @@
                 "ORDER": 1.27,
                 "WORD": 1.14,
                 "COLLOC": 0.6
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 57,
+                "minor": 29,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 3.81
             }
           },
           "fluency_score": 10.0,
@@ -280,7 +294,14 @@
                 "ORDER": 1.65,
                 "WORD": 1.29,
                 "COLLOC": 0.64
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 64,
+                "minor": 43,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 4.58
             }
           },
           "fluency_score": 10.0,
@@ -398,7 +419,14 @@
                 "ORDER": 0.71,
                 "WORD": 1.21,
                 "COLLOC": 1.01
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 28,
+                "minor": 29,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 2.82
             }
           },
           "fluency_score": 10.0,
@@ -528,7 +556,14 @@
                 "ORDER": 1.06,
                 "WORD": 1.18,
                 "COLLOC": 0.59
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 66,
+                "minor": 45,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 3.88
             }
           },
           "fluency_score": 10.0,
@@ -651,7 +686,14 @@
                 "ORDER": 1.08,
                 "WORD": 1.28,
                 "COLLOC": 0.2
-              }
+              },
+              "by_severity_count": {
+                "blocking": 1,
+                "noticeable": 20,
+                "minor": 34,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 2.06
             }
           },
           "fluency_score": 10.0,
@@ -786,7 +828,14 @@
                 "ORDER": 1.82,
                 "WORD": 0.57,
                 "COLLOC": 0.46
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 36,
+                "minor": 14,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 4.1
             }
           },
           "fluency_score": 10.0,
@@ -914,7 +963,14 @@
                 "ORDER": 1.12,
                 "WORD": 0.97,
                 "COLLOC": 0.52
-              }
+              },
+              "by_severity_count": {
+                "blocking": 1,
+                "noticeable": 48,
+                "minor": 27,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 3.66
             }
           },
           "fluency_score": 10.0,
@@ -1061,7 +1117,14 @@
                 "ORDER": 3.85,
                 "WORD": 1.92,
                 "COLLOC": 1.92
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 3,
+                "minor": 2,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 5.77
             }
           },
           "fluency_score": 10.0,
@@ -1179,7 +1242,14 @@
                 "ORDER": 0.0,
                 "WORD": 2.04,
                 "COLLOC": 0.0
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 3,
+                "minor": 0,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 6.12
             }
           },
           "fluency_score": 10.0,
@@ -1302,7 +1372,14 @@
                 "ORDER": 0.62,
                 "WORD": 0.62,
                 "COLLOC": 0.82
-              }
+              },
+              "by_severity_count": {
+                "blocking": 1,
+                "noticeable": 38,
+                "minor": 22,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 4.0
             }
           },
           "fluency_score": 10.0,
@@ -1430,7 +1507,14 @@
                 "ORDER": 0.38,
                 "WORD": 0.61,
                 "COLLOC": 0.15
-              }
+              },
+              "by_severity_count": {
+                "blocking": 0,
+                "noticeable": 41,
+                "minor": 22,
+                "unrated": 0
+              },
+              "serious_error_density_per_100w": 3.12
             }
           },
           "fluency_score": 10.0,

@@ -2637,6 +2637,10 @@ def finalize_derived_metrics(analysis: dict) -> None:
         words = metrics.get("english_word_count", 0) or 0
 
         cat_counts = {code: 0 for code in CATEGORY_LABELS}
+        # Severity is ordinal (ADR-0007): "serious" = blocking + noticeable.
+        # "unrated" are pre-rollout items with no severity — excluded from the
+        # serious series rather than guessed, same honesty rule as elsewhere.
+        sev_counts = {"blocking": 0, "noticeable": 0, "minor": 0, "unrated": 0}
         total_errors = 0
         for item in by_name.get(name, []):
             if not is_countable_annotation(item):
@@ -2645,6 +2649,8 @@ def finalize_derived_metrics(analysis: dict) -> None:
             total_errors += 1
             if code in cat_counts:
                 cat_counts[code] += 1
+            severity = (item.get("severity") or "").strip().lower()
+            sev_counts[severity if severity in sev_counts else "unrated"] += 1
 
         def density(count: int) -> float:
             return round(count / words * 100, 2) if words else 0.0
@@ -2656,6 +2662,8 @@ def finalize_derived_metrics(analysis: dict) -> None:
                 "error_density_per_100w": density(total_errors),
                 "by_category_count": cat_counts,
                 "by_category_density": {code: density(c) for code, c in cat_counts.items()},
+                "by_severity_count": sev_counts,
+                "serious_error_density_per_100w": density(sev_counts["blocking"] + sev_counts["noticeable"]),
             },
         }
 
@@ -2998,6 +3006,42 @@ def build_briefing(out_dir: Path) -> dict:
         else:
             primary_focus = None
 
+        # The guaranteed severity slot (ADR-0007): the grossest findings of the
+        # latest comparable session, by the highest severity level present —
+        # independent of category frequency and focus, so a rare-but-gross error
+        # can no longer drop out of the weekly view.
+        grossest: list[dict] = []
+        if comparable:
+            latest_date = comparable[-1].get("date", "")
+            latest_analysis = analyses.get(latest_date, {})
+            latest_items = (latest_analysis.get("llm") or {}).get("annotation_items") or []
+            latest_by_name = map_annotation_items_to_speakers(
+                latest_items,
+                latest_analysis.get("transcript", ""),
+                latest_analysis.get("speaker_map", {}) or {},
+            )
+            severity_rank = {"blocking": 0, "noticeable": 1}
+            candidates = [
+                item for item in latest_by_name.get(name, [])
+                if is_countable_annotation(item)
+                and (item.get("severity") or "").strip().lower() in severity_rank
+                and str(item.get("text") or "").strip() and str(item.get("correction") or "").strip()
+            ]
+            candidates.sort(key=lambda item: severity_rank[(item.get("severity") or "").strip().lower()])
+            top_level = (candidates[0].get("severity") or "").strip().lower() if candidates else ""
+            for item in candidates:
+                if (item.get("severity") or "").strip().lower() != top_level or len(grossest) == 2:
+                    break
+                code = (item.get("category") or infer_category_code(item) or "").upper()
+                grossest.append({
+                    "date": latest_date,
+                    "severity": top_level,
+                    "code": code,
+                    "category_title": CATEGORY_LABELS.get(code, "Grammar issue"),
+                    "error": str(item.get("text") or "").strip(),
+                    "correction": str(item.get("correction") or "").strip(),
+                })
+
         available_examples: list[dict] = []
         seen_examples: set[tuple[str, str]] = set()
         for session in reversed(comparable):
@@ -3064,6 +3108,7 @@ def build_briefing(out_dir: Path) -> dict:
             "additional_focus_count": max(0, len(focus_rows) - 1),
             "patterns": patterns,
             "examples": examples,
+            "grossest": grossest,
             "recent_direction": recent_direction,
         })
 

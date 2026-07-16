@@ -33,6 +33,7 @@
       additional_focus_count: Math.max(0, (person.active_focuses || []).length - 1),
       patterns: (person.top_categories || []).slice(0, 2),
       examples: (person.examples || []).slice(0, 2),
+      grossest: [],
       recent_direction: errorTrend ? {
         points: errorTrend.trend.values || [],
         comparison: { status: errorTrend.trend.direction === 'worsening' ? 'needs_attention' : errorTrend.trend.direction },
@@ -99,6 +100,18 @@
     }).join('');
   }
 
+  function grossestCell(person) {
+    var items = person.grossest || [];
+    if (!items.length) return '<p class="briefing-empty">No serious findings in the latest comparable call.</p>';
+    return items.map(function (item) {
+      return '<article class="briefing-rewrite"><p class="briefing-example-meta">'
+        + '<span class="severity-chip is-' + escapeHtml(String(item.severity || '').toLowerCase()) + '">' + escapeHtml(item.severity || '') + '</span> '
+        + escapeHtml(item.category_title || '') + ' · ' + escapeHtml(shortDate(item.date)) + '</p>'
+        + '<div class="briefing-wrong"><span>You said</span><strong>' + escapeHtml(item.error) + '</strong></div>'
+        + '<div class="briefing-fix"><span>Try</span><strong>' + escapeHtml(item.correction) + '</strong></div></article>';
+    }).join('');
+  }
+
   function directionCell(person) {
     var direction = person.recent_direction;
     if (!direction || !(direction.points || []).length) return '<p class="briefing-empty">No comparable grammar results yet.</p>';
@@ -132,9 +145,13 @@
       root.innerHTML = '<p class="metric-note">No sessions yet. Record or upload a call to create the first briefing.</p>';
       return;
     }
+    var anyGrossest = people.some(function (person) { return (person.grossest || []).length; });
     root.innerHTML = band(people, 'Focus for the next call', 'One primary target per person. Active choices stay separate from automatic suggestions.', 'is-focus', focusCell)
       + band(people, 'Patterns from recent calls', 'The two densest patterns across the latest three comparable annotated calls.', 'is-patterns', patternsCell)
       + band(people, 'Rehearse these', 'Two corrections chosen from the focus and recent patterns.', 'is-examples', examplesCell)
+      // Guaranteed severity slot (ADR-0007): rendered only when someone has
+      // severity-rated findings, so older briefings look exactly as before.
+      + (anyGrossest ? band(people, 'Most serious last call', 'The highest-severity findings of the latest comparable call — independent of how frequent the category is and of the focus.', 'is-grossest', grossestCell) : '')
       + band(people, 'Recent grammar direction', 'The latest three actual results; the status compares the newest call with the three calls before it.', 'is-direction', directionCell)
       + '<a class="briefing-session-link" href="highlights.html">Open Session evidence →</a>';
   }

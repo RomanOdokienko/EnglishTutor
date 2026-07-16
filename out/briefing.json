@@ -11,9 +11,9 @@
         "title": "Wrong Word",
         "set_date": "2026-01-19",
         "baseline_density": 0.61,
-        "latest_density": 0.97,
-        "latest_date": "2026-02-09",
-        "change_pct": 59,
+        "latest_density": 0.61,
+        "latest_date": "2026-07-14",
+        "change_pct": 0,
         "ready_to_close": false
       },
       "additional_focus_count": 0,
@@ -21,50 +21,64 @@
         {
           "code": "ARTICLE",
           "title": "Articles",
-          "average_density": 1.51,
+          "average_density": 1.67,
           "seen_sessions": 3,
           "sessions_considered": 3,
           "dates": [
-            "2026-01-26",
             "2026-02-02",
-            "2026-02-09"
+            "2026-02-09",
+            "2026-07-14"
           ]
         },
         {
           "code": "WORD",
           "title": "Wrong Word",
-          "average_density": 1.15,
+          "average_density": 0.95,
           "seen_sessions": 3,
           "sessions_considered": 3,
           "dates": [
-            "2026-01-26",
             "2026-02-02",
-            "2026-02-09"
+            "2026-02-09",
+            "2026-07-14"
           ]
         }
       ],
       "examples": [
         {
-          "date": "2026-02-09",
+          "date": "2026-07-14",
           "code": "WORD",
           "category_title": "Wrong Word",
-          "error": "some sense from them.",
-          "correction": "the meaning of what they said"
+          "error": "we are not office, just office NPC",
+          "correction": "we are not office workers, just office NPCs"
         },
         {
-          "date": "2026-02-09",
+          "date": "2026-07-14",
           "code": "ARTICLE",
           "category_title": "Articles",
-          "error": "They were from design industry or almost design industry.",
-          "correction": "They were from the design industry, or almost from it."
+          "error": "Day was a really big day",
+          "correction": "The day was a really big day"
+        }
+      ],
+      "grossest": [
+        {
+          "date": "2026-07-14",
+          "severity": "noticeable",
+          "code": "ARTICLE",
+          "category_title": "Articles",
+          "error": "Day was a really big day",
+          "correction": "The day was a really big day"
+        },
+        {
+          "date": "2026-07-14",
+          "severity": "noticeable",
+          "code": "ORDER",
+          "category_title": "Word Order",
+          "error": "we, me and my brother",
+          "correction": "my brother and I"
         }
       ],
       "recent_direction": {
         "points": [
-          {
-            "date": "2026-01-26",
-            "value": 5.75
-          },
           {
             "date": "2026-02-02",
             "value": 5.41
@@ -72,19 +86,23 @@
           {
             "date": "2026-02-09",
             "value": 5.68
+          },
+          {
+            "date": "2026-07-14",
+            "value": 4.79
           }
         ],
         "comparison": {
-          "current": 5.68,
-          "reference_average": 5.51,
-          "delta": 0.17,
-          "threshold": 0.55,
-          "status": "steady"
+          "current": 4.79,
+          "reference_average": 5.61,
+          "delta": -0.82,
+          "threshold": 0.56,
+          "status": "improving"
         },
         "reference_dates": [
-          "2026-01-19",
           "2026-01-26",
-          "2026-02-02"
+          "2026-02-02",
+          "2026-02-09"
         ]
       }
     },
@@ -92,64 +110,70 @@
       "name": "Roman",
       "focus": {
         "kind": "suggested",
-        "code": "ORDER",
-        "title": "Word Order",
-        "average_density": 1.51,
+        "code": "ARTICLE",
+        "title": "Articles",
+        "average_density": 1.22,
         "dates": [
-          "2026-01-26",
           "2026-02-02",
-          "2026-02-09"
+          "2026-02-09",
+          "2026-07-14"
         ]
       },
       "additional_focus_count": 0,
       "patterns": [
         {
-          "code": "ORDER",
-          "title": "Word Order",
-          "average_density": 1.51,
+          "code": "ARTICLE",
+          "title": "Articles",
+          "average_density": 1.22,
           "seen_sessions": 3,
           "sessions_considered": 3,
           "dates": [
-            "2026-01-26",
             "2026-02-02",
-            "2026-02-09"
+            "2026-02-09",
+            "2026-07-14"
           ]
         },
         {
-          "code": "ARTICLE",
-          "title": "Articles",
-          "average_density": 1.23,
+          "code": "ORDER",
+          "title": "Word Order",
+          "average_density": 1.17,
           "seen_sessions": 3,
           "sessions_considered": 3,
           "dates": [
-            "2026-01-26",
             "2026-02-02",
-            "2026-02-09"
+            "2026-02-09",
+            "2026-07-14"
           ]
         }
       ],
       "examples": [
         {
-          "date": "2026-02-09",
-          "code": "ORDER",
-          "category_title": "Word Order",
-          "error": "from your last paragraph from beginning",
-          "correction": "from the beginning of your last paragraph"
-        },
-        {
-          "date": "2026-02-09",
+          "date": "2026-07-14",
           "code": "ARTICLE",
           "category_title": "Articles",
-          "error": "I don't have brother at all.",
-          "correction": "I don't have a brother at all."
+          "error": "the not resolved issue",
+          "correction": "an unresolved issue"
+        },
+        {
+          "date": "2026-07-14",
+          "code": "ORDER",
+          "category_title": "Word Order",
+          "error": "for any occasion could happen",
+          "correction": "in case something happens"
+        }
+      ],
+      "grossest": [
+        {
+          "date": "2026-07-14",
+          "severity": "blocking",
+          "code": "VERB",
+          "category_title": "Verb Form",
+          "error": "you can shouldn't.",
+          "correction": "you shouldn't."
         }
       ],
       "recent_direction": {
         "points": [
-          {
-            "date": "2026-01-26",
-            "value": 7.66
-          },
           {
             "date": "2026-02-02",
             "value": 6.53
@@ -157,19 +181,23 @@
           {
             "date": "2026-02-09",
             "value": 5.7
+          },
+          {
+            "date": "2026-07-14",
+            "value": 6.26
           }
         ],
         "comparison": {
-          "current": 5.7,
-          "reference_average": 6.64,
-          "delta": -0.94,
+          "current": 6.26,
+          "reference_average": 6.63,
+          "delta": -0.37,
           "threshold": 0.66,
-          "status": "improving"
+          "status": "steady"
         },
         "reference_dates": [
-          "2026-01-19",
           "2026-01-26",
-          "2026-02-02"
+          "2026-02-02",
+          "2026-02-09"
         ]
       }
     }

@@ -76,6 +76,38 @@
       </div>
 
       <div class="mt-section">
+        <h2>How serious an error is (severity)</h2>
+        <p class="mt-sub">Since July 2026 every marked error also carries a severity level — how much it hurts the listener, judged for that exact phrase, not for the category.</p>
+        <div class="mt-card mt-table-wrap">
+          <table class="mt-table">
+            <thead><tr><th>Level</th><th>What it means</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><span class="severity-chip is-blocking">blocking</span></td><td>The meaning is distorted or the listener must strain to reconstruct it</td><td class="mt-example"><span class="example-error">five minutes later before our meeting started</span> → <span class="example-fix">five minutes before our meeting started</span></td></tr>
+              <tr><td><span class="severity-chip is-noticeable">noticeable</span></td><td>A clear error the listener registers, but the meaning survives</td><td class="mt-example"><span class="example-error">I'm not understand</span> → <span class="example-fix">I don't understand</span></td></tr>
+              <tr><td><span class="severity-chip is-minor">minor</span></td><td>A small slip most listeners would not even notice</td><td class="mt-example"><span class="example-error">built early prototype</span> → <span class="example-fix">built an early prototype</span></td></tr>
+            </tbody>
+          </table>
+          <p class="mt-note">Severity is independent of how often an error happens, and it is why a rare but gross error can no longer hide behind frequent small ones: Session and This week always show a <b>Most serious</b> block with the worst level present, and Progress tracks <b>Serious errors only</b> (blocking + noticeable) as its own line. Blocking is legitimately rare at your level — most weeks the worst you will see is noticeable, and that is good news. Severity never changes the error counts themselves.</p>
+        </div>
+      </div>
+
+      <div class="mt-section">
+        <h2>Fluency from the recording</h2>
+        <p class="mt-sub">Andrey's request: grammar is one axis, flow is another. These numbers exist only for recorded calls — a pasted text transcript carries no timing.</p>
+        <div class="mt-card mt-table-wrap">
+          <table class="mt-table">
+            <thead><tr><th>Number</th><th>What it is</th></tr></thead>
+            <tbody>
+              <tr><td><b>Speech rate</b></td><td>Words per minute of your own speaking time. Comfortable conversational English is roughly 110–150 wpm; the trend matters more than the absolute number.</td></tr>
+              <tr><td><b>Hesitation pauses / min</b></td><td>Silences of half a second or longer <i>inside your own utterances</i>, per speaking minute. Pauses while the other person talks are not counted.</td></tr>
+              <tr><td><b>Words between pauses</b></td><td>How long you speak without hesitating, on average. Longer runs = smoother delivery.</td></tr>
+            </tbody>
+          </table>
+          <p class="mt-note">All of this is plain arithmetic over word timestamps from the transcription — no AI judgement involved, fully reproducible. Where these numbers are absent (text uploads, old sessions), they are simply not measured; absence never counts as zero.</p>
+        </div>
+      </div>
+
+      <div class="mt-section">
         <h2>Reading your personal session review</h2>
         <p class="mt-sub">Session compares each participant only with up to three of their own comparable calls before the selected date.</p>
         <div class="mt-card">
@@ -93,7 +125,7 @@
       <div class="mt-section">
         <h2>Reading This week and Progress</h2>
         <div class="mt-card">
-          <p><span class="mt-term">This week</span> — one focus, two patterns and two phrases to rehearse per person. Patterns and the three displayed values come from the latest three comparable calls. Its status still compares the newest call with the three calls before it.</p>
+          <p><span class="mt-term">This week</span> — one focus, two patterns, two phrases to rehearse and the most serious findings of the latest call, per person. Patterns and the three displayed values come from the latest three comparable calls. Its status still compares the newest call with the three calls before it.</p>
           <p><span class="mt-term">Progress summary</span> — the latest comparable value versus the average of the previous three comparable calls. The full chart keeps every comparable historical point; it does not use the first-ever value as the summary baseline.</p>
           <p><span class="mt-term">Partner challenge</span> — both people stay visible together on Progress, but every status is calculated against that person's own history. One person's error rate never becomes the other's baseline.</p>
         </div>
@@ -137,7 +169,7 @@
           <p><b>Exact:</b> who said what, word counts, speaking share, fillers and vocabulary variety — these are computed mechanically and are fully reproducible.</p>
           <p><b>Approximate:</b> error marks come from AI, so two runs on the same transcript can differ by a few findings. Single errors mean little; repeated categories and multi-session trends are what matters.</p>
           <p><b>Low sample:</b> sessions with under 120 English words are shown but not used for comparisons, and Progress draws them as hollow points.</p>
-          <p class="mt-note">Sessions annotated before July 2026 used an older, noisier extraction. "Re-run annotations" on a session refreshes it with the current one.</p>
+          <p class="mt-note">In July 2026 the whole archive was re-annotated with the current, measured extraction (gpt-5-mini, two passes; ~82% precision on a hand-labeled set). Densities stepped up across the board compared to the older model — that is the measurement getting more complete, not your English getting worse. The series is uniform again: every stored session now uses the same model, prompt and severity rules, recorded per session in its analysis version.</p>
         </div>
       </div>
     </main>

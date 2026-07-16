@@ -106,38 +106,38 @@
           ]
         },
         "annotation_grammar": {
-          "total_errors": 14,
-          "error_rate_per_100_words": 1.44,
+          "total_errors": 61,
+          "error_rate_per_100_words": 6.26,
           "error_types": [
-            {
-              "code": "PREP",
-              "title": "Prepositions",
-              "count": 4
-            },
             {
               "code": "VERB",
               "title": "Verb Form",
-              "count": 4
+              "count": 16
             },
             {
               "code": "ARTICLE",
               "title": "Articles",
-              "count": 2
+              "count": 13
             },
             {
-              "code": "ORDER",
-              "title": "Word Order",
-              "count": 1
+              "code": "PREP",
+              "title": "Prepositions",
+              "count": 11
             },
             {
               "code": "COLLOC",
               "title": "Collocation",
-              "count": 1
+              "count": 8
+            },
+            {
+              "code": "ORDER",
+              "title": "Word Order",
+              "count": 6
             },
             {
               "code": "WORD",
               "title": "Wrong Word",
-              "count": 1
+              "count": 6
             },
             {
               "code": "TENSE",
@@ -148,24 +148,9 @@
         },
         "practical_recommendations": [
           {
-            "title": "Prepositions",
-            "guidance": "Choose the correct preposition for common phrases and verbs.",
-            "why": "4 cases (29% of all grammar issues). This changes meaning in key phrases and verb patterns.",
-            "examples": [
-              {
-                "error": "share you my pain",
-                "correction": "share my pain with you"
-              },
-              {
-                "error": "from my disk C",
-                "correction": "by my C drive"
-              }
-            ]
-          },
-          {
             "title": "Verb Form",
             "guidance": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
-            "why": "4 cases (29% of all grammar issues). This makes grammar sound inconsistent and less natural.",
+            "why": "16 cases (26% of all grammar issues). This makes grammar sound inconsistent and less natural.",
             "examples": [
               {
                 "error": "I just mind blown",
@@ -180,26 +165,22 @@
           {
             "title": "Articles",
             "guidance": "Use a/an/the (or zero article) correctly before nouns.",
-            "why": "2 cases (14% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
+            "why": "13 cases (21% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
             "examples": [
               {
                 "error": "Just usual question",
                 "correction": "Just a usual question"
               },
               {
-                "error": "the not resolved issue",
-                "correction": "an unresolved issue"
+                "error": "just simple simple take",
+                "correction": "just a simple take"
               }
             ]
-          }
-        ],
-        "top3_insights": [
+          },
           {
-            "code": "PREP",
             "title": "Prepositions",
-            "count": 4,
-            "why": "4 cases (29% of all grammar issues). This changes meaning in key phrases and verb patterns.",
-            "focus": "Choose the correct preposition for common phrases and verbs.",
+            "guidance": "Choose the correct preposition for common phrases and verbs.",
+            "why": "11 cases (18% of all grammar issues). This changes meaning in key phrases and verb patterns.",
             "examples": [
               {
                 "error": "share you my pain",
@@ -210,12 +191,14 @@
                 "correction": "by my C drive"
               }
             ]
-          },
+          }
+        ],
+        "top3_insights": [
           {
             "code": "VERB",
             "title": "Verb Form",
-            "count": 4,
-            "why": "4 cases (29% of all grammar issues). This makes grammar sound inconsistent and less natural.",
+            "count": 16,
+            "why": "16 cases (26% of all grammar issues). This makes grammar sound inconsistent and less natural.",
             "focus": "Use the correct verb form and ensure subject-verb agreement and modal usage.",
             "examples": [
               {
@@ -231,8 +214,8 @@
           {
             "code": "ARTICLE",
             "title": "Articles",
-            "count": 2,
-            "why": "2 cases (14% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
+            "count": 13,
+            "why": "13 cases (21% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
             "focus": "Use a/an/the (or zero article) correctly before nouns.",
             "examples": [
               {
@@ -240,8 +223,25 @@
                 "correction": "Just a usual question"
               },
               {
-                "error": "the not resolved issue",
-                "correction": "an unresolved issue"
+                "error": "just simple simple take",
+                "correction": "just a simple take"
+              }
+            ]
+          },
+          {
+            "code": "PREP",
+            "title": "Prepositions",
+            "count": 11,
+            "why": "11 cases (18% of all grammar issues). This changes meaning in key phrases and verb patterns.",
+            "focus": "Choose the correct preposition for common phrases and verbs.",
+            "examples": [
+              {
+                "error": "share you my pain",
+                "correction": "share my pain with you"
+              },
+              {
+                "error": "from my disk C",
+                "correction": "by my C drive"
               }
             ]
           }
@@ -261,26 +261,33 @@
           "lexical_diversity_mattr": 0.749
         },
         "grammar": {
-          "error_count": 14,
-          "error_density_per_100w": 1.44,
+          "error_count": 61,
+          "error_density_per_100w": 6.26,
           "by_category_count": {
             "TENSE": 1,
-            "VERB": 4,
-            "ARTICLE": 2,
-            "PREP": 4,
-            "ORDER": 1,
-            "WORD": 1,
-            "COLLOC": 1
+            "VERB": 16,
+            "ARTICLE": 13,
+            "PREP": 11,
+            "ORDER": 6,
+            "WORD": 6,
+            "COLLOC": 8
           },
           "by_category_density": {
             "TENSE": 0.1,
-            "VERB": 0.41,
-            "ARTICLE": 0.21,
-            "PREP": 0.41,
-            "ORDER": 0.1,
-            "WORD": 0.1,
-            "COLLOC": 0.1
-          }
+            "VERB": 1.64,
+            "ARTICLE": 1.33,
+            "PREP": 1.13,
+            "ORDER": 0.62,
+            "WORD": 0.62,
+            "COLLOC": 0.82
+          },
+          "by_severity_count": {
+            "blocking": 1,
+            "noticeable": 38,
+            "minor": 22,
+            "unrated": 0
+          },
+          "serious_error_density_per_100w": 4.0
         }
       }
     },
@@ -389,53 +396,89 @@
           ]
         },
         "annotation_grammar": {
-          "total_errors": 0,
-          "error_rate_per_100_words": 0.0,
-          "error_types": []
+          "total_errors": 63,
+          "error_rate_per_100_words": 4.79,
+          "error_types": [
+            {
+              "code": "ARTICLE",
+              "title": "Articles",
+              "count": 25
+            },
+            {
+              "code": "PREP",
+              "title": "Prepositions",
+              "count": 12
+            },
+            {
+              "code": "WORD",
+              "title": "Wrong Word",
+              "count": 8
+            },
+            {
+              "code": "VERB",
+              "title": "Verb Form",
+              "count": 7
+            },
+            {
+              "code": "ORDER",
+              "title": "Word Order",
+              "count": 5
+            },
+            {
+              "code": "TENSE",
+              "title": "Verb Tense",
+              "count": 4
+            },
+            {
+              "code": "COLLOC",
+              "title": "Collocation",
+              "count": 2
+            }
+          ]
         },
         "practical_recommendations": [
           {
             "title": "Articles",
             "guidance": "Use a/an/the (or zero article) correctly before nouns.",
-            "why": "22 cases (33% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
+            "why": "25 cases (40% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
             "examples": [
               {
-                "error": "in Star Framework way",
-                "correction": "in the STAR Framework (way)"
+                "error": "Day was a really big day",
+                "correction": "The day was a really big day"
               },
               {
-                "error": "built early prototype",
-                "correction": "built an early prototype"
+                "error": "in Star Framework way",
+                "correction": "in the Star Framework way"
               }
             ]
           },
           {
             "title": "Prepositions",
             "guidance": "Choose the correct preposition for common phrases and verbs.",
-            "why": "13 cases (19% of all grammar issues). This changes meaning in key phrases and verb patterns.",
+            "why": "12 cases (19% of all grammar issues). This changes meaning in key phrases and verb patterns.",
             "examples": [
               {
-                "error": "something for help",
-                "correction": "something to help them"
+                "error": "most of designers",
+                "correction": "most designers"
               },
               {
-                "error": "on 8 more people",
-                "correction": "with 8 more people"
+                "error": "build something for help",
+                "correction": "build something to help them"
               }
             ]
           },
           {
             "title": "Wrong Word",
             "guidance": "Pick the most precise word and avoid awkward or redundant phrasing.",
-            "why": "9 cases (13% of all grammar issues). This lowers precision and can sound unnatural.",
+            "why": "8 cases (13% of all grammar issues). This lowers precision and can sound unnatural.",
             "examples": [
               {
-                "error": "Day was a really big day",
-                "correction": "Today was a really big day"
+                "error": "we are not office, just office NPC",
+                "correction": "we are not office workers, just office NPCs"
               },
               {
-                "error": "most of designers",
-                "correction": "most designers"
+                "error": "and but not positive feedback",
+                "correction": "but not positive feedback"
               }
             ]
           }
@@ -444,51 +487,51 @@
           {
             "code": "ARTICLE",
             "title": "Articles",
-            "count": 22,
-            "why": "22 cases (33% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
+            "count": 25,
+            "why": "25 cases (40% of all grammar issues). This reduces grammatical accuracy in noun phrases.",
             "focus": "Use a/an/the (or zero article) correctly before nouns.",
             "examples": [
               {
-                "error": "in Star Framework way",
-                "correction": "in the STAR Framework (way)"
+                "error": "Day was a really big day",
+                "correction": "The day was a really big day"
               },
               {
-                "error": "built early prototype",
-                "correction": "built an early prototype"
+                "error": "in Star Framework way",
+                "correction": "in the Star Framework way"
               }
             ]
           },
           {
             "code": "PREP",
             "title": "Prepositions",
-            "count": 13,
-            "why": "13 cases (19% of all grammar issues). This changes meaning in key phrases and verb patterns.",
+            "count": 12,
+            "why": "12 cases (19% of all grammar issues). This changes meaning in key phrases and verb patterns.",
             "focus": "Choose the correct preposition for common phrases and verbs.",
             "examples": [
               {
-                "error": "something for help",
-                "correction": "something to help them"
+                "error": "most of designers",
+                "correction": "most designers"
               },
               {
-                "error": "on 8 more people",
-                "correction": "with 8 more people"
+                "error": "build something for help",
+                "correction": "build something to help them"
               }
             ]
           },
           {
             "code": "WORD",
             "title": "Wrong Word",
-            "count": 9,
-            "why": "9 cases (13% of all grammar issues). This lowers precision and can sound unnatural.",
+            "count": 8,
+            "why": "8 cases (13% of all grammar issues). This lowers precision and can sound unnatural.",
             "focus": "Pick the most precise word and avoid awkward or redundant phrasing.",
             "examples": [
               {
-                "error": "Day was a really big day",
-                "correction": "Today was a really big day"
+                "error": "we are not office, just office NPC",
+                "correction": "we are not office workers, just office NPCs"
               },
               {
-                "error": "most of designers",
-                "correction": "most designers"
+                "error": "and but not positive feedback",
+                "correction": "but not positive feedback"
               }
             ]
           }
@@ -508,26 +551,33 @@
           "lexical_diversity_mattr": 0.713
         },
         "grammar": {
-          "error_count": 0,
-          "error_density_per_100w": 0.0,
+          "error_count": 63,
+          "error_density_per_100w": 4.79,
           "by_category_count": {
-            "TENSE": 0,
-            "VERB": 0,
-            "ARTICLE": 0,
-            "PREP": 0,
-            "ORDER": 0,
-            "WORD": 0,
-            "COLLOC": 0
+            "TENSE": 4,
+            "VERB": 7,
+            "ARTICLE": 25,
+            "PREP": 12,
+            "ORDER": 5,
+            "WORD": 8,
+            "COLLOC": 2
           },
           "by_category_density": {
-            "TENSE": 0.0,
-            "VERB": 0.0,
-            "ARTICLE": 0.0,
-            "PREP": 0.0,
-            "ORDER": 0.0,
-            "WORD": 0.0,
-            "COLLOC": 0.0
-          }
+            "TENSE": 0.3,
+            "VERB": 0.53,
+            "ARTICLE": 1.9,
+            "PREP": 0.91,
+            "ORDER": 0.38,
+            "WORD": 0.61,
+            "COLLOC": 0.15
+          },
+          "by_severity_count": {
+            "blocking": 0,
+            "noticeable": 41,
+            "minor": 22,
+            "unrated": 0
+          },
+          "serious_error_density_per_100w": 3.12
         }
       }
     }
@@ -704,8 +754,8 @@
     "status": "ok",
     "model": "gpt-4o-mini",
     "annotations_model": "gpt-5-mini",
-    "annotations_status": "in_progress",
-    "annotated_transcript_html": "Speaker A: Okay, I started recording our meeting from our service in English Tutor, which is located in Warsaw, and I also started recording from my phone <mark class=\"grammar-error\" title=\"ORDER: Correct: in case something happens | Incorrect word order and construction. Use 'in case' + clause to express a precaution (in case something happens).\">for any occasion could happen</mark>. So I just would like to <mark class=\"grammar-error\" title=\"PREP: Correct: share my pain with you | Missing preposition and wrong word order for the verb 'share' — the person shared with must follow 'with'.\">share you my pain</mark>, because <mark class=\"grammar-error\" title=\"VERB: Correct: I'm just mind-blown | Missing auxiliary and incorrect verb form; use 'I'm' + past participle/adjective ('mind-blown').\">I just mind blown</mark> <mark class=\"grammar-error\" title=\"PREP: Correct: by my C drive | Wrong preposition for cause/agent here — use 'by' (and 'C drive' is the usual phrasing).\">from my disk C</mark>, which is full, <mark class=\"grammar-error\" title=\"PREP: Correct: fed up with Codex and Claude | Wrong preposition after 'fed up' — the correct preposition is 'with'.\">fed up from Codex and Claude</mark>. It <mark class=\"grammar-error\" title=\"COLLOC: Correct: uses up free space | Unnatural collocation; English speakers say 'use up free space' or 'eat up free space'.\">eats free space</mark> every time, and I hate it, and <mark class=\"grammar-error\" title=\"VERB: Correct: I don't understand | Incorrect auxiliary and verb form for present simple negation; use 'do' + base verb.\">I'm not understand</mark> <mark class=\"grammar-error\" title=\"VERB: Correct: what I should do correctly | After modal 'should' use the base form of the verb ('do'), not the past participle 'done'.\">what I should done correctly</mark>. I found that <mark class=\"grammar-error\" title=\"WORD: Correct: these apps | Demonstrative must agree in number with the noun: use 'these' with the plural 'apps'.\">this apps</mark> and codecs, and Claude has <mark class=\"grammar-error\" title=\"ARTICLE: Correct: an unresolved issue | Awkward article and adjective order; natural phrasing is 'an unresolved issue'.\">the not resolved issue</mark> when <mark class=\"grammar-error\" title=\"TENSE: Correct: they download updates and keep them on the disk | Tense/aspect mismatch and pronoun number: use present simple for habitual behavior and 'them' to refer to 'updates'.\">they downloaded updates and keep it on disk</mark> where they work and don't delete it at all. We download it, so it's okay for us. Go ahead. <mark class=\"grammar-error\" title=\"VERB: Correct: I'm currently trying to fix it | Missing subject and correct progressive form for an ongoing action; use 'I'm ... trying'.\">So currently try to fix it</mark>. So I can suggest a couple of exercises <mark class=\"grammar-error\" title=\"PREP: Correct: for us to practice speaking | Incorrect prepositional structure. Use an infinitive phrase ('for us to...') to express purpose (practice speaking).\">for us for speaking</mark> and so on, if you don't mind.\nSpeaker B: You can suggest, I will evaluate them. I will score.\nSpeaker A: Okay, 5 minutes for warm-up. <mark class=\"grammar-error\" title=\"ARTICLE: Correct: Just a usual question | Missing article before singular count noun; say 'a usual question' or better 'a quick question'.\">Just usual question</mark>, for instance, what was the best part of your day today?\nSpeaker B: Day was a really big day because I will explain it like a story, uh, in, uh, in Star Framework way, using Star Framework. So we, me and my brother, started to build AI product. The main idea is preparing designers for the interview. Context: people feel a bit nervous before the interview, and sometimes they get scared. And most of, most of candidates, most of designers can find fast answers without any preparation before the meeting. And we wanted to build something for help, some, something for help. For them, I think. So we, we built early prototype and then we got some feedback from early adopters. Then we improved, we improved quality, the quality of feedback. We also improved user experience, improved user interface, and tested— we tested our product one more time on 8 more people, 7 more people. We got some feedback again, but on this meeting I tried to upsell the full interview. And the best part of the result is, uh, 3 upsells, uh, for today. I think it's the best part of today because most of people can only do tasks and grind on their work, but we build something in internet and people paid for our product. I think that's a big step for us because, yeah, before we already built AI Guide, but we sold this product because I had, I have, I had warm audience in my channel, and now I sold something because people need product, not because it's warm audience. So that's it.\nSpeaker A: Okay, could you please repeat the part? I'm just not understand it clearly. When you say, when you said about people who, who does task on, on their work.\nSpeaker B: And second, usual people, usual, uh, workers, uh, just can do tasks on their work and cry about their work. But I think now we can say that we, we a bit different from them. Because if you want to make career in any company, we can tell the story about our own product and we built something that people want to buy. Uh-huh.\nSpeaker A: So, and which one from these two parts, when you, as I understand, realized that you can make a product that other people need it, the first part, and second part that you sold your product people who are not previously interested in it, they were not your warm auditory and you sold it, you sold your product.\nSpeaker B: I'm not sure that I understood question correct.\nSpeaker A: Okay, I will rephrase. Fuck. If I understand correctly, you said that you are glad to make the product against people who works on just unusual work. Yep.\nSpeaker B: The main idea of this phrase was we are not common workers from, from company, like not— we are not office, just office NPC. I think that's, that's the main idea. We can build something by by ourselves without any help, without name, without something.\nSpeaker A: So you mean the best part, uh, that you created it and you sold it?\nSpeaker B: Yeah.\nSpeaker A: Okay, uh, regarding me, my best part was creating an image with two cars because my psycho gave me, oh, so it's a beautiful start, so further it's sky is the limit, like this. I always like such kind of moments when you, for me it like a platform from which one you can skyrocket on like this. So just it's about world feeling in moment.\nSpeaker B: I think it could be really useful and interesting for you to try to sell something in my way, using my way. For example, now it's a bit manual selling because I set it— set up in past— set up in past. How to pronounce? How to say?\nSpeaker A: Set, set, set, set up.\nSpeaker B: Okay, so before I set up the meeting with any designer, with designer who wants to, who want to be prepared. So I set up the meeting and then it looks like, it looked, looked like just common usability test, and then I tried to upsell something and to just try to sell. I forgot the word when you want to— you want someone to believe that he needs, he really needs this product.\nSpeaker A: I understand the word, the word, uh, convince.\nSpeaker B: So I wanted— so it's really important to convince people to buy your product. So it's a bit, a bit manual selling, and it's important part of product. So I think one day you, you need to try it because you have to explain the idea of your product. You don't have any screens, you don't have any scripts, you don't have anything yet, but you, you have to convince the opposite side.\nSpeaker A: Uh, okay, firstly you said that it can be interesting for me. In which part you mean?\nSpeaker B: Um, just because it's a new experience. Maybe not new, but I think it's, it's new for you in your, uh, in new domain, uh, because I think you already felt it when you sold cars, but it's a bit different, it's about digital product.\nSpeaker A: You mean definitely scheme of selling like this? So just upselling part? Yeah, upselling part.\nSpeaker B: If you want to be deeper in your product, you know how— you have to know how to sell it because now the selling part is only my part.\nSpeaker A: Okay.\nSpeaker B: And if you want to understand it, understand your clients better or clearly, you have to sell something.\nSpeaker A: Okay, I hope we will have a chance to check it from my site as well. So next exercise, it's about defending absurd position. Maybe not absurd, but any take where you shouldn't be agree with it. You can agree with it, but you can shouldn't. So I suggest to take just simple simple take. For instance, something about AI. AI will make people more creative, for instance. And you can choose, would you like to defend where you agree or not?\nSpeaker B: I think never mind. You, you can choose.\nSpeaker A: Okay, I choose, uh, that I agree with, uh, this statement. So you are—\nSpeaker B: this— could you repeat the statement?\nSpeaker A: Uh, AI will make people more creative.\nSpeaker B: So I'm not agree.\nSpeaker A: You are not agree? Yeah.\nSpeaker B: Okay, let's start.\nSpeaker A: So let's start from my position. I think AI can make people more creative if you understand how it works and how it can improve your skills that already, that you already have. I think AI helps, yeah, helps you to expand your mindset, especially frontier models in 2026, and you can see the same thing from other side. So currently I feel Frontier models looks like your cooperator and usually it even more smart than you. So you can You can match with AI and force your current ideas. You can ask them something you even know. And as we know, usually newcomers have the most interesting ideas because they are newcomers. And with AI, you can, you can be newcomer much more frequently, and you can try to, try to, you can try yourself in different fields.\nSpeaker B: That's it.\nSpeaker A: I think yes.\nSpeaker B: Um, did you mean, uh, come like sperm? So I'm not agree with it. I think AI can make, make people more stupid because people become lazy. And creativity is— creativity can't grow with it, can't grow with AI, can grow with AI because When you use AI day by day, sometimes you become more lazy and lazy. If, if last year you do your common routine or common work every day, day by day, sometimes when you find something special in your work, you try to solve some special problem in your work, you try to solve it by yourself. But when you use AI, um, you just understand that you can replace yourself with AI on this task, and Next time when you, when you face with, with uncommon thing in your work, uncommon problem, for you it's not necessary to think. You just will delegate solution to AI. And I think it's a problem. It's a big problem for creative industry because designers every time should create something new. They— that's like a challenge for them. Sometimes people have to create new way of interaction or new animation or new concept. Every time new project needs new references. Yeah, one day you will find your own style, but every time before, you have to find new solutions. And with AI, you will, you will stop. You just use AI to generate new conceptions context, you will create generic design solution. You will create something typical using common UX libraries, and I think Now you can see the result of using AI in the whole internet, because now there are a lot of generic design portfolios. Before, designers want to build something great for themselves. They want to build a unique portfolio to just to divide yourself from, from others. Um, just designers wanted to be individual, and someone use Kilda, someone use different, uh, different soft to build their portfolio— Workflow, Framer, and so on. But now most of designers are using Claude just to build their web page, and these pages looks too similar, too similar. And designers are okay with it because it's fast and not creative. That's my take.\nSpeaker A: Okay, and just one clarification: how far is your real position from your take?\nSpeaker B: I think not too close and not too far, because just today I saw an another one portfolio in Design Chat. And for me it was a bit strange because I just saw in HeroBlock typical generic Claude, Claude ways to design, just captions, small captions with a lot of space between letters, small points, unique, unique cursor., and, uh, common layout. And I, I got, okay, is it Claude? And designers answered me, replied, replied me that yeah, that's Claude. And I gave him not, not negative, non-toxic, and but not positive feedback.\nSpeaker A: Ah, okay, you mean, uh, on your interview? Today?\nSpeaker B: Uh, no, no, in, uh, design chat. Okay.\nSpeaker A: By the way, what is creativity for you? I understand, uh, regarding, uh, design, uh, how it looks like, it's about creativity. Designer created something new, it's about his creativity. But overall, what is creativity, uh, for you worldwide, for instance, or over the different types of human deals.\nSpeaker B: I think creativity for me— people's creative when they're— they try— they're trying to find non-typical solutions using non-typical ways. Um, yeah.\nSpeaker A: And for you, uh, can I please ask you much, much more question, and after I will answer. Uh, do you think AI, uh, make you more creative? Than before?\nSpeaker B: Personally, you, um, I think it depends, uh, because in different domains, it depends. AI couldn't suggest you a new business idea, right? Yeah, but AI can suggest you can suggest you different ideas for the pet project if you didn't try to do something by yourself before. So I think it depends on your, uh, your position, where you are. If you try to build your own product and see a lot of examples and saw a lot of examples, AI can suggest a new idea because it will be generic. But if you didn't try to do something, every idea will be new and creative for you.\nSpeaker A: Uh, so, okay, and you asked the same question for me. I would say yes. I think that AI, especially in coding field, helps me to make different things which I didn't have a chance to make before.\nSpeaker B: And, uh, and for me, stop here. My first question was about creativity. So what is creativity for you?\nSpeaker A: Ah, sorry. Creativity for me, it's when you, uh, you flirt. You're oblootok. Creativity for me is when person can make usual things, usual I mean routine for him, faster. Or more unique way in terms of, in terms of not emotion, how I would say, actions, not actions, impressions. It's about creativity for me. And on your second question, I, I didn't have second question. Okay, so I suggest to stop here. I would like to check whether my app will be successful in recording our meeting, and we can— and after that we can try again. And by the way, I would like to have your feedback because currently I feel that my app's much more simpler and understandable. And I, I change all metrics from LLM analyzing to strict and solid metrics which will be the same in spite of length of our call, and it will be traceable call by call. By the way, we have already 30 minutes 29.\nSpeaker B: Okay, okay.\nSpeaker A: So please stop. I will stop and transcribe.\nSpeaker B: Fuck!\nSpeaker A: I failed to fetch. Hopefully I have a transcriber in iPhone.",
+    "annotations_status": "ok",
+    "annotated_transcript_html": "Speaker A: Okay, I started recording our meeting from our service in English Tutor, which is located in Warsaw, and I also started recording from my phone <mark class=\"grammar-error\" title=\"ORDER: Correct: in case something happens | Incorrect word order and construction. Use 'in case' + clause to express a precaution (in case something happens).\">for any occasion could happen</mark>. So I just would like to <mark class=\"grammar-error\" title=\"PREP: Correct: share my pain with you | Missing preposition and wrong word order for the verb 'share' — the person shared with must follow 'with'.\">share you my pain</mark>, because <mark class=\"grammar-error\" title=\"VERB: Correct: I'm just mind-blown | Missing auxiliary and incorrect verb form; use 'I'm' + past participle/adjective ('mind-blown').\">I just mind blown</mark> <mark class=\"grammar-error\" title=\"PREP: Correct: by my C drive | Wrong preposition for cause/agent here — use 'by' (and 'C drive' is the usual phrasing).\">from my disk C</mark>, which is full, <mark class=\"grammar-error\" title=\"PREP: Correct: fed up with Codex and Claude | Wrong preposition after 'fed up' — the correct preposition is 'with'.\">fed up from Codex and Claude</mark>. It <mark class=\"grammar-error\" title=\"COLLOC: Correct: uses up free space | Unnatural collocation; English speakers say 'use up free space' or 'eat up free space'.\">eats free space</mark> every time, and I hate it, and <mark class=\"grammar-error\" title=\"VERB: Correct: I don't understand | Incorrect auxiliary and verb form for present simple negation; use 'do' + base verb.\">I'm not understand</mark> <mark class=\"grammar-error\" title=\"VERB: Correct: what I should do correctly | After modal 'should' use the base form of the verb ('do'), not the past participle 'done'.\">what I should done correctly</mark>. I found that <mark class=\"grammar-error\" title=\"WORD: Correct: these apps | Demonstrative must agree in number with the noun: use 'these' with the plural 'apps'.\">this apps</mark> and codecs, and Claude has <mark class=\"grammar-error\" title=\"ARTICLE: Correct: an unresolved issue | Awkward article and adjective order; natural phrasing is 'an unresolved issue'.\">the not resolved issue</mark> when <mark class=\"grammar-error\" title=\"TENSE: Correct: they download updates and keep them on the disk | Tense/aspect mismatch and pronoun number: use present simple for habitual behavior and 'them' to refer to 'updates'.\">they downloaded updates and keep it on disk</mark> where they work and don't delete it at all. We download it, so it's okay for us. Go ahead. <mark class=\"grammar-error\" title=\"VERB: Correct: I'm currently trying to fix it | Missing subject and correct progressive form for an ongoing action; use 'I'm ... trying'.\">So currently try to fix it</mark>. So I can suggest a couple of exercises <mark class=\"grammar-error\" title=\"PREP: Correct: for us to practice speaking | Incorrect prepositional structure. Use an infinitive phrase ('for us to...') to express purpose (practice speaking).\">for us for speaking</mark> and so on, if you don't mind.\nSpeaker B: You can suggest, I will evaluate them. I will score.\nSpeaker A: Okay, 5 minutes for warm-up. <mark class=\"grammar-error\" title=\"ARTICLE: Correct: Just a usual question | Missing article before singular count noun; say 'a usual question' or better 'a quick question'.\">Just usual question</mark>, for instance, what was the best part of your day today?\nSpeaker B: <mark class=\"grammar-error\" title=\"ARTICLE: Correct: The day was a really big day | The noun 'day' needs the definite article 'the' in this context to refer to that specific day.\">Day was a really big day</mark> because I will explain it like a story, uh, in, uh, <mark class=\"grammar-error\" title=\"ARTICLE: Correct: in the Star Framework way | Before a named framework used in this noun phrase, use the definite article 'the' (or rephrase to 'using the Star Framework').\">in Star Framework way</mark>, using Star Framework. So <mark class=\"grammar-error\" title=\"ORDER: Correct: my brother and I | In subject position use the nominative pronoun 'I' and put the speaker last: 'my brother and I'.\">we, me and my brother</mark>, <mark class=\"grammar-error\" title=\"ARTICLE: Correct: started to build an AI product | Countable noun 'product' needs an article ('an') here.\">started to build AI product</mark>. The main idea is preparing designers for the interview. Context: people feel a bit nervous before the interview, and sometimes they get scared. And most of, most of candidates, <mark class=\"grammar-error\" title=\"PREP: Correct: most designers | When speaking generally, use 'most designers' (no 'of') or 'most of the designers' with 'the'.\">most of designers</mark> can find fast answers without any preparation before the meeting. And we wanted to <mark class=\"grammar-error\" title=\"PREP: Correct: build something to help them | English uses 'to' + verb (infinitive) for purpose: 'to help', not 'for help' in this context.\">build something for help</mark>, some, something for help. For them, I think. So we, we <mark class=\"grammar-error\" title=\"ARTICLE: Correct: built an early prototype | Countable noun 'prototype' requires an article ('an') here.\">built early prototype</mark> and then we got some feedback from early adopters. Then we improved, <mark class=\"grammar-error\" title=\"ARTICLE: Correct: we improved the quality (of feedback) | When specifying a particular quality, use the definite article 'the' ('the quality of feedback').\">we improved quality</mark>, the quality of feedback. We also improved user experience, improved user interface, and tested— we tested our product one more time on 8 more people, 7 more people. We got some feedback again, but <mark class=\"grammar-error\" title=\"PREP: Correct: during this meeting | Wrong preposition for events; use 'during' or 'at' rather than 'on' with 'meeting'.\">on this meeting</mark> I tried to upsell the full interview. And the best part of the result is, uh, 3 upsells, uh, for today. I think it's the best part of today because <mark class=\"grammar-error\" title=\"PREP: Correct: most people | General reference requires 'most people' (no 'of') or 'most of the people' with 'the'.\">most of people</mark> can only do tasks and grind on their work, but <mark class=\"grammar-error\" title=\"TENSE: Correct: we built something | Narrative is in the past; use past tense 'built' rather than present 'build'.\">we build something</mark> <mark class=\"grammar-error\" title=\"PREP: Correct: on the internet | English uses the preposition 'on' with 'the internet' and typically includes 'the'.\">in internet</mark> and people paid for our product. I think that's a big step for us because, yeah, before we already built AI Guide, but we sold this product because I had, I have, <mark class=\"grammar-error\" title=\"ARTICLE: Correct: I had a warm audience | Countable noun 'audience' needs an article ('a warm audience').\">I had warm audience</mark> <mark class=\"grammar-error\" title=\"PREP: Correct: on my channel | Events or followings are described as 'on (my) channel', not 'in'.\">in my channel</mark>, and now I sold something because <mark class=\"grammar-error\" title=\"ARTICLE: Correct: people need a product | Countable noun 'product' needs an article here ('a product') or plural 'products'.\">people need product</mark>, not because <mark class=\"grammar-error\" title=\"ARTICLE: Correct: it's a warm audience | Missing article 'a' before 'warm audience'.\">it's warm audience</mark>. So that's it.\nSpeaker A: Okay, could you please repeat the part? <mark class=\"grammar-error\" title=\"VERB: Correct: I'm just not understanding it clearly | Mix of progressive auxiliary with base verb — use the -ing form (or use 'I don't understand').\">I'm just not understand it clearly</mark>. When you say, when you said about people who, <mark class=\"grammar-error\" title=\"VERB: Correct: who do tasks at work | Subject 'who' refers to plural 'people' so verb should be 'do'; 'task' should be plural and 'on' is the wrong preposition here.\">who does task on</mark>, on their work.\nSpeaker B: And second, <mark class=\"grammar-error\" title=\"COLLOC: Correct: ordinary people / most people | 'Usual people' is an unnatural collocation in English; use 'ordinary people' or 'most people'.\">usual people</mark>, usual, uh, workers, uh, just can <mark class=\"grammar-error\" title=\"PREP: Correct: do tasks at work | Wrong preposition: English uses 'at work' (or 'in their work' / 'at their job'), not 'on their work'.\">do tasks on their work</mark> and cry about their work. But I think now we can say that we, <mark class=\"grammar-error\" title=\"VERB: Correct: we are a bit different from them | Missing copula 'are' before adjective phrase.\">we a bit different from them</mark>. Because if you want to <mark class=\"grammar-error\" title=\"ARTICLE: Correct: make a career in any company | Missing indefinite article 'a' before 'career'.\">make career in any company</mark>, we can tell the story about our own product and we built something that people want to buy. Uh-huh.\nSpeaker A: So, and <mark class=\"grammar-error\" title=\"PREP: Correct: which one of these two parts | Use 'one of' (not 'one from') when selecting from a set.\">which one from these two parts</mark>, when you, as I understand, realized that you can make a product <mark class=\"grammar-error\" title=\"WORD: Correct: that other people need | Redundant object 'it' at the end of a relative clause — the clause should end with the verb 'need'.\">that other people need it</mark>, the first part, and second part that <mark class=\"grammar-error\" title=\"PREP: Correct: you sold your product to people who were not previously interested in it | Missing preposition 'to' after 'sold' to indicate the buyer; also 'previously' pairs better with past tense ('were').\">you sold your product people who are not previously interested in it</mark>, they were not your <mark class=\"grammar-error\" title=\"WORD: Correct: warm audience | 'Auditory' is the wrong word in this context; the correct noun is 'audience' (or 'warm audience/customers').\">warm auditory</mark> and you sold it, you sold your product.\nSpeaker B: I'm not sure that I <mark class=\"grammar-error\" title=\"ARTICLE: Correct: understood the question | Missing definite article 'the' before 'question'.\">understood question</mark> correct.\nSpeaker A: Okay, I will rephrase. Fuck. If I understand correctly, you said that you are glad to make the product <mark class=\"grammar-error\" title=\"PREP: Correct: unlike people who / compared to people who | 'Against' is the wrong preposition here for making a contrast; use 'unlike' or 'compared to'.\">against people who</mark> works on just unusual work. Yep.\nSpeaker B: <mark class=\"grammar-error\" title=\"TENSE: Correct: The main idea of this phrase was that we were not common workers | Reporting clause mixes past ('was') with present ('we are'); use backshift or keep both present. Also add 'that' to introduce the clause.\">The main idea of this phrase was we are not common workers</mark> from, from company, like not— <mark class=\"grammar-error\" title=\"WORD: Correct: we are not office workers, just office NPCs | 'office' is used as a noun incorrectly; you need 'office workers' (and plural 'NPCs').\">we are not office, just office NPC</mark>. I think that's, that's the main idea. We can build something by by ourselves without any help, <mark class=\"grammar-error\" title=\"ARTICLE: Correct: without a name | Missing article 'a' before 'name'.\">without name</mark>, <mark class=\"grammar-error\" title=\"WORD: Correct: without anything | 'Something' is odd in negatives; 'anything' is the correct choice in negative contexts.\">without something</mark>.\nSpeaker A: So you mean the best part, uh, that you created it and you sold it?\nSpeaker B: Yeah.\nSpeaker A: Okay, uh, <mark class=\"grammar-error\" title=\"PREP: Correct: for me, the best part was | 'Regarding me' is not the natural prepositional phrase here; use 'for me' to express personal perspective.\">regarding me, my best part was</mark> creating an image with two cars because my psycho gave me, oh, so it's a beautiful start, so further <mark class=\"grammar-error\" title=\"WORD: Correct: the sky is the limit | Extraneous 'it's' — the correct idiom is 'the sky is the limit.'\">it's sky is the limit</mark>, like this. I always like <mark class=\"grammar-error\" title=\"COLLOC: Correct: these kinds of moments | Unnatural collocation — say 'these kinds of moments' or 'such moments'.\">such kind of moments</mark> when you, <mark class=\"grammar-error\" title=\"VERB: Correct: for me it is like a platform | Missing verb 'is' after subject 'it'.\">for me it like a platform</mark> from which one you can <mark class=\"grammar-error\" title=\"PREP: Correct: skyrocket like this | Unnecessary/preposition 'on' is incorrect here; use 'skyrocket' or 'skyrocket like this.'\">skyrocket on like this</mark>. So just it's about <mark class=\"grammar-error\" title=\"ORDER: Correct: the feeling of the world in the moment | Incorrect word order and missing articles — rephrase to 'the feeling of the world in the moment.'\">world feeling in moment</mark>.\nSpeaker B: I think it could be really useful and interesting for you to try to sell something in my way, using my way. For example, now it's a bit manual selling because I set it— <mark class=\"grammar-error\" title=\"ARTICLE: Correct: set it up in the past | Missing object pronoun 'it' and article 'the' before 'past' — say 'in the past.'\">set up in past</mark>— set up in past. How to pronounce? How to say?\nSpeaker A: Set, set, set, set up.\nSpeaker B: Okay, so before I set up the meeting with any designer, <mark class=\"grammar-error\" title=\"ARTICLE: Correct: with a designer who wants to | Missing article 'a' before 'designer'.\">with designer who wants to</mark>, <mark class=\"grammar-error\" title=\"VERB: Correct: who wants to be prepared | Subject-verb disagreement: singular 'designer' requires 'wants'.\">who want to be prepared</mark>. So I set up the meeting and then it looks like, it looked, <mark class=\"grammar-error\" title=\"ARTICLE: Correct: looked like just a common usability test | Missing article 'a' before 'common usability test'.\">looked like just common usability test</mark>, and then I tried to upsell something and to just try to sell. I forgot the word when you want to— you want someone to believe that he needs, he really needs this product.\nSpeaker A: I understand the word, the word, uh, convince.\nSpeaker B: So I wanted— so it's really important to convince people to buy your product. So it's a bit, <mark class=\"grammar-error\" title=\"PREP: Correct: a bit of manual selling | Missing preposition/particle 'of' after 'a bit'.\">a bit manual selling</mark>, and <mark class=\"grammar-error\" title=\"ARTICLE: Correct: it's an important part of the product | Missing article 'an' before 'important' and 'the' before 'product'.\">it's important part of product</mark>. So I think one day you, you need to try it because you have to explain the idea of your product. You don't have any screens, you don't have any scripts, you don't have anything yet, but you, you have to <mark class=\"grammar-error\" title=\"COLLOC: Correct: convince the other side | Unnatural collocation literal from another language; use 'the other side/party'.\">convince the opposite side</mark>.\nSpeaker A: Uh, okay, firstly you said that it can be interesting for me. <mark class=\"grammar-error\" title=\"ORDER: Correct: Which part do you mean? | Incorrect word order and missing auxiliary 'do' for a question.\">In which part you mean?</mark>\nSpeaker B: Um, just because it's a new experience. Maybe not new, but I think it's, it's new for you in your, uh, <mark class=\"grammar-error\" title=\"ARTICLE: Correct: in a new domain | Missing article 'a' before 'new domain'.\">in new domain</mark>, uh, because I think you already felt it when you sold cars, but it's a bit different, <mark class=\"grammar-error\" title=\"ARTICLE: Correct: it's about a digital product | Missing article 'a' before 'digital product'.\">it's about digital product</mark>.\nSpeaker A: You mean <mark class=\"grammar-error\" title=\"ARTICLE: Correct: Do you mean the scheme of selling like this? | A missing definite article before 'scheme' and awkward word order — add 'the' to mark a specific scheme.\">definitely scheme of selling like this?</mark> <mark class=\"grammar-error\" title=\"ARTICLE: Correct: So just the upselling part? | Missing definite article before a specific noun phrase: 'the upselling part.'\">So just upselling part?</mark> Yeah, upselling part.\nSpeaker B: If you want to <mark class=\"grammar-error\" title=\"COLLOC: Correct: be more involved in your product | Unnatural collocation: English speakers say 'be more involved in' or 'be more familiar with' rather than 'be deeper in'.\">be deeper in your product</mark>, you know how— you have to know how to sell it because now <mark class=\"grammar-error\" title=\"WORD: Correct: the selling part is only my responsibility. | Redundant/incorrect use of 'part' — use 'responsibility' to express that it's the speaker's role.\">the selling part is only my part.</mark>\nSpeaker A: Okay.\nSpeaker B: And if you want to understand it, understand your clients better <mark class=\"grammar-error\" title=\"ORDER: Correct: or understand them more clearly | Misplaced/awkward adverb phrase. The idea should be 'understand them more clearly' (or 'more clearly').\">or clearly</mark>, you have to sell something.\nSpeaker A: Okay, I hope we will have a chance to check it from my site as well. So next exercise, it's about <mark class=\"grammar-error\" title=\"ARTICLE: Correct: defending an absurd position. | Missing indefinite article 'an' before a singular count noun 'absurd position.'\">defending absurd position.</mark> Maybe not absurd, but any take where <mark class=\"grammar-error\" title=\"VERB: Correct: you shouldn't agree with it. | Incorrect verb form after modal 'shouldn't' — use the base verb 'agree' (not 'be agree').\">you shouldn't be agree with it.</mark> You can agree with it, but <mark class=\"grammar-error\" title=\"VERB: Correct: you shouldn't. | Modal auxiliary combination is ungrammatical: 'can shouldn't' is not allowed. Use a single modal (e.g. 'you shouldn't').\">you can shouldn't.</mark> So <mark class=\"grammar-error\" title=\"VERB: Correct: I suggest taking | After 'suggest' use the gerund ('suggest taking') or a clause ('I suggest we take'), not the to-infinitive.\">I suggest to take</mark> <mark class=\"grammar-error\" title=\"ARTICLE: Correct: just a simple take | Missing indefinite article before 'simple take' (and repeated 'simple' is redundant).\">just simple simple take</mark>. For instance, something about AI. AI will make people more creative, for instance. And you can choose, <mark class=\"grammar-error\" title=\"ORDER: Correct: whether you'd like to defend a position you agree with or not? | Incorrect sentence structure for offering a choice — use 'whether' + clearer phrasing ('a position you agree with').\">would you like to defend where you agree or not?</mark>\nSpeaker B: I think never mind. You, you can choose.\nSpeaker A: Okay, <mark class=\"grammar-error\" title=\"ORDER: Correct: I choose to defend the statement I agree with. | Awkward word order and phrasing. Use 'I choose to defend...' or 'I choose the statement I agree with.'\">I choose, uh, that I agree with, uh, this statement.</mark> So you are—\nSpeaker B: this— could you repeat the statement?\nSpeaker A: Uh, AI will make people more creative.\nSpeaker B: <mark class=\"grammar-error\" title=\"VERB: Correct: I don't agree. | Incorrect verb construction: in English we say 'I don't agree' rather than 'I'm not agree.'\">So I'm not agree.</mark>\nSpeaker A: <mark class=\"grammar-error\" title=\"VERB: Correct: You don't agree? | Same error as above: use 'do' for negation with 'agree' in simple present ('You don't agree?').\">You are not agree?</mark> Yeah.\nSpeaker B: Okay, let's start.\nSpeaker A: So let's start from my position. I think AI can make people more creative if you understand how it works and how it can improve your skills that already, that you already have. I think AI helps, yeah, helps you to expand your mindset, especially frontier models in 2026, and you can see the same thing <mark class=\"grammar-error\" title=\"ARTICLE: Correct: from the other side | Missing definite article 'the' before 'other side'. English requires 'the other side' in this context.\">from other side</mark>. So currently I feel <mark class=\"grammar-error\" title=\"VERB: Correct: Frontier models look | Subject-verb agreement: 'models' is plural, so the verb should be 'look' not 'looks'.\">Frontier models looks</mark> like <mark class=\"grammar-error\" title=\"COLLOC: Correct: a collaborator / your collaborator | 'Cooperator' is unnatural here; native speakers use 'collaborator' or 'a collaborator' to mean a working partner.\">your cooperator</mark> and usually <mark class=\"grammar-error\" title=\"VERB: Correct: they're even smarter than you | Pronoun and verb agreement plus comparative adjective: plural 'models' needs 'they're' and 'smarter' is the correct comparative form.\">it even more smart than you</mark>. So you can You can <mark class=\"grammar-error\" title=\"COLLOC: Correct: collaborate with AI | 'Match with' is an unnatural collocation here; use 'collaborate with' or 'work with' to express cooperating.\">match with AI</mark> and <mark class=\"grammar-error\" title=\"WORD: Correct: reinforce your current ideas | Wrong word choice: 'force' is unusual here; 'reinforce' or 'strengthen' fits the intended meaning of supporting or developing ideas.\">force your current ideas</mark>. You can ask them <mark class=\"grammar-error\" title=\"WORD: Correct: something you already know | Word order and choice: 'even' is not the correct modifier here; 'already' expresses the intended meaning.\">something you even know</mark>. And as we know, usually newcomers have the most interesting ideas because they are newcomers. And with AI, you can, you can <mark class=\"grammar-error\" title=\"ARTICLE: Correct: be a newcomer much more frequently | Missing indefinite article 'a' before the noun 'newcomer'.\">be newcomer much more frequently</mark>, and you can try to, try to, you can <mark class=\"grammar-error\" title=\"COLLOC: Correct: try yourself out in different fields | 'Try yourself in' is unidiomatic; use 'try yourself out in' or simply 'try different fields'.\">try yourself in different fields</mark>.\nSpeaker B: That's it.\nSpeaker A: I think yes.\nSpeaker B: Um, did you mean, uh, come like sperm? So <mark class=\"grammar-error\" title=\"VERB: Correct: I don't agree with it. | English uses do-support for negating the verb 'agree' (stative): 'I don't agree', not 'I'm not agree'.\">I'm not agree with it.</mark> I think AI can make, make people more stupid because people become lazy. And creativity is— creativity can't grow with it, can't grow with AI, can grow with AI because When you use AI day by day, sometimes you become <mark class=\"grammar-error\" title=\"WORD: Correct: lazier and lazier | Comparative repetition should be 'lazier and lazier' or 'more and more lazy', not 'more lazy and lazy'.\">more lazy and lazy.</mark> If, if <mark class=\"grammar-error\" title=\"TENSE: Correct: last year you did your common routine | Reference to a past time ('last year') requires past tense: 'did', not 'do'.\">last year you do your common routine</mark> or common work every day, day by day, sometimes when you find something special in your work, you try to solve some special problem in your work, you try to solve it by yourself. But when you use AI, um, you just understand that you can replace yourself with AI on this task, and Next time when you, when you face with, with uncommon thing in your work, uncommon problem, <mark class=\"grammar-error\" title=\"ORDER: Correct: it's not necessary for you to think | Word order: the adjective 'necessary' is followed by 'for X to ...' (or rephrase to 'you don't have to think').\">for you it's not necessary to think</mark>. You just will <mark class=\"grammar-error\" title=\"ARTICLE: Correct: delegate the solution to AI. | Singular, specific noun 'solution' requires an article: 'the solution' (or plural 'solutions').\">delegate solution to AI.</mark> And I think it's a problem. It's a big problem <mark class=\"grammar-error\" title=\"ARTICLE: Correct: for the creative industry | When talking about an industry in general, use the article 'the' (or plural 'creative industries').\">for creative industry</mark> because <mark class=\"grammar-error\" title=\"ORDER: Correct: designers should create something new every time | Word order: adverbial phrase 'every time' should come after the verb phrase here.\">designers every time should create something new</mark>. They— that's like a challenge for them. Sometimes people have to <mark class=\"grammar-error\" title=\"ARTICLE: Correct: create a new way of interaction | Singular count noun 'way' needs an article: 'a new way'.\">create new way of interaction</mark> or new animation or new concept. <mark class=\"grammar-error\" title=\"ARTICLE: Correct: Every time a new project needs new references. | Singular count noun 'project' requires the article 'a'.\">Every time new project needs new references.</mark> Yeah, one day you will find your own style, but <mark class=\"grammar-error\" title=\"WORD: Correct: before that, you have to find new solutions | The phrase 'every time before' is unclear/unnatural in this context; 'before that' or 'until then' fits the intended meaning.\">every time before, you have to find new solutions.</mark> And with AI, you will, you will stop. You just use AI to <mark class=\"grammar-error\" title=\"WORD: Correct: generate new concepts and contexts | The phrase is ungrammatical or likely a mistranscription; 'conceptions context' should be 'concepts and contexts' or similar.\">generate new conceptions context</mark>, you will <mark class=\"grammar-error\" title=\"ARTICLE: Correct: create generic design solutions | Either use the plural 'solutions' or include an article: 'a generic design solution'.\">create generic design solution.</mark> You will create something typical using common UX libraries, and I think Now you can see the result of using AI <mark class=\"grammar-error\" title=\"PREP: Correct: across the whole internet | We normally say 'across/on the internet' rather than 'in the internet'; 'across the whole internet' or 'on the internet' is natural.\">in the whole internet</mark>, because now there are a lot of generic design portfolios. <mark class=\"grammar-error\" title=\"TENSE: Correct: Before, designers wanted to build something great for themselves. | Contrast with the present requires past tense 'wanted' when referring to designers' earlier intentions.\">Before, designers want to build something great for themselves.</mark> They want to build a unique portfolio to just to divide yourself from, from others. Um, just designers wanted to be individual, and <mark class=\"grammar-error\" title=\"VERB: Correct: someone uses Kilda | With indefinite subject 'someone' the verb needs third-person singular agreement: 'uses'.\">someone use Kilda</mark>, someone use different, uh, <mark class=\"grammar-error\" title=\"WORD: Correct: different software | 'Soft' is nonstandard here; the correct noun for programs is 'software'.\">different soft</mark> to build their portfolio— Workflow, Framer, and so on. But now <mark class=\"grammar-error\" title=\"ARTICLE: Correct: most designers are using Claude | Use 'most designers' (no 'of') or 'most of the designers' with 'the'.\">most of designers are using Claude</mark> just to build their web page, and <mark class=\"grammar-error\" title=\"VERB: Correct: these pages look too similar | Plural subject 'pages' requires the plural verb 'look' (not 'looks').\">these pages looks too similar</mark>, too similar. And designers are okay with it because it's fast and not creative. That's my take.\nSpeaker A: Okay, and just one clarification: how far is your real position from your take?\nSpeaker B: I think not too close and not too far, because just today I saw <mark class=\"grammar-error\" title=\"ARTICLE: Correct: another portfolio | Use 'another' alone with a noun; 'an' and 'one' are redundant/incorrect here.\">an another one portfolio</mark> in Design Chat. And for me it was a bit strange because I just saw in HeroBlock typical generic Claude, <mark class=\"grammar-error\" title=\"ORDER: Correct: Claude's way of designing | Missing possessive and correct noun phrase. Use &quot;Claude's way of designing&quot; or &quot;Claude's design style.&quot;\">Claude ways to design</mark>, just captions, small captions with a lot of space between letters, small points, unique, unique cursor., and, uh, common layout. And I, I got, okay, is it Claude? And designers answered me, replied, <mark class=\"grammar-error\" title=\"PREP: Correct: replied to me that | The verb 'reply' requires the preposition 'to' when indicating the person who received the reply ('replied to me').\">replied me that</mark> yeah, that's Claude. And I gave him not, not negative, non-toxic, <mark class=\"grammar-error\" title=\"WORD: Correct: but not positive feedback | Using both 'and' and 'but' together is redundant; choose one conjunction ('but') to contrast.\">and but not positive feedback</mark>.\nSpeaker A: Ah, okay, you mean, uh, <mark class=\"grammar-error\" title=\"PREP: Correct: in your interview | We normally say 'in an interview' (or 'at your interview' in some contexts); 'on your interview' is not correct preposition use here.\">on your interview</mark>? Today?\nSpeaker B: Uh, no, no, <mark class=\"grammar-error\" title=\"ARTICLE: Correct: in the design chat | When referring to a specific chat ('Design Chat'), use the definite article 'the'.\">in, uh, design chat</mark>. Okay.\nSpeaker A: By the way, what is creativity for you? I understand, uh, regarding, uh, design, uh, <mark class=\"grammar-error\" title=\"COLLOC: Correct: what it looks like | 'How' and 'like' do not combine here; use 'what it looks like' or 'how it looks'.\">how it looks like</mark>, it's about creativity. <mark class=\"grammar-error\" title=\"ARTICLE: Correct: A designer created something new | Singular count nouns require an article ('a' or 'the'); here 'A designer' is appropriate.\">Designer created something new</mark>, it's about his creativity. But overall, what is creativity, uh, for you worldwide, for instance, or over the different types of <mark class=\"grammar-error\" title=\"COLLOC: Correct: human interactions | 'Deals' is an unnatural collocation here (likely a literal translation). Use 'human interactions' or 'human endeavors' depending on meaning.\">human deals</mark>.\nSpeaker B: I think creativity for me— <mark class=\"grammar-error\" title=\"VERB: Correct: people are creative | Missing copula / incorrect contraction: use 'are' after plural subject 'people' (or 'people get creative').\">people's creative</mark> when they're— they try— they're trying to find non-typical solutions using non-typical ways. Um, yeah.\nSpeaker A: And for you, uh, can I please ask you much, much more question, <mark class=\"grammar-error\" title=\"ORDER: Correct: and then I will answer. | Incorrect word order/connector for sequence; use 'then' or 'afterwards' before the clause or 'I will answer afterwards'.\">and after I will answer.</mark> Uh, <mark class=\"grammar-error\" title=\"VERB: Correct: do you think AI makes you more creative? | Subject-verb agreement in embedded question: 'AI' (singular) requires 'makes' not 'make'.\">do you think AI, uh, make you more creative?</mark> Than before?\nSpeaker B: <mark class=\"grammar-error\" title=\"WORD: Correct: Personally, I think it depends | Extraneous pronoun 'you' inserted; remove the extra word to produce a grammatical subject.\">Personally, you, um, I think it depends</mark>, uh, because in different domains, it depends. <mark class=\"grammar-error\" title=\"PREP: Correct: AI couldn't suggest a new business idea to you, right? | Incorrect verb argument structure: 'suggest' requires 'to' before an indirect object ('suggest X to you') or use direct object only ('suggest a business idea').\">AI couldn't suggest you a new business idea, right?</mark> Yeah, but <mark class=\"grammar-error\" title=\"PREP: Correct: AI can suggest different ideas for a pet project | Repeated/mis-transcribed phrase and wrong argument structure: remove duplication and use 'suggest different ideas' (or 'suggest different ideas to you') and use 'a pet project' unless a specific project is meant.\">AI can suggest you can suggest you different ideas for the pet project</mark> if you didn't try to do something by yourself before. So I think it depends on your, uh, your position, where you are. If you try to build your own product and see a lot of examples and saw a lot of examples, AI can suggest a new idea because it will be generic. But if you didn't try to do something, every idea will be new and creative for you.\nSpeaker A: Uh, so, okay, and you asked the same question for me. I would say yes. I think that AI, <mark class=\"grammar-error\" title=\"ARTICLE: Correct: especially in the coding field | Missing article before a singular noun phrase: use 'the coding field' or rephrase 'in the field of coding'.\">especially in coding field</mark>, helps me to make different things which I didn't have a chance to make before.\nSpeaker B: And, uh, and for me, stop here. My first question was about creativity. So what is creativity for you?\nSpeaker A: Ah, sorry. Creativity for me, it's when you, uh, you flirt. You're oblootok. Creativity for me is <mark class=\"grammar-error\" title=\"ARTICLE: Correct: when a person can do routine things faster, | Missing indefinite article before 'person' and 'do' is more natural than 'make' for routine actions.\">when person can make usual things,</mark> usual I mean routine for him, faster. Or more unique way in terms of, in terms of <mark class=\"grammar-error\" title=\"ARTICLE: Correct: not an emotion | Singular countable noun 'emotion' requires an article here ('an emotion').\">not emotion</mark>, how I would say, actions, not actions, impressions. It's about creativity for me. And on your second question, I, I didn't have second question. Okay, so <mark class=\"grammar-error\" title=\"VERB: Correct: I suggest we stop here. / I suggest stopping here. | After 'suggest' use a that-clause or gerund, not the infinitive 'to stop'.\">I suggest to stop here.</mark> I would like to check whether my app will be successful in recording our meeting, and we can— and after that we can try again. And by the way, I would like to have your feedback because currently I feel that <mark class=\"grammar-error\" title=\"COLLOC: Correct: my app is much simpler and more understandable. | 'Much more simpler' is a double comparative; use 'much simpler' and pair 'more' with 'understandable'.\">my app's much more simpler and understandable.</mark> And I, I change all metrics from LLM analyzing to strict and solid metrics which will be the same <mark class=\"grammar-error\" title=\"ARTICLE: Correct: in spite of the length of our call, | Missing definite article 'the' before 'length'.\">in spite of length of our call,</mark> and it will be traceable call by call. By the way, <mark class=\"grammar-error\" title=\"VERB: Correct: we've already been on for 30 minutes (29) / it's already been 30 minutes | Missing verb structure: use 'been on for' or 'it's been' to state elapsed time; the current phrase is ungrammatical as transcribed.\">we have already 30 minutes 29</mark>.\nSpeaker B: Okay, okay.\nSpeaker A: So please stop. I will stop and transcribe.\nSpeaker B: Fuck!\nSpeaker A: I failed to fetch. Hopefully <mark class=\"grammar-error\" title=\"PREP: Correct: I have a transcriber on my iPhone. | Use 'on' with devices and include the possessive 'my' for clarity ('in iPhone' is incorrect).\">I have a transcriber in iPhone.</mark>",
     "chunked_metrics": {
       "status": "ok",
       "per_chunk": [
@@ -1213,7 +1263,7 @@
       }
     },
     "annotations_attempted_model": "gpt-5-mini",
-    "annotations_updated_at": "2026-07-16 05:42",
+    "annotations_updated_at": "2026-07-17 01:12",
     "annotation_items": [
       {
         "start": 155,
@@ -1368,12 +1418,1244 @@
         "confidence": "medium",
         "is_stylistic": false,
         "severity": "minor"
+      },
+      {
+        "start": 937,
+        "end": 961,
+        "text": "Day was a really big day",
+        "correction": "The day was a really big day",
+        "explanation": "The noun 'day' needs the definite article 'the' in this context to refer to that specific day.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 1014,
+        "end": 1035,
+        "text": "in Star Framework way",
+        "correction": "in the Star Framework way",
+        "explanation": "Before a named framework used in this noun phrase, use the definite article 'the' (or rephrase to 'using the Star Framework').",
+        "category": "ARTICLE",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 1062,
+        "end": 1083,
+        "text": "we, me and my brother",
+        "correction": "my brother and I",
+        "explanation": "In subject position use the nominative pronoun 'I' and put the speaker last: 'my brother and I'.",
+        "category": "ORDER",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 1085,
+        "end": 1112,
+        "text": "started to build AI product",
+        "correction": "started to build an AI product",
+        "explanation": "Countable noun 'product' needs an article ('an') here.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 1291,
+        "end": 1308,
+        "text": "most of designers",
+        "correction": "most designers",
+        "explanation": "When speaking generally, use 'most designers' (no 'of') or 'most of the designers' with 'the'.",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 1392,
+        "end": 1416,
+        "text": "build something for help",
+        "correction": "build something to help them",
+        "explanation": "English uses 'to' + verb (infinitive) for purpose: 'to help', not 'for help' in this context.",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 1473,
+        "end": 1494,
+        "text": "built early prototype",
+        "correction": "built an early prototype",
+        "explanation": "Countable noun 'prototype' requires an article ('an') here.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 1564,
+        "end": 1583,
+        "text": "we improved quality",
+        "correction": "we improved the quality (of feedback)",
+        "explanation": "When specifying a particular quality, use the definite article 'the' ('the quality of feedback').",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 1782,
+        "end": 1797,
+        "text": "on this meeting",
+        "correction": "during this meeting",
+        "explanation": "Wrong preposition for events; use 'during' or 'at' rather than 'on' with 'meeting'.",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 1946,
+        "end": 1960,
+        "text": "most of people",
+        "correction": "most people",
+        "explanation": "General reference requires 'most people' (no 'of') or 'most of the people' with 'the'.",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 2008,
+        "end": 2026,
+        "text": "we build something",
+        "correction": "we built something",
+        "explanation": "Narrative is in the past; use past tense 'built' rather than present 'build'.",
+        "category": "TENSE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 2027,
+        "end": 2038,
+        "text": "in internet",
+        "correction": "on the internet",
+        "explanation": "English uses the preposition 'on' with 'the internet' and typically includes 'the'.",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 2202,
+        "end": 2221,
+        "text": "I had warm audience",
+        "correction": "I had a warm audience",
+        "explanation": "Countable noun 'audience' needs an article ('a warm audience').",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 2222,
+        "end": 2235,
+        "text": "in my channel",
+        "correction": "on my channel",
+        "explanation": "Events or followings are described as 'on (my) channel', not 'in'.",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 2270,
+        "end": 2289,
+        "text": "people need product",
+        "correction": "people need a product",
+        "explanation": "Countable noun 'product' needs an article here ('a product') or plural 'products'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 2303,
+        "end": 2321,
+        "text": "it's warm audience",
+        "correction": "it's a warm audience",
+        "explanation": "Missing article 'a' before 'warm audience'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 2388,
+        "end": 2422,
+        "text": "I'm just not understand it clearly",
+        "correction": "I'm just not understanding it clearly",
+        "explanation": "Mix of progressive auxiliary with base verb — use the -ing form (or use 'I don't understand').",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 2470,
+        "end": 2486,
+        "text": "who does task on",
+        "correction": "who do tasks at work",
+        "explanation": "Subject 'who' refers to plural 'people' so verb should be 'do'; 'task' should be plural and 'on' is the wrong preposition here.",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 2526,
+        "end": 2538,
+        "text": "usual people",
+        "correction": "ordinary people / most people",
+        "explanation": "'Usual people' is an unnatural collocation in English; use 'ordinary people' or 'most people'.",
+        "category": "COLLOC",
+        "confidence": "medium",
+        "is_stylistic": true,
+        "severity": "minor"
+      },
+      {
+        "start": 2573,
+        "end": 2595,
+        "text": "do tasks on their work",
+        "correction": "do tasks at work",
+        "explanation": "Wrong preposition: English uses 'at work' (or 'in their work' / 'at their job'), not 'on their work'.",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 2658,
+        "end": 2686,
+        "text": "we a bit different from them",
+        "correction": "we are a bit different from them",
+        "explanation": "Missing copula 'are' before adjective phrase.",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 2711,
+        "end": 2737,
+        "text": "make career in any company",
+        "correction": "make a career in any company",
+        "explanation": "Missing indefinite article 'a' before 'career'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 2858,
+        "end": 2888,
+        "text": "which one from these two parts",
+        "correction": "which one of these two parts",
+        "explanation": "Use 'one of' (not 'one from') when selecting from a set.",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 2954,
+        "end": 2979,
+        "text": "that other people need it",
+        "correction": "that other people need",
+        "explanation": "Redundant object 'it' at the end of a relative clause — the clause should end with the verb 'need'.",
+        "category": "WORD",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 3018,
+        "end": 3086,
+        "text": "you sold your product people who are not previously interested in it",
+        "correction": "you sold your product to people who were not previously interested in it",
+        "explanation": "Missing preposition 'to' after 'sold' to indicate the buyer; also 'previously' pairs better with past tense ('were').",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 3107,
+        "end": 3120,
+        "text": "warm auditory",
+        "correction": "warm audience",
+        "explanation": "'Auditory' is the wrong word in this context; the correct noun is 'audience' (or 'warm audience/customers').",
+        "category": "WORD",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 3192,
+        "end": 3211,
+        "text": "understood question",
+        "correction": "understood the question",
+        "explanation": "Missing definite article 'the' before 'question'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 3335,
+        "end": 3353,
+        "text": "against people who",
+        "correction": "unlike people who / compared to people who",
+        "explanation": "'Against' is the wrong preposition here for making a contrast; use 'unlike' or 'compared to'.",
+        "category": "PREP",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 3398,
+        "end": 3456,
+        "text": "The main idea of this phrase was we are not common workers",
+        "correction": "The main idea of this phrase was that we were not common workers",
+        "explanation": "Reporting clause mixes past ('was') with present ('we are'); use backshift or keep both present. Also add 'that' to introduce the clause.",
+        "category": "TENSE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 3487,
+        "end": 3521,
+        "text": "we are not office, just office NPC",
+        "correction": "we are not office workers, just office NPCs",
+        "explanation": "'office' is used as a noun incorrectly; you need 'office workers' (and plural 'NPCs').",
+        "category": "WORD",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 3618,
+        "end": 3630,
+        "text": "without name",
+        "correction": "without a name",
+        "explanation": "Missing article 'a' before 'name'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 3632,
+        "end": 3649,
+        "text": "without something",
+        "correction": "without anything",
+        "explanation": "'Something' is odd in negatives; 'anything' is the correct choice in negative contexts.",
+        "category": "WORD",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 3768,
+        "end": 3798,
+        "text": "regarding me, my best part was",
+        "correction": "for me, the best part was",
+        "explanation": "'Regarding me' is not the natural prepositional phrase here; use 'for me' to express personal perspective.",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 3900,
+        "end": 3921,
+        "text": "it's sky is the limit",
+        "correction": "the sky is the limit",
+        "explanation": "Extraneous 'it's' — the correct idiom is 'the sky is the limit.'",
+        "category": "WORD",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 3948,
+        "end": 3968,
+        "text": "such kind of moments",
+        "correction": "these kinds of moments",
+        "explanation": "Unnatural collocation — say 'these kinds of moments' or 'such moments'.",
+        "category": "COLLOC",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 3979,
+        "end": 4004,
+        "text": "for me it like a platform",
+        "correction": "for me it is like a platform",
+        "explanation": "Missing verb 'is' after subject 'it'.",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 4028,
+        "end": 4050,
+        "text": "skyrocket on like this",
+        "correction": "skyrocket like this",
+        "explanation": "Unnecessary/preposition 'on' is incorrect here; use 'skyrocket' or 'skyrocket like this.'",
+        "category": "PREP",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 4071,
+        "end": 4094,
+        "text": "world feeling in moment",
+        "correction": "the feeling of the world in the moment",
+        "explanation": "Incorrect word order and missing articles — rephrase to 'the feeling of the world in the moment.'",
+        "category": "ORDER",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 4276,
+        "end": 4290,
+        "text": "set up in past",
+        "correction": "set it up in the past",
+        "explanation": "Missing object pronoun 'it' and article 'the' before 'past' — say 'in the past.'",
+        "category": "ARTICLE",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 4439,
+        "end": 4465,
+        "text": "with designer who wants to",
+        "correction": "with a designer who wants to",
+        "explanation": "Missing article 'a' before 'designer'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 4467,
+        "end": 4490,
+        "text": "who want to be prepared",
+        "correction": "who wants to be prepared",
+        "explanation": "Subject-verb disagreement: singular 'designer' requires 'wants'.",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 4551,
+        "end": 4589,
+        "text": "looked like just common usability test",
+        "correction": "looked like just a common usability test",
+        "explanation": "Missing article 'a' before 'common usability test'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 4924,
+        "end": 4944,
+        "text": "a bit manual selling",
+        "correction": "a bit of manual selling",
+        "explanation": "Missing preposition/particle 'of' after 'a bit'.",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 4950,
+        "end": 4980,
+        "text": "it's important part of product",
+        "correction": "it's an important part of the product",
+        "explanation": "Missing article 'an' before 'important' and 'the' before 'product'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 5185,
+        "end": 5211,
+        "text": "convince the opposite side",
+        "correction": "convince the other side",
+        "explanation": "Unnatural collocation literal from another language; use 'the other side/party'.",
+        "category": "COLLOC",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 5286,
+        "end": 5309,
+        "text": "In which part you mean?",
+        "correction": "Which part do you mean?",
+        "explanation": "Incorrect word order and missing auxiliary 'do' for a question.",
+        "category": "ORDER",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 5424,
+        "end": 5437,
+        "text": "in new domain",
+        "correction": "in a new domain",
+        "explanation": "Missing article 'a' before 'new domain'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 5525,
+        "end": 5551,
+        "text": "it's about digital product",
+        "correction": "it's about a digital product",
+        "explanation": "Missing article 'a' before 'digital product'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 5573,
+        "end": 5612,
+        "text": "definitely scheme of selling like this?",
+        "correction": "Do you mean the scheme of selling like this?",
+        "explanation": "A missing definite article before 'scheme' and awkward word order — add 'the' to mark a specific scheme.",
+        "category": "ARTICLE",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 5613,
+        "end": 5636,
+        "text": "So just upselling part?",
+        "correction": "So just the upselling part?",
+        "explanation": "Missing definite article before a specific noun phrase: 'the upselling part.'",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 5685,
+        "end": 5710,
+        "text": "be deeper in your product",
+        "correction": "be more involved in your product",
+        "explanation": "Unnatural collocation: English speakers say 'be more involved in' or 'be more familiar with' rather than 'be deeper in'.",
+        "category": "COLLOC",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 5770,
+        "end": 5803,
+        "text": "the selling part is only my part.",
+        "correction": "the selling part is only my responsibility.",
+        "explanation": "Redundant/incorrect use of 'part' — use 'responsibility' to express that it's the speaker's role.",
+        "category": "WORD",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 5897,
+        "end": 5907,
+        "text": "or clearly",
+        "correction": "or understand them more clearly",
+        "explanation": "Misplaced/awkward adverb phrase. The idea should be 'understand them more clearly' (or 'more clearly').",
+        "category": "ORDER",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 6046,
+        "end": 6072,
+        "text": "defending absurd position.",
+        "correction": "defending an absurd position.",
+        "explanation": "Missing indefinite article 'an' before a singular count noun 'absurd position.'",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 6110,
+        "end": 6141,
+        "text": "you shouldn't be agree with it.",
+        "correction": "you shouldn't agree with it.",
+        "explanation": "Incorrect verb form after modal 'shouldn't' — use the base verb 'agree' (not 'be agree').",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 6169,
+        "end": 6187,
+        "text": "you can shouldn't.",
+        "correction": "you shouldn't.",
+        "explanation": "Modal auxiliary combination is ungrammatical: 'can shouldn't' is not allowed. Use a single modal (e.g. 'you shouldn't').",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "blocking"
+      },
+      {
+        "start": 6191,
+        "end": 6208,
+        "text": "I suggest to take",
+        "correction": "I suggest taking",
+        "explanation": "After 'suggest' use the gerund ('suggest taking') or a clause ('I suggest we take'), not the to-infinitive.",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 6209,
+        "end": 6232,
+        "text": "just simple simple take",
+        "correction": "just a simple take",
+        "explanation": "Missing indefinite article before 'simple take' (and repeated 'simple' is redundant).",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 6337,
+        "end": 6385,
+        "text": "would you like to defend where you agree or not?",
+        "correction": "whether you'd like to defend a position you agree with or not?",
+        "explanation": "Incorrect sentence structure for offering a choice — use 'whether' + clearer phrasing ('a position you agree with').",
+        "category": "ORDER",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 6455,
+        "end": 6507,
+        "text": "I choose, uh, that I agree with, uh, this statement.",
+        "correction": "I choose to defend the statement I agree with.",
+        "explanation": "Awkward word order and phrasing. Use 'I choose to defend...' or 'I choose the statement I agree with.'",
+        "category": "ORDER",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 6630,
+        "end": 6647,
+        "text": "So I'm not agree.",
+        "correction": "I don't agree.",
+        "explanation": "Incorrect verb construction: in English we say 'I don't agree' rather than 'I'm not agree.'",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 6659,
+        "end": 6677,
+        "text": "You are not agree?",
+        "correction": "You don't agree?",
+        "explanation": "Same error as above: use 'do' for negation with 'agree' in simple present ('You don't agree?').",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 7027,
+        "end": 7042,
+        "text": "from other side",
+        "correction": "from the other side",
+        "explanation": "Missing definite article 'the' before 'other side'. English requires 'the other side' in this context.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 7064,
+        "end": 7085,
+        "text": "Frontier models looks",
+        "correction": "Frontier models look",
+        "explanation": "Subject-verb agreement: 'models' is plural, so the verb should be 'look' not 'looks'.",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 7091,
+        "end": 7106,
+        "text": "your cooperator",
+        "correction": "a collaborator / your collaborator",
+        "explanation": "'Cooperator' is unnatural here; native speakers use 'collaborator' or 'a collaborator' to mean a working partner.",
+        "category": "COLLOC",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 7119,
+        "end": 7146,
+        "text": "it even more smart than you",
+        "correction": "they're even smarter than you",
+        "explanation": "Pronoun and verb agreement plus comparative adjective: plural 'models' needs 'they're' and 'smarter' is the correct comparative form.",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 7167,
+        "end": 7180,
+        "text": "match with AI",
+        "correction": "collaborate with AI",
+        "explanation": "'Match with' is an unnatural collocation here; use 'collaborate with' or 'work with' to express cooperating.",
+        "category": "COLLOC",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 7185,
+        "end": 7209,
+        "text": "force your current ideas",
+        "correction": "reinforce your current ideas",
+        "explanation": "Wrong word choice: 'force' is unusual here; 'reinforce' or 'strengthen' fits the intended meaning of supporting or developing ideas.",
+        "category": "WORD",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 7228,
+        "end": 7251,
+        "text": "something you even know",
+        "correction": "something you already know",
+        "explanation": "Word order and choice: 'even' is not the correct modifier here; 'already' expresses the intended meaning.",
+        "category": "WORD",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 7377,
+        "end": 7409,
+        "text": "be newcomer much more frequently",
+        "correction": "be a newcomer much more frequently",
+        "explanation": "Missing indefinite article 'a' before the noun 'newcomer'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 7447,
+        "end": 7479,
+        "text": "try yourself in different fields",
+        "correction": "try yourself out in different fields",
+        "explanation": "'Try yourself in' is unidiomatic; use 'try yourself out in' or simply 'try different fields'.",
+        "category": "COLLOC",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 7580,
+        "end": 7602,
+        "text": "I'm not agree with it.",
+        "correction": "I don't agree with it.",
+        "explanation": "English uses do-support for negating the verb 'agree' (stative): 'I don't agree', not 'I'm not agree'.",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 7820,
+        "end": 7839,
+        "text": "more lazy and lazy.",
+        "correction": "lazier and lazier",
+        "explanation": "Comparative repetition should be 'lazier and lazier' or 'more and more lazy', not 'more lazy and lazy'.",
+        "category": "WORD",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 7847,
+        "end": 7883,
+        "text": "last year you do your common routine",
+        "correction": "last year you did your common routine",
+        "explanation": "Reference to a past time ('last year') requires past tense: 'did', not 'do'.",
+        "category": "TENSE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 8256,
+        "end": 8291,
+        "text": "for you it's not necessary to think",
+        "correction": "it's not necessary for you to think",
+        "explanation": "Word order: the adjective 'necessary' is followed by 'for X to ...' (or rephrase to 'you don't have to think').",
+        "category": "ORDER",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 8307,
+        "end": 8331,
+        "text": "delegate solution to AI.",
+        "correction": "delegate the solution to AI.",
+        "explanation": "Singular, specific noun 'solution' requires an article: 'the solution' (or plural 'solutions').",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 8379,
+        "end": 8400,
+        "text": "for creative industry",
+        "correction": "for the creative industry",
+        "explanation": "When talking about an industry in general, use the article 'the' (or plural 'creative industries').",
+        "category": "ARTICLE",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 8409,
+        "end": 8457,
+        "text": "designers every time should create something new",
+        "correction": "designers should create something new every time",
+        "explanation": "Word order: adverbial phrase 'every time' should come after the verb phrase here.",
+        "category": "ORDER",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 8524,
+        "end": 8553,
+        "text": "create new way of interaction",
+        "correction": "create a new way of interaction",
+        "explanation": "Singular count noun 'way' needs an article: 'a new way'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 8587,
+        "end": 8631,
+        "text": "Every time new project needs new references.",
+        "correction": "Every time a new project needs new references.",
+        "explanation": "Singular count noun 'project' requires the article 'a'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 8680,
+        "end": 8730,
+        "text": "every time before, you have to find new solutions.",
+        "correction": "before that, you have to find new solutions",
+        "explanation": "The phrase 'every time before' is unclear/unnatural in this context; 'before that' or 'until then' fits the intended meaning.",
+        "category": "WORD",
+        "confidence": "medium",
+        "is_stylistic": true,
+        "severity": "minor"
+      },
+      {
+        "start": 8788,
+        "end": 8820,
+        "text": "generate new conceptions context",
+        "correction": "generate new concepts and contexts",
+        "explanation": "The phrase is ungrammatical or likely a mistranscription; 'conceptions context' should be 'concepts and contexts' or similar.",
+        "category": "WORD",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 8831,
+        "end": 8862,
+        "text": "create generic design solution.",
+        "correction": "create generic design solutions",
+        "explanation": "Either use the plural 'solutions' or include an article: 'a generic design solution'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 8975,
+        "end": 8996,
+        "text": "in the whole internet",
+        "correction": "across the whole internet",
+        "explanation": "We normally say 'across/on the internet' rather than 'in the internet'; 'across the whole internet' or 'on the internet' is natural.",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 9056,
+        "end": 9119,
+        "text": "Before, designers want to build something great for themselves.",
+        "correction": "Before, designers wanted to build something great for themselves.",
+        "explanation": "Contrast with the present requires past tense 'wanted' when referring to designers' earlier intentions.",
+        "category": "TENSE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 9252,
+        "end": 9269,
+        "text": "someone use Kilda",
+        "correction": "someone uses Kilda",
+        "explanation": "With indefinite subject 'someone' the verb needs third-person singular agreement: 'uses'.",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 9298,
+        "end": 9312,
+        "text": "different soft",
+        "correction": "different software",
+        "explanation": "'Soft' is nonstandard here; the correct noun for programs is 'software'.",
+        "category": "WORD",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 9376,
+        "end": 9410,
+        "text": "most of designers are using Claude",
+        "correction": "most designers are using Claude",
+        "explanation": "Use 'most designers' (no 'of') or 'most of the designers' with 'the'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 9445,
+        "end": 9474,
+        "text": "these pages looks too similar",
+        "correction": "these pages look too similar",
+        "explanation": "Plural subject 'pages' requires the plural verb 'look' (not 'looks').",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 9738,
+        "end": 9762,
+        "text": "an another one portfolio",
+        "correction": "another portfolio",
+        "explanation": "Use 'another' alone with a noun; 'an' and 'one' are redundant/incorrect here.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 9867,
+        "end": 9888,
+        "text": "Claude ways to design",
+        "correction": "Claude's way of designing",
+        "explanation": "Missing possessive and correct noun phrase. Use \"Claude's way of designing\" or \"Claude's design style.\"",
+        "category": "ORDER",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 10089,
+        "end": 10104,
+        "text": "replied me that",
+        "correction": "replied to me that",
+        "explanation": "The verb 'reply' requires the preposition 'to' when indicating the person who received the reply ('replied to me').",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 10171,
+        "end": 10200,
+        "text": "and but not positive feedback",
+        "correction": "but not positive feedback",
+        "explanation": "Using both 'and' and 'but' together is redundant; choose one conjunction ('but') to contrast.",
+        "category": "WORD",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 10237,
+        "end": 10254,
+        "text": "on your interview",
+        "correction": "in your interview",
+        "explanation": "We normally say 'in an interview' (or 'at your interview' in some contexts); 'on your interview' is not correct preposition use here.",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 10286,
+        "end": 10305,
+        "text": "in, uh, design chat",
+        "correction": "in the design chat",
+        "explanation": "When referring to a specific chat ('Design Chat'), use the definite article 'the'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 10409,
+        "end": 10426,
+        "text": "how it looks like",
+        "correction": "what it looks like",
+        "explanation": "'How' and 'like' do not combine here; use 'what it looks like' or 'how it looks'.",
+        "category": "COLLOC",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 10451,
+        "end": 10481,
+        "text": "Designer created something new",
+        "correction": "A designer created something new",
+        "explanation": "Singular count nouns require an article ('a' or 'the'); here 'A designer' is appropriate.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 10611,
+        "end": 10622,
+        "text": "human deals",
+        "correction": "human interactions",
+        "explanation": "'Deals' is an unnatural collocation here (likely a literal translation). Use 'human interactions' or 'human endeavors' depending on meaning.",
+        "category": "COLLOC",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 10662,
+        "end": 10679,
+        "text": "people's creative",
+        "correction": "people are creative",
+        "explanation": "Missing copula / incorrect contraction: use 'are' after plural subject 'people' (or 'people get creative').",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 10858,
+        "end": 10882,
+        "text": "and after I will answer.",
+        "correction": "and then I will answer.",
+        "explanation": "Incorrect word order/connector for sequence; use 'then' or 'afterwards' before the clause or 'I will answer afterwards'.",
+        "category": "ORDER",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 10887,
+        "end": 10931,
+        "text": "do you think AI, uh, make you more creative?",
+        "correction": "do you think AI makes you more creative?",
+        "explanation": "Subject-verb agreement in embedded question: 'AI' (singular) requires 'makes' not 'make'.",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 10956,
+        "end": 10995,
+        "text": "Personally, you, um, I think it depends",
+        "correction": "Personally, I think it depends",
+        "explanation": "Extraneous pronoun 'you' inserted; remove the extra word to produce a grammatical subject.",
+        "category": "WORD",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 11043,
+        "end": 11094,
+        "text": "AI couldn't suggest you a new business idea, right?",
+        "correction": "AI couldn't suggest a new business idea to you, right?",
+        "explanation": "Incorrect verb argument structure: 'suggest' requires 'to' before an indirect object ('suggest X to you') or use direct object only ('suggest a business idea').",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 11105,
+        "end": 11175,
+        "text": "AI can suggest you can suggest you different ideas for the pet project",
+        "correction": "AI can suggest different ideas for a pet project",
+        "explanation": "Repeated/mis-transcribed phrase and wrong argument structure: remove duplication and use 'suggest different ideas' (or 'suggest different ideas to you') and use 'a pet project' unless a specific project is meant.",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 11622,
+        "end": 11648,
+        "text": "especially in coding field",
+        "correction": "especially in the coding field",
+        "explanation": "Missing article before a singular noun phrase: use 'the coding field' or rephrase 'in the field of coding'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 11952,
+        "end": 11986,
+        "text": "when person can make usual things,",
+        "correction": "when a person can do routine things faster,",
+        "explanation": "Missing indefinite article before 'person' and 'do' is more natural than 'make' for routine actions.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 12069,
+        "end": 12080,
+        "text": "not emotion",
+        "correction": "not an emotion",
+        "explanation": "Singular countable noun 'emotion' requires an article here ('an emotion').",
+        "category": "ARTICLE",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 12236,
+        "end": 12259,
+        "text": "I suggest to stop here.",
+        "correction": "I suggest we stop here. / I suggest stopping here.",
+        "explanation": "After 'suggest' use a that-clause or gerund, not the infinitive 'to stop'.",
+        "category": "VERB",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 12468,
+        "end": 12514,
+        "text": "my app's much more simpler and understandable.",
+        "correction": "my app is much simpler and more understandable.",
+        "explanation": "'Much more simpler' is a double comparative; use 'much simpler' and pair 'more' with 'understandable'.",
+        "category": "COLLOC",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "noticeable"
+      },
+      {
+        "start": 12613,
+        "end": 12644,
+        "text": "in spite of length of our call,",
+        "correction": "in spite of the length of our call,",
+        "explanation": "Missing definite article 'the' before 'length'.",
+        "category": "ARTICLE",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 12696,
+        "end": 12725,
+        "text": "we have already 30 minutes 29",
+        "correction": "we've already been on for 30 minutes (29) / it's already been 30 minutes",
+        "explanation": "Missing verb structure: use 'been on for' or 'it's been' to state elapsed time; the current phrase is ungrammatical as transcribed.",
+        "category": "VERB",
+        "confidence": "medium",
+        "is_stylistic": false,
+        "severity": "minor"
+      },
+      {
+        "start": 12862,
+        "end": 12893,
+        "text": "I have a transcriber in iPhone.",
+        "correction": "I have a transcriber on my iPhone.",
+        "explanation": "Use 'on' with devices and include the possessive 'my' for clarity ('in iPhone' is incorrect).",
+        "category": "PREP",
+        "confidence": "high",
+        "is_stylistic": false,
+        "severity": "minor"
       }
     ],
     "annotations_meta": {
-      "chunks_processed": 1,
+      "chunks_processed": 11,
       "total_chunks": 11,
-      "processed_chars": 926,
+      "processed_chars": 12893,
       "attempted_model": "gpt-5-mini",
       "per_chunk": [
         {
@@ -1386,6 +2668,116 @@
             11,
             13
           ]
+        },
+        {
+          "index": 1,
+          "chars": 1411,
+          "findings": 16,
+          "passes_requested": 2,
+          "passes_ok": 2,
+          "raw_counts": [
+            14,
+            12
+          ]
+        },
+        {
+          "index": 2,
+          "chars": 1050,
+          "findings": 12,
+          "passes_requested": 2,
+          "passes_ok": 2,
+          "raw_counts": [
+            13,
+            14
+          ]
+        },
+        {
+          "index": 3,
+          "chars": 985,
+          "findings": 11,
+          "passes_requested": 2,
+          "passes_ok": 2,
+          "raw_counts": [
+            11,
+            10
+          ]
+        },
+        {
+          "index": 4,
+          "chars": 1181,
+          "findings": 9,
+          "passes_requested": 2,
+          "passes_ok": 2,
+          "raw_counts": [
+            9,
+            9
+          ]
+        },
+        {
+          "index": 5,
+          "chars": 1161,
+          "findings": 14,
+          "passes_requested": 2,
+          "passes_ok": 2,
+          "raw_counts": [
+            13,
+            12
+          ]
+        },
+        {
+          "index": 6,
+          "chars": 813,
+          "findings": 9,
+          "passes_requested": 2,
+          "passes_ok": 2,
+          "raw_counts": [
+            7,
+            8
+          ]
+        },
+        {
+          "index": 7,
+          "chars": 2045,
+          "findings": 18,
+          "passes_requested": 2,
+          "passes_ok": 2,
+          "raw_counts": [
+            18,
+            18
+          ]
+        },
+        {
+          "index": 8,
+          "chars": 1052,
+          "findings": 9,
+          "passes_requested": 2,
+          "passes_ok": 2,
+          "raw_counts": [
+            7,
+            8
+          ]
+        },
+        {
+          "index": 9,
+          "chars": 1105,
+          "findings": 7,
+          "passes_requested": 2,
+          "passes_ok": 2,
+          "raw_counts": [
+            8,
+            7
+          ]
+        },
+        {
+          "index": 10,
+          "chars": 1164,
+          "findings": 7,
+          "passes_requested": 2,
+          "passes_ok": 2,
+          "raw_counts": [
+            7,
+            10
+          ]
         }
       ]
     }
@@ -1394,6 +2786,6 @@
     "metrics": 1,
     "taxonomy": 1,
     "annotation_model": "gpt-5-mini",
-    "annotations_status": "in_progress"
+    "annotations_status": "ok"
   }
 }

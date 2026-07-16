@@ -276,7 +276,14 @@
             "ORDER": 0.84,
             "WORD": 0.61,
             "COLLOC": 0.61
-          }
+          },
+          "by_severity_count": {
+            "blocking": 0,
+            "noticeable": 37,
+            "minor": 33,
+            "unrated": 0
+          },
+          "serious_error_density_per_100w": 2.84
         }
       }
     },
@@ -547,7 +554,14 @@
             "ORDER": 1.27,
             "WORD": 1.14,
             "COLLOC": 0.6
-          }
+          },
+          "by_severity_count": {
+            "blocking": 0,
+            "noticeable": 57,
+            "minor": 29,
+            "unrated": 0
+          },
+          "serious_error_density_per_100w": 3.81
         }
       }
     }

@@ -834,11 +834,37 @@ function buildParticipantViewModel(participant, itemsForSpeaker, transcriptText,
     .filter((row) => row.comparison.status === 'improving')
     .sort((left, right) => left.comparison.delta - right.comparison.delta)[0] || null : null;
 
+  // Guaranteed severity slot (ADR-0007): the highest-severity findings of this
+  // session, independent of category frequency, focus and the priority score —
+  // so a rare-but-gross error can no longer drop out of view. Severity levels
+  // are ordinal; "blocking" is legitimately rare, so the top *present* level wins.
+  const severityRank = { blocking: 0, noticeable: 1 };
+  const grossestCandidates = itemsForSpeaker.filter((item) =>
+    severityRank[String(item.severity || '').toLowerCase()] !== undefined
+    && item.is_stylistic !== true
+    && String(item.confidence || '').toLowerCase() !== 'low'
+    && String(item.text || '').trim()
+    && String(item.correction || '').trim());
+  grossestCandidates.sort((left, right) =>
+    severityRank[String(left.severity || '').toLowerCase()] - severityRank[String(right.severity || '').toLowerCase()]);
+  const grossestLevel = grossestCandidates.length ? String(grossestCandidates[0].severity || '').toLowerCase() : '';
+  const grossest = grossestCandidates
+    .filter((item) => String(item.severity || '').toLowerCase() === grossestLevel)
+    .slice(0, 3)
+    .map((item) => ({ ...item, _transcriptAnnotationId: transcriptAnnotationId(item, allAnnotationItems) }));
+
+  // Timing-based fluency exists only for recorded sessions (ADR-0006); absent
+  // keys mean "not measured" and the strip simply does not render.
+  const fluency = ['speech_rate_wpm', 'pauses_per_min', 'mean_length_of_run_words', 'speaking_time_sec']
+    .some((key) => typeof metrics[key] === 'number') ? metrics : null;
+
   return {
     participant,
     history,
     errorRows,
     priorities,
+    grossest,
+    fluency,
     overallDensity,
     overallBaseline,
     overallComparison: comparisonFromRecord(canonicalComparison?.overall)
@@ -1230,6 +1256,62 @@ function renderSessionAnswer(viewModel) {
   `;
 }
 
+function renderGrossestBlock(viewModel) {
+  const items = viewModel.grossest || [];
+  if (!items.length) return '';
+  const level = String(items[0].severity || '').toLowerCase();
+  const levelLabel = level === 'blocking' ? 'meaning at risk' : 'clearly noticeable';
+  const rows = items.map((item) => {
+    const annotationId = item._transcriptAnnotationId || '';
+    return `
+      <li class="profile-finding">
+        <div class="profile-finding-main">
+          <span class="severity-chip is-${escapeHtml(level)}">${escapeHtml(level)}</span>
+          <span class="profile-finding-error">${escapeHtml(item.text || '')}</span>
+          <span class="profile-finding-arrow" aria-hidden="true">→</span>
+          <span class="profile-finding-fix">${escapeHtml(item.correction || '')}</span>
+        </div>
+        ${annotationId ? `
+        <div class="profile-finding-actions">
+          <button class="finding-transcript-link" type="button" data-transcript-annotation-id="${escapeHtml(annotationId)}">Find in transcript</button>
+        </div>` : ''}
+      </li>
+    `;
+  }).join('');
+  return `
+    <section class="grossest-block">
+      <div class="section-heading-row">
+        <div>
+          <h3>Most serious this session</h3>
+          <p>The highest-severity ${items.length === 1 ? 'finding' : 'findings'} (${escapeHtml(levelLabel)}) — shown regardless of how frequent the category is.</p>
+        </div>
+        <span class="info-note" title="Severity is judged per finding by impact on the listener: blocking = the meaning is distorted, noticeable = a clear error the listener registers, minor = a small slip. This block always shows the worst level present, so a rare but gross error cannot hide behind frequent small ones.">What is severity?</span>
+      </div>
+      <ol class="profile-findings-list" aria-label="Most serious findings">${rows}</ol>
+    </section>
+  `;
+}
+
+function renderFluencyStrip(viewModel) {
+  const metrics = viewModel.fluency;
+  if (!metrics) return '';
+  const parts = [];
+  if (typeof metrics.speech_rate_wpm === 'number') parts.push(`<strong>${formatNumber(metrics.speech_rate_wpm)}</strong> words/min`);
+  if (typeof metrics.pauses_per_min === 'number') parts.push(`<strong>${formatNumber(metrics.pauses_per_min)}</strong> hesitation pauses/min`);
+  if (typeof metrics.mean_length_of_run_words === 'number') parts.push(`<strong>${formatNumber(metrics.mean_length_of_run_words)}</strong> words between pauses`);
+  if (typeof metrics.speaking_time_sec === 'number') {
+    parts.push(metrics.speaking_time_sec >= 60
+      ? `<strong>${formatNumber(metrics.speaking_time_sec / 60)}</strong> min speaking`
+      : `<strong>${Math.round(metrics.speaking_time_sec)}</strong> s speaking`);
+  }
+  if (!parts.length) return '';
+  return `
+    <p class="fluency-strip">Fluency from the recording: ${parts.join(' · ')}
+      <span class="info-note" title="Measured from word timestamps in the recorded audio: speech rate over your own speaking time, and silences of 0.5s or longer inside your own utterances. Text uploads carry no timings, so this line appears only for recorded calls.">?</span>
+    </p>
+  `;
+}
+
 function renderProfileFindings(row, participantName) {
   if (!row.findings.length) {
     return '<p class="profile-findings-empty">No transcript findings are linked to this category.</p>';
@@ -1340,6 +1422,8 @@ function renderParticipantReview(viewModel, analysisDate) {
       </div>
       ${lowSample ? `<p class="sample-warning">Short sample: fewer than ${PERSISTENCE_MIN_WORDS} English words. Keep the transcript, but treat comparisons as directional.</p>` : ''}
       ${renderSessionAnswer(viewModel)}
+      ${renderFluencyStrip(viewModel)}
+      ${renderGrossestBlock(viewModel)}
       ${renderFocusBlock(participant.name, analysisDate)}
       ${renderErrorProfile(viewModel)}
       <section class="practice-plan">
