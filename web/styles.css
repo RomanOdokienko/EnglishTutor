@@ -78,27 +78,27 @@
   --color-border-strong: #cbd5e1;
   --color-border-input: #cbd5f5;
 
-  /* Accent (blue) */
-  --color-accent: #2563eb;
-  --color-accent-strong: #1d4ed8;
-  --color-accent-deep: #1e40af;
-  --color-accent-50: #eff6ff;
-  --color-accent-50b: #eef6ff;
-  --color-accent-100: #dbeafe;
-  --color-accent-200: #bfdbfe;
+  /* Accent — teal (cool primary; was blue #2563eb, re-themed via tokens) */
+  --color-accent: #0d9488;
+  --color-accent-strong: #0f766e;
+  --color-accent-deep: #115e59;
+  --color-accent-50: #f0fdfa;
+  --color-accent-50b: #effcf9;
+  --color-accent-100: #ccfbf1;
+  --color-accent-200: #99f6e4;
 
-  /* Sky */
-  --color-sky: #0ea5e9;
-  --color-sky-strong: #0284c7;
-  --color-sky-deep: #0369a1;
-  --color-sky-navy: #075985;
-  --color-sky-400: #38bdf8;
-  --color-sky-100: #e0f2fe;
-  --color-sky-200: #bae6fd;
+  /* Sky — teal (secondary cool) */
+  --color-sky: #14b8a6;
+  --color-sky-strong: #0d9488;
+  --color-sky-deep: #0f766e;
+  --color-sky-navy: #115e59;
+  --color-sky-400: #2dd4bf;
+  --color-sky-100: #ccfbf1;
+  --color-sky-200: #99f6e4;
 
-  /* Indigo */
-  --color-indigo-50: #eef2ff;
-  --color-indigo-200: #c7d2fe;
+  /* Indigo — teal-aligned for a coherent cool theme */
+  --color-indigo-50: #f0fdfa;
+  --color-indigo-200: #99f6e4;
 
   /* Teal / cyan */
   --color-teal: #0f766e;
