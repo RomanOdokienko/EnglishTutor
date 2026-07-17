@@ -3171,13 +3171,26 @@ def write_web_assets(out_dir: Path) -> None:
     # Frontend sources live as real files under web/; copy them to out/web,
     # injecting the API base URL into HTML templates on the way.
     for src in sorted(WEB_SRC_DIR.iterdir()):
+        if src.is_dir():
+            # Asset directories (e.g. fonts/) are copied verbatim, binary-safe.
+            dst_dir = web_dir / src.name
+            if dst_dir.exists():
+                shutil.rmtree(dst_dir)
+            shutil.copytree(src, dst_dir)
+            continue
         if not src.is_file():
             continue
-        content = src.read_text(encoding="utf-8")
         if src.suffix == ".html":
+            content = src.read_text(encoding="utf-8")
             content = content.replace("__ENGLISH_TUTOR_API_BASE_URL__", api_base)
             content = content.replace("__ENGLISH_TUTOR_NAV__", nav_html)
-        (web_dir / src.name).write_text(content, encoding="utf-8")
+            (web_dir / src.name).write_text(content, encoding="utf-8")
+        elif src.suffix.lower() in (".woff2", ".woff", ".ttf", ".otf", ".png", ".jpg", ".jpeg", ".gif", ".ico"):
+            # Binary assets (fonts, images) — copy bytes, no text round-trip.
+            shutil.copy2(src, web_dir / src.name)
+        else:
+            # css / js / svg — text round-trip (preserves prior newline handling).
+            (web_dir / src.name).write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
 
     if history_path.exists():
         (web_dir / "history.json").write_text(history_path.read_text(encoding="utf-8"), encoding="utf-8")
