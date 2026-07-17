@@ -1001,7 +1001,7 @@ function renderPracticeItem(card, sessionDate, participantName, priorityRank) {
     ? '<span class="focus-chip">In focus</span>'
     : `<button class="ghost focus-set-button" type="button" data-focus-key="${escapeHtml(focusKey)}" ${state.focusBusy ? 'disabled' : ''}>Add to focus</button>`;
   return `
-    <details class="practice-item" ${priorityRank === 1 ? 'open' : ''}>
+    <details class="practice-item">
       <summary class="practice-summary">
         <span class="priority-number">${priorityRank}</span>
         <span class="practice-summary-main">
@@ -1201,14 +1201,13 @@ function renderComparisonBadge(comparison) {
 
 function renderSessionAnswer(viewModel) {
   const currentIsComparable = viewModel.eligibility === 'comparable';
-  const referenceDates = viewModel.referenceDates.map(formatSessionDate).join(', ');
   let baselineText;
   if (viewModel.eligibility === 'short_sample') {
     baselineText = `This sample is below ${PERSISTENCE_MIN_WORDS} English words, so it is not scored against earlier calls.`;
   } else if (viewModel.eligibility !== 'comparable') {
     baselineText = 'This session is not scored because completed annotations and current metric versions are required.';
   } else if (viewModel.referenceCount) {
-    baselineText = `Compared with the average of ${viewModel.referenceCount} comparable ${viewModel.referenceCount === 1 ? 'call' : 'calls'} before this session: ${formatNumber(viewModel.overallBaseline)} / 100w. Reference: ${referenceDates}.`;
+    baselineText = `Your previous ${viewModel.referenceCount === 1 ? 'call' : `${viewModel.referenceCount} calls`} averaged ${formatNumber(viewModel.overallBaseline)} / 100w.`;
   } else {
     baselineText = `Complete another annotated session with at least ${PERSISTENCE_MIN_WORDS} English words to build a comparison.`;
   }

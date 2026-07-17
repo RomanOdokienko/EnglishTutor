@@ -2241,3 +2241,6 @@ body[data-nav='record'] .app-nav-link[data-nav-key='record'] {
 .grossest-block { margin-top: 18px; }
 .fluency-strip { margin: 12px 0 0; color: #1e293b; font-size: 14px; }
 .fluency-strip strong { font-variant-numeric: tabular-nums; }
+/* The grossest block reuses profile-finding rows, but its first column holds a
+   wide severity chip instead of the 20px number circle. */
+.grossest-block .profile-finding-main { grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr); }
