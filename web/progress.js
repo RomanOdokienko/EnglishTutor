@@ -589,13 +589,22 @@
         title: 'Serious errors only',
         description: 'Findings a listener clearly notices (noticeable) or that put the meaning at risk (blocking), per 100 English words.',
         help: 'Severity is judged per finding by impact on the listener, independently of the category and of how frequent it is. Minor slips are excluded here, and so are findings stored before severity existed. Lower is better.',
-        chart: makeChart(seriousSeries, dates, { compact: true, decimals: 1, ariaLabel: 'Serious error density trend' }),
+        chart: makeChart(seriousSeries, dates, { decimals: 1, ariaLabel: 'Serious error density trend' }),
+        hero: true,
       }));
+      // Two related hero charts read better side by side — and take a fraction
+      // of the height of one full-width chart stacked on another.
+      overviewGrid.className = 'pg-grid pg-grid-two';
     }
     overview.appendChild(overviewGrid);
     var excluded = exclusionNotice(grammarSeries, dates);
     if (excluded) overview.appendChild(excluded);
     root.appendChild(overview);
+
+    // Current focus and Speaking habits each hold one compact chart, so they
+    // pair into a single row instead of two half-empty full-width sections.
+    var duo = document.createElement('div');
+    duo.className = 'pg-duo';
 
     var focusSelection = selectedFocusCodes();
     if (focusSelection.codes.length) {
@@ -604,15 +613,15 @@
         : 'Only categories currently marked as active focuses are shown here.';
       var focusSection = section('Current focus', focusSubtitle);
       var focusGrid = document.createElement('div');
-      focusGrid.className = 'pg-grid pg-grid-two';
+      focusGrid.className = 'pg-grid';
       focusSelection.codes.forEach(function (code) { focusGrid.appendChild(categoryCard(code, dates)); });
       focusSection.appendChild(focusGrid);
-      root.appendChild(focusSection);
+      duo.appendChild(focusSection);
     }
 
     var habits = section('Speaking habits', 'A transcript-based signal that is easy to interpret and useful to track.');
     var habitsGrid = document.createElement('div');
-    habitsGrid.className = 'pg-grid pg-grid-two';
+    habitsGrid.className = 'pg-grid';
     var fillerSeries = buildSeries(function (derived) { return (derived.metrics || {}).filler_per_100w; });
     habitsGrid.appendChild(card({
       title: 'Fillers / 100 words',
@@ -621,7 +630,8 @@
       chart: makeChart(fillerSeries, dates, { compact: true, decimals: 1, ariaLabel: 'Filler words trend' }),
     }));
     habits.appendChild(habitsGrid);
-    root.appendChild(habits);
+    duo.appendChild(habits);
+    root.appendChild(duo);
 
     // Timing-based fluency (ADR-0006) exists only for recorded calls, so the
     // whole section stays hidden until at least one recorded session has a

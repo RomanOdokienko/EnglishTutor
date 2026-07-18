@@ -17,6 +17,8 @@
       .pg-section > .pg-sub { max-width: 760px; margin: 0 0 17px; color: #64748b; font-size: 14px; line-height: 1.5; }
       .pg-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
       .pg-grid-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .pg-duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; margin: 30px 0 38px; }
+      .pg-duo > .pg-section { margin: 0; }
       .pg-card { min-width: 0; padding: 17px 18px 12px; border: 1px solid #dce4ee; border-radius: 15px; background: #fff; box-shadow: 0 5px 14px rgba(15, 23, 42, 0.045); }
       .pg-card.pg-hero { padding: 18px 20px 12px; }
       .pg-card-head { display: flex; align-items: center; gap: 8px; min-height: 24px; }
@@ -70,7 +72,7 @@
       .pg-victory-mark { color: #16a34a; font-weight: 800; }
       .pg-victory-dates { color: #64748b; font-size: 12px; }
       @media (max-width: 760px) {
-        .pg-grid-two, .pg-summary-grid { grid-template-columns: 1fr; }
+        .pg-grid-two, .pg-summary-grid, .pg-duo { grid-template-columns: 1fr; }
         .pg-card.pg-hero { padding-inline: 14px; }
         .pg-exclusion { grid-template-columns: 1fr; }
         .pg-exclusion small { grid-column: 1; }
