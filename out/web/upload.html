@@ -340,6 +340,7 @@
           setUploadProgress(3, 'Server finished analysis. Saving session data...');
           statusEl.textContent = 'Saving session metadata...';
           const result = await response.json();
+          if (window.ET && window.ET.bustCache) window.ET.bustCache();
           clearUploadTimers();
           if (elapsedEl && uploadStartedAt) {
             elapsedEl.textContent = formatElapsed(Date.now() - uploadStartedAt);

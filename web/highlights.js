@@ -155,22 +155,14 @@ const state = {
 const PARTICIPANT_PREFERENCE_KEY = 'ENGLISH_TUTOR_SESSION_PARTICIPANT';
 
 async function loadHistory() {
-  const response = await fetch(apiUrl('/history.json'), { cache: 'no-store' });
-  if (!response.ok) {
-    throw new Error('Unable to load history.json');
-  }
-  return response.json();
+  return window.ET.cachedJson('/history.json');
 }
 
 async function loadAnalysis(date) {
   if (state.analysisCache.has(date)) {
     return state.analysisCache.get(date);
   }
-  const response = await fetch(apiUrl(`/sessions/${date}/analysis.json`), { cache: 'no-store' });
-  if (!response.ok) {
-    throw new Error(`Unable to load analysis for ${date}`);
-  }
-  const data = await response.json();
+  const data = await window.ET.cachedJson(`/sessions/${date}/analysis.json`);
   state.analysisCache.set(date, data);
   return data;
 }
@@ -1871,6 +1863,7 @@ async function rerunSession(endpoint, label, button) {
     // The rebuild rewrote this session server-side; drop the cached copy so
     // the transcript and evidence cards re-render from the fresh analysis.
     state.analysisCache.delete(date);
+    window.ET.bustCache();
     state.history = await loadHistory();
     renderDropdown();
     sessionSelect.value = date;
@@ -1908,6 +1901,7 @@ function attachSessionActions() {
         if (!response.ok) {
           throw new Error((await response.text()) || 'Delete failed.');
         }
+        window.ET.bustCache();
         state.history = await loadHistory();
         renderDropdown();
         if (state.history.sessions.length) {

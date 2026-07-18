@@ -285,9 +285,7 @@
   }
 
   async function reloadBriefing() {
-    var response = await fetch(window.ET.apiUrl('/briefing.json'), { cache: 'no-store' });
-    if (!response.ok) throw new Error('Could not refresh the briefing.');
-    var briefing = await response.json();
+    var briefing = await window.ET.cachedJson('/briefing.json', { force: true });
     state.people = (briefing.participants || []).map(normalizePerson);
     exerciseState = {};
     ensureSelected();
@@ -450,9 +448,7 @@
 
   async function load() {
     try {
-      var response = await fetch(window.ET.apiUrl('/briefing.json'), { cache: 'no-store' });
-      if (!response.ok) throw new Error('Unable to load the briefing.');
-      var briefing = await response.json();
+      var briefing = await window.ET.cachedJson('/briefing.json');
       state.people = (briefing.participants || []).map(normalizePerson);
       if (!state.people.length) {
         if (viewerMount) viewerMount.innerHTML = '';

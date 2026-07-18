@@ -729,9 +729,7 @@
   }
 
   async function load() {
-    var response = await fetch(apiUrl('/history.json'), { cache: 'no-store' });
-    if (!response.ok) throw new Error('Unable to load history.json');
-    state.history = await response.json();
+    state.history = await window.ET.cachedJson('/history.json');
     state.history.sessions = (state.history.sessions || []).slice().sort(function (left, right) {
       return (left.date || '').localeCompare(right.date || '');
     });
@@ -753,6 +751,7 @@
       try {
         var response = await fetch(apiUrl('/api/reanalyze'), { method: 'POST' });
         if (!response.ok) throw new Error(await response.text());
+        window.ET.bustCache();
         await load();
         render();
       } catch (error) {

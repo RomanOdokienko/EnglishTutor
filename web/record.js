@@ -181,6 +181,7 @@
 
       var data = {};
       try { data = JSON.parse(text); } catch (error) {}
+      if (window.ET && window.ET.bustCache) window.ET.bustCache();
       var channelCount = (data.channels || []).length;
       var message = "Done — session <strong>" + escapeHtml(data.date || "") + "</strong> is ready. "
         + "Detected <strong>" + channelCount + "</strong> channel(s). "

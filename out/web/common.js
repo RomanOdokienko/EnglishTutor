@@ -30,20 +30,69 @@
     return base + (raw.startsWith('/') ? raw : '/' + raw);
   }
 
+  // ---- Session-scoped JSON cache -----------------------------------------
+  // The static artifacts (history.json, analysis.json, briefing.json) change
+  // only when a session is recorded / rebuilt / deleted, yet this multi-page
+  // app re-fetches them on every tab switch. Cache them in sessionStorage so
+  // switching tabs within a browsing session is instant. Any mutation must
+  // call bustCache(); a short TTL bounds staleness if a path is ever missed.
+  // Reads stay on the backend (never Vercel static) so a freshly recorded
+  // session shows up immediately — only the redundant re-fetch is removed.
+  var CACHE_PREFIX = 'et:cache:';
+  var CACHE_TTL_MS = 5 * 60 * 1000;
+  function cacheKey(url) { return CACHE_PREFIX + url; }
+  function readCache(url) {
+    try {
+      var raw = window.sessionStorage.getItem(cacheKey(url));
+      if (!raw) return null;
+      var entry = JSON.parse(raw);
+      if (!entry || (Date.now() - entry.t) > CACHE_TTL_MS) return null;
+      return entry.body; // raw response text, re-parsed per call for a fresh object
+    } catch (e) { return null; }
+  }
+  function writeCache(url, text) {
+    try {
+      window.sessionStorage.setItem(cacheKey(url), JSON.stringify({ t: Date.now(), body: text }));
+    } catch (e) { /* quota / disabled — skip caching, never block the load */ }
+  }
+  // Cached GET for a static JSON artifact. opts.force bypasses the read (but
+  // still refreshes the cache) — use it for an explicit "refresh" action.
+  async function cachedJson(path, opts) {
+    var url = apiUrl(path);
+    if (!(opts && opts.force)) {
+      var hit = readCache(url);
+      if (hit != null) { try { return JSON.parse(hit); } catch (e) {} }
+    }
+    var res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Unable to load ' + path);
+    var text = await res.text();
+    writeCache(url, text);
+    return JSON.parse(text);
+  }
+  // Drop one cached path, or (no arg) every cached artifact. Call after any
+  // write so the next read re-fetches fresh data.
+  function bustCache(path) {
+    try {
+      if (path) { window.sessionStorage.removeItem(cacheKey(apiUrl(path))); return; }
+      var keys = [];
+      for (var i = 0; i < window.sessionStorage.length; i++) {
+        var k = window.sessionStorage.key(i);
+        if (k && k.indexOf(CACHE_PREFIX) === 0) keys.push(k);
+      }
+      keys.forEach(function (k) { window.sessionStorage.removeItem(k); });
+    } catch (e) { /* storage disabled — nothing to bust */ }
+  }
+
   // ---- Data loaders ----
   async function loadHistory() {
-    var res = await fetch(apiUrl('/history.json'), { cache: 'no-store' });
-    if (!res.ok) throw new Error('Unable to load history.json');
-    var data = await res.json();
+    var data = await cachedJson('/history.json');
     data.sessions = (data.sessions || []).slice().sort(function (a, b) {
       return String(a.date || '').localeCompare(String(b.date || ''));
     });
     return data;
   }
   async function loadAnalysis(date) {
-    var res = await fetch(apiUrl('/sessions/' + date + '/analysis.json'), { cache: 'no-store' });
-    if (!res.ok) throw new Error('Unable to load analysis for ' + date);
-    return res.json();
+    return cachedJson('/sessions/' + date + '/analysis.json');
   }
 
   // ---- Formatting ----
@@ -88,6 +137,8 @@
   window.ET = {
     apiUrl: apiUrl,
     getConfiguredApiBase: getConfiguredApiBase,
+    cachedJson: cachedJson,
+    bustCache: bustCache,
     loadHistory: loadHistory,
     loadAnalysis: loadAnalysis,
     shortDate: shortDate,
