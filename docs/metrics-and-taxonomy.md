@@ -89,6 +89,14 @@ For each participant:
 - by_category_count contains every v1 category with its count.
 - by_category_density contains every v1 category count /
   english_word_count × 100.
+- by_severity_count contains blocking, noticeable, minor and unrated. Every
+  countable item lands in exactly one bucket, so the four sum to error_count.
+  `unrated` holds items stored before severity existed — see the severity
+  section below; it is never folded into `minor`.
+- serious_error_density_per_100w is (blocking + noticeable) /
+  english_word_count × 100. Unrated items are excluded from it rather than
+  guessed at, so this series is only meaningful across sessions annotated
+  after the 2026-07-16 rollout.
 
 An annotation item first uses its assigned category. If absent, the pipeline
 may infer a category from its explanation, correction and text. Uncategorised
@@ -106,6 +114,18 @@ below and required no version bump: counts and densities mean exactly what
 they meant. Empty severity = annotated before the rollout ("not rated", never
 "minor"). Consumers treat levels ordinally: "the grossest errors of a session"
 = items of the highest level present.
+
+Severity aggregates are additive (same policy as ADR-0006): `by_severity_count`
+and `serious_error_density_per_100w` were added to `derived.grammar` without a
+version bump, because the counting gate, the category set and every existing
+formula are untouched. Since 2026-07-17 the UI reads them: Progress shows a
+"Serious errors only" line beside the overall density chart, and Session and
+This week show a "Most serious" slot — the highest level actually present in
+that call, chosen independently of category frequency and of the focus. Every
+one of those views is presence-gated, so data without severity renders as it
+did before. Severity still drives only ordering and display; before it gates a
+*counted* metric, label severity on the eval set's REAL items and measure
+agreement (ADR-0007).
 
 ### Counting gate (`is_countable_annotation`)
 
