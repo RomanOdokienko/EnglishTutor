@@ -131,22 +131,18 @@
     {
       "name": "Roman",
       "focus": {
-        "kind": "active",
-        "id": "roman-order-2026-07-14",
-        "code": "ORDER",
-        "title": "Word Order",
-        "set_date": "2026-07-14",
-        "baseline_density": 0.62,
-        "latest_density": null,
-        "latest_date": null,
-        "change_pct": null,
-        "ready_to_close": false
+        "kind": "suggested",
+        "code": "ARTICLE",
+        "title": "Articles",
+        "average_density": 1.22,
+        "dates": [
+          "2026-02-02",
+          "2026-02-09",
+          "2026-07-14"
+        ]
       },
-      "additional_focus_count": 1,
-      "active_focus_codes": [
-        "ORDER",
-        "ARTICLE"
-      ],
+      "additional_focus_count": 0,
+      "active_focus_codes": [],
       "patterns": [
         {
           "code": "ARTICLE",
@@ -188,17 +184,17 @@
       "examples": [
         {
           "date": "2026-07-14",
-          "code": "ORDER",
-          "category_title": "Word Order",
-          "error": "world feeling in moment",
-          "correction": "the feeling of the world in the moment"
-        },
-        {
-          "date": "2026-07-14",
           "code": "ARTICLE",
           "category_title": "Articles",
           "error": "Just usual question",
           "correction": "Just a usual question"
+        },
+        {
+          "date": "2026-07-14",
+          "code": "ORDER",
+          "category_title": "Word Order",
+          "error": "world feeling in moment",
+          "correction": "the feeling of the world in the moment"
         },
         {
           "date": "2026-07-14",
