@@ -282,6 +282,133 @@
     return svg;
   }
 
+  // Speed-vs-accuracy trajectory. Unlike makeChart (time on X), this plots one
+  // point per recorded, annotated call in tempo (X) x error-density (Y) space
+  // and joins them in time. It answers Andrey's question — does accuracy hold,
+  // improve or slip as speaking speed changes — without collapsing the two into
+  // one opaque score (the same "named lines, not composites" rule as the rest
+  // of Progress). Recorded-only: text uploads carry no tempo, so a point needs
+  // both a speech rate and a trustworthy error density (enough words, annotated).
+  function trajectorySeries() {
+    var sessions = state.history.sessions;
+    return state.speakers.map(function (name) {
+      var points = [];
+      sessions.forEach(function (session) {
+        var participant = (session.participants || []).find(function (item) { return item.name === name; });
+        if (!participant || !participant.derived) return;
+        var metrics = participant.derived.metrics || {};
+        var grammar = participant.derived.grammar || {};
+        var tempo = Number(metrics.speech_rate_wpm);
+        var errors = Number(grammar.error_density_per_100w);
+        if (!Number.isFinite(tempo) || tempo <= 0 || !Number.isFinite(errors)) return;
+        var words = Number(metrics.english_word_count || 0);
+        if (exclusionReason(session, words, true)) return;
+        points.push({ x: tempo, y: errors, date: session.date, words: words });
+      });
+      return { name: name, color: speakerColor(name), points: points };
+    });
+  }
+
+  function attachScatterHover(node, speaker, point) {
+    node.style.cursor = 'pointer';
+    node.addEventListener('mousemove', function (event) {
+      tooltip.innerHTML = '<b>' + escapeHtml(shortDate(point.date)) + '</b>'
+        + '<div class="pg-tt-row"><span class="pg-tt-dot" style="background:' + speaker.color + '"></span><span>'
+        + escapeHtml(speaker.name) + ': <b>' + Math.round(point.x) + '</b> wpm · <b>' + formatValue(point.y, 1) + '</b> err/100w</span></div>';
+      tooltip.style.opacity = 1;
+      tooltip.style.left = Math.min(event.clientX + 14, window.innerWidth - 250) + 'px';
+      tooltip.style.top = Math.min(event.clientY + 14, window.innerHeight - 120) + 'px';
+    });
+    node.addEventListener('mouseleave', function () { tooltip.style.opacity = 0; });
+  }
+
+  function makeScatter(series, options) {
+    options = options || {};
+    var width = 720;
+    var height = 300;
+    var pad = { t: 18, r: 86, b: 48, l: 56 };
+    var plotWidth = width - pad.l - pad.r;
+    var plotHeight = height - pad.t - pad.b;
+
+    var all = [];
+    series.forEach(function (speaker) { speaker.points.forEach(function (point) { all.push(point); }); });
+    var xs = all.map(function (point) { return point.x; });
+    var ys = all.map(function (point) { return point.y; });
+    var xLo = Math.min.apply(null, xs);
+    var xHi = Math.max.apply(null, xs);
+    var xSpan = Math.max(20, xHi - xLo);
+    var xMin = Math.max(0, Math.floor((xLo - xSpan * 0.18) / 10) * 10);
+    var xMax = Math.ceil((xHi + xSpan * 0.18) / 10) * 10;
+    var yMax = niceMax(Math.max.apply(null, ys) * 1.12);
+
+    function xAt(value) { return pad.l + (xMax > xMin ? (value - xMin) / (xMax - xMin) : 0.5) * plotWidth; }
+    function yAt(value) { return pad.t + (1 - value / yMax) * plotHeight; }
+
+    var svg = svgElement('svg', {
+      viewBox: '0 0 ' + width + ' ' + height,
+      role: 'img',
+      'aria-label': options.ariaLabel || 'Speaking speed versus accuracy trajectory',
+    });
+
+    // Horizontal gridlines carry the error-density scale (Y).
+    [0, yMax / 2, yMax].forEach(function (tick) {
+      var y = yAt(tick);
+      svg.appendChild(svgElement('line', { x1: pad.l, y1: y, x2: width - pad.r, y2: y, stroke: '#e8eef5', 'stroke-width': 1 }));
+      var label = svgElement('text', { x: pad.l - 8, y: y + 4, 'text-anchor': 'end', 'font-size': 11, fill: '#8492aa' });
+      label.textContent = formatValue(tick, 1);
+      svg.appendChild(label);
+    });
+    // Vertical ticks carry the tempo scale (X).
+    var xTickCount = 4;
+    for (var i = 0; i <= xTickCount; i++) {
+      var xValue = xMin + (xMax - xMin) * (i / xTickCount);
+      var x = xAt(xValue);
+      svg.appendChild(svgElement('line', { x1: x, y1: pad.t, x2: x, y2: height - pad.b, stroke: '#f1f5f9', 'stroke-width': 1 }));
+      var xLabel = svgElement('text', { x: x, y: height - pad.b + 18, 'text-anchor': 'middle', 'font-size': 11, fill: '#8492aa' });
+      xLabel.textContent = String(Math.round(xValue));
+      svg.appendChild(xLabel);
+    }
+
+    var xTitle = svgElement('text', { x: pad.l + plotWidth / 2, y: height - 6, 'text-anchor': 'middle', 'font-size': 11, 'font-weight': 700, fill: '#64748b' });
+    xTitle.textContent = 'words / minute  (faster →)';
+    svg.appendChild(xTitle);
+    var yMid = pad.t + plotHeight / 2;
+    var yTitle = svgElement('text', { x: 15, y: yMid, 'text-anchor': 'middle', 'font-size': 11, 'font-weight': 700, fill: '#64748b', transform: 'rotate(-90 15 ' + yMid + ')' });
+    yTitle.textContent = 'errors / 100w  (fewer ↓)';
+    svg.appendChild(yTitle);
+
+    series.forEach(function (speaker) {
+      if (!speaker.points.length) return;
+      if (speaker.points.length > 1) {
+        var d = speaker.points.map(function (point, index) {
+          return (index ? 'L' : 'M') + xAt(point.x) + ' ' + yAt(point.y);
+        }).join(' ');
+        svg.appendChild(svgElement('path', {
+          d: d, fill: 'none', stroke: speaker.color, 'stroke-width': 2.5,
+          'stroke-linejoin': 'round', 'stroke-linecap': 'round', opacity: 0.45,
+        }));
+      }
+      speaker.points.forEach(function (point, index) {
+        var isLast = index === speaker.points.length - 1;
+        var isFirst = index === 0 && !isLast;
+        var circle = svgElement('circle', {
+          cx: xAt(point.x), cy: yAt(point.y),
+          r: isLast ? 6 : 4.5,
+          fill: isFirst ? '#ffffff' : speaker.color,
+          stroke: isFirst ? speaker.color : '#ffffff',
+          'stroke-width': isLast || isFirst ? 2 : 1.5,
+        });
+        attachScatterHover(circle, speaker, point);
+        svg.appendChild(circle);
+      });
+      var latest = speaker.points[speaker.points.length - 1];
+      var nameLabel = svgElement('text', { x: xAt(latest.x) + 10, y: yAt(latest.y) + 4, 'font-size': 12, 'font-weight': 700, fill: speaker.color });
+      nameLabel.textContent = speaker.name;
+      svg.appendChild(nameLabel);
+    });
+    return svg;
+  }
+
   function metricHelp(text) {
     var details = document.createElement('details');
     details.className = 'pg-info';
@@ -672,6 +799,27 @@
       });
       fluencySection.appendChild(fluencyGrid);
       root.appendChild(fluencySection);
+    }
+
+    // Speed vs accuracy: the recorded-call tempo paired with grammar error
+    // density as a trajectory. Needs at least one speaker with two qualifying
+    // calls to show a direction, so it stays hidden until recorded calls
+    // accumulate — text uploads never qualify.
+    var trajectory = trajectorySeries();
+    if (trajectory.some(function (speaker) { return speaker.points.length >= 2; })) {
+      var trajectorySection = section('Speed vs accuracy',
+        'Each point is one recorded call, joined in time. Right is faster speech; down is fewer errors — so speeding up while holding level or dropping is progress, and the two do not have to move together. Hollow dot is the earliest call, solid is the latest.');
+      var trajectoryGrid = document.createElement('div');
+      trajectoryGrid.className = 'pg-grid';
+      trajectoryGrid.appendChild(card({
+        title: 'Trajectory',
+        description: 'Speaking tempo (words per minute) against grammar errors per 100 English words, per recorded call.',
+        help: 'Both axes come only from recorded calls with completed annotations and at least ' + LOW_SAMPLE + ' English words; text uploads carry no tempo. It shows how speed and accuracy move together over time — not that one causes the other, and a hard topic can raise both at once.',
+        chart: makeScatter(trajectory, { ariaLabel: 'Speaking speed versus grammar accuracy trajectory' }),
+        hero: true,
+      }));
+      trajectorySection.appendChild(trajectoryGrid);
+      root.appendChild(trajectorySection);
     }
 
     var closedSection = buildClosedFocuses();
