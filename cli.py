@@ -3080,11 +3080,11 @@ def build_briefing(out_dir: Path) -> dict:
             match = next((item for item in available_examples if item.get("code") == code and item not in examples), None)
             if match:
                 examples.append(match)
-            if len(examples) == 2:
+            if len(examples) == 3:
                 break
-        if len(examples) < 2:
+        if len(examples) < 3:
             examples.extend(item for item in available_examples if item not in examples)
-            examples = examples[:2]
+            examples = examples[:3]
 
         recent_direction = None
         if comparable:

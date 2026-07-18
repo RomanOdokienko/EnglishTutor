@@ -57,6 +57,13 @@
           "category_title": "Articles",
           "error": "Day was a really big day",
           "correction": "The day was a really big day"
+        },
+        {
+          "date": "2026-07-14",
+          "code": "ARTICLE",
+          "category_title": "Articles",
+          "error": "in Star Framework way",
+          "correction": "in the Star Framework way"
         }
       ],
       "grossest": [
@@ -160,6 +167,13 @@
           "category_title": "Word Order",
           "error": "for any occasion could happen",
           "correction": "in case something happens"
+        },
+        {
+          "date": "2026-07-14",
+          "code": "PREP",
+          "category_title": "Prepositions",
+          "error": "share you my pain",
+          "correction": "share my pain with you"
         }
       ],
       "grossest": [
