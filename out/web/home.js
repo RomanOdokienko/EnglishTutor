@@ -92,12 +92,42 @@
   function rehearseList(person) {
     var examples = (person.examples || []).slice(0, 3);
     if (!examples.length) return '<p class="briefing-empty">Examples appear after annotations finish.</p>';
-    return examples.map(function (ex) {
-      return '<article class="briefing-rewrite"><p class="briefing-example-meta">'
-        + escapeHtml(ex.category_title) + ' · ' + escapeHtml(shortDate(ex.date)) + '</p>'
+    var name = escapeHtml(person.name);
+    return examples.map(function (ex, idx) {
+      return '<article class="briefing-rewrite tw-rehearse">'
+        + '<div class="tw-rehearse-top">'
+        + '<span class="tw-cat-chip">' + escapeHtml(ex.category_title) + '</span>'
+        + '<span class="tw-rehearse-date">' + escapeHtml(shortDate(ex.date)) + '</span>'
+        + '<button class="tw-skip" type="button" data-loop="dismiss" data-name="' + name + '" data-idx="' + idx + '"'
+        + ' title="Not a useful example — skip it and pull in the next one" aria-label="Skip this example">Skip</button>'
+        + '</div>'
         + '<div class="briefing-wrong"><span>You said</span><strong>' + escapeHtml(ex.error) + '</strong></div>'
         + '<div class="briefing-fix"><span>Try</span><strong>' + escapeHtml(ex.correction) + '</strong></div></article>';
     }).join('');
+  }
+
+  // The visible ranking that answers "why this focus?": the top density
+  // patterns, the suggested/active one marked, each other one a one-click
+  // "set as focus". This replaces the single ambiguous "Make it a focus".
+  function rankingStrip(person) {
+    var patterns = (person.patterns || []).slice(0, 3);
+    if (patterns.length < 2) return '';
+    var focus = person.focus || {};
+    var activeCodes = person.active_focus_codes || [];
+    var name = escapeHtml(person.name);
+    var chips = patterns.map(function (p) {
+      var isActive = activeCodes.indexOf(p.code) !== -1;
+      var isSuggested = focus.kind === 'suggested' && focus.code === p.code;
+      var body = '<b>' + escapeHtml(p.title) + '</b><i>' + density(p.average_density) + '<small>/100w</small></i>';
+      if (isActive) {
+        return '<span class="tw-rank-chip is-active" aria-current="true">' + body + '<em>Active focus</em></span>';
+      }
+      return '<button class="tw-rank-chip' + (isSuggested ? ' is-suggested' : '') + '" type="button"'
+        + ' data-loop="set" data-name="' + name + '" data-code="' + escapeHtml(p.code) + '">'
+        + body + '<em>' + (isSuggested ? 'Suggested · set as focus' : 'Set as focus') + '</em></button>';
+    }).join('');
+    return '<div class="tw-ranking"><span class="tw-ranking-label">Your top patterns</span>'
+      + '<div class="tw-ranking-chips">' + chips + '</div></div>';
   }
 
   // ---- evidence pieces ----
@@ -169,7 +199,10 @@
         + '<h2 class="tw-focus-title">' + escapeHtml(focus.title) + '</h2>'
         + focusMeasurement(focus)
         + (person.additional_focus_count ? '<p class="tw-note">+' + person.additional_focus_count + ' more active focus</p>' : '')
-        + '<h3 class="tw-sub">Rehearse these</h3>' + rehearseList(person);
+        + rankingStrip(person)
+        + '<div class="tw-sub-row"><h3 class="tw-sub">Rehearse these</h3>'
+        + '<span class="tw-sub-hint">one example per top pattern</span></div>'
+        + rehearseList(person);
     } else {
       head = '<div class="tw-focus-head"><span class="tw-kicker">Focus for the next call</span></div>'
         + '<p class="briefing-empty">One more comparable annotated call is needed to suggest a focus.</p>';
@@ -226,11 +259,14 @@
     var focus = person.focus;
     if (!focus) return '';
     var name = escapeHtml(person.name);
-    var buttons = '<button class="tw-cta is-primary" type="button" data-loop="gen" data-name="' + name + '">Generate exercise</button>';
-    if (focus.kind === 'suggested') {
-      buttons += '<button class="tw-cta is-ghost" type="button" data-loop="set" data-name="' + name + '">Make it a focus</button>';
-    } else if (focus.kind === 'active' && focus.ready_to_close) {
-      buttons += '<button class="tw-cta is-ghost" type="button" data-loop="close" data-name="' + name + '" data-id="' + escapeHtml(focus.id || '') + '">Mark closed ✓</button>';
+    var title = escapeHtml(focus.title);
+    // Both actions name the category so it is never ambiguous which of the
+    // top patterns they act on — they always act on the current focus above.
+    var buttons = '<button class="tw-cta is-primary" type="button" data-loop="gen" data-name="' + name + '">'
+      + 'Generate exercise <span class="tw-cta-cat">· ' + title + '</span></button>';
+    if (focus.kind === 'active' && focus.ready_to_close) {
+      buttons += '<button class="tw-cta is-ghost" type="button" data-loop="close" data-name="' + name + '" data-id="' + escapeHtml(focus.id || '') + '">'
+        + 'Mark ' + title + ' closed ✓</button>';
     }
     return '<div class="tw-actions">' + buttons + '</div>'
       + '<div class="tw-exercise" data-exercise="' + name + '"></div>';
@@ -311,7 +347,11 @@
           category_code: focus.code,
           category_title: focus.title,
           focus_text: '',
-          examples: (person.examples || []).slice(0, 3).map(function (ex) {
+          // Only the focus category's own examples — mixing in other patterns'
+          // errors gave the model a contradictory context for the exercise.
+          examples: (person.examples || []).filter(function (ex) {
+            return ex.code === focus.code;
+          }).slice(0, 3).map(function (ex) {
             return { error: ex.error, correction: ex.correction };
           }),
         }),
@@ -338,40 +378,82 @@
     paintExercise(name);
   }
 
-  async function changeFocus(name, action, id, btn) {
+  // Set a specific top-pattern category as a tracked focus. The code comes
+  // from the ranking chip, so it can differ from the current hero focus; the
+  // session anchor and seed examples are taken from that pattern.
+  async function setFocus(name, code, btn) {
     if (busy) return;
     var person = personByName(name);
+    if (!person || !code) return;
+    var pattern = (person.patterns || []).filter(function (p) { return p.code === code; })[0];
+    var dates = (pattern && pattern.dates) || (person.focus && person.focus.dates) || [];
+    var sessionDate = dates.length ? dates[dates.length - 1] : null;
+    if (!sessionDate) { toast('No comparable call yet to anchor this focus.', 'error'); return; }
     busy = true;
     if (btn) btn.classList.add('is-busy');
     try {
-      var payload;
-      if (action === 'set') {
-        var focus = person && person.focus;
-        var dates = (focus && focus.dates) || [];
-        var sessionDate = dates.length ? dates[dates.length - 1] : null;
-        if (!focus || !focus.code || !sessionDate) throw new Error('No comparable call yet to anchor this focus.');
-        payload = {
-          action: 'set', participant: name, category_code: focus.code, session_date: sessionDate,
-          examples: (person.examples || []).slice(0, 3).map(function (ex) {
-            return { error: ex.error, correction: ex.correction };
-          }),
-        };
-      } else {
-        payload = { action: 'close', id: id };
-      }
       var response = await fetch(window.ET.apiUrl('/api/focus'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          action: 'set', participant: name, category_code: code, session_date: sessionDate,
+          examples: (person.examples || []).filter(function (ex) { return ex.code === code; })
+            .slice(0, 3).map(function (ex) { return { error: ex.error, correction: ex.correction }; }),
+        }),
       });
       if (!response.ok) throw new Error(cleanError(await response.text()) || 'The action did not go through.');
       await reloadBriefing();
-      toast(action === 'set'
-        ? 'Focus set — tracked from your latest call.'
-        : 'Closed. Nice — it moves to your victories on Progress.', 'success');
+      toast(((pattern && pattern.title) || code) + ' is now a tracked focus.', 'success');
     } catch (error) {
       render();
       toast(error.message || 'The action did not go through.', 'error');
+    } finally {
+      busy = false;
+    }
+  }
+
+  async function closeFocus(name, id, btn) {
+    if (busy) return;
+    busy = true;
+    if (btn) btn.classList.add('is-busy');
+    try {
+      var response = await fetch(window.ET.apiUrl('/api/focus'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'close', id: id }),
+      });
+      if (!response.ok) throw new Error(cleanError(await response.text()) || 'The action did not go through.');
+      await reloadBriefing();
+      toast('Closed. Nice — it moves to your victories on Progress.', 'success');
+    } catch (error) {
+      render();
+      toast(error.message || 'The action did not go through.', 'error');
+    } finally {
+      busy = false;
+    }
+  }
+
+  // Wave off an unhelpful Rehearse example; the server holds the pair out and
+  // rebuilds, so the next-best candidate takes its slot after reload.
+  async function dismissExample(name, idx, btn) {
+    if (busy) return;
+    var person = personByName(name);
+    var ex = person && (person.examples || [])[idx];
+    if (!ex) return;
+    busy = true;
+    if (btn) btn.classList.add('is-busy');
+    try {
+      var response = await fetch(window.ET.apiUrl('/api/dismiss-example'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ participant: name, error: ex.error, correction: ex.correction }),
+      });
+      if (!response.ok) throw new Error(cleanError(await response.text()) || 'Could not skip that example.');
+      await reloadBriefing();
+      toast('Skipped — pulled in the next example.', 'success');
+    } catch (error) {
+      render();
+      toast(error.message || 'Could not skip that example.', 'error');
     } finally {
       busy = false;
     }
@@ -387,8 +469,9 @@
     var action = el.getAttribute('data-loop');
     var name = el.getAttribute('data-name');
     if (action === 'gen') generateExercise(name, el);
-    else if (action === 'set') changeFocus(name, 'set', null, el);
-    else if (action === 'close') changeFocus(name, 'close', el.getAttribute('data-id'), el);
+    else if (action === 'set') setFocus(name, el.getAttribute('data-code'), el);
+    else if (action === 'close') closeFocus(name, el.getAttribute('data-id'), el);
+    else if (action === 'dismiss') dismissExample(name, Number(el.getAttribute('data-idx')), el);
   }
 
   function render() {

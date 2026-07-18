@@ -2915,6 +2915,19 @@ def build_briefing(out_dir: Path) -> dict:
     history = load_json(out_dir / "history.json", {"sessions": []})
     sessions = sorted(history.get("sessions", []), key=lambda item: item.get("date", ""))
     focus_data = load_json(DATA_DIR / "focus.json", {"focuses": []})
+    # Examples a person waved off on This week: held out so a skipped Rehearse
+    # card is replaced by the next-best candidate on the following build. Keyed
+    # per participant by the (error, correction) pair, lower-cased.
+    dismissed_data = load_json(DATA_DIR / "dismissed_examples.json", {"dismissed": []})
+    dismissed_by_name: dict[str, set[tuple[str, str]]] = {}
+    for row in (dismissed_data.get("dismissed") or []):
+        if not isinstance(row, dict):
+            continue
+        pname = str(row.get("participant") or "")
+        err = str(row.get("error") or "").strip().lower()
+        corr = str(row.get("correction") or "").strip().lower()
+        if pname and err and corr:
+            dismissed_by_name.setdefault(pname, set()).add((err, corr))
     participant_names: list[str] = []
     for session in sessions:
         for participant in session.get("participants", []):
@@ -2963,7 +2976,7 @@ def build_briefing(out_dir: Path) -> dict:
                     "dates": recent_dates,
                 })
         category_rows.sort(key=lambda item: (-item["average_density"], -item["seen_sessions"], item["title"]))
-        patterns = category_rows[:2]
+        patterns = category_rows[:3]
 
         focus_rows: list[dict] = []
         for focus in active_focuses:
@@ -3042,6 +3055,13 @@ def build_briefing(out_dir: Path) -> dict:
                     "correction": str(item.get("correction") or "").strip(),
                 })
 
+        # Rehearse examples are gated exactly like the Session page: the same
+        # counting gate (is_countable_annotation drops low-confidence and
+        # stylistic items) plus is_clean_example_pair, then ranked by
+        # example_quality_score. The briefing used to skip every one of these
+        # filters, so items the pipeline itself does not count leaked onto the
+        # most visible page — that is what surfaced "sporny" Rehearse cards.
+        dismissed_keys = dismissed_by_name.get(name, set())
         available_examples: list[dict] = []
         seen_examples: set[tuple[str, str]] = set()
         for session in reversed(comparable):
@@ -3056,7 +3076,9 @@ def build_briefing(out_dir: Path) -> dict:
                 error = str(item.get("text") or "").strip()
                 correction = str(item.get("correction") or "").strip()
                 key = (error.lower(), correction.lower())
-                if not error or not correction or key in seen_examples:
+                if not error or not correction or key in seen_examples or key in dismissed_keys:
+                    continue
+                if not is_countable_annotation(item) or not is_clean_example_pair(error, correction):
                     continue
                 seen_examples.add(key)
                 code = (item.get("category") or infer_category_code(item) or "").upper()
@@ -3066,8 +3088,12 @@ def build_briefing(out_dir: Path) -> dict:
                     "category_title": CATEGORY_LABELS.get(code, "Grammar issue"),
                     "error": error,
                     "correction": correction,
+                    "quality": example_quality_score(error, correction),
                 })
 
+        # One example per top pattern (focus first), best quality within each
+        # category; ties fall to the most recent since available_examples is
+        # newest-first and max() keeps the first of equal scores.
         preferred_codes: list[str] = []
         for code in [
             (primary_focus or {}).get("code"),
@@ -3077,14 +3103,20 @@ def build_briefing(out_dir: Path) -> dict:
                 preferred_codes.append(code)
         examples: list[dict] = []
         for code in preferred_codes:
-            match = next((item for item in available_examples if item.get("code") == code and item not in examples), None)
-            if match:
-                examples.append(match)
+            pool = [item for item in available_examples if item.get("code") == code and item not in examples]
+            if pool:
+                examples.append(max(pool, key=lambda item: item["quality"]))
             if len(examples) == 3:
                 break
         if len(examples) < 3:
-            examples.extend(item for item in available_examples if item not in examples)
-            examples = examples[:3]
+            remaining = sorted(
+                (item for item in available_examples if item not in examples),
+                key=lambda item: item["quality"],
+                reverse=True,
+            )
+            examples.extend(remaining[: 3 - len(examples)])
+        for item in examples:
+            item.pop("quality", None)
 
         recent_direction = None
         if comparable:
@@ -3106,6 +3138,7 @@ def build_briefing(out_dir: Path) -> dict:
             "name": name,
             "focus": primary_focus,
             "additional_focus_count": max(0, len(focus_rows) - 1),
+            "active_focus_codes": [row.get("code") for row in focus_rows if row.get("code")],
             "patterns": patterns,
             "examples": examples,
             "grossest": grossest,

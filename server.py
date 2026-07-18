@@ -65,6 +65,7 @@ from cli import (
 
 REGISTRY_PATH = DATA_DIR / "people.json"
 FOCUS_PATH = DATA_DIR / "focus.json"
+DISMISSED_PATH = DATA_DIR / "dismissed_examples.json"
 FOCUS_CATEGORY_CODES = {"TENSE", "VERB", "ARTICLE", "PREP", "ORDER", "WORD", "COLLOC"}
 FOCUS_ACTIVE_LIMIT = 3
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -212,6 +213,18 @@ def save_focus_data(data: dict) -> None:
     FOCUS_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
+def load_dismissed_examples() -> dict:
+    data = load_json(DISMISSED_PATH, {"dismissed": []})
+    if not isinstance(data.get("dismissed"), list):
+        data = {"dismissed": []}
+    return data
+
+
+def save_dismissed_examples(data: dict) -> None:
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    DISMISSED_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
 class UploadHandler(SimpleHTTPRequestHandler):
     def send_plain_response(self, status_code: int, body: str, content_type: str = "text/plain; charset=utf-8") -> None:
         payload = (body or "").encode("utf-8", errors="replace")
@@ -262,6 +275,9 @@ class UploadHandler(SimpleHTTPRequestHandler):
             return
         if urlparse(self.path).path == "/api/focus":
             self.send_json_response(load_focus_data())
+            return
+        if urlparse(self.path).path == "/api/dismiss-example":
+            self.send_json_response(load_dismissed_examples())
             return
         if self.path in ("/web", "/web/"):
             location = "/web/highlights.html"
@@ -472,6 +488,56 @@ class UploadHandler(SimpleHTTPRequestHandler):
         build_briefing(OUT_DIR)
         self.send_json_response(data)
 
+    def handle_dismiss_example(self) -> None:
+        """Wave a Rehearse example off This week.
+
+        Mirrors handle_focus: appends to a small data/*.json and rebuilds the
+        briefing so the skipped card is replaced by the next-best candidate.
+        The (participant, error, correction) triple is enough to hold the pair
+        out on every future build; build_briefing keys on it lower-cased.
+        """
+        content_length = self.headers.get("Content-Length")
+        try:
+            body = self.rfile.read(int(content_length or "0"))
+            payload = json.loads(body.decode("utf-8"))
+        except (ValueError, UnicodeDecodeError, json.JSONDecodeError):
+            self.send_plain_response(400, "Expected JSON payload.")
+            return
+
+        action = str(payload.get("action") or "dismiss").strip().lower()
+        participant = str(payload.get("participant") or "").strip()
+        error = str(payload.get("error") or "").strip()
+        correction = str(payload.get("correction") or "").strip()
+        if not participant or not error or not correction:
+            self.send_plain_response(400, "Need participant, error and correction.")
+            return
+
+        data = load_dismissed_examples()
+        rows = data["dismissed"]
+        key = (participant, error.lower(), correction.lower())
+
+        def matches(row: dict) -> bool:
+            return (
+                str(row.get("participant") or "") == participant
+                and str(row.get("error") or "").strip().lower() == error.lower()
+                and str(row.get("correction") or "").strip().lower() == correction.lower()
+            )
+
+        if action == "restore":
+            data["dismissed"] = [row for row in rows if not matches(row)]
+        else:
+            if not any(matches(row) for row in rows):
+                rows.append({
+                    "participant": participant,
+                    "error": error,
+                    "correction": correction,
+                    "at": datetime.now().strftime("%Y-%m-%d"),
+                })
+
+        save_dismissed_examples(data)
+        build_briefing(OUT_DIR)
+        self.send_json_response(data)
+
     def handle_import_session(self) -> None:
         """Accept a locally computed session bundle and store it as-is.
 
@@ -562,6 +628,10 @@ class UploadHandler(SimpleHTTPRequestHandler):
 
         if request_path == "/api/focus":
             self.handle_focus()
+            return
+
+        if request_path == "/api/dismiss-example":
+            self.handle_dismiss_example()
             return
 
         if request_path == "/api/upload-audio":

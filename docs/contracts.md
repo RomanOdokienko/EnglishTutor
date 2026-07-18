@@ -92,12 +92,27 @@ up to three comparable sessions strictly before that history entry.
 
 Path: `out/briefing.json` (also copied to `out/web/briefing.json`). It is a
 deterministic read model rebuilt after session analysis, derived reanalysis and
-focus updates. Version 2 contains one primary active or suggested focus, at
-most two patterns from the latest three comparable calls, at most two matching
-annotation examples and one recent grammar direction record per participant.
-Russian fallback and lexical diversity are intentionally absent from this
-briefing. The browser treats it as a convenience read model; Session analysis
-and history comparison v1 remain the canonical source for detailed evidence.
+focus updates. Version 2 contains one primary active or suggested focus,
+`active_focus_codes` (every active focus category for that participant, so the
+This-week ranking strip can mark which patterns are already tracked), the top
+three patterns by density from the latest three comparable calls, up to three
+matching annotation examples (one per top pattern, focus first), a `grossest`
+block and one recent grammar direction record per participant. The examples pass
+the same gate as the Session page — `is_countable_annotation` plus
+`is_clean_example_pair`, ranked by `example_quality_score` — so items the
+pipeline does not itself count no longer leak onto the most visible page; any
+pair a participant skipped on This week (stored in `data/dismissed_examples.json`)
+is held out so the next-best candidate fills its slot on the next build.
+`grossest` holds at most two findings of the latest comparable
+session at the highest severity level present there (date, severity, code,
+category_title, error, correction) — the guaranteed severity slot of ADR-0007,
+selected independently of category frequency and focus. It is an empty list
+when that session has no severity-rated findings, and the client renders the
+band only when it is non-empty; adding it did not bump the briefing version,
+which stays 2. Russian fallback and lexical diversity are intentionally absent
+from this briefing. The browser treats it as a convenience read model; Session
+analysis and history comparison v1 remain the canonical source for detailed
+evidence.
 
 ### Import bundle (POST /api/import-session)
 
@@ -128,6 +143,8 @@ Date bodies use JSON unless noted otherwise.
 | POST /api/reanalyze | No body | reanalyzed count | Recomputes derived metrics for stored analyses without an LLM request |
 | POST /api/delete | date required | deleted date | Removes session source, derived analysis and its history entry |
 | POST /api/highlight-exercise | participant_name, category_code and category_title required; focus_text and examples optional | model and exercise | Requires OpenAI configuration |
+| GET/POST /api/focus | GET returns focus.json; POST action set/close/remove (ADR-0005) | Focus JSON | Rebuilds the briefing after a write |
+| POST /api/dismiss-example | participant, error, correction required; action defaults to dismiss, restore removes the entry | Dismissed JSON | Holds a Rehearse pair out of the briefing and rebuilds it |
 | POST /api/test-gpt5 | No body | model and output | Diagnostic endpoint; not a user-facing production feature |
 
 Validation errors use 400; missing sessions use 404; provider or rebuild

@@ -370,6 +370,37 @@ main {
 .tw-cta.is-ghost { color: var(--color-slate); background: var(--color-surface); border: 1px solid var(--color-border-strong); }
 .tw-cta.is-ghost:hover { color: var(--color-accent-strong); border-color: var(--color-accent); }
 .tw-cta:focus-visible { outline: none; box-shadow: var(--ring-accent); }
+.tw-cta-cat { font-weight: 600; opacity: 0.85; }
+
+/* Ranking strip: the visible top-3 that shows why the focus was chosen and
+   lets you switch it in one click. */
+.tw-ranking { margin-top: 18px; }
+.tw-ranking-label { display: block; margin-bottom: 8px; color: var(--color-muted-2); font-size: var(--text-11); font-weight: 750; letter-spacing: 0.05em; text-transform: uppercase; }
+.tw-ranking-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.tw-rank-chip { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 3px; padding: 8px 13px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-md); background: var(--color-surface); font: inherit; text-align: left; cursor: pointer; transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out); }
+button.tw-rank-chip:hover { border-color: var(--color-accent); background: var(--color-surface-2); }
+.tw-rank-chip:focus-visible { outline: none; box-shadow: var(--ring-accent); }
+.tw-rank-chip b { font-family: var(--font-display); font-size: var(--text-15); font-weight: 600; letter-spacing: -0.01em; color: var(--color-ink); }
+.tw-rank-chip i { font-style: normal; font-size: var(--text-13); font-weight: 700; font-variant-numeric: tabular-nums; color: var(--color-sky-deep); }
+.tw-rank-chip i small { font-weight: 600; font-size: var(--text-10); color: var(--color-muted-2); }
+.tw-rank-chip em { font-style: normal; font-size: var(--text-11); font-weight: 700; color: var(--color-accent-strong); }
+.tw-rank-chip.is-suggested { border-color: var(--color-accent); background: var(--color-accent-50); }
+.tw-rank-chip.is-active { border-style: dashed; cursor: default; }
+.tw-rank-chip.is-active em { color: var(--color-sky-navy); }
+.tw-rank-chip.is-busy { opacity: 0.5; pointer-events: none; }
+
+.tw-sub-row { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; margin: 18px 0 10px; }
+.tw-sub-row .tw-sub { margin: 0; }
+.tw-sub-hint { color: var(--color-muted-2); font-size: var(--text-12); }
+
+/* Rehearse card: category as a real chip (not a grey line) + a per-card skip. */
+.tw-rehearse-top { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
+.tw-cat-chip { display: inline-flex; padding: 3px 9px; border-radius: var(--radius-pill); background: var(--color-sky-100); color: var(--color-sky-navy); font-size: var(--text-11); font-weight: 750; white-space: nowrap; }
+.tw-rehearse-date { color: var(--color-muted-2); font-size: var(--text-11); font-weight: 650; }
+.tw-skip { margin-left: auto; padding: 3px 9px; border: 1px solid var(--color-border); border-radius: var(--radius-pill); background: transparent; color: var(--color-muted-2); font: inherit; font-size: var(--text-11); font-weight: 700; cursor: pointer; transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out); }
+.tw-skip:hover { color: var(--color-danger); border-color: var(--color-danger-200); }
+.tw-skip:focus-visible { outline: none; box-shadow: var(--ring-accent); }
+.tw-skip.is-busy { opacity: 0.5; pointer-events: none; }
 
 .tw-evidence { border-top: 1px solid var(--color-border); }
 .tw-evidence > summary { padding: 14px 22px; color: var(--color-accent-strong); font-size: var(--text-13); font-weight: 700; cursor: pointer; list-style: none; }

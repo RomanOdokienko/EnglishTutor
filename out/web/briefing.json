@@ -17,6 +17,9 @@
         "ready_to_close": false
       },
       "additional_focus_count": 0,
+      "active_focus_codes": [
+        "WORD"
+      ],
       "patterns": [
         {
           "code": "ARTICLE",
@@ -34,6 +37,18 @@
           "code": "WORD",
           "title": "Wrong Word",
           "average_density": 0.95,
+          "seen_sessions": 3,
+          "sessions_considered": 3,
+          "dates": [
+            "2026-02-02",
+            "2026-02-09",
+            "2026-07-14"
+          ]
+        },
+        {
+          "code": "ORDER",
+          "title": "Word Order",
+          "average_density": 0.86,
           "seen_sessions": 3,
           "sessions_considered": 3,
           "dates": [
@@ -60,10 +75,10 @@
         },
         {
           "date": "2026-07-14",
-          "code": "ARTICLE",
-          "category_title": "Articles",
-          "error": "in Star Framework way",
-          "correction": "in the Star Framework way"
+          "code": "ORDER",
+          "category_title": "Word Order",
+          "error": "we, me and my brother",
+          "correction": "my brother and I"
         }
       ],
       "grossest": [
@@ -127,6 +142,7 @@
         ]
       },
       "additional_focus_count": 0,
+      "active_focus_codes": [],
       "patterns": [
         {
           "code": "ARTICLE",
@@ -151,6 +167,18 @@
             "2026-02-09",
             "2026-07-14"
           ]
+        },
+        {
+          "code": "VERB",
+          "title": "Verb Form",
+          "average_density": 1.05,
+          "seen_sessions": 3,
+          "sessions_considered": 3,
+          "dates": [
+            "2026-02-02",
+            "2026-02-09",
+            "2026-07-14"
+          ]
         }
       ],
       "examples": [
@@ -158,22 +186,22 @@
           "date": "2026-07-14",
           "code": "ARTICLE",
           "category_title": "Articles",
-          "error": "the not resolved issue",
-          "correction": "an unresolved issue"
+          "error": "Just usual question",
+          "correction": "Just a usual question"
         },
         {
           "date": "2026-07-14",
           "code": "ORDER",
           "category_title": "Word Order",
-          "error": "for any occasion could happen",
-          "correction": "in case something happens"
+          "error": "world feeling in moment",
+          "correction": "the feeling of the world in the moment"
         },
         {
           "date": "2026-07-14",
-          "code": "PREP",
-          "category_title": "Prepositions",
-          "error": "share you my pain",
-          "correction": "share my pain with you"
+          "code": "VERB",
+          "category_title": "Verb Form",
+          "error": "I just mind blown",
+          "correction": "I'm just mind-blown"
         }
       ],
       "grossest": [
