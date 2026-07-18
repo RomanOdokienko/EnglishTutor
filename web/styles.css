@@ -339,6 +339,68 @@ main {
 .briefing-session-link { display: inline-block; margin-top: 20px; color: var(--color-sky-deep); font-size: var(--text-13); font-weight: 750; text-decoration: none; }
 .briefing-session-link:hover { text-decoration: underline; }
 
+/* ---- This week — viewer-first (one hero + evidence + partner glance) ---- */
+.home-toolbar { display: flex; margin: 2px 0 20px; }
+.home-viewer { display: inline-flex; padding: 3px; gap: 2px; border: 1px solid var(--color-border); border-radius: var(--radius-pill); background: var(--color-surface-2); }
+.home-viewer-btn { appearance: none; border: 0; cursor: pointer; font: inherit; font-size: var(--text-13); font-weight: 650; color: var(--color-muted-2); background: transparent; padding: 6px 15px; border-radius: var(--radius-pill); transition: color var(--dur-fast) var(--ease-out); }
+.home-viewer-btn:hover { color: var(--color-slate); }
+.home-viewer-btn.is-active { color: #fff; background: var(--color-accent); box-shadow: var(--shadow-raised); }
+.home-viewer-btn:focus-visible { outline: none; box-shadow: var(--ring-accent); }
+
+.tw-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 18px; align-items: start; }
+.tw-layout.is-both { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.tw-person { min-width: 0; overflow: hidden; border: 1px solid var(--color-paper-cool-4); border-radius: var(--radius-3xl); background: rgba(255, 255, 255, 0.94); box-shadow: var(--shadow-band); }
+.tw-person-name { padding: 13px 22px; border-bottom: 1px solid var(--color-border); background: rgba(248, 250, 252, 0.85); font-family: var(--font-display); font-size: var(--text-17); font-weight: 600; }
+.tw-hero { padding: 20px 22px 22px; }
+.tw-focus-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.tw-kicker { font-size: var(--text-11); font-weight: 750; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-strong); }
+.tw-pills { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+.tw-focus-title { margin: 10px 0 0; font-family: var(--font-display); font-size: var(--text-24); font-weight: 600; letter-spacing: -0.01em; }
+.tw-meas { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.tw-meas b { font-family: var(--font-display); font-size: var(--text-22); font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.tw-meas b small { font-family: var(--font-body); font-size: var(--text-12); font-weight: 600; color: var(--color-muted-2); }
+.tw-change { padding: 2px 8px; border-radius: var(--radius-pill); font-size: var(--text-12); font-weight: 700; }
+.tw-change.is-down { background: var(--color-positive-100); color: var(--color-positive-ink); }
+.tw-change.is-up { background: var(--color-warning-100); color: var(--color-warning-ink); }
+.tw-change.is-flat { background: var(--color-border); color: var(--color-muted); }
+.tw-note { margin: 7px 0 0; color: var(--color-muted-2); font-size: var(--text-12); line-height: 1.5; }
+.tw-sub { margin: 18px 0 10px; color: var(--color-slate); font-size: var(--text-13); font-weight: 700; letter-spacing: 0.01em; }
+.tw-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
+.tw-cta { display: inline-flex; align-items: center; padding: 9px 15px; border-radius: var(--radius-md); font-size: var(--text-13); font-weight: 700; text-decoration: none; transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out); }
+.tw-cta.is-primary { color: #fff; background: var(--color-accent); box-shadow: var(--shadow-accent); }
+.tw-cta.is-primary:hover { background: var(--color-accent-strong); }
+.tw-cta.is-ghost { color: var(--color-slate); background: var(--color-surface); border: 1px solid var(--color-border-strong); }
+.tw-cta.is-ghost:hover { color: var(--color-accent-strong); border-color: var(--color-accent); }
+.tw-cta:focus-visible { outline: none; box-shadow: var(--ring-accent); }
+
+.tw-evidence { border-top: 1px solid var(--color-border); }
+.tw-evidence > summary { padding: 14px 22px; color: var(--color-accent-strong); font-size: var(--text-13); font-weight: 700; cursor: pointer; list-style: none; }
+.tw-evidence > summary::-webkit-details-marker { display: none; }
+.tw-evidence > summary::before { content: '▸ '; }
+.tw-evidence[open] > summary::before { content: '▾ '; }
+.tw-evidence > summary:focus-visible { outline: none; box-shadow: var(--ring-accent); border-radius: var(--radius-sm); }
+.tw-evidence-body { display: grid; gap: 18px; padding: 0 22px 18px; }
+.tw-ev-block > h4 { margin: 0 0 8px; color: var(--color-muted-2); font-size: var(--text-12); font-weight: 750; letter-spacing: 0.05em; text-transform: uppercase; }
+
+.tw-spark { display: inline-flex; align-items: flex-end; gap: 4px; height: 30px; margin: 10px 0 2px; }
+.tw-spark i { width: 8px; border-radius: 2px; background: var(--color-accent-200); }
+.tw-spark i.is-last { background: var(--color-accent); }
+
+.tw-partners { display: grid; gap: 12px; }
+.tw-partner { display: grid; gap: 5px; width: 100%; padding: 16px 18px; border: 1px solid var(--color-paper-cool-4); border-radius: var(--radius-2xl); background: rgba(255, 255, 255, 0.94); box-shadow: var(--shadow-sm); font: inherit; text-align: left; cursor: pointer; transition: border-color var(--dur-fast) var(--ease-out); }
+.tw-partner:hover { border-color: var(--color-accent); }
+.tw-partner:focus-visible { outline: none; box-shadow: var(--ring-accent); }
+.tw-partner-top { color: var(--color-muted-2); font-size: var(--text-12); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+.tw-partner strong { font-family: var(--font-display); font-size: var(--text-18); font-weight: 600; }
+.tw-partner-tag { color: var(--color-muted-2); font-size: var(--text-12); }
+.tw-partner-dir { color: var(--color-slate); font-size: var(--text-12); font-variant-numeric: tabular-nums; }
+.tw-partner-cta { margin-top: 4px; color: var(--color-accent-strong); font-size: var(--text-12); font-weight: 700; }
+
+@media (max-width: 860px) {
+  .tw-layout, .tw-layout.is-both { grid-template-columns: 1fr; }
+}
+
 h1 {
   margin: 0 0 8px;
   font-size: var(--text-34);

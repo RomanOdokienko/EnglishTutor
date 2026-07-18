@@ -11,15 +11,18 @@
     <header class="app-shell">
       <div class="app-shell-inner">
         <a class="app-brand" href="home.html">English Tutor</a>
-        <nav id="app-nav" class="app-nav" aria-label="Primary navigation"><a class="app-nav-link" data-nav-key="home" href="home.html">This week</a><a class="app-nav-link" data-nav-key="session" href="highlights.html">Session</a><a class="app-nav-link" data-nav-key="progress" href="progress.html">Progress</a><a class="app-nav-link" data-nav-key="method" href="method.html">How it works</a><a class="app-nav-link is-accent" data-nav-key="record" href="record.html">Record</a></nav>
+        <nav id="app-nav" class="app-nav" aria-label="Primary navigation"><a class="app-nav-link" data-nav-key="home" href="home.html">This week</a><a class="app-nav-link" data-nav-key="session" href="highlights.html">Session</a><a class="app-nav-link" data-nav-key="progress" href="progress.html">Progress</a><a class="app-nav-link is-accent" data-nav-key="record" href="record.html">Record</a></nav>
       </div>
     </header>
     <main class="home-page">
       <header class="page-heading home-header">
         <p class="home-eyebrow">Before your next call</p>
         <h1>This week</h1>
-        <p class="subtitle">A short, evidence-based briefing for the next call: focus, recurring patterns, and phrases to rehearse.</p>
+        <p class="subtitle">Your one focus for the next call, the phrases to rehearse, and the evidence behind them. <a href="method.html">How the numbers work</a></p>
       </header>
+      <div class="home-toolbar">
+        <div class="home-viewer" id="home-viewer" role="group" aria-label="Whose briefing to show"></div>
+      </div>
       <div id="briefing-root" class="briefing-board" aria-live="polite">
         <p class="metric-note">Loading this week’s briefing…</p>
       </div>

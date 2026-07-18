@@ -3163,7 +3163,6 @@ def write_web_assets(out_dir: Path) -> None:
             ("home", "This week", "home.html", False),
             ("session", "Session", "highlights.html", False),
             ("progress", "Progress", "progress.html", False),
-            ("method", "How it works", "method.html", False),
             ("record", "Record", "record.html", True),
         )
     )
