@@ -217,17 +217,18 @@ html {
 body {
   font-family: var(--font-body);
   margin: 0;
-  background: var(--color-bg);
-  color: var(--color-ink);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-body.page-highlights {
+  min-height: 100vh;
+  /* One backdrop for every page: the tints are anchored to the viewport
+     (background-attachment: fixed) so switching tabs never repaints or
+     shifts the background — only the page content changes underneath it. */
   background:
     radial-gradient(circle at top right, rgba(34, 197, 94, 0.14), transparent 30%),
     radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 28%),
     linear-gradient(180deg, var(--color-paper-cool-2) 0%, var(--color-paper-cool-3) 32%, var(--color-paper-cool) 100%);
+  background-attachment: fixed;
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 main {
@@ -278,12 +279,8 @@ main {
 }
 
 /* ---- This week briefing ---- */
-.page-home {
-  background:
-    radial-gradient(circle at top right, rgba(34, 197, 94, 0.13), transparent 31%),
-    radial-gradient(circle at top left, rgba(59, 130, 246, 0.11), transparent 29%),
-    var(--color-surface-2);
-}
+/* .page-home no longer sets its own background — the unified body backdrop
+   covers every page (see `body` above). */
 
 .home-page {
   max-width: 1240px;
