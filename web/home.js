@@ -175,15 +175,9 @@
         + '<p class="briefing-empty">One more comparable annotated call is needed to suggest a focus.</p>';
     }
 
-    // The set/close machinery lives on Session; the briefing routes you there.
-    // Viewer identity is shared, so Session opens already scoped to this person.
-    var actions = '';
-    if (focus) {
-      actions = '<div class="tw-actions"><a class="tw-cta is-primary" href="highlights.html">Practise this in Session →</a>'
-        + (focus.kind === 'active' && focus.ready_to_close ? '<a class="tw-cta is-ghost" href="highlights.html">Close it on Session ✓</a>' : '')
-        + (focus.kind === 'suggested' ? '<a class="tw-cta is-ghost" href="highlights.html">Make it a focus →</a>' : '')
-        + '</div>';
-    }
+    // Loop actions act in place, reusing the same endpoints the Session page
+    // calls (/api/highlight-exercise, /api/focus) — no navigation away.
+    var actions = focus ? loopActions(person) : '';
 
     var grossest = (person.grossest && person.grossest.length)
       ? '<div class="tw-ev-block"><h4>Most serious last call</h4>' + grossestBlock(person) + '</div>' : '';
@@ -218,6 +212,185 @@
         : '<span class="briefing-empty">No focus yet</span>')
       + (latest ? '<span class="tw-partner-dir">' + latest + statusText + '</span>' : '')
       + '<span class="tw-partner-cta">View →</span></button>';
+  }
+
+  // ---- loop actions (in place; reuse the Session endpoints) ----
+  var exerciseState = {};   // name -> { loading, error, exercise, answer }
+  var busy = false;
+
+  function personByName(name) {
+    return state.people.filter(function (p) { return p.name === name; })[0] || null;
+  }
+
+  function loopActions(person) {
+    var focus = person.focus;
+    if (!focus) return '';
+    var name = escapeHtml(person.name);
+    var buttons = '<button class="tw-cta is-primary" type="button" data-loop="gen" data-name="' + name + '">Generate exercise</button>';
+    if (focus.kind === 'suggested') {
+      buttons += '<button class="tw-cta is-ghost" type="button" data-loop="set" data-name="' + name + '">Make it a focus</button>';
+    } else if (focus.kind === 'active' && focus.ready_to_close) {
+      buttons += '<button class="tw-cta is-ghost" type="button" data-loop="close" data-name="' + name + '" data-id="' + escapeHtml(focus.id || '') + '">Mark closed ✓</button>';
+    }
+    return '<div class="tw-actions">' + buttons + '</div>'
+      + '<div class="tw-exercise" data-exercise="' + name + '"></div>';
+  }
+
+  function exercisePanelHtml(name) {
+    var st = exerciseState[name] || {};
+    if (st.loading) return '<div class="tw-ex-card"><p class="tw-ex-kick">Generating a mini exercise…</p></div>';
+    if (st.error) {
+      return '<div class="tw-ex-card is-error"><p class="tw-ex-q">' + escapeHtml(st.error) + '</p>'
+        + '<button class="tw-cta is-ghost" type="button" data-loop="gen" data-name="' + escapeHtml(name) + '">Try again</button></div>';
+    }
+    var ex = st.exercise;
+    if (!ex) return '';
+    var answer = st.answer;
+    var options = (ex.options || []).map(function (option, index) {
+      var cls = '';
+      if (answer) {
+        if (String(option) === String(ex.answer)) cls = ' is-correct';
+        else if (answer.index === index) cls = ' is-wrong';
+      }
+      return '<button class="tw-ex-opt' + cls + '" type="button"' + (answer ? ' disabled' : '')
+        + ' data-exopt="' + index + '" data-name="' + escapeHtml(name) + '">' + escapeHtml(option) + '</button>';
+    }).join('');
+    var reveal = '';
+    if (answer) {
+      reveal = '<p class="tw-ex-reveal">' + (answer.correct ? 'Correct.' : 'Answer: ' + escapeHtml(ex.answer)) + '</p>'
+        + (ex.explanation ? '<p class="tw-ex-exp">' + escapeHtml(ex.explanation) + '</p>' : '');
+    }
+    return '<div class="tw-ex-card"><p class="tw-ex-kick">' + escapeHtml(ex.title || 'Mini exercise') + '</p>'
+      + (ex.prompt ? '<p class="tw-ex-prompt">' + escapeHtml(ex.prompt) + '</p>' : '')
+      + (ex.question ? '<p class="tw-ex-q">' + escapeHtml(ex.question) + '</p>' : '')
+      + '<div class="tw-ex-opts">' + options + '</div>' + reveal + '</div>';
+  }
+
+  function paintExercise(name) {
+    var host = document.querySelector('[data-exercise="' + name + '"]');
+    if (host) host.innerHTML = exercisePanelHtml(name);
+  }
+
+  function toast(message, kind) {
+    var el = document.getElementById('tw-toast');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'tw-toast';
+      document.body.appendChild(el);
+    }
+    el.className = 'tw-toast is-' + (kind || 'info') + ' is-show';
+    el.textContent = message;
+    window.clearTimeout(el._timer);
+    el._timer = window.setTimeout(function () { el.classList.remove('is-show'); }, 3600);
+  }
+
+  async function reloadBriefing() {
+    var response = await fetch(window.ET.apiUrl('/briefing.json'), { cache: 'no-store' });
+    if (!response.ok) throw new Error('Could not refresh the briefing.');
+    var briefing = await response.json();
+    state.people = (briefing.participants || []).map(normalizePerson);
+    exerciseState = {};
+    ensureSelected();
+    renderViewer();
+    render();
+  }
+
+  async function generateExercise(name, btn) {
+    if (busy) return;
+    var person = personByName(name);
+    if (!person || !person.focus) return;
+    var focus = person.focus;
+    busy = true;
+    if (btn) btn.classList.add('is-busy');
+    exerciseState[name] = { loading: true };
+    paintExercise(name);
+    try {
+      var response = await fetch(window.ET.apiUrl('/api/highlight-exercise'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          participant_name: name,
+          category_code: focus.code,
+          category_title: focus.title,
+          focus_text: '',
+          examples: (person.examples || []).slice(0, 3).map(function (ex) {
+            return { error: ex.error, correction: ex.correction };
+          }),
+        }),
+      });
+      if (!response.ok) throw new Error(cleanError(await response.text()));
+      var data = await response.json();
+      exerciseState[name] = { exercise: data.exercise || {}, answer: null };
+    } catch (error) {
+      exerciseState[name] = { error: error.message || 'Exercise generation failed.' };
+    } finally {
+      busy = false;
+      if (btn) btn.classList.remove('is-busy');
+      paintExercise(name);
+    }
+  }
+
+  function answerExercise(optionEl) {
+    var name = optionEl.getAttribute('data-name');
+    var index = Number(optionEl.getAttribute('data-exopt'));
+    var st = exerciseState[name];
+    if (!st || !st.exercise || st.answer) return;
+    var chosen = (st.exercise.options || [])[index];
+    st.answer = { index: index, correct: String(chosen) === String(st.exercise.answer) };
+    paintExercise(name);
+  }
+
+  async function changeFocus(name, action, id, btn) {
+    if (busy) return;
+    var person = personByName(name);
+    busy = true;
+    if (btn) btn.classList.add('is-busy');
+    try {
+      var payload;
+      if (action === 'set') {
+        var focus = person && person.focus;
+        var dates = (focus && focus.dates) || [];
+        var sessionDate = dates.length ? dates[dates.length - 1] : null;
+        if (!focus || !focus.code || !sessionDate) throw new Error('No comparable call yet to anchor this focus.');
+        payload = {
+          action: 'set', participant: name, category_code: focus.code, session_date: sessionDate,
+          examples: (person.examples || []).slice(0, 3).map(function (ex) {
+            return { error: ex.error, correction: ex.correction };
+          }),
+        };
+      } else {
+        payload = { action: 'close', id: id };
+      }
+      var response = await fetch(window.ET.apiUrl('/api/focus'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) throw new Error(cleanError(await response.text()) || 'The action did not go through.');
+      await reloadBriefing();
+      toast(action === 'set'
+        ? 'Focus set — tracked from your latest call.'
+        : 'Closed. Nice — it moves to your victories on Progress.', 'success');
+    } catch (error) {
+      render();
+      toast(error.message || 'The action did not go through.', 'error');
+    } finally {
+      busy = false;
+    }
+  }
+
+  function cleanError(raw) {
+    var text = String(raw || '').trim();
+    if (!text) return 'Something went wrong.';
+    return text.length > 160 ? text.slice(0, 157) + '…' : text;
+  }
+
+  function handleLoop(el) {
+    var action = el.getAttribute('data-loop');
+    var name = el.getAttribute('data-name');
+    if (action === 'gen') generateExercise(name, el);
+    else if (action === 'set') changeFocus(name, 'set', null, el);
+    else if (action === 'close') changeFocus(name, 'close', el.getAttribute('data-id'), el);
   }
 
   function render() {
@@ -264,10 +437,15 @@
     state.selected = (saved === 'both' || names.indexOf(saved) !== -1) ? saved : (names[0] || 'both');
   }
 
-  // One delegated handler covers the viewer segments and the partner cards.
+  // One delegated handler covers the viewer segments, partner cards, the loop
+  // action buttons and the exercise options.
   document.addEventListener('click', function (event) {
-    var trigger = event.target.closest('[data-view]');
-    if (trigger) setSelected(trigger.getAttribute('data-view'));
+    var view = event.target.closest('[data-view]');
+    if (view) { setSelected(view.getAttribute('data-view')); return; }
+    var loop = event.target.closest('[data-loop]');
+    if (loop) { handleLoop(loop); return; }
+    var option = event.target.closest('[data-exopt]');
+    if (option) { answerExercise(option); return; }
   });
 
   async function load() {
