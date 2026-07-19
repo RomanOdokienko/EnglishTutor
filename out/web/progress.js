@@ -802,13 +802,18 @@
     }
 
     // Speed vs accuracy: the recorded-call tempo paired with grammar error
-    // density as a trajectory. Needs at least one speaker with two qualifying
-    // calls to show a direction, so it stays hidden until recorded calls
-    // accumulate — text uploads never qualify.
+    // density as a trajectory. Shown from the first qualifying recorded call so
+    // progress is visible as it builds — one point is a valid "where you are",
+    // a second joins into a trajectory. Text uploads never qualify (no tempo).
     var trajectory = trajectorySeries();
-    if (trajectory.some(function (speaker) { return speaker.points.length >= 2; })) {
-      var trajectorySection = section('Speed vs accuracy',
-        'Each point is one recorded call, joined in time. Right is faster speech; down is fewer errors — so speeding up while holding level or dropping is progress, and the two do not have to move together. Hollow dot is the earliest call, solid is the latest.');
+    var maxTrajectoryPoints = trajectory.reduce(function (max, speaker) {
+      return Math.max(max, speaker.points.length);
+    }, 0);
+    if (maxTrajectoryPoints >= 1) {
+      var trajectorySubtitle = maxTrajectoryPoints >= 2
+        ? 'Each point is one recorded call, joined in time. Right is faster speech; down is fewer errors — so speeding up while holding level or dropping is progress, and the two do not have to move together. Hollow dot is the earliest call, solid is the latest.'
+        : 'Your first recorded call is plotted here — one more comparable recorded call joins into a trajectory. Right is faster speech; down is fewer errors.';
+      var trajectorySection = section('Speed vs accuracy', trajectorySubtitle);
       var trajectoryGrid = document.createElement('div');
       trajectoryGrid.className = 'pg-grid';
       trajectoryGrid.appendChild(card({
