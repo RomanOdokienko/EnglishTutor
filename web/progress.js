@@ -746,14 +746,23 @@
       duo.appendChild(focusSection);
     }
 
-    var habits = section('Speaking habits', 'A transcript-based signal that is easy to interpret and useful to track.');
+    // Who actually got the practice. On a two-person call a lopsided share
+    // means one of them simply spoke less, which colours every other metric.
+    var shareSeries = buildSeries(function (derived) { return (derived.metrics || {}).speaking_share_pct; });
+    var fillerSeries = buildSeries(function (derived) { return (derived.metrics || {}).filler_per_100w; });
+    var habits = section('Speaking habits', 'Read from the transcript, so these cover every session — recorded or uploaded. Descriptive, not scores.');
     var habitsGrid = document.createElement('div');
     habitsGrid.className = 'pg-grid';
-    var fillerSeries = buildSeries(function (derived) { return (derived.metrics || {}).filler_per_100w; });
+    habitsGrid.appendChild(card({
+      title: 'Share of the call',
+      description: 'Percent of all words in the session spoken by each person. 50% is an even split.',
+      help: 'Counts every word, English and Russian. Neither high nor low is "good" — but a person who speaks a third of the call gets a third of the practice, and their other metrics rest on a smaller sample.',
+      chart: makeChart(shareSeries, dates, { compact: true, decimals: 0, ariaLabel: 'Share of speaking trend' }),
+    }));
     habitsGrid.appendChild(card({
       title: 'Fillers / 100 words',
       description: 'Recognised fillers per 100 English words. Lower is usually better.',
-      help: 'Counts um, uh, er, erm, hmm, like, you know, I mean, kind of and sort of. Very short sessions are excluded from the line.',
+      help: 'Counts um, uh, er, erm, hmm, like, you know, I mean, kind of and sort of. Recordings made before 2026-07-19 are not comparable with uploads here: the transcription dropped um/uh from audio, so those calls only ever counted the multi-word fillers. Very short sessions are excluded from the line.',
       chart: makeChart(fillerSeries, dates, { compact: true, decimals: 1, ariaLabel: 'Filler words trend' }),
     }));
     habits.appendChild(habitsGrid);
@@ -776,6 +785,13 @@
         label: 'Hesitation pauses / min',
         description: 'Silences of 0.5s or longer inside your own utterances, per speaking minute.',
         help: 'Pauses between speakers are not counted — only hesitations inside your own speech. Lower usually means smoother delivery.',
+        decimals: 1,
+      },
+      {
+        key: 'mean_length_of_run_words',
+        label: 'Words per run',
+        description: 'Average number of words between two hesitation pauses.',
+        help: 'The clearest sign that phrasing is becoming automatic: longer runs mean you assemble more words before needing to stop and think. Read it together with the pause count — both describe the same delivery from different sides. Higher usually means smoother speech.',
         decimals: 1,
       },
     ];
