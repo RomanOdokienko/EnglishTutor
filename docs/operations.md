@@ -41,6 +41,7 @@ uncommitted data that has not been reviewed.
 | ENGLISH_TUTOR_DATA_ROOT | Backend and CLI | Moves mutable data (sessions/, data/, out/) to a mounted volume; unset means repository paths |
 | ENGLISH_TUTOR_TOKEN | Backend and push_to_prod.py | Shared secret for POST /api/import-session; the endpoint answers 503 until this is set. Same value on the server and in the local .env |
 | OPENAI_ANNOTATION_SEVERITY | Backend and CLI | Kill switch for the severity field (ADR-0007): set 0 to drop it from the annotation schema; default on |
+| ENGLISH_TUTOR_KEEP_AUDIO | Backend | Set 1 to keep `sessions/<date>/audio.<ext>` after a successful transcription. Unset on prod so the Railway volume stays small; useful for a local run, where disk is free |
 | HOST and PORT | Backend | Bind settings for local or hosted server |
 
 Never commit the values of credential variables. `cli.py` reads a `.env` file in
@@ -107,3 +108,25 @@ long — the access token task (plan 1.3) covers this.
 | Accidental session deletion | Restore sessions/<date> and its analysis from Git, rebuild history and out/web |
 | Provider credential missing | Set the relevant environment variable; do not add it to source files |
 | Audio upload or transcription fails | Use Retry upload from the still-open Record page or upload the automatically downloaded local recording; inspect the retained sessions/<date>/audio.<ext> on the Railway volume if provider diagnosis is needed |
+
+## Keeping the audio
+
+Audio is the only input that cannot be re-derived: `transcript.txt` and
+`timings.json` come from it, never the reverse. Losing it closes off
+re-transcription with better settings and every sound-based analysis
+(pronunciation, intonation) permanently.
+
+The record page already downloads a copy to the operator's machine when the
+recording stops (`keepLocalCopy` in web/record.js), named
+`english-tutor-<date>-<you>-<partner>.<ext>`. Prod then deletes its own copy so
+the Railway volume stays small. Storage is therefore local disk, not the volume
+and not git.
+
+File a downloaded recording into the repository layout with:
+
+    python cli.py --import-audio ~/Downloads/english-tutor-2026-07-18-roman-andrey.webm
+
+It reads the date from the filename (`--date` overrides), creates
+`sessions/<date>/` when the call was recorded on prod and the folder is missing,
+and copies the file to `sessions/<date>/audio.<ext>`. Audio is git-ignored, so
+the repository layout is used as an index, not as storage.

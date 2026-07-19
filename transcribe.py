@@ -23,6 +23,13 @@ TRANSCRIPT_ENDPOINT = f"{BASE_URL}/transcript"
 
 CHANNEL_TO_LABEL = {"1": "Speaker A", "2": "Speaker B"}
 
+# Keep vocalised hesitations (um, uh, er) in the transcript. Off — the provider
+# default — silently deletes them, which made recorded and uploaded sessions
+# incomparable on filler_per_100w. Stored per session in timings.json so a later
+# analysis can tell which side of the 2026-07-19 change a session sits on.
+DISFLUENCIES = True
+TIMINGS_VERSION = 2
+
 
 def _request(url: str, api_key: str, data: bytes | None = None,
              method: str | None = None, content_type: str | None = None,
@@ -74,8 +81,19 @@ def create_transcript(api_key: str, audio_url: str, language_code: str = "",
 
     If `language_code` is empty, auto-detect the language. Forcing a wrong
     language (e.g. "en" on Russian speech) makes AssemblyAI return no text.
+
+    `disfluencies` is on: without it AssemblyAI silently strips um/uh/er from
+    the transcript, so filler_per_100w counted only the multi-word fillers
+    ("like", "you know") on recorded calls while text uploads kept everything.
+    Measured on the archive: Andrey scored 1.0-2.3 fillers/100w on uploads and
+    0.0-0.26 on recordings — the same speaker, a collection artefact. It cannot
+    be repaired after the fact without the audio, hence on by default.
     """
-    body: dict = {"audio_url": audio_url, "multichannel": multichannel}
+    body: dict = {
+        "audio_url": audio_url,
+        "multichannel": multichannel,
+        "disfluencies": DISFLUENCIES,
+    }
     if language_code:
         body["language_code"] = language_code
     else:
@@ -204,10 +222,18 @@ def build_utterance_timings(transcript: dict) -> dict | None:
     if not utterances_out:
         return None
     return {
-        "version": 1,
+        "version": TIMINGS_VERSION,
         "source": "assemblyai",
         "transcript_id": transcript.get("id"),
         "audio_duration_sec": transcript.get("audio_duration"),
+        # What the provider actually applied, not what we asked for. Lets a
+        # later analysis tell which sessions kept vocalised hesitations and
+        # which silently dropped them, instead of guessing from the date.
+        "settings": {
+            "disfluencies": transcript.get("disfluencies"),
+            "language_code": transcript.get("language_code"),
+            "multichannel": transcript.get("multichannel"),
+        },
         "utterances": utterances_out,
     }
 

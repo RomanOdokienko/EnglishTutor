@@ -2676,6 +2676,39 @@ def finalize_derived_metrics(analysis: dict) -> None:
     }
 
 
+RECORDING_NAME_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
+
+
+def import_audio(source: Path, sessions_dir: Path, date: str | None = None) -> tuple[str, Path]:
+    """File a browser-saved recording into sessions/<date>/audio.<ext>.
+
+    The record page downloads english-tutor-<date>-<you>-<partner>.<ext> to the
+    operator's machine and prod deletes its own copy to keep the Railway volume
+    small, so the audio ends up in Downloads, detached from its session. This
+    puts it where the rest of the pipeline already looks, which is what keeps
+    re-transcription (and anything needing sound, like pronunciation) possible
+    later. Audio is git-ignored: local disk is the storage, not the repo.
+    """
+    if not source.is_file():
+        raise FileNotFoundError(f"No such recording: {source}")
+    resolved = date or ""
+    if not resolved:
+        match = RECORDING_NAME_RE.search(source.name)
+        if not match:
+            raise ValueError(
+                f"Could not read a date from '{source.name}'. Pass --date YYYY-MM-DD."
+            )
+        resolved = match.group(1)
+    ext = source.suffix.lstrip(".").lower() or "webm"
+    # The session folder may not exist locally when the call was recorded on
+    # prod, so create it rather than refusing the only copy of the audio.
+    session_dir = sessions_dir / resolved
+    session_dir.mkdir(parents=True, exist_ok=True)
+    target = session_dir / f"audio.{ext}"
+    shutil.copy2(source, target)
+    return resolved, target
+
+
 def backfill_timings(sessions_dir: Path) -> int:
     """Create sessions/<date>/timings.json from a stored raw AssemblyAI response.
 
@@ -3253,11 +3286,33 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Create sessions/<date>/timings.json from stored assemblyai_response.json files (no API call).",
     )
+    parser.add_argument(
+        "--import-audio",
+        type=Path,
+        default=None,
+        metavar="FILE",
+        help="File a browser-saved recording into sessions/<date>/audio.<ext> (date read from the filename unless --date is given).",
+    )
+    parser.add_argument(
+        "--date",
+        type=str,
+        default=None,
+        help="Session date (YYYY-MM-DD) for --import-audio when the filename carries none.",
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
+    if args.import_audio:
+        try:
+            date, target = import_audio(args.import_audio, args.sessions, args.date)
+        except (FileNotFoundError, ValueError) as error:
+            print(f"Import failed: {error}")
+            return
+        size_mb = target.stat().st_size / (1024 * 1024)
+        print(f"Imported {size_mb:.1f} MB into {target} (session {date}). Audio stays git-ignored.")
+        return
     if args.backfill_timings:
         count = backfill_timings(args.sessions)
         print(f"Backfilled timings for {count} session(s). Run --recompute-derived to attach metrics.")

@@ -37,6 +37,31 @@ Recognised fillers in v1 are um, uh, er, erm, hmm, like, you know, i mean,
 kind of and sort of. Metrics are descriptive signals and must not be presented
 as a CEFR or examination-grade assessment.
 
+### Transcription seam at 2026-07-19 (fillers, word counts)
+
+Until 2026-07-19 transcription ran with AssemblyAI's default
+`disfluencies: false`, which deletes um/uh/er from the transcript. Recorded
+calls therefore counted only the multi-word fillers while text uploads kept
+everything: the same speaker scored 1.0–2.3 fillers/100w on uploads and
+0.0–0.26 on recordings. That is a collection artefact, not behaviour, and it
+cannot be repaired afterwards without the audio.
+
+`disfluencies` is now on (`transcribe.py`). Consequences for sessions recorded
+after that date: vocalised hesitations appear in `transcript.txt`, so
+`filler_per_100w` rises, and because they are Latin tokens they also enter
+`english_word_count` — slightly enlarging the denominator of every per-100-word
+rate. The formulas are unchanged, so no version bump; treat filler comparisons
+across the seam as apples-to-oranges. Which side a session sits on is recorded
+per session in `timings.json` under `settings.disfluencies` (payload version 2)
+rather than inferred from its date.
+
+`l1_fallback_pct` reads 0.0 in every session so far, and that is genuine — no
+transcript contains Cyrillic. Note it cannot be trusted to detect Russian in
+*recorded* calls: language detection picks one language per file, so Russian
+speech is either transcribed into Latin-script approximations or flips the
+whole transcript. It measures typed Russian in uploads reliably, spoken Russian
+not at all.
+
 ## Timing metrics (additive, optional — ADR-0006)
 
 Present only for sessions transcribed from audio, where

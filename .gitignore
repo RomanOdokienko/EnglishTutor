@@ -11,3 +11,9 @@ __pycache__/
 .agents/
 .claude/skills/
 skills-lock.json
+
+# Recorded audio. Kept locally on purpose (it is the only input that cannot be
+# re-derived — see cli.py --import-audio), but far too large for git.
+sessions/*/audio.*
+english-tutor-*.webm
+english-tutor-*.ogg

@@ -373,12 +373,17 @@ class UploadHandler(SimpleHTTPRequestHandler):
         update_history(OUT_DIR, analysis)
         write_web_assets(OUT_DIR)
 
-        # AssemblyAI has its own temporary upload and transcript.txt is now the
-        # durable source. Retain raw audio only when transcription fails.
-        try:
-            audio_path.unlink(missing_ok=True)
-        except OSError as error:
-            self.log_error("Could not remove temporary audio %s: %s", audio_path, error)
+        # Audio is the one input that cannot be re-derived: transcript.txt and
+        # timings.json come from it, never the other way round. Prod still
+        # deletes it so the Railway volume stays small — the record page has
+        # already saved a copy on the operator's machine (keepLocalCopy in
+        # web/record.js). Set ENGLISH_TUTOR_KEEP_AUDIO=1 where disk is free
+        # (a local run) to retain it next to the session instead.
+        if clean_env("ENGLISH_TUTOR_KEEP_AUDIO").lower() not in ("1", "true", "yes", "on"):
+            try:
+                audio_path.unlink(missing_ok=True)
+            except OSError as error:
+                self.log_error("Could not remove temporary audio %s: %s", audio_path, error)
 
         analysis_status = "ready"
         if use_openai:
